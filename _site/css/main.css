@@ -99,17 +99,17 @@ body {
 
 .reference {
     padding-top: 8px;
-    margin-left: 32px;
+    margin-left: 0px;
 }
 
 .citation_number {
-    width: 32px;
+    width: 64px;
     text-align: center;
 }
 
 .citation {
-    margin-left: 40px;
-    padding-top: -17px;
+    margin-left: 64px;
+    margin-top: -1.25em;
 }
 
 .body .postdate {
