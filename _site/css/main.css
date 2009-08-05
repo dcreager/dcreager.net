@@ -127,13 +127,34 @@ body {
 }
 
 /*--------------------------------------------------------------------
+ * Left column
+ */
+
+.left {
+    float: left;
+    width: 200px;
+}
+
+/*--------------------------------------------------------------------
+ * Picture
+ */
+
+.logo img {
+    border: 1px solid #404040;
+}
+
+.logo div {
+    text-align: center;
+    font-weight: bold;
+    font-size: 130%;
+}
+
+/*--------------------------------------------------------------------
  * Navigation bar
  */
 
 .leftnav {
-    float: left;
-    width: 200px;
-    margin-top: 0px;
+    padding-top: 20px;
 }
 
 .leftnav p {
