@@ -2,6 +2,10 @@
 layout: default
 ---
 
-<div id="post">
+<div class="post">
   {{ content }}
+</div>
+
+<div class="postdate">
+  Last updated on {{ page.date | date: "%A, %B %d, %Y" }}
 </div>

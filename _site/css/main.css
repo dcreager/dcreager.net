@@ -112,6 +112,14 @@ body {
     padding-top: -17px;
 }
 
+.body .postdate {
+    color: #888;
+    font-size: 80%;
+    text-align: center;
+    padding-top: 10px;
+    margin-bottom: -10px;
+}
+
 .footer .copyright {
     padding-top: 1.5em;
     color: #aaa;
