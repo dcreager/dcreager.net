@@ -67,6 +67,15 @@ body {
     margin-left: 32px;
 }
 
+.body code {
+    font-size: 80%;
+    /*
+    padding: 2px;
+    border: 1px solid #808080;
+    background-color: #e0e0e0;
+    */
+}
+
 .body pre {
     font-size: 80%;
     margin-top: 8px;
