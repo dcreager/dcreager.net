@@ -99,6 +99,15 @@ body {
     margin-left: 0px;
 }
 
+.body img {
+    border: 0px none;
+}
+
+.displace {
+    position: absolute;
+    left: -5000px;
+}
+
 .reference {
     padding-top: 8px;
     margin-left: 0px;
@@ -126,6 +135,34 @@ body {
     padding-top: 1.5em;
     color: #444;
     font-size: 80%;
+}
+
+/*--------------------------------------------------------------------
+ * Download icons
+ */
+
+.downloads {
+    margin-left: 16px;
+}
+
+.downloads .pdf {
+    display: inline;
+}
+
+.downloads .pdf a {
+    display: block;
+    width: 70px;
+    height: 77px;
+    text-decoration: none;
+    background-image: url(/images/icon-pdf.png);
+}
+
+.downloads .pdf a:hover {
+    display: block;
+    width: 70px;
+    height: 77px;
+    text-decoration: none;
+    background-image: url(/images/icon-pdf-shadow.png);
 }
 
 /*--------------------------------------------------------------------
