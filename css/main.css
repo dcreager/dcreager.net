@@ -108,21 +108,6 @@ body {
     left: -5000px;
 }
 
-.reference {
-    padding-top: 8px;
-    margin-left: 0px;
-}
-
-.citation_number {
-    width: 64px;
-    text-align: center;
-}
-
-.citation {
-    margin-left: 64px;
-    margin-top: -1.25em;
-}
-
 .body .postdate {
     color: #888;
     font-size: 80%;
@@ -135,6 +120,48 @@ body {
     padding-top: 1.5em;
     color: #444;
     font-size: 80%;
+}
+
+/*--------------------------------------------------------------------
+ * Citations
+ */
+
+.reference {
+    padding-top: 8px;
+    margin-left: 0px;
+}
+
+.citation_number {
+    float: left;
+    width: 64px;
+    text-align: center;
+}
+
+.citation {
+    margin-left: 64px;
+    margin-right: 52px;
+}
+
+.reference .details {
+    float: right;
+    margin-top: -10px;
+    width: 52px;
+}
+
+.reference .details a {
+    display: block;
+    width: 52px;
+    height: 52px;
+    text-decoration: none;
+    background-image: url(/images/mag.png);
+}
+
+.reference .details a:hover {
+    display: block;
+    width: 52px;
+    height: 52px;
+    text-decoration: none;
+    background-image: url(/images/mag-shadow.png);
 }
 
 /*--------------------------------------------------------------------
