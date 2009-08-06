@@ -6,7 +6,7 @@ title: dcreager.net — Publication details
 # Publication details
 
 <div class="reference">
-  <div class="citation_number">[11]</div>
+  <div class="citation_number">[14]</div>
   <div class="citation">
     DA Creager and AC Simpson.
 
@@ -23,9 +23,9 @@ title: dcreager.net — Publication details
 
 ## Notes
 
-This paper was chosen to be published in the conference's extended
-proceedings.  The extended version of the paper can be found
-[here](../014-csp-algorithm-study).
+This is an extended version of the
+[paper](../011-csp-algorithm-study/) that I presented at [SBMF
+2007](http://www.sbmf2007.ufop.br/) in Ouro Preto, Brazil.
 
 ## Download
 

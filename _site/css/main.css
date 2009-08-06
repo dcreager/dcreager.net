@@ -131,15 +131,23 @@ body {
     margin-left: 0px;
 }
 
-.citation_number {
+.reference .citation_number {
     float: left;
     width: 64px;
     text-align: center;
 }
 
-.citation {
+.reference .citation {
     margin-left: 64px;
     margin-right: 52px;
+}
+
+.reference .note {
+    margin-left: 64px;
+    margin-right: 52px;
+    padding-top: 8px;
+    color: #444;
+    font-style: italic;
 }
 
 .reference .details {
