@@ -71,11 +71,6 @@ body {
 
 .body code {
     font-size: 80%;
-    /*
-    padding: 2px;
-    border: 1px solid #808080;
-    background-color: #e0e0e0;
-    */
 }
 
 .body pre {
@@ -85,6 +80,11 @@ body {
     padding: 8px;
     border: 1px solid #808080;
     background-color: #e0e0e0;
+    overflow: auto;
+}
+
+.body pre code {
+    font-size: 100%;
 }
 
 .body ul {

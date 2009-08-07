@@ -1,0 +1,161 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+ 
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>Adding Disqus comments</title>
+    <meta name="author" content="Douglas Creager" />
+ 
+    <!-- syntax highlighting CSS -->
+    <link rel="stylesheet" href="/css/syntax.css" type="text/css" />
+
+    <!-- main CSS -->
+    <link rel="stylesheet" href="/css/main.css" type="text/css" />
+  </head>
+
+  <body>
+
+    <div class="site">
+      <div class="site_content">
+        <div class="left">
+          <div class="leftnav">
+            <p><a href="/">Home</a></p>
+<p><a href="/publications/">Publications</a></p>
+
+          </div>
+        </div>
+
+        <div class="body">
+          
+<div class="post">
+  <h1 id='adding_disqus_comments'>Adding Disqus comments</h1>
+
+<p>I&#8217;ve just enabled comments on the posts on my website. On its own, that&#8217;s not a particularly unique or exciting feature. However, I&#8217;m using <a href='http://disqus.com'>Disqus</a> as the comment engine, and the way in which I&#8217;ve integrated Disqus into my Jekyll-powered website might be of interest to others. (Thanks to <a href='http://metajack.im/'>Jack Moffitt</a> for the idea!)</p>
+
+<h2 id='the_generic_code_installation_target'>The “generic code” installation target</h2>
+
+<p>At the core of Disqus is a snippet of HTML and JavaScript that&#8217;s embedded into each of the webpages that you want to contain a comments section. If you&#8217;re using one of the standard blog engines for your website, Disqus can automatically “install” itself, adding the Disqus snippet to your pages for you. If you&#8217;re not using one of these blog engines, however, you have to install the Disqus snippet yourself.</p>
+
+<p>Luckily, this is very easy. If you choose the “generic code” installation target when setting up the Disqus account for your website, you see the snippet of code to include. For <a href='http://dcreager.net/'>dcreager.net</a>, it looks like this:</p>
+<div class='highlight'><pre><span class='o'>&lt;</span><span class='nx'>div</span> <span class='nx'>id</span><span class='o'>=</span><span class='s2'>&quot;disqus_thread&quot;</span><span class='o'>&gt;&lt;/</span><span class='nx'>div</span><span class='o'>&gt;</span>
+
+<span class='o'>&lt;</span><span class='nx'>script</span>
+   <span class='nx'>type</span><span class='o'>=</span><span class='s2'>&quot;text/javascript&quot;</span>
+   <span class='nx'>src</span><span class='o'>=</span><span class='s2'>&quot;http://disqus.com/forums/dcreager/embed.js&quot;</span><span class='o'>&gt;</span>
+<span class='o'>&lt;/</span><span class='nx'>script</span><span class='o'>&gt;</span>
+<span class='o'>&lt;</span><span class='nx'>noscript</span><span class='o'>&gt;</span>
+  <span class='o'>&lt;</span><span class='nx'>a</span> <span class='nx'>href</span><span class='o'>=</span><span class='s2'>&quot;http://dcreager.disqus.com/?url=ref&quot;</span><span class='o'>&gt;</span><span class='nx'>View</span> <span class='nx'>the</span> <span class='nx'>discussion</span> <span class='nx'>thread</span><span class='p'>.</span><span class='o'>&lt;/</span><span class='nx'>a</span><span class='o'>&gt;</span>
+<span class='o'>&lt;/</span><span class='nx'>noscript</span><span class='o'>&gt;</span>
+
+<span class='o'>&lt;</span><span class='nx'>a</span> <span class='nx'>href</span><span class='o'>=</span><span class='s2'>&quot;http://disqus.com&quot;</span> <span class='nx'>class</span><span class='o'>=</span><span class='s2'>&quot;dsq-brlink&quot;</span><span class='o'>&gt;</span>
+  <span class='nx'>blog</span> <span class='nx'>comments</span> <span class='nx'>powered</span> <span class='nx'>by</span> <span class='o'>&lt;</span><span class='nx'>span</span> <span class='nx'>class</span><span class='o'>=</span><span class='s2'>&quot;logo-disqus&quot;</span><span class='o'>&gt;</span><span class='nx'>Disqus</span><span class='o'>&lt;/</span><span class='nx'>span</span><span class='o'>&gt;</span>
+<span class='o'>&lt;/</span><span class='nx'>a</span><span class='o'>&gt;</span>
+</pre>
+</div>
+<p>I have to wrap this in another <code>&lt;div&gt;</code> element, to fit into the CSS layout that I&#8217;m using, but otherwise it&#8217;s a straightforward copy/paste.</p>
+
+<p>The <code>disqus_thread</code> element is a placeholder. The <em>embed.js</em> JavaScript retrieves the comments that are linked to the current page, formats them according to the style that you&#8217;ve chosen, and injects the resulting HTML into the <code>disqus_thread</code> element. The end result is something like the comment section that you see at the end of this page.</p>
+
+<h2 id='jekyll_layouts'>Jekyll layouts</h2>
+
+<p>At this point, we have the Disqus snippet that we need to include into each comment-enabled page on the site. The naïve solution would be to manually add this snippet to each of the pages that we want to contain comments. But of course, as good software engineers, we want to avoid that kind of repetition — and Jekyll layouts give us good way to do that.</p>
+
+<p>For my site, I&#8217;ve decided that I want to include a comment section on each dated “post” — the articles that you see under the “Recent Posts” on the front page. I don&#8217;t want to include comments, for instance, on my <a href='/publications/'>publication list</a>.</p>
+
+<p>Luckily, I already have a system of Jekyll layouts that implements this distinction. For instance, dated posts have a “Last updated” entry at the bottom, which the front page and publications list don&#8217;t contain. The site currently has two layouts defined:</p>
+
+<ul>
+<li>
+<p><a href='http://github.com/dcreager/dcreager.net/blob/master/_layouts/default.html'><em>default.html</em></a> — defines the overall layout of the site: the background logo, the navigation bar, the box containing the text of each post, etc. All of the pages on the site use this layout, even if they don&#8217;t reference it directly in their YAML front-matter.</p>
+</li>
+
+<li>
+<p><a href='http://github.com/dcreager/dcreager.net/blob/master/_layouts/post.html'><em>post.html</em></a> — adds the “last updated” entry at the bottom of a dated post.</p>
+</li>
+</ul>
+
+<p>So, if I want to include Disqus comments on all of my dated posts, I can just add the HTML/JavaScript snippet to the <em>post.html</em> file.</p>
+
+<h2 id='using_template_variables'>Using template variables</h2>
+
+<p>This solution is nice, in that we don&#8217;t have to duplicate the Disqus snippet on each of the post pages, but we can take this one step further. What if I decide that I want to include comments on one of the pages that isn&#8217;t a dated blog post? Now I have to duplicate that snippet again — maybe not in the page&#8217;s source, but at least in the layout that that page uses.</p>
+
+<p>Instead, I&#8217;m going to use a new variable in the YAML front-matter to give me fine-grained control over which pages have comments. If I want a page to have comments, I just make sure to include</p>
+
+<pre><code>comments: true</code></pre>
+
+<p>in that page&#8217;s YAML header.</p>
+
+<p>Then, instead of including the Disqus snippet directly in the <em>post.html</em> layout, I put it into the <em>default.html</em> layout that every page eventually uses. I wrap the snippet in a Liquid <code>if</code> statement to only include the Disqus comment section if the <code>comments</code> YAML variable is <code>true</code>:</p>
+<div class='highlight'><pre><span class='p'>{</span><span class='o'>%</span> <span class='k'>if</span> <span class='nx'>page</span><span class='p'>.</span><span class='nx'>comments</span> <span class='o'>%</span><span class='p'>}</span>
+
+<span class='o'>&lt;</span><span class='nx'>div</span> <span class='nx'>id</span><span class='o'>=</span><span class='s2'>&quot;disqus_thread&quot;</span><span class='o'>&gt;&lt;/</span><span class='nx'>div</span><span class='o'>&gt;</span>
+
+<span class='o'>&lt;</span><span class='nx'>script</span>
+   <span class='nx'>type</span><span class='o'>=</span><span class='s2'>&quot;text/javascript&quot;</span>
+   <span class='nx'>src</span><span class='o'>=</span><span class='s2'>&quot;http://disqus.com/forums/dcreager/embed.js&quot;</span><span class='o'>&gt;</span>
+<span class='o'>&lt;/</span><span class='nx'>script</span><span class='o'>&gt;</span>
+<span class='o'>&lt;</span><span class='nx'>noscript</span><span class='o'>&gt;</span>
+  <span class='o'>&lt;</span><span class='nx'>a</span> <span class='nx'>href</span><span class='o'>=</span><span class='s2'>&quot;http://dcreager.disqus.com/?url=ref&quot;</span><span class='o'>&gt;</span><span class='nx'>View</span> <span class='nx'>the</span> <span class='nx'>discussion</span> <span class='nx'>thread</span><span class='p'>.</span><span class='o'>&lt;/</span><span class='nx'>a</span><span class='o'>&gt;</span>
+<span class='o'>&lt;/</span><span class='nx'>noscript</span><span class='o'>&gt;</span>
+
+<span class='o'>&lt;</span><span class='nx'>a</span> <span class='nx'>href</span><span class='o'>=</span><span class='s2'>&quot;http://disqus.com&quot;</span> <span class='nx'>class</span><span class='o'>=</span><span class='s2'>&quot;dsq-brlink&quot;</span><span class='o'>&gt;</span>
+  <span class='nx'>blog</span> <span class='nx'>comments</span> <span class='nx'>powered</span> <span class='nx'>by</span> <span class='o'>&lt;</span><span class='nx'>span</span> <span class='nx'>class</span><span class='o'>=</span><span class='s2'>&quot;logo-disqus&quot;</span><span class='o'>&gt;</span><span class='nx'>Disqus</span><span class='o'>&lt;/</span><span class='nx'>span</span><span class='o'>&gt;</span>
+<span class='o'>&lt;/</span><span class='nx'>a</span><span class='o'>&gt;</span>
+
+<span class='p'>{</span><span class='o'>%</span> <span class='nx'>endif</span> <span class='o'>%</span><span class='p'>}</span>
+</pre>
+</div>
+<p>If the <code>comments</code> YAML variable isn&#8217;t defined for the current page, the <code>if</code> statement treats it as false, giving us the behavior that we want — no comments section unless we ask for it.</p>
+
+<p>Finally, to ensure that all dated posts get a comments section, without me having to explicitly ask for it, I add</p>
+
+<pre><code>comments: true</code></pre>
+
+<p>to the YAML front-matter of the <em>post.html</em> layout.</p>
+</div>
+
+<div class="postdate">
+  Last updated on Friday, August 07, 2009
+</div>
+
+        </div>
+
+        
+
+        <div class="body_separator"></div>
+
+        <div class="body">
+          <div id="disqus_thread"></div>
+
+          <script type="text/javascript">
+            var disqus_title = "Adding Disqus comments";
+            var disqus_url = "http://dcreager.net/2009/08/07/disqus-comments/";
+          </script>
+
+          <script
+             type="text/javascript"
+             src="http://disqus.com/forums/dcreager/embed.js">
+          </script>
+          <noscript>
+            <a href="http://dcreager.disqus.com/?url=ref">View the discussion thread.</a>
+          </noscript>
+
+          <a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+        </div>
+
+        
+
+      </div>
+    </div>
+
+    <div class="footer">
+      <div class="copyright">
+        Copyright © 2009, Douglas Creager.  All rights reserved.
+      </div>
+    </div>
+
+  </body>
+</html>
+
