@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
   <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-    <title>Pros and cons of Python's <code>subprocess.communicate</code> method</title>
+    <title>Problems with Python's subprocess.communicate method</title>
     <meta name="author" content="Douglas Creager" />
  
     <!-- syntax highlighting CSS -->
@@ -29,15 +29,15 @@
         <div class="body">
           
 <div class="post">
-  <h1 id='pros_and_cons_of_pythons__method'>Pros and cons of Python&#8217;s <code>subprocess.communicate</code> method</h1>
+  <h1 id='problems_with_pythons_subprocesscommunicate_method'>Problems with Python&#8217;s subprocess.communicate method</h1>
 
-<p>The <code>subprocess</code> module, which was introduced in Python 2.4, provides you with a convenient interface for spawning <em>subprocesses</em>, and for interacting with these subprocesses in your parent process. The module was introduced in <a href='http://www.python.org/dev/peps/pep-0324/'>PEP 324</a>, and is a replacement for the proliferation of other functions and modules that were used previously for spawning and interacting with processes. The <code>subprocess</code> module aims to provide a more consistent interface, regardless of the particulars of how you need to interact with the subprocesses.</p>
+<p>The <a href='http://docs.python.org/library/subprocess.html'><code>subprocess</code></a> module, which was introduced in Python 2.4, provides you with a convenient interface for spawning <em>subprocesses</em>, and for interacting with these subprocesses in your parent process. The module was introduced in <a href='http://www.python.org/dev/peps/pep-0324/'>PEP 324</a>, and is a replacement for the proliferation of other functions and modules that were used previously for spawning and interacting with processes. The <code>subprocess</code> module aims to provide a more consistent interface, regardless of the particulars of how you need to interact with the subprocesses.</p>
 
 <h2 id='overview_of_the__module'>Overview of the <code>subprocess</code> module</h2>
 
 <p>Subprocesses are encapsulated in a <code>Popen</code> object. You interact with a subprocess via its stdin, stdout, and stderr streams. When you create a new <code>Popen</code> object, you can give a value of <code>PIPE</code> for the <code>stdin</code>, <code>stdout</code>, and <code>stderr</code> keyword parameters. If you do, then the <code>Popen</code> object that you get back will have <code>stdin</code>, <code>stdout</code>, and/or <code>stderr</code> attributes. Each of these is a file-like object, giving you access to the corresponding stream of the subprocess.</p>
 
-<p>Now, you have to be careful how you use these pipe objects, since it&#8217;s easy to fall into a situation where you have deadlock. For instance, your parent process might be trying to write some data into the <code>stdin</code> pipe, to send some information into the subprocess. The subprocess, on the other hand, is trying to write some data into the <code>stdout</code> pipe, to send some infomration back out to the parent process. If the <code>stdout</code> pipe&#8217;s buffer is full, then the subprocess will block trying write into the pipe; it won&#8217;t be able to proceed until the parent process has read some data from the <code>stdout</code> pipe, clearing room in the buffer for the new data. However, the parent process is currently trying to write into the <code>stdin</code> pipe. If this write is also blocked, then we have deadlock — neither process can proceed.</p>
+<p>Now, you have to be careful how you use these pipe objects, since it&#8217;s easy to fall into a situation where you have deadlock. For instance, your parent process might be trying to write some data into the <code>stdin</code> pipe, to send some information into the subprocess. The subprocess, on the other hand, is trying to write some data into the <code>stdout</code> pipe, to send some information back out to the parent process. If the <code>stdout</code> pipe&#8217;s buffer is full, then the subprocess will block trying write into the pipe; it won&#8217;t be able to proceed until the parent process has read some data from the <code>stdout</code> pipe, clearing room in the buffer for the new data. However, the parent process is currently trying to write into the <code>stdin</code> pipe. If this write is also blocked, then we have deadlock — neither process can proceed.</p>
 
 <h2 id='the__method'>The <code>communicate</code> method</h2>
 
@@ -59,9 +59,25 @@
 
 <p>The first item is a problem if your subprocess creates a lot of output — the worry is the output will be too large to fit into a Python string. If it is, then the parent process will (at best) start to thrash as it eats into virtual memory.</p>
 
-<p>The second item is a problem if you have to spawn multiple subprocesses, and interact with them simultaneously. You could argue that there&#8217;s no need to fix this problem if you haven&#8217;t fixed the first: since the <code>communicate</code> method is just going to collec the stdout and stderr into strings, then you could just loop through each of your subprocesses, calling <code>communicate</code> on each in turn. The end result would be what you want — all of the stdout and stderr strings for all of your subprocesses.</p>
+<p>The second item is a problem if you have to spawn multiple subprocesses, and interact with them simultaneously. You could argue that there&#8217;s no need to fix this problem if you haven&#8217;t fixed the first: since the <code>communicate</code> method is just going to collect the stdout and stderr into strings, then you could just loop through each of your subprocesses, calling <code>communicate</code> on each in turn:</p>
+<div class='highlight'><pre><span class='kn'>import</span> <span class='nn'>subprocess</span>
 
-<p>However, do so can make your subprocesses take longer to run, since you won&#8217;t be able to exploit parallelism as much. Since you&#8217;re firing off these subprocesses at the same time, you supposedly want them to execute simultaneously, allowing the OS to schedule them appropriate so that they finish as quickly as possible. However, you&#8217;ve introduced a serialization into this logic, since your parent process is only able to interact with one subprocess at a time. For instance, subprocess #2 might be waiting for some input, while the parent process is still snarfing up the output from subprocess #1. In this case, subprocess #2 is <strong><em>not going to be able to start executing</em></strong> until subprocess #1 has <strong><em>completely finished</em></strong>. So your <code>communicate</code> loop has completely eliminated the benefit of starting the subprocesses simultaneously.</p>
+<span class='n'>sp1</span> <span class='o'>=</span> <span class='n'>subprocess</span><span class='o'>.</span><span class='n'>Popen</span><span class='p'>([</span><span class='s'>&quot;ls&quot;</span><span class='p'>,</span> <span class='s'>&quot;-l&quot;</span><span class='p'>],</span>
+                       <span class='n'>stdin</span><span class='o'>=</span><span class='n'>subprocess</span><span class='o'>.</span><span class='n'>PIPE</span><span class='p'>,</span>
+                       <span class='n'>stdout</span><span class='o'>=</span><span class='n'>subprocess</span><span class='o'>.</span><span class='n'>PIPE</span><span class='p'>)</span>
+
+<span class='n'>sp2</span> <span class='o'>=</span> <span class='n'>subprocess</span><span class='o'>.</span><span class='n'>Popen</span><span class='p'>([</span><span class='s'>&quot;ls&quot;</span><span class='p'>,</span> <span class='s'>&quot;-al&quot;</span><span class='p'>],</span>
+                       <span class='n'>stdin</span><span class='o'>=</span><span class='n'>subprocess</span><span class='o'>.</span><span class='n'>PIPE</span><span class='p'>,</span>
+                       <span class='n'>stdout</span><span class='o'>=</span><span class='n'>subprocess</span><span class='o'>.</span><span class='n'>PIPE</span><span class='p'>)</span>
+
+<span class='k'>for</span> <span class='n'>sp</span> <span class='ow'>in</span> <span class='p'>[</span><span class='n'>sp1</span><span class='p'>,</span> <span class='n'>sp2</span><span class='p'>]:</span>
+    <span class='p'>(</span><span class='n'>stdout</span><span class='p'>,</span> <span class='n'>stderr</span><span class='p'>)</span> <span class='o'>=</span> <span class='n'>sp</span><span class='o'>.</span><span class='n'>communicate</span><span class='p'>()</span>
+    <span class='k'>print</span> <span class='n'>stdout</span>
+</pre>
+</div>
+<p>The end result would be what you want — all of the stdout and stderr strings for all of your subprocesses.</p>
+
+<p>However, doing so can make your subprocesses take longer to run, since you won&#8217;t be able to exploit parallelism as much. Since you&#8217;re firing off these subprocesses at the same time, you supposedly want them to execute simultaneously, allowing the OS to schedule them appropriate so that they finish as quickly as possible. However, you&#8217;ve introduced a serialization into this logic, since your parent process is only able to interact with one subprocess at a time. For instance, subprocess #2 might be waiting for some input, while the parent process is still snarfing up the output from subprocess #1. In this case, subprocess #2 is <strong><em>not going to be able to start executing</em></strong> until subprocess #1 has <strong><em>completely finished</em></strong>. So your <code>communicate</code> loop has completely eliminated the benefit of starting the subprocesses simultaneously.</p>
 
 <p>In later posts, I will outline how to solve these two problems.</p>
 </div>

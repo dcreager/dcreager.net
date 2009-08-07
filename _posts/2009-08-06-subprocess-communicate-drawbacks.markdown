@@ -1,18 +1,18 @@
 ---
 layout: post
-title: Pros and cons of Python's <code>subprocess.communicate</code> method
+title: Problems with Python's subprocess.communicate method
 ---
 
 # {{ page.title }}
 
-The `subprocess` module, which was introduced in Python 2.4, provides
-you with a convenient interface for spawning *subprocesses*, and for
-interacting with these subprocesses in your parent process.  The
-module was introduced in [PEP
-324](http://www.python.org/dev/peps/pep-0324/), and is a replacement
-for the proliferation of other functions and modules that were used
-previously for spawning and interacting with processes.  The
-`subprocess` module aims to provide a more consistent interface,
+The [`subprocess`](http://docs.python.org/library/subprocess.html)
+module, which was introduced in Python 2.4, provides you with a
+convenient interface for spawning *subprocesses*, and for interacting
+with these subprocesses in your parent process.  The module was
+introduced in [PEP 324](http://www.python.org/dev/peps/pep-0324/), and
+is a replacement for the proliferation of other functions and modules
+that were used previously for spawning and interacting with processes.
+The `subprocess` module aims to provide a more consistent interface,
 regardless of the particulars of how you need to interact with the
 subprocesses.
 
@@ -31,7 +31,7 @@ easy to fall into a situation where you have deadlock.  For instance,
 your parent process might be trying to write some data into the
 `stdin` pipe, to send some information into the subprocess.  The
 subprocess, on the other hand, is trying to write some data into the
-`stdout` pipe, to send some infomration back out to the parent
+`stdout` pipe, to send some information back out to the parent
 process.  If the `stdout` pipe's buffer is full, then the subprocess
 will block trying write into the pipe; it won't be able to proceed
 until the parent process has read some data from the `stdout` pipe,
@@ -86,13 +86,30 @@ thrash as it eats into virtual memory.
 The second item is a problem if you have to spawn multiple
 subprocesses, and interact with them simultaneously.  You could argue
 that there's no need to fix this problem if you haven't fixed the
-first: since the `communicate` method is just going to collec the
+first: since the `communicate` method is just going to collect the
 stdout and stderr into strings, then you could just loop through each
-of your subprocesses, calling `communicate` on each in turn.  The end
-result would be what you want — all of the stdout and stderr strings
-for all of your subprocesses.
+of your subprocesses, calling `communicate` on each in turn:
 
-However, do so can make your subprocesses take longer to run, since
+{% highlight python %}
+import subprocess
+
+sp1 = subprocess.Popen(["ls", "-l"],
+                       stdin=subprocess.PIPE,
+                       stdout=subprocess.PIPE)
+
+sp2 = subprocess.Popen(["ls", "-al"],
+                       stdin=subprocess.PIPE,
+                       stdout=subprocess.PIPE)
+
+for sp in [sp1, sp2]:
+    (stdout, stderr) = sp.communicate()
+    print stdout
+{% endhighlight %}
+
+The end result would be what you want — all of the stdout and stderr
+strings for all of your subprocesses.
+
+However, doing so can make your subprocesses take longer to run, since
 you won't be able to exploit parallelism as much.  Since you're firing
 off these subprocesses at the same time, you supposedly want them to
 execute simultaneously, allowing the OS to schedule them appropriate
