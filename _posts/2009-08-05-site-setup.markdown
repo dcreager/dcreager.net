@@ -12,8 +12,8 @@ how I've set up my homepage, from a technical standpoint.
 ## Directory layout
 
 The content of the website is stored in a Git repository (found
-[here](http://github.com/dcreager/homepage/)).  Most of the pages are
-originally written in Markdown.  I use
+[here](http://github.com/dcreager/dcreager.net/)).  Most of the pages
+are originally written in Markdown.  I use
 [Jekyll](http://github.com/mojombo/jekyll/) to process the Markdown
 pages into a static website.
 
