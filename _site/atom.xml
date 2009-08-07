@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title>dcreager.net</title>
+  <link href="http://dcreager.net/atom.xml" rel="self"/>
+  <link href="http://dcreager.net/"/>
+  <updated>2009-08-07T17:11:14-04:00</updated>
+  <id>http://dcreager.net/</id>
+  <author>
+    <name>Douglas Creager</name>
+    <email>dcreager@dcreager.net</email>
+  </author>
+
+  
+  <entry>
+    <title>Adding Disqus comments</title>
+    <link href="http://dcreager.net/2009/08/07/disqus-comments/"/>
+    <updated>2009-08-07T00:00:00-04:00</updated>
+    <id>http://dcreager.net/2009/08/07/disqus-comments</id>
+    <content type="html">&lt;h1 id='adding_disqus_comments'&gt;Adding Disqus comments&lt;/h1&gt;
+
+&lt;p&gt;I&amp;#8217;ve just enabled comments on the posts on my website. On its own, that&amp;#8217;s not a particularly unique or exciting feature. However, I&amp;#8217;m using &lt;a href='http://disqus.com'&gt;Disqus&lt;/a&gt; as the comment engine, and the way in which I&amp;#8217;ve integrated Disqus into my Jekyll-powered website might be of interest to others. (Thanks to &lt;a href='http://metajack.im/'&gt;Jack Moffitt&lt;/a&gt; for the idea!)&lt;/p&gt;
+
+&lt;h2 id='the_generic_code_installation_target'&gt;The “generic code” installation target&lt;/h2&gt;
+
+&lt;p&gt;At the core of Disqus is a snippet of HTML and JavaScript that&amp;#8217;s embedded into each of the webpages that you want to contain a comments section. If you&amp;#8217;re using one of the standard blog engines for your website, Disqus can automatically “install” itself, adding the Disqus snippet to your pages for you. If you&amp;#8217;re not using one of these blog engines, however, you have to install the Disqus snippet yourself.&lt;/p&gt;
+
+&lt;p&gt;Luckily, this is very easy. If you choose the “generic code” installation target when setting up the Disqus account for your website, you see the snippet of code to include. For &lt;a href='http://dcreager.net/'&gt;dcreager.net&lt;/a&gt;, it looks like this:&lt;/p&gt;
+&lt;div class='highlight'&gt;&lt;pre&gt;&lt;span class='o'&gt;&amp;lt;&lt;/span&gt;&lt;span class='nx'&gt;div&lt;/span&gt; &lt;span class='nx'&gt;id&lt;/span&gt;&lt;span class='o'&gt;=&lt;/span&gt;&lt;span class='s2'&gt;&amp;quot;disqus_thread&amp;quot;&lt;/span&gt;&lt;span class='o'&gt;&amp;gt;&amp;lt;/&lt;/span&gt;&lt;span class='nx'&gt;div&lt;/span&gt;&lt;span class='o'&gt;&amp;gt;&lt;/span&gt;
+
+&lt;span class='o'&gt;&amp;lt;&lt;/span&gt;&lt;span class='nx'&gt;script&lt;/span&gt;
+   &lt;span class='nx'&gt;type&lt;/span&gt;&lt;span class='o'&gt;=&lt;/span&gt;&lt;span class='s2'&gt;&amp;quot;text/javascript&amp;quot;&lt;/span&gt;
+   &lt;span class='nx'&gt;src&lt;/span&gt;&lt;span class='o'&gt;=&lt;/span&gt;&lt;span class='s2'&gt;&amp;quot;http://disqus.com/forums/dcreager/embed.js&amp;quot;&lt;/span&gt;&lt;span class='o'&gt;&amp;gt;&lt;/span&gt;
+&lt;span class='o'&gt;&amp;lt;/&lt;/span&gt;&lt;span class='nx'&gt;script&lt;/span&gt;&lt;span class='o'&gt;&amp;gt;&lt;/span&gt;
+&lt;span class='o'&gt;&amp;lt;&lt;/span&gt;&lt;span class='nx'&gt;noscript&lt;/span&gt;&lt;span class='o'&gt;&amp;gt;&lt;/span&gt;
+  &lt;span class='o'&gt;&amp;lt;&lt;/span&gt;&lt;span class='nx'&gt;a&lt;/span&gt; &lt;span class='nx'&gt;href&lt;/span&gt;&lt;span class='o'&gt;=&lt;/span&gt;&lt;span class='s2'&gt;&amp;quot;http://dcreager.disqus.com/?url=ref&amp;quot;&lt;/span&gt;&lt;span class='o'&gt;&amp;gt;&lt;/span&gt;&lt;span class='nx'&gt;View&lt;/span&gt; &lt;span class='nx'&gt;the&lt;/span&gt; &lt;span class='nx'&gt;discussion&lt;/span&gt; &lt;span class='nx'&gt;thread&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='o'&gt;&amp;lt;/&lt;/span&gt;&lt;span class='nx'&gt;a&lt;/span&gt;&lt;span class='o'&gt;&amp;gt;&lt;/span&gt;
+&lt;span class='o'&gt;&amp;lt;/&lt;/span&gt;&lt;span class='nx'&gt;noscript&lt;/span&gt;&lt;span class='o'&gt;&amp;gt;&lt;/span&gt;
+
+&lt;span class='o'&gt;&amp;lt;&lt;/span&gt;&lt;span class='nx'&gt;a&lt;/span&gt; &lt;span class='nx'&gt;href&lt;/span&gt;&lt;span class='o'&gt;=&lt;/span&gt;&lt;span class='s2'&gt;&amp;quot;http://disqus.com&amp;quot;&lt;/span&gt; &lt;span class='nx'&gt;class&lt;/span&gt;&lt;span class='o'&gt;=&lt;/span&gt;&lt;span class='s2'&gt;&amp;quot;dsq-brlink&amp;quot;&lt;/span&gt;&lt;span class='o'&gt;&amp;gt;&lt;/span&gt;
+  &lt;span class='nx'&gt;blog&lt;/span&gt; &lt;span class='nx'&gt;comments&lt;/span&gt; &lt;span class='nx'&gt;powered&lt;/span&gt; &lt;span class='nx'&gt;by&lt;/span&gt; &lt;span class='o'&gt;&amp;lt;&lt;/span&gt;&lt;span class='nx'&gt;span&lt;/span&gt; &lt;span class='nx'&gt;class&lt;/span&gt;&lt;span class='o'&gt;=&lt;/span&gt;&lt;span class='s2'&gt;&amp;quot;logo-disqus&amp;quot;&lt;/span&gt;&lt;span class='o'&gt;&amp;gt;&lt;/span&gt;&lt;span class='nx'&gt;Disqus&lt;/span&gt;&lt;span class='o'&gt;&amp;lt;/&lt;/span&gt;&lt;span class='nx'&gt;span&lt;/span&gt;&lt;span class='o'&gt;&amp;gt;&lt;/span&gt;
+&lt;span class='o'&gt;&amp;lt;/&lt;/span&gt;&lt;span class='nx'&gt;a&lt;/span&gt;&lt;span class='o'&gt;&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;I have to wrap this in another &lt;code&gt;&amp;lt;div&amp;gt;&lt;/code&gt; element, to fit into the CSS layout that I&amp;#8217;m using, but otherwise it&amp;#8217;s a straightforward copy/paste.&lt;/p&gt;
+
+&lt;p&gt;The &lt;code&gt;disqus_thread&lt;/code&gt; element is a placeholder. The &lt;em&gt;embed.js&lt;/em&gt; JavaScript retrieves the comments that are linked to the current page, formats them according to the style that you&amp;#8217;ve chosen, and injects the resulting HTML into the &lt;code&gt;disqus_thread&lt;/code&gt; element. The end result is something like the comment section that you see at the end of this page.&lt;/p&gt;
+
+&lt;h2 id='jekyll_layouts'&gt;Jekyll layouts&lt;/h2&gt;
+
+&lt;p&gt;At this point, we have the Disqus snippet that we need to include into each comment-enabled page on the site. The naïve solution would be to manually add this snippet to each of the pages that we want to contain comments. But of course, as good software engineers, we want to avoid that kind of repetition — and Jekyll layouts give us good way to do that.&lt;/p&gt;
+
+&lt;p&gt;For my site, I&amp;#8217;ve decided that I want to include a comment section on each dated “post” — the articles that you see under the “Recent Posts” on the front page. I don&amp;#8217;t want to include comments, for instance, on my &lt;a href='/publications/'&gt;publication list&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Luckily, I already have a system of Jekyll layouts that implements this distinction. For instance, dated posts have a “Last updated” entry at the bottom, which the front page and publications list don&amp;#8217;t contain. The site currently has two layouts defined:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href='http://github.com/dcreager/dcreager.net/blob/master/_layouts/default.html'&gt;&lt;em&gt;default.html&lt;/em&gt;&lt;/a&gt; — defines the overall layout of the site: the background logo, the navigation bar, the box containing the text of each post, etc. All of the pages on the site use this layout, even if they don&amp;#8217;t reference it directly in their YAML front-matter.&lt;/p&gt;
+&lt;/li&gt;
+
+&lt;li&gt;
+&lt;p&gt;&lt;a href='http://github.com/dcreager/dcreager.net/blob/master/_layouts/post.html'&gt;&lt;em&gt;post.html&lt;/em&gt;&lt;/a&gt; — adds the “last updated” entry at the bottom of a dated post.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;So, if I want to include Disqus comments on all of my dated posts, I can just add the HTML/JavaScript snippet to the &lt;em&gt;post.html&lt;/em&gt; file.&lt;/p&gt;
+
+&lt;h2 id='using_template_variables'&gt;Using template variables&lt;/h2&gt;
+
+&lt;p&gt;This solution is nice, in that we don&amp;#8217;t have to duplicate the Disqus snippet on each of the post pages, but we can take this one step further. What if I decide that I want to include comments on one of the pages that isn&amp;#8217;t a dated blog post? Now I have to duplicate that snippet again — maybe not in the page&amp;#8217;s source, but at least in the layout that that page uses.&lt;/p&gt;
+
+&lt;p&gt;Instead, I&amp;#8217;m going to use a new variable in the YAML front-matter to give me fine-grained control over which pages have comments. If I want a page to have comments, I just make sure to include&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;comments: true&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;in that page&amp;#8217;s YAML header.&lt;/p&gt;
+
+&lt;p&gt;Then, instead of including the Disqus snippet directly in the &lt;em&gt;post.html&lt;/em&gt; layout, I put it into the &lt;em&gt;default.html&lt;/em&gt; layout that every page eventually uses. I wrap the snippet in a Liquid &lt;code&gt;if&lt;/code&gt; statement to only include the Disqus comment section if the &lt;code&gt;comments&lt;/code&gt; YAML variable is &lt;code&gt;true&lt;/code&gt;:&lt;/p&gt;
+&lt;div class='highlight'&gt;&lt;pre&gt;&lt;span class='p'&gt;{&lt;/span&gt;&lt;span class='o'&gt;%&lt;/span&gt; &lt;span class='k'&gt;if&lt;/span&gt; &lt;span class='nx'&gt;page&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='nx'&gt;comments&lt;/span&gt; &lt;span class='o'&gt;%&lt;/span&gt;&lt;span class='p'&gt;}&lt;/span&gt;
+
+&lt;span class='o'&gt;&amp;lt;&lt;/span&gt;&lt;span class='nx'&gt;div&lt;/span&gt; &lt;span class='nx'&gt;id&lt;/span&gt;&lt;span class='o'&gt;=&lt;/span&gt;&lt;span class='s2'&gt;&amp;quot;disqus_thread&amp;quot;&lt;/span&gt;&lt;span class='o'&gt;&amp;gt;&amp;lt;/&lt;/span&gt;&lt;span class='nx'&gt;div&lt;/span&gt;&lt;span class='o'&gt;&amp;gt;&lt;/span&gt;
+
+&lt;span class='o'&gt;&amp;lt;&lt;/span&gt;&lt;span class='nx'&gt;script&lt;/span&gt;
+   &lt;span class='nx'&gt;type&lt;/span&gt;&lt;span class='o'&gt;=&lt;/span&gt;&lt;span class='s2'&gt;&amp;quot;text/javascript&amp;quot;&lt;/span&gt;
+   &lt;span class='nx'&gt;src&lt;/span&gt;&lt;span class='o'&gt;=&lt;/span&gt;&lt;span class='s2'&gt;&amp;quot;http://disqus.com/forums/dcreager/embed.js&amp;quot;&lt;/span&gt;&lt;span class='o'&gt;&amp;gt;&lt;/span&gt;
+&lt;span class='o'&gt;&amp;lt;/&lt;/span&gt;&lt;span class='nx'&gt;script&lt;/span&gt;&lt;span class='o'&gt;&amp;gt;&lt;/span&gt;
+&lt;span class='o'&gt;&amp;lt;&lt;/span&gt;&lt;span class='nx'&gt;noscript&lt;/span&gt;&lt;span class='o'&gt;&amp;gt;&lt;/span&gt;
+  &lt;span class='o'&gt;&amp;lt;&lt;/span&gt;&lt;span class='nx'&gt;a&lt;/span&gt; &lt;span class='nx'&gt;href&lt;/span&gt;&lt;span class='o'&gt;=&lt;/span&gt;&lt;span class='s2'&gt;&amp;quot;http://dcreager.disqus.com/?url=ref&amp;quot;&lt;/span&gt;&lt;span class='o'&gt;&amp;gt;&lt;/span&gt;&lt;span class='nx'&gt;View&lt;/span&gt; &lt;span class='nx'&gt;the&lt;/span&gt; &lt;span class='nx'&gt;discussion&lt;/span&gt; &lt;span class='nx'&gt;thread&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='o'&gt;&amp;lt;/&lt;/span&gt;&lt;span class='nx'&gt;a&lt;/span&gt;&lt;span class='o'&gt;&amp;gt;&lt;/span&gt;
+&lt;span class='o'&gt;&amp;lt;/&lt;/span&gt;&lt;span class='nx'&gt;noscript&lt;/span&gt;&lt;span class='o'&gt;&amp;gt;&lt;/span&gt;
+
+&lt;span class='o'&gt;&amp;lt;&lt;/span&gt;&lt;span class='nx'&gt;a&lt;/span&gt; &lt;span class='nx'&gt;href&lt;/span&gt;&lt;span class='o'&gt;=&lt;/span&gt;&lt;span class='s2'&gt;&amp;quot;http://disqus.com&amp;quot;&lt;/span&gt; &lt;span class='nx'&gt;class&lt;/span&gt;&lt;span class='o'&gt;=&lt;/span&gt;&lt;span class='s2'&gt;&amp;quot;dsq-brlink&amp;quot;&lt;/span&gt;&lt;span class='o'&gt;&amp;gt;&lt;/span&gt;
+  &lt;span class='nx'&gt;blog&lt;/span&gt; &lt;span class='nx'&gt;comments&lt;/span&gt; &lt;span class='nx'&gt;powered&lt;/span&gt; &lt;span class='nx'&gt;by&lt;/span&gt; &lt;span class='o'&gt;&amp;lt;&lt;/span&gt;&lt;span class='nx'&gt;span&lt;/span&gt; &lt;span class='nx'&gt;class&lt;/span&gt;&lt;span class='o'&gt;=&lt;/span&gt;&lt;span class='s2'&gt;&amp;quot;logo-disqus&amp;quot;&lt;/span&gt;&lt;span class='o'&gt;&amp;gt;&lt;/span&gt;&lt;span class='nx'&gt;Disqus&lt;/span&gt;&lt;span class='o'&gt;&amp;lt;/&lt;/span&gt;&lt;span class='nx'&gt;span&lt;/span&gt;&lt;span class='o'&gt;&amp;gt;&lt;/span&gt;
+&lt;span class='o'&gt;&amp;lt;/&lt;/span&gt;&lt;span class='nx'&gt;a&lt;/span&gt;&lt;span class='o'&gt;&amp;gt;&lt;/span&gt;
+
+&lt;span class='p'&gt;{&lt;/span&gt;&lt;span class='o'&gt;%&lt;/span&gt; &lt;span class='nx'&gt;endif&lt;/span&gt; &lt;span class='o'&gt;%&lt;/span&gt;&lt;span class='p'&gt;}&lt;/span&gt;
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;If the &lt;code&gt;comments&lt;/code&gt; YAML variable isn&amp;#8217;t defined for the current page, the &lt;code&gt;if&lt;/code&gt; statement treats it as false, giving us the behavior that we want — no comments section unless we ask for it.&lt;/p&gt;
+
+&lt;p&gt;Finally, to ensure that all dated posts get a comments section, without me having to explicitly ask for it, I add&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;comments: true&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;to the YAML front-matter of the &lt;em&gt;post.html&lt;/em&gt; layout.&lt;/p&gt;</content>
+  </entry>
+  
+  <entry>
+    <title>Problems with Python's subprocess.communicate method</title>
+    <link href="http://dcreager.net/2009/08/06/subprocess-communicate-drawbacks/"/>
+    <updated>2009-08-06T00:00:00-04:00</updated>
+    <id>http://dcreager.net/2009/08/06/subprocess-communicate-drawbacks</id>
+    <content type="html">&lt;h1 id='problems_with_pythons_subprocesscommunicate_method'&gt;Problems with Python&amp;#8217;s subprocess.communicate method&lt;/h1&gt;
+
+&lt;p&gt;The &lt;a href='http://docs.python.org/library/subprocess.html'&gt;&lt;code&gt;subprocess&lt;/code&gt;&lt;/a&gt; module, which was introduced in Python 2.4, provides you with a convenient interface for spawning &lt;em&gt;subprocesses&lt;/em&gt;, and for interacting with these subprocesses in your parent process. The module was introduced in &lt;a href='http://www.python.org/dev/peps/pep-0324/'&gt;PEP 324&lt;/a&gt;, and is a replacement for the proliferation of other functions and modules that were used previously for spawning and interacting with processes. The &lt;code&gt;subprocess&lt;/code&gt; module aims to provide a more consistent interface, regardless of the particulars of how you need to interact with the subprocesses.&lt;/p&gt;
+
+&lt;h2 id='overview_of_the__module'&gt;Overview of the &lt;code&gt;subprocess&lt;/code&gt; module&lt;/h2&gt;
+
+&lt;p&gt;Subprocesses are encapsulated in a &lt;code&gt;Popen&lt;/code&gt; object. You interact with a subprocess via its stdin, stdout, and stderr streams. When you create a new &lt;code&gt;Popen&lt;/code&gt; object, you can give a value of &lt;code&gt;PIPE&lt;/code&gt; for the &lt;code&gt;stdin&lt;/code&gt;, &lt;code&gt;stdout&lt;/code&gt;, and &lt;code&gt;stderr&lt;/code&gt; keyword parameters. If you do, then the &lt;code&gt;Popen&lt;/code&gt; object that you get back will have &lt;code&gt;stdin&lt;/code&gt;, &lt;code&gt;stdout&lt;/code&gt;, and/or &lt;code&gt;stderr&lt;/code&gt; attributes. Each of these is a file-like object, giving you access to the corresponding stream of the subprocess.&lt;/p&gt;
+
+&lt;p&gt;Now, you have to be careful how you use these pipe objects, since it&amp;#8217;s easy to fall into a situation where you have deadlock. For instance, your parent process might be trying to write some data into the &lt;code&gt;stdin&lt;/code&gt; pipe, to send some information into the subprocess. The subprocess, on the other hand, is trying to write some data into the &lt;code&gt;stdout&lt;/code&gt; pipe, to send some information back out to the parent process. If the &lt;code&gt;stdout&lt;/code&gt; pipe&amp;#8217;s buffer is full, then the subprocess will block trying write into the pipe; it won&amp;#8217;t be able to proceed until the parent process has read some data from the &lt;code&gt;stdout&lt;/code&gt; pipe, clearing room in the buffer for the new data. However, the parent process is currently trying to write into the &lt;code&gt;stdin&lt;/code&gt; pipe. If this write is also blocked, then we have deadlock — neither process can proceed.&lt;/p&gt;
+
+&lt;h2 id='the__method'&gt;The &lt;code&gt;communicate&lt;/code&gt; method&lt;/h2&gt;
+
+&lt;p&gt;The usual solution in these cases is to use the &lt;code&gt;Popen&lt;/code&gt; object&amp;#8217;s &lt;code&gt;communicate&lt;/code&gt; method. This method takes in an optional string to send to the subprocess on stdin. It then collects all of the stdout and stderr output from the subprocess, and returns these. The &lt;code&gt;communicate&lt;/code&gt; method takes responsibility for avoiding deadlock; it only sends the next chunk of the stdin string when the subprocess is ready to read it, and it only tries to read the next chuck of stdout or stderr when the subprocess is ready to provide it.&lt;/p&gt;
+
+&lt;p&gt;Under the covers, the &lt;code&gt;communicate&lt;/code&gt; method uses a &lt;code&gt;select&lt;/code&gt; loop to perform this choreography with the subprocess. (At least for the Unix implementation of the &lt;code&gt;subprocess&lt;/code&gt; module, that is.) This solution is nice because it doesn&amp;#8217;t require introducing threading into the parent process. During each iteration of the loop, it calls the OS&amp;#8217;s &lt;code&gt;select&lt;/code&gt; system call, giving it the file descriptors of the stdin, stdout, and stderr pipes. The &lt;code&gt;select&lt;/code&gt; call tells us which of these file descriptors can perform an I/O operation without blocking. If none of them can immediately, it will block until one of them can. Once the &lt;code&gt;select&lt;/code&gt; call returns, we read from or write to the pipes that are ready. We repeat this process until we see EOF on both stdout and stderr; this indicates that the subprocess has finished — or at least, that it&amp;#8217;s through communicating with us.&lt;/p&gt;
+
+&lt;h2 id='drawbacks'&gt;Drawbacks&lt;/h2&gt;
+
+&lt;p&gt;The &lt;code&gt;communicate&lt;/code&gt; method provides a nice, simple interface for interacting with a subprocess, without having to worry about deadlock situations. Unfortunately, it has two main drawbacks:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;The subprocess&amp;#8217;s stdout and stderr are collected into strings.&lt;/li&gt;
+
+&lt;li&gt;You can only interact with one subprocess at a time.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;(If neither of these is an issue for you, then the rest of this post is less interesting to you — &lt;code&gt;communicate&lt;/code&gt; does exactly what you want!)&lt;/p&gt;
+
+&lt;p&gt;The first item is a problem if your subprocess creates a lot of output — the worry is the output will be too large to fit into a Python string. If it is, then the parent process will (at best) start to thrash as it eats into virtual memory.&lt;/p&gt;
+
+&lt;p&gt;The second item is a problem if you have to spawn multiple subprocesses, and interact with them simultaneously. You could argue that there&amp;#8217;s no need to fix this problem if you haven&amp;#8217;t fixed the first: since the &lt;code&gt;communicate&lt;/code&gt; method is just going to collect the stdout and stderr into strings, then you could just loop through each of your subprocesses, calling &lt;code&gt;communicate&lt;/code&gt; on each in turn:&lt;/p&gt;
+&lt;div class='highlight'&gt;&lt;pre&gt;&lt;span class='kn'&gt;import&lt;/span&gt; &lt;span class='nn'&gt;subprocess&lt;/span&gt;
+
+&lt;span class='n'&gt;sp1&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='n'&gt;subprocess&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;Popen&lt;/span&gt;&lt;span class='p'&gt;([&lt;/span&gt;&lt;span class='s'&gt;&amp;quot;ls&amp;quot;&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='s'&gt;&amp;quot;-l&amp;quot;&lt;/span&gt;&lt;span class='p'&gt;],&lt;/span&gt;
+                       &lt;span class='n'&gt;stdin&lt;/span&gt;&lt;span class='o'&gt;=&lt;/span&gt;&lt;span class='n'&gt;subprocess&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;PIPE&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt;
+                       &lt;span class='n'&gt;stdout&lt;/span&gt;&lt;span class='o'&gt;=&lt;/span&gt;&lt;span class='n'&gt;subprocess&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;PIPE&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt;
+
+&lt;span class='n'&gt;sp2&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='n'&gt;subprocess&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;Popen&lt;/span&gt;&lt;span class='p'&gt;([&lt;/span&gt;&lt;span class='s'&gt;&amp;quot;ls&amp;quot;&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='s'&gt;&amp;quot;-al&amp;quot;&lt;/span&gt;&lt;span class='p'&gt;],&lt;/span&gt;
+                       &lt;span class='n'&gt;stdin&lt;/span&gt;&lt;span class='o'&gt;=&lt;/span&gt;&lt;span class='n'&gt;subprocess&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;PIPE&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt;
+                       &lt;span class='n'&gt;stdout&lt;/span&gt;&lt;span class='o'&gt;=&lt;/span&gt;&lt;span class='n'&gt;subprocess&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;PIPE&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt;
+
+&lt;span class='k'&gt;for&lt;/span&gt; &lt;span class='n'&gt;sp&lt;/span&gt; &lt;span class='ow'&gt;in&lt;/span&gt; &lt;span class='p'&gt;[&lt;/span&gt;&lt;span class='n'&gt;sp1&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='n'&gt;sp2&lt;/span&gt;&lt;span class='p'&gt;]:&lt;/span&gt;
+    &lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;stdout&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='n'&gt;stderr&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='n'&gt;sp&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;communicate&lt;/span&gt;&lt;span class='p'&gt;()&lt;/span&gt;
+    &lt;span class='k'&gt;print&lt;/span&gt; &lt;span class='n'&gt;stdout&lt;/span&gt;
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;The end result would be what you want — all of the stdout and stderr strings for all of your subprocesses.&lt;/p&gt;
+
+&lt;p&gt;However, doing so can make your subprocesses take longer to run, since you won&amp;#8217;t be able to exploit parallelism as much. Since you&amp;#8217;re firing off these subprocesses at the same time, you supposedly want them to execute simultaneously, allowing the OS to schedule them appropriate so that they finish as quickly as possible. However, you&amp;#8217;ve introduced a serialization into this logic, since your parent process is only able to interact with one subprocess at a time. For instance, subprocess #2 might be waiting for some input, while the parent process is still snarfing up the output from subprocess #1. In this case, subprocess #2 is &lt;strong&gt;&lt;em&gt;not going to be able to start executing&lt;/em&gt;&lt;/strong&gt; until subprocess #1 has &lt;strong&gt;&lt;em&gt;completely finished&lt;/em&gt;&lt;/strong&gt;. So your &lt;code&gt;communicate&lt;/code&gt; loop has completely eliminated the benefit of starting the subprocesses simultaneously.&lt;/p&gt;
+
+&lt;p&gt;In later posts, I will outline how to solve these two problems.&lt;/p&gt;</content>
+  </entry>
+  
+  <entry>
+    <title>SBMF07 paper chosen for extended proceedings</title>
+    <link href="http://dcreager.net/2009/08/06/sbmf-paper/"/>
+    <updated>2009-08-06T00:00:00-04:00</updated>
+    <id>http://dcreager.net/2009/08/06/sbmf-paper</id>
+    <content type="html">&lt;h1 id='sbmf07_paper_chosen_for_extended_proceedings'&gt;SBMF07 paper chosen for extended proceedings&lt;/h1&gt;
+
+&lt;p&gt;My SBMF07 &lt;a href='/publications/014-csp-algorithm-study/'&gt;paper&lt;/a&gt;, “Empirical analysis and optimization of an NP-hard algorithm using CSP and FDR,” was chosen to appear in the conference&amp;#8217;s extended proceedings. The extended proceedings will be published in a forthcoming issue of ENTCS. Huzzah!&lt;/p&gt;
+
+&lt;p&gt;The paper originally was extracted from Chapter 8 of my &lt;a href='/publications/012-dphil-thesis/'&gt;D.Phil thesis&lt;/a&gt;, and I had to cut out a bit of detail in order to make the space requirements for the conference paper. Luckily, the extended proceedings allow for a longer paper, so I was able to add most of the cut parts back in. So the version that will appear in ENTCS is, for the most part, identical to the corresponding chapter from my thesis.&lt;/p&gt;</content>
+  </entry>
+  
+  <entry>
+    <title>Site layout</title>
+    <link href="http://dcreager.net/2009/08/05/site-setup/"/>
+    <updated>2009-08-05T00:00:00-04:00</updated>
+    <id>http://dcreager.net/2009/08/05/site-setup</id>
+    <content type="html">&lt;h1 id='site_layout'&gt;Site layout&lt;/h1&gt;
+
+&lt;p&gt;This post will probably end up being more useful to me than to anyone else who might stumble across the page. Here I&amp;#8217;m going to document how I&amp;#8217;ve set up my homepage, from a technical standpoint.&lt;/p&gt;
+
+&lt;h2 id='directory_layout'&gt;Directory layout&lt;/h2&gt;
+
+&lt;p&gt;The content of the website is stored in a Git repository (found &lt;a href='http://github.com/dcreager/dcreager.net/'&gt;here&lt;/a&gt;). Most of the pages are originally written in Markdown. I use &lt;a href='http://github.com/mojombo/jekyll/'&gt;Jekyll&lt;/a&gt; to process the Markdown pages into a static website.&lt;/p&gt;
+
+&lt;p&gt;The Git repository contains a standard Jekyll layout:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Dated “posts” (such as blog entries) are placed in the &lt;em&gt;_posts&lt;/em&gt; directory.&lt;/p&gt;
+&lt;/li&gt;
+
+&lt;li&gt;
+&lt;p&gt;HTML layouts are placed in the &lt;em&gt;_layouts&lt;/em&gt; directory.&lt;/p&gt;
+&lt;/li&gt;
+
+&lt;li&gt;
+&lt;p&gt;All other content (CSS, images, other pages) lives wherever I please; that directory structure is reproduced on the live site.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;One difference is that I include the &lt;em&gt;_site&lt;/em&gt; directory in the Git repository; most people seem to include this directory in their &lt;em&gt;.gitignore&lt;/em&gt; file so that it&amp;#8217;s not tracked by Git. Doing so allows me to check out the repository and have a working copy of the site, without having to have Jekyll and its dependencies installed on that machine.&lt;/p&gt;
+
+&lt;h2 id='editing_and_deploying_changes'&gt;Editing and deploying changes&lt;/h2&gt;
+
+&lt;p&gt;While I edit my pages, I keep a&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;jekyll --server --auto&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;instance running in the background, which allows me to view a local copy of the new website as I save changes.&lt;/p&gt;
+
+&lt;p&gt;For deployment, I have a (non-bare) clone of the Git repository on the Dreamhost machine that hosts my website. Once I have a change that I&amp;#8217;m ready to deploy, I make a new Git commit and push it to the Dreamhost clone. Since I include the &lt;em&gt;_site&lt;/em&gt; directory in my commits, this places the latest copy of the website onto the Dreamhost filesystem, ready to go.&lt;/p&gt;
+
+&lt;p&gt;Pushing doesn&amp;#8217;t automatically update the checked-out HEAD on the remote system, however, so there&amp;#8217;s an additional step needed. Once I&amp;#8217;ve pushed the changes to Dreamhost, I run the following from the Dreamhost clone:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;git reset --hard master&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;which updates the working copy on disk to be the same as the latest commit that I just pushed. At this point, the Dreamhost clone contains the latest copy of the site in its &lt;em&gt;_site&lt;/em&gt; directory.&lt;/p&gt;
+
+&lt;p&gt;Dreamhost is expecting to serve my website out of a particular directory within my home directory; the final step is having this served directory be a symlink to the &lt;em&gt;_site&lt;/em&gt; directory of the Dreamhost clone. Et voila!&lt;/p&gt;</content>
+  </entry>
+  
+
+</feed>
