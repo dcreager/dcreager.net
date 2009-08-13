@@ -4,13 +4,59 @@
   <title>dcreager.net</title>
   <link href="http://dcreager.net/atom.xml" rel="self"/>
   <link href="http://dcreager.net/"/>
-  <updated>2009-08-07T17:11:14-04:00</updated>
+  <updated>2009-08-13T18:19:12-04:00</updated>
   <id>http://dcreager.net/</id>
   <author>
     <name>Douglas Creager</name>
     <email>dcreager@dcreager.net</email>
   </author>
 
+  
+  <entry>
+    <title>iPhone tethering</title>
+    <link href="http://dcreager.net/2009/08/13/iphone-tethering/"/>
+    <updated>2009-08-13T00:00:00-04:00</updated>
+    <id>http://dcreager.net/2009/08/13/iphone-tethering</id>
+    <content type="html">&lt;h1 id='iphone_tethering'&gt;iPhone tethering&lt;/h1&gt;
+
+&lt;p&gt;While attending the &lt;a href='http://mil-oss.org/'&gt;Mil-OSS conference&lt;/a&gt; this week, I had the opportunity to use one of the coolest features of my new iPhone 3GS — Bluetooth Internet tethering. Assuming that your mobile carrier allows the feature on their network, it provides a very easy way to have a persistent Internet connection, for those situations where a free Ethernet drop or WiFi access point aren&amp;#8217;t readily available.&lt;/p&gt;
+
+&lt;p&gt;I happened to have my Dell Mini 9 (running Ubuntu Jaunty) with me for the conference, rather than my MacBook, so I thought that it might be difficult to get the Bluetooth connection working between the phone and laptop. This &lt;a href='http://xn--9bi.net/2009/06/17/tethering-iphone-3-0-to-ubuntu-9-04/'&gt;blog posting&lt;/a&gt;, however, provided exactly what I needed.&lt;/p&gt;
+
+&lt;p&gt;Following this process, the connection worked without a hitch. One caveat is that I didn&amp;#8217;t need to explicitly pair my phone with my laptop; the first time I ran the &lt;code&gt;pand --connect&lt;/code&gt; command, my phone prompted me with the pairing confirmation dialog. Later connections didn&amp;#8217;t require re-pairing.&lt;/p&gt;
+
+&lt;p&gt;As for bandwidth, the connection was perfectly reasonable for email and basic Web surfing as long as I had decent 3G coverage — 3 of 5 bars or higher and I was good to go. I also did an &lt;code&gt;apt-get&lt;/code&gt; package update as a “beefier” test; I was usually seeing around 20-30 Kb/sec of download speed, which would be fine for small daily updates, but would probably be unworkable for something large like a GNOME, texlive, or GHC update. All in all, not bad for some surreptitious email checking during the talks.&lt;/p&gt;
+
+&lt;h2 id='commandline_scripts'&gt;Command-line scripts&lt;/h2&gt;
+
+&lt;p&gt;One thing that can be cumbersome about the instructions on the blog post is that you have to run the &lt;code&gt;pand&lt;/code&gt; and &lt;code&gt;ifup&lt;/code&gt;/&lt;code&gt;ifdown&lt;/code&gt; commands separately each time you want to start or stop the Bluetooth connection. Not a huge waste of effort, to be sure, but we can do better. So I wrote a quick little Bash script that will start and stop the connection with a single command. You can find the script in &lt;a href='http://github.com/dcreager/home/commit/f5c0db363049f7433494924c63d4a2a19e325b6c'&gt;this commit&lt;/a&gt; on my Github page.&lt;/p&gt;
+
+&lt;p&gt;The script is fairly straightforward; you start your Bluetooth tether by running&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;tether up&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;and you stop it by running&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;tether down&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Instead of hard-coding your phone&amp;#8217;s Bluetooth MAC address into the script itself, you place it into the &lt;em&gt;$HOME/etc/bluetooth.conf&lt;/em&gt; file. This file isn&amp;#8217;t checked into Git, so that I&amp;#8217;m not putting my personal MAC addresses into the public repository. Instead, the commit contains a &lt;em&gt;$HOME/etc/bluetooth.conf.sample&lt;/em&gt; file, which you copy over to &lt;em&gt;bluetooth.conf&lt;/em&gt;, and then edit appropriately.&lt;/p&gt;
+
+&lt;h2 id='issues'&gt;Issues&lt;/h2&gt;
+
+&lt;p&gt;While this script worked great for during the conference, there are two main issues with it as it stands.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;dbus integration&lt;/strong&gt; — Many applications now listen to the system&amp;#8217;s dbus message bus to determine different facts about the current state of the system, including whether there&amp;#8217;s an active Internet connection. The NetworkManager application knows to publish the correct dbus messages when it starts and stops a network connection. The &lt;code&gt;tether&lt;/code&gt; script does not. This means that each time I open up Firefox after turning on the tether, I have to manually uncheck the &lt;em&gt;File › Work Offline&lt;/em&gt; menu option to be able to access any web pages.&lt;/p&gt;
+
+&lt;p&gt;Fixing this issue should only require finding the appropriate dbus messages to send, and adding them to the &lt;code&gt;up&lt;/code&gt; and &lt;code&gt;down&lt;/code&gt; cases in the script.&lt;/p&gt;
+&lt;/li&gt;
+
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;GUI access&lt;/strong&gt; — While I don&amp;#8217;t mind running a simple command to activate and deactivate the network connection, I realize that a GUI control within the NetworkManager applet would be more ideal. (This would also eliminate the first issue, since NetworkManager would then send the appropriate dbus messages when the connection is started or stopped.) Luckily, Dan Williams has recently &lt;a href='http://blogs.gnome.org/dcbw/2009/07/10/unwire-with-networkmanager/'&gt;added Bluetooth PAN support&lt;/a&gt; to &lt;code&gt;nm-applet&lt;/code&gt;. The new code is in the bleeding edge tree, so hopefully it will make it into a release in time to be picked up for October&amp;#8217;s Karmic release.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;</content>
+  </entry>
   
   <entry>
     <title>Adding Disqus comments</title>
