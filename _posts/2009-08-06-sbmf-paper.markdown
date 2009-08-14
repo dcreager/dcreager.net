@@ -3,8 +3,6 @@ layout: post
 title: SBMF07 paper chosen for extended proceedings
 ---
 
-# SBMF07 paper chosen for extended proceedings
-
 My SBMF07 [paper](/publications/014-csp-algorithm-study/), “Empirical
 analysis and optimization of an NP-hard algorithm using CSP and FDR,”
 was chosen to appear in the conference's extended proceedings.  The

@@ -4,7 +4,7 @@
   <title>dcreager.net</title>
   <link href="http://dcreager.net/atom.xml" rel="self"/>
   <link href="http://dcreager.net/"/>
-  <updated>2009-08-14T13:43:28-04:00</updated>
+  <updated>2009-08-14T14:14:44-04:00</updated>
   <id>http://dcreager.net/</id>
   <author>
     <name>Douglas Creager</name>
@@ -17,9 +17,7 @@
     <link href="http://dcreager.net/2009/08/13/subprocess-callbacks/"/>
     <updated>2009-08-13T00:00:00-04:00</updated>
     <id>http://dcreager.net/2009/08/13/subprocess-callbacks</id>
-    <content type="html">&lt;h1 id='using_callbacks_with_the_subprocess_module'&gt;Using callbacks with the subprocess module&lt;/h1&gt;
-
-&lt;p&gt;In a &lt;a href='/2009/08/06/subprocess-communicate-drawbacks/'&gt;previous post&lt;/a&gt;, we pointed out two drawbacks of Python&amp;#8217;s &lt;code&gt;subprocess.communicate&lt;/code&gt; method. In this post, we look at the first problem in more detail. To reiterate, the problem is that we collect the subprocess&amp;#8217;s output streams into strings. If the subprocess is going to generate a huge amount of output, it can be better to process the output data in a stream-oriented manner — that way we use a constant amount of memory regardless of how much output is produced.&lt;/p&gt;
+    <content type="html">&lt;p&gt;In a &lt;a href='/2009/08/06/subprocess-communicate-drawbacks/'&gt;previous post&lt;/a&gt;, we pointed out two drawbacks of Python&amp;#8217;s &lt;code&gt;subprocess.communicate&lt;/code&gt; method. In this post, we look at the first problem in more detail. To reiterate, the problem is that we collect the subprocess&amp;#8217;s output streams into strings. If the subprocess is going to generate a huge amount of output, it can be better to process the output data in a stream-oriented manner — that way we use a constant amount of memory regardless of how much output is produced.&lt;/p&gt;
 
 &lt;p&gt;If we look at the &lt;a href='http://svn.python.org/view/python/trunk/Lib/subprocess.py?revision=74029&amp;amp;view=markup'&gt;implementation&lt;/a&gt; of the &lt;code&gt;communicate&lt;/code&gt; method, we see this:&lt;/p&gt;
 &lt;div class='highlight'&gt;&lt;pre&gt;&lt;span class='lineno'&gt; 1&lt;/span&gt; &lt;span class='k'&gt;def&lt;/span&gt; &lt;span class='nf'&gt;_communicate_with_select&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='bp'&gt;self&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='nb'&gt;input&lt;/span&gt;&lt;span class='p'&gt;):&lt;/span&gt;
@@ -168,9 +166,7 @@
     <link href="http://dcreager.net/2009/08/13/iphone-tethering/"/>
     <updated>2009-08-13T00:00:00-04:00</updated>
     <id>http://dcreager.net/2009/08/13/iphone-tethering</id>
-    <content type="html">&lt;h1 id='iphone_tethering'&gt;iPhone tethering&lt;/h1&gt;
-
-&lt;p&gt;While attending the &lt;a href='http://mil-oss.org/'&gt;Mil-OSS conference&lt;/a&gt; this week, I had the opportunity to use one of the coolest features of my new iPhone 3GS — Bluetooth Internet tethering. Assuming that your mobile carrier allows the feature on their network, it provides a very easy way to have a persistent Internet connection, for those situations where a free Ethernet drop or WiFi access point aren&amp;#8217;t readily available.&lt;/p&gt;
+    <content type="html">&lt;p&gt;While attending the &lt;a href='http://mil-oss.org/'&gt;Mil-OSS conference&lt;/a&gt; this week, I had the opportunity to use one of the coolest features of my new iPhone 3GS — Bluetooth Internet tethering. Assuming that your mobile carrier allows the feature on their network, it provides a very easy way to have a persistent Internet connection, for those situations where a free Ethernet drop or WiFi access point aren&amp;#8217;t readily available.&lt;/p&gt;
 
 &lt;p&gt;I happened to have my Dell Mini 9 (running Ubuntu Jaunty) with me for the conference, rather than my MacBook, so I thought that it might be difficult to get the Bluetooth connection working between the phone and laptop. This &lt;a href='http://xn--9bi.net/2009/06/17/tethering-iphone-3-0-to-ubuntu-9-04/'&gt;blog posting&lt;/a&gt;, however, provided exactly what I needed.&lt;/p&gt;
 
@@ -214,9 +210,7 @@
     <link href="http://dcreager.net/2009/08/07/disqus-comments/"/>
     <updated>2009-08-07T00:00:00-04:00</updated>
     <id>http://dcreager.net/2009/08/07/disqus-comments</id>
-    <content type="html">&lt;h1 id='adding_disqus_comments'&gt;Adding Disqus comments&lt;/h1&gt;
-
-&lt;p&gt;I&amp;#8217;ve just enabled comments on the posts on my website. On its own, that&amp;#8217;s not a particularly unique or exciting feature. However, I&amp;#8217;m using &lt;a href='http://disqus.com'&gt;Disqus&lt;/a&gt; as the comment engine, and the way in which I&amp;#8217;ve integrated Disqus into my Jekyll-powered website might be of interest to others. (Thanks to &lt;a href='http://metajack.im/'&gt;Jack Moffitt&lt;/a&gt; for the idea!)&lt;/p&gt;
+    <content type="html">&lt;p&gt;I&amp;#8217;ve just enabled comments on the posts on my website. On its own, that&amp;#8217;s not a particularly unique or exciting feature. However, I&amp;#8217;m using &lt;a href='http://disqus.com'&gt;Disqus&lt;/a&gt; as the comment engine, and the way in which I&amp;#8217;ve integrated Disqus into my Jekyll-powered website might be of interest to others. (Thanks to &lt;a href='http://metajack.im/'&gt;Jack Moffitt&lt;/a&gt; for the idea!)&lt;/p&gt;
 
 &lt;h2 id='the_generic_code_installation_target'&gt;The “generic code” installation target&lt;/h2&gt;
 
@@ -306,9 +300,7 @@
     <link href="http://dcreager.net/2009/08/06/subprocess-communicate-drawbacks/"/>
     <updated>2009-08-06T00:00:00-04:00</updated>
     <id>http://dcreager.net/2009/08/06/subprocess-communicate-drawbacks</id>
-    <content type="html">&lt;h1 id='problems_with_pythons_subprocesscommunicate_method'&gt;Problems with Python&amp;#8217;s subprocess.communicate method&lt;/h1&gt;
-
-&lt;p&gt;The &lt;a href='http://docs.python.org/library/subprocess.html'&gt;&lt;code&gt;subprocess&lt;/code&gt;&lt;/a&gt; module, which was introduced in Python 2.4, provides you with a convenient interface for spawning &lt;em&gt;subprocesses&lt;/em&gt;, and for interacting with these subprocesses in your parent process. The module was introduced in &lt;a href='http://www.python.org/dev/peps/pep-0324/'&gt;PEP 324&lt;/a&gt;, and is a replacement for the proliferation of other functions and modules that were used previously for spawning and interacting with processes. The &lt;code&gt;subprocess&lt;/code&gt; module aims to provide a more consistent interface, regardless of the particulars of how you need to interact with the subprocesses.&lt;/p&gt;
+    <content type="html">&lt;p&gt;The &lt;a href='http://docs.python.org/library/subprocess.html'&gt;&lt;code&gt;subprocess&lt;/code&gt;&lt;/a&gt; module, which was introduced in Python 2.4, provides you with a convenient interface for spawning &lt;em&gt;subprocesses&lt;/em&gt;, and for interacting with these subprocesses in your parent process. The module was introduced in &lt;a href='http://www.python.org/dev/peps/pep-0324/'&gt;PEP 324&lt;/a&gt;, and is a replacement for the proliferation of other functions and modules that were used previously for spawning and interacting with processes. The &lt;code&gt;subprocess&lt;/code&gt; module aims to provide a more consistent interface, regardless of the particulars of how you need to interact with the subprocesses.&lt;/p&gt;
 
 &lt;h2 id='overview_of_the__module'&gt;Overview of the &lt;code&gt;subprocess&lt;/code&gt; module&lt;/h2&gt;
 
@@ -364,9 +356,7 @@
     <link href="http://dcreager.net/2009/08/06/sbmf-paper/"/>
     <updated>2009-08-06T00:00:00-04:00</updated>
     <id>http://dcreager.net/2009/08/06/sbmf-paper</id>
-    <content type="html">&lt;h1 id='sbmf07_paper_chosen_for_extended_proceedings'&gt;SBMF07 paper chosen for extended proceedings&lt;/h1&gt;
-
-&lt;p&gt;My SBMF07 &lt;a href='/publications/014-csp-algorithm-study/'&gt;paper&lt;/a&gt;, “Empirical analysis and optimization of an NP-hard algorithm using CSP and FDR,” was chosen to appear in the conference&amp;#8217;s extended proceedings. The extended proceedings will be published in a forthcoming issue of ENTCS. Huzzah!&lt;/p&gt;
+    <content type="html">&lt;p&gt;My SBMF07 &lt;a href='/publications/014-csp-algorithm-study/'&gt;paper&lt;/a&gt;, “Empirical analysis and optimization of an NP-hard algorithm using CSP and FDR,” was chosen to appear in the conference&amp;#8217;s extended proceedings. The extended proceedings will be published in a forthcoming issue of ENTCS. Huzzah!&lt;/p&gt;
 
 &lt;p&gt;The paper originally was extracted from Chapter 8 of my &lt;a href='/publications/012-dphil-thesis/'&gt;D.Phil thesis&lt;/a&gt;, and I had to cut out a bit of detail in order to make the space requirements for the conference paper. Luckily, the extended proceedings allow for a longer paper, so I was able to add most of the cut parts back in. So the version that will appear in ENTCS is, for the most part, identical to the corresponding chapter from my thesis.&lt;/p&gt;</content>
   </entry>
@@ -376,9 +366,7 @@
     <link href="http://dcreager.net/2009/08/05/site-setup/"/>
     <updated>2009-08-05T00:00:00-04:00</updated>
     <id>http://dcreager.net/2009/08/05/site-setup</id>
-    <content type="html">&lt;h1 id='site_layout'&gt;Site layout&lt;/h1&gt;
-
-&lt;p&gt;This post will probably end up being more useful to me than to anyone else who might stumble across the page. Here I&amp;#8217;m going to document how I&amp;#8217;ve set up my homepage, from a technical standpoint.&lt;/p&gt;
+    <content type="html">&lt;p&gt;This post will probably end up being more useful to me than to anyone else who might stumble across the page. Here I&amp;#8217;m going to document how I&amp;#8217;ve set up my homepage, from a technical standpoint.&lt;/p&gt;
 
 &lt;h2 id='directory_layout'&gt;Directory layout&lt;/h2&gt;
 

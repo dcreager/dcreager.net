@@ -3,8 +3,6 @@ layout: post
 title: iPhone tethering
 ---
 
-# {{ page.title }}
-
 While attending the [Mil-OSS conference](http://mil-oss.org/) this
 week, I had the opportunity to use one of the coolest features of my
 new iPhone 3GS — Bluetooth Internet tethering.  Assuming that your

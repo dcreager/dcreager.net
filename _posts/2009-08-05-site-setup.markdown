@@ -3,8 +3,6 @@ layout: post
 title: Site layout
 ---
 
-# Site layout
-
 This post will probably end up being more useful to me than to anyone
 else who might stumble across the page.  Here I'm going to document
 how I've set up my homepage, from a technical standpoint.

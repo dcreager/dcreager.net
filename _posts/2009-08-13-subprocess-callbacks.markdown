@@ -3,8 +3,6 @@ layout: post
 title: Using callbacks with the subprocess module
 ---
 
-# {{ page.title }}
-
 In a [previous post](/2009/08/06/subprocess-communicate-drawbacks/),
 we pointed out two drawbacks of Python's `subprocess.communicate`
 method.  In this post, we look at the first problem in more detail.

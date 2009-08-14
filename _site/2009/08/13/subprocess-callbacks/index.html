@@ -30,10 +30,14 @@
 
         <div class="body">
           
-<div class="post">
-  <h1 id='using_callbacks_with_the_subprocess_module'>Using callbacks with the subprocess module</h1>
+<h1>Using callbacks with the subprocess module</h1>
 
-<p>In a <a href='/2009/08/06/subprocess-communicate-drawbacks/'>previous post</a>, we pointed out two drawbacks of Python&#8217;s <code>subprocess.communicate</code> method. In this post, we look at the first problem in more detail. To reiterate, the problem is that we collect the subprocess&#8217;s output streams into strings. If the subprocess is going to generate a huge amount of output, it can be better to process the output data in a stream-oriented manner — that way we use a constant amount of memory regardless of how much output is produced.</p>
+<div class="postdate">
+  Thursday, August 13, 2009
+</div>
+
+<div class="post">
+  <p>In a <a href='/2009/08/06/subprocess-communicate-drawbacks/'>previous post</a>, we pointed out two drawbacks of Python&#8217;s <code>subprocess.communicate</code> method. In this post, we look at the first problem in more detail. To reiterate, the problem is that we collect the subprocess&#8217;s output streams into strings. If the subprocess is going to generate a huge amount of output, it can be better to process the output data in a stream-oriented manner — that way we use a constant amount of memory regardless of how much output is produced.</p>
 
 <p>If we look at the <a href='http://svn.python.org/view/python/trunk/Lib/subprocess.py?revision=74029&amp;view=markup'>implementation</a> of the <code>communicate</code> method, we see this:</p>
 <div class='highlight'><pre><span class='lineno'> 1</span> <span class='k'>def</span> <span class='nf'>_communicate_with_select</span><span class='p'>(</span><span class='bp'>self</span><span class='p'>,</span> <span class='nb'>input</span><span class='p'>):</span>
@@ -175,10 +179,6 @@
 <h2 id='more_to_come'>More to come</h2>
 
 <p>This gives us a nice output callback mechanism, to prevent us from buffering the entire contents of the stdout and stderr streams in memory. In later posts, we&#8217;ll look at doing the same with the <em>input</em> data, and then we&#8217;ll address the second problem, of dealing with more than one subprocess simultaneously.</p>
-</div>
-
-<div class="postdate">
-  Last updated on Thursday, August 13, 2009
 </div>
 
         </div>

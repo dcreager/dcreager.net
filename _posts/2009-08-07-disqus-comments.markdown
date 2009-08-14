@@ -3,8 +3,6 @@ layout: post
 title: Adding Disqus comments
 ---
 
-# Adding Disqus comments
-
 I've just enabled comments on the posts on my website.  On its own,
 that's not a particularly unique or exciting feature.  However, I'm
 using [Disqus](http://disqus.com) as the comment engine, and the way

@@ -122,9 +122,6 @@ body {
 .body .postdate {
     color: #888;
     font-size: 80%;
-    text-align: center;
-    padding-top: 10px;
-    margin-bottom: -10px;
 }
 
 .footer .copyright {

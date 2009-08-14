@@ -3,8 +3,6 @@ layout: post
 title: Problems with Python's subprocess.communicate method
 ---
 
-# {{ page.title }}
-
 The [`subprocess`](http://docs.python.org/library/subprocess.html)
 module, which was introduced in Python 2.4, provides you with a
 convenient interface for spawning *subprocesses*, and for interacting

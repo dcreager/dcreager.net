@@ -30,10 +30,14 @@
 
         <div class="body">
           
-<div class="post">
-  <h1 id='problems_with_pythons_subprocesscommunicate_method'>Problems with Python&#8217;s subprocess.communicate method</h1>
+<h1>Problems with Python's subprocess.communicate method</h1>
 
-<p>The <a href='http://docs.python.org/library/subprocess.html'><code>subprocess</code></a> module, which was introduced in Python 2.4, provides you with a convenient interface for spawning <em>subprocesses</em>, and for interacting with these subprocesses in your parent process. The module was introduced in <a href='http://www.python.org/dev/peps/pep-0324/'>PEP 324</a>, and is a replacement for the proliferation of other functions and modules that were used previously for spawning and interacting with processes. The <code>subprocess</code> module aims to provide a more consistent interface, regardless of the particulars of how you need to interact with the subprocesses.</p>
+<div class="postdate">
+  Thursday, August 06, 2009
+</div>
+
+<div class="post">
+  <p>The <a href='http://docs.python.org/library/subprocess.html'><code>subprocess</code></a> module, which was introduced in Python 2.4, provides you with a convenient interface for spawning <em>subprocesses</em>, and for interacting with these subprocesses in your parent process. The module was introduced in <a href='http://www.python.org/dev/peps/pep-0324/'>PEP 324</a>, and is a replacement for the proliferation of other functions and modules that were used previously for spawning and interacting with processes. The <code>subprocess</code> module aims to provide a more consistent interface, regardless of the particulars of how you need to interact with the subprocesses.</p>
 
 <h2 id='overview_of_the__module'>Overview of the <code>subprocess</code> module</h2>
 
@@ -82,10 +86,6 @@
 <p>However, doing so can make your subprocesses take longer to run, since you won&#8217;t be able to exploit parallelism as much. Since you&#8217;re firing off these subprocesses at the same time, you supposedly want them to execute simultaneously, allowing the OS to schedule them appropriate so that they finish as quickly as possible. However, you&#8217;ve introduced a serialization into this logic, since your parent process is only able to interact with one subprocess at a time. For instance, subprocess #2 might be waiting for some input, while the parent process is still snarfing up the output from subprocess #1. In this case, subprocess #2 is <strong><em>not going to be able to start executing</em></strong> until subprocess #1 has <strong><em>completely finished</em></strong>. So your <code>communicate</code> loop has completely eliminated the benefit of starting the subprocesses simultaneously.</p>
 
 <p>In later posts, I will outline how to solve these two problems.</p>
-</div>
-
-<div class="postdate">
-  Last updated on Thursday, August 06, 2009
 </div>
 
         </div>
