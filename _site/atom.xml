@@ -4,13 +4,141 @@
   <title>dcreager.net</title>
   <link href="http://dcreager.net/atom.xml" rel="self"/>
   <link href="http://dcreager.net/"/>
-  <updated>2009-08-13T18:19:12-04:00</updated>
+  <updated>2009-08-13T22:03:34-04:00</updated>
   <id>http://dcreager.net/</id>
   <author>
     <name>Douglas Creager</name>
     <email>dcreager@dcreager.net</email>
   </author>
 
+  
+  <entry>
+    <title>Using callbacks with the subprocess module</title>
+    <link href="http://dcreager.net/2009/08/13/subprocess-callbacks/"/>
+    <updated>2009-08-13T00:00:00-04:00</updated>
+    <id>http://dcreager.net/2009/08/13/subprocess-callbacks</id>
+    <content type="html">&lt;h1 id='using_callbacks_with_the_subprocess_module'&gt;Using callbacks with the subprocess module&lt;/h1&gt;
+
+&lt;p&gt;In a &lt;a href='/2009/08/06/subprocess-communicate-drawbacks/'&gt;previous post&lt;/a&gt;, we pointed out two drawbacks of Python&amp;#8217;s &lt;code&gt;subprocess.communicate&lt;/code&gt; method. In this post, we look at the first problem in more detail. To reiterate, the problem is that we collect the subprocess&amp;#8217;s output streams into strings. If the subprocess is going to generate a huge amount of output, it can be better to process the output data in a stream-oriented manner — that way we use a constant amount of memory regardless of how much output is produced.&lt;/p&gt;
+
+&lt;p&gt;If we look at the &lt;a href='http://svn.python.org/view/python/trunk/Lib/subprocess.py?revision=74029&amp;amp;view=markup'&gt;implementation&lt;/a&gt; of the &lt;code&gt;communicate&lt;/code&gt; method, we see this:&lt;/p&gt;
+&lt;div class='highlight'&gt;&lt;pre&gt;&lt;span class='lineno'&gt; 1&lt;/span&gt; &lt;span class='k'&gt;def&lt;/span&gt; &lt;span class='nf'&gt;_communicate_with_select&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='bp'&gt;self&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='nb'&gt;input&lt;/span&gt;&lt;span class='p'&gt;):&lt;/span&gt;
+&lt;span class='lineno'&gt; 2&lt;/span&gt;     &lt;span class='n'&gt;read_set&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='p'&gt;[]&lt;/span&gt;
+&lt;span class='lineno'&gt; 3&lt;/span&gt;     &lt;span class='n'&gt;write_set&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='p'&gt;[]&lt;/span&gt;
+&lt;span class='lineno'&gt; 4&lt;/span&gt;     &lt;span class='n'&gt;stdout&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='bp'&gt;None&lt;/span&gt; &lt;span class='c'&gt;# Return&lt;/span&gt;
+&lt;span class='lineno'&gt; 5&lt;/span&gt;     &lt;span class='n'&gt;stderr&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='bp'&gt;None&lt;/span&gt; &lt;span class='c'&gt;# Return&lt;/span&gt;
+&lt;span class='lineno'&gt; 6&lt;/span&gt; 
+&lt;span class='lineno'&gt; 7&lt;/span&gt;     &lt;span class='k'&gt;if&lt;/span&gt; &lt;span class='bp'&gt;self&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;stdin&lt;/span&gt; &lt;span class='ow'&gt;and&lt;/span&gt; &lt;span class='nb'&gt;input&lt;/span&gt;&lt;span class='p'&gt;:&lt;/span&gt;
+&lt;span class='lineno'&gt; 8&lt;/span&gt;         &lt;span class='n'&gt;write_set&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;append&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='bp'&gt;self&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;stdin&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt;
+&lt;span class='lineno'&gt; 9&lt;/span&gt;     &lt;span class='k'&gt;if&lt;/span&gt; &lt;span class='bp'&gt;self&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;stdout&lt;/span&gt;&lt;span class='p'&gt;:&lt;/span&gt;
+&lt;span class='lineno'&gt;10&lt;/span&gt;         &lt;span class='n'&gt;read_set&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;append&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='bp'&gt;self&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;stdout&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt;
+&lt;span class='lineno'&gt;11&lt;/span&gt;         &lt;span class='n'&gt;stdout&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='p'&gt;[]&lt;/span&gt;
+&lt;span class='lineno'&gt;12&lt;/span&gt;     &lt;span class='k'&gt;if&lt;/span&gt; &lt;span class='bp'&gt;self&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;stderr&lt;/span&gt;&lt;span class='p'&gt;:&lt;/span&gt;
+&lt;span class='lineno'&gt;13&lt;/span&gt;         &lt;span class='n'&gt;read_set&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;append&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='bp'&gt;self&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;stderr&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt;
+&lt;span class='lineno'&gt;14&lt;/span&gt;         &lt;span class='n'&gt;stderr&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='p'&gt;[]&lt;/span&gt;
+&lt;span class='lineno'&gt;15&lt;/span&gt; 
+&lt;span class='lineno'&gt;16&lt;/span&gt;     &lt;span class='n'&gt;input_offset&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='mf'&gt;0&lt;/span&gt;
+&lt;span class='lineno'&gt;17&lt;/span&gt;     &lt;span class='k'&gt;while&lt;/span&gt; &lt;span class='n'&gt;read_set&lt;/span&gt; &lt;span class='ow'&gt;or&lt;/span&gt; &lt;span class='n'&gt;write_set&lt;/span&gt;&lt;span class='p'&gt;:&lt;/span&gt;
+&lt;span class='lineno'&gt;18&lt;/span&gt;         &lt;span class='k'&gt;try&lt;/span&gt;&lt;span class='p'&gt;:&lt;/span&gt;
+&lt;span class='lineno'&gt;19&lt;/span&gt;             &lt;span class='n'&gt;rlist&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='n'&gt;wlist&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='n'&gt;xlist&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='n'&gt;select&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;select&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;read_set&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='n'&gt;write_set&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='p'&gt;[])&lt;/span&gt;
+&lt;span class='lineno'&gt;20&lt;/span&gt;         &lt;span class='k'&gt;except&lt;/span&gt; &lt;span class='n'&gt;select&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;error&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='n'&gt;e&lt;/span&gt;&lt;span class='p'&gt;:&lt;/span&gt;
+&lt;span class='lineno'&gt;21&lt;/span&gt;             &lt;span class='k'&gt;if&lt;/span&gt; &lt;span class='n'&gt;e&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;args&lt;/span&gt;&lt;span class='p'&gt;[&lt;/span&gt;&lt;span class='mf'&gt;0&lt;/span&gt;&lt;span class='p'&gt;]&lt;/span&gt; &lt;span class='o'&gt;==&lt;/span&gt; &lt;span class='n'&gt;errno&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;EINTR&lt;/span&gt;&lt;span class='p'&gt;:&lt;/span&gt;
+&lt;span class='lineno'&gt;22&lt;/span&gt;                 &lt;span class='k'&gt;continue&lt;/span&gt;
+&lt;span class='lineno'&gt;23&lt;/span&gt;             &lt;span class='k'&gt;raise&lt;/span&gt;
+&lt;span class='lineno'&gt;24&lt;/span&gt; 
+&lt;span class='lineno'&gt;25&lt;/span&gt;         &lt;span class='k'&gt;if&lt;/span&gt; &lt;span class='bp'&gt;self&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;stdin&lt;/span&gt; &lt;span class='ow'&gt;in&lt;/span&gt; &lt;span class='n'&gt;wlist&lt;/span&gt;&lt;span class='p'&gt;:&lt;/span&gt;
+&lt;span class='lineno'&gt;26&lt;/span&gt;             &lt;span class='n'&gt;chunk&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='nb'&gt;input&lt;/span&gt;&lt;span class='p'&gt;[&lt;/span&gt;&lt;span class='n'&gt;input_offset&lt;/span&gt; &lt;span class='p'&gt;:&lt;/span&gt; &lt;span class='n'&gt;input_offset&lt;/span&gt; &lt;span class='o'&gt;+&lt;/span&gt; &lt;span class='n'&gt;_PIPE_BUF&lt;/span&gt;&lt;span class='p'&gt;]&lt;/span&gt;
+&lt;span class='lineno'&gt;27&lt;/span&gt;             &lt;span class='n'&gt;bytes_written&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='n'&gt;os&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;write&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='bp'&gt;self&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;stdin&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;fileno&lt;/span&gt;&lt;span class='p'&gt;(),&lt;/span&gt; &lt;span class='n'&gt;chunk&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt;
+&lt;span class='lineno'&gt;28&lt;/span&gt;             &lt;span class='n'&gt;input_offset&lt;/span&gt; &lt;span class='o'&gt;+=&lt;/span&gt; &lt;span class='n'&gt;bytes_written&lt;/span&gt;
+&lt;span class='lineno'&gt;29&lt;/span&gt;             &lt;span class='k'&gt;if&lt;/span&gt; &lt;span class='n'&gt;input_offset&lt;/span&gt; &lt;span class='o'&gt;&amp;gt;=&lt;/span&gt; &lt;span class='nb'&gt;len&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='nb'&gt;input&lt;/span&gt;&lt;span class='p'&gt;):&lt;/span&gt;
+&lt;span class='lineno'&gt;30&lt;/span&gt;                 &lt;span class='bp'&gt;self&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;stdin&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;close&lt;/span&gt;&lt;span class='p'&gt;()&lt;/span&gt;
+&lt;span class='lineno'&gt;31&lt;/span&gt;                 &lt;span class='n'&gt;write_set&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;remove&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='bp'&gt;self&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;stdin&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt;
+&lt;span class='lineno'&gt;32&lt;/span&gt; 
+&lt;span class='lineno'&gt;33&lt;/span&gt;         &lt;span class='k'&gt;if&lt;/span&gt; &lt;span class='bp'&gt;self&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;stdout&lt;/span&gt; &lt;span class='ow'&gt;in&lt;/span&gt; &lt;span class='n'&gt;rlist&lt;/span&gt;&lt;span class='p'&gt;:&lt;/span&gt;
+&lt;span class='lineno'&gt;34&lt;/span&gt;             &lt;span class='n'&gt;data&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='n'&gt;os&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;read&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='bp'&gt;self&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;stdout&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;fileno&lt;/span&gt;&lt;span class='p'&gt;(),&lt;/span&gt; &lt;span class='mf'&gt;1024&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt;
+&lt;span class='lineno'&gt;35&lt;/span&gt;             &lt;span class='k'&gt;if&lt;/span&gt; &lt;span class='n'&gt;data&lt;/span&gt; &lt;span class='o'&gt;==&lt;/span&gt; &lt;span class='s'&gt;&amp;quot;&amp;quot;&lt;/span&gt;&lt;span class='p'&gt;:&lt;/span&gt;
+&lt;span class='lineno'&gt;36&lt;/span&gt;                 &lt;span class='bp'&gt;self&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;stdout&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;close&lt;/span&gt;&lt;span class='p'&gt;()&lt;/span&gt;
+&lt;span class='lineno'&gt;37&lt;/span&gt;                 &lt;span class='n'&gt;read_set&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;remove&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='bp'&gt;self&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;stdout&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt;
+&lt;span class='lineno'&gt;38&lt;/span&gt;             &lt;span class='n'&gt;stdout&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;append&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;data&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt;
+&lt;span class='lineno'&gt;39&lt;/span&gt; 
+&lt;span class='lineno'&gt;40&lt;/span&gt;         &lt;span class='k'&gt;if&lt;/span&gt; &lt;span class='bp'&gt;self&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;stderr&lt;/span&gt; &lt;span class='ow'&gt;in&lt;/span&gt; &lt;span class='n'&gt;rlist&lt;/span&gt;&lt;span class='p'&gt;:&lt;/span&gt;
+&lt;span class='lineno'&gt;41&lt;/span&gt;             &lt;span class='n'&gt;data&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='n'&gt;os&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;read&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='bp'&gt;self&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;stderr&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;fileno&lt;/span&gt;&lt;span class='p'&gt;(),&lt;/span&gt; &lt;span class='mf'&gt;1024&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt;
+&lt;span class='lineno'&gt;42&lt;/span&gt;             &lt;span class='k'&gt;if&lt;/span&gt; &lt;span class='n'&gt;data&lt;/span&gt; &lt;span class='o'&gt;==&lt;/span&gt; &lt;span class='s'&gt;&amp;quot;&amp;quot;&lt;/span&gt;&lt;span class='p'&gt;:&lt;/span&gt;
+&lt;span class='lineno'&gt;43&lt;/span&gt;                 &lt;span class='bp'&gt;self&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;stderr&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;close&lt;/span&gt;&lt;span class='p'&gt;()&lt;/span&gt;
+&lt;span class='lineno'&gt;44&lt;/span&gt;                 &lt;span class='n'&gt;read_set&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;remove&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='bp'&gt;self&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;stderr&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt;
+&lt;span class='lineno'&gt;45&lt;/span&gt;             &lt;span class='n'&gt;stderr&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;append&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;data&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt;
+&lt;span class='lineno'&gt;46&lt;/span&gt; 
+&lt;span class='lineno'&gt;47&lt;/span&gt;     &lt;span class='k'&gt;return&lt;/span&gt; &lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;stdout&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='n'&gt;stderr&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt;
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;(There are actually several different &lt;code&gt;communicate&lt;/code&gt; implementations in the module: a Windows-specific implementation, an implementation using the POSIX &lt;code&gt;poll&lt;/code&gt; function, and one using POSIX &lt;code&gt;select&lt;/code&gt;. We&amp;#8217;re going to look at the &lt;code&gt;select&lt;/code&gt; implementation; the modifications we make can be rolled into the other methods, too.)&lt;/p&gt;
+
+&lt;h2 id='output_callbacks'&gt;Output callbacks&lt;/h2&gt;
+
+&lt;p&gt;For collecting stdout, the important part is lines 33-38. If the &lt;code&gt;select&lt;/code&gt; call tells us that the stdout stream is ready for reading, we try to read up to 1024 bytes from it. If we get the empty string, this means we&amp;#8217;ve reached EOF, and can close down the stream. (We also no longer have to keep passing it in to further &lt;code&gt;select&lt;/code&gt; calls, since we know we&amp;#8217;re done with this stream.) If we get a non-empty string, then we append it into a list. The function that calls &lt;code&gt;_communicate_with_select&lt;/code&gt; will eventually &lt;code&gt;join&lt;/code&gt; this list of strings together, yielding a single string.&lt;/p&gt;
+
+&lt;p&gt;It&amp;#8217;s actually a very simple change to make this process the output using a stream-based callback. For now, we assume that we&amp;#8217;ve been given the callback, in a &lt;code&gt;stdout_callback&lt;/code&gt; variable. Then, we can change line 38 to&lt;/p&gt;
+&lt;div class='highlight'&gt;&lt;pre&gt;            &lt;span class='n'&gt;stdout_callback&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;data&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt;
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;The callback can be any Python callable object; it should accept a single argument, which is the next chunk of data from stdout. We can make a similar change to line 45 to send the stderr data to its own &lt;code&gt;stderr_callback&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h2 id='lineoriented_callbacks'&gt;Line-oriented callbacks&lt;/h2&gt;
+
+&lt;p&gt;One possible issue with the output callbacks in the previous section is that the data is sent into the callback in arbitrary chunks. We might prefer to guarantee that the callback will be called exactly once for each &lt;em&gt;line&lt;/em&gt; of output. This would allow us, for intsance, to easily interleave the output lines of a bunch of subprocesses into the output of the parent process, without having to worry about locking.&lt;/p&gt;
+
+&lt;p&gt;To use a line-based callback, we have to wrap it, creating a arbitrary-chunk callback that buffers data as necessary. Once it receives a full line of data, it sends it to the wrapped line callback.&lt;/p&gt;
+
+&lt;p&gt;We start by declaring the wrapping function. It will take in a line-based callback, and return an arbitrary-chunk callback.&lt;/p&gt;
+&lt;div class='highlight'&gt;&lt;pre&gt;&lt;span class='k'&gt;def&lt;/span&gt; &lt;span class='nf'&gt;wrap_line_callback&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;line_callback&lt;/span&gt;&lt;span class='p'&gt;):&lt;/span&gt;
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;We&amp;#8217;ll need to maintain some state in between invocations of the arbitrary-chunk callback — specifically, if a line of output data falls across a chunk boundary, we&amp;#8217;ll need to hold onto the part in the first chunk until we receive the part in the second chunk. One relatively easy way to do this is to create a new class, and store the state in &lt;code&gt;self&lt;/code&gt; properties. Note that the &lt;code&gt;Callback&lt;/code&gt; class is declared inside the &lt;code&gt;wrap_line_callback&lt;/code&gt; function.&lt;/p&gt;
+&lt;div class='highlight'&gt;&lt;pre&gt;    &lt;span class='k'&gt;class&lt;/span&gt; &lt;span class='nc'&gt;Callback&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='nb'&gt;object&lt;/span&gt;&lt;span class='p'&gt;):&lt;/span&gt;
+        &lt;span class='k'&gt;def&lt;/span&gt; &lt;span class='nf'&gt;__init__&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='bp'&gt;self&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='n'&gt;line_callback&lt;/span&gt;&lt;span class='p'&gt;):&lt;/span&gt;
+            &lt;span class='bp'&gt;self&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;line_buffer&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='p'&gt;[]&lt;/span&gt;
+            &lt;span class='bp'&gt;self&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;line_callback&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='n'&gt;line_callback&lt;/span&gt;
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;The buffer is a list of strings. This needs to be a list to support arbitrarily long lines, since we don&amp;#8217;t know how many chunks we&amp;#8217;ll need to store before outputting the line.&lt;/p&gt;
+
+&lt;p&gt;We also declare a method in the class that can output the current contents of the saved buffer (if any). Like the original &lt;code&gt;communicate&lt;/code&gt; method, we join the buffer list together into a single string, then pass it onto the wrapped line callback.&lt;/p&gt;
+&lt;div class='highlight'&gt;&lt;pre&gt;        &lt;span class='k'&gt;def&lt;/span&gt; &lt;span class='nf'&gt;output_buffer&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='bp'&gt;self&lt;/span&gt;&lt;span class='p'&gt;):&lt;/span&gt;
+            &lt;span class='n'&gt;line&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='s'&gt;&amp;quot;&amp;quot;&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;join&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='bp'&gt;self&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;line_buffer&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt;
+            &lt;span class='bp'&gt;self&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;line_callback&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;line&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt;
+            &lt;span class='bp'&gt;self&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;line_buffer&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='p'&gt;[]&lt;/span&gt;
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;Next we can define the arbitrary-chunk callback. First, it checks to see if we&amp;#8217;ve received an EOF indicator (the empty string). If so, we first output whatever is currently in the buffer; then we pass on the EOF to the line callback.&lt;/p&gt;
+&lt;div class='highlight'&gt;&lt;pre&gt;        &lt;span class='k'&gt;def&lt;/span&gt; &lt;span class='nf'&gt;data_callback&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='bp'&gt;self&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='n'&gt;data&lt;/span&gt;&lt;span class='p'&gt;):&lt;/span&gt;
+            &lt;span class='k'&gt;if&lt;/span&gt; &lt;span class='n'&gt;data&lt;/span&gt; &lt;span class='o'&gt;==&lt;/span&gt; &lt;span class='s'&gt;&amp;quot;&amp;quot;&lt;/span&gt;&lt;span class='p'&gt;:&lt;/span&gt;
+                &lt;span class='k'&gt;if&lt;/span&gt; &lt;span class='nb'&gt;len&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='bp'&gt;self&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;line_buffer&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt; &lt;span class='o'&gt;&amp;gt;&lt;/span&gt; &lt;span class='mf'&gt;0&lt;/span&gt;&lt;span class='p'&gt;:&lt;/span&gt;
+                    &lt;span class='bp'&gt;self&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;output_buffer&lt;/span&gt;&lt;span class='p'&gt;()&lt;/span&gt;
+
+                &lt;span class='bp'&gt;self&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;line_callback&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='s'&gt;&amp;quot;&amp;quot;&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt;
+                &lt;span class='k'&gt;return&lt;/span&gt;
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;If we get some actual data, we first split the current chunk into separate lines. We pass in a &lt;code&gt;True&lt;/code&gt; parameter to the &lt;code&gt;splitlines&lt;/code&gt; method so that we get the newlines in the split strings. This will let us tell if the final string in the list represents a complete line, or if it&amp;#8217;s the first part of a line that falls across a chunk boundary.&lt;/p&gt;
+
+&lt;p&gt;We then loop through the split strings, adding them to the buffer. If any of them end with one of the newline endings (Unix, Windows, or otherwise), we output the buffer. Note that only the last string in the &lt;code&gt;lines&lt;/code&gt; list can end with something other than a newline; anything at the beginning of the list is only a separate element because &lt;code&gt;splitlines&lt;/code&gt; found a newline to split on!&lt;/p&gt;
+&lt;div class='highlight'&gt;&lt;pre&gt;            &lt;span class='n'&gt;lines&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='n'&gt;data&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;splitlines&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='bp'&gt;True&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt;
+            &lt;span class='k'&gt;for&lt;/span&gt; &lt;span class='n'&gt;line&lt;/span&gt; &lt;span class='ow'&gt;in&lt;/span&gt; &lt;span class='n'&gt;lines&lt;/span&gt;&lt;span class='p'&gt;:&lt;/span&gt;
+                &lt;span class='bp'&gt;self&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;line_buffer&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;append&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;line&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt;
+                &lt;span class='k'&gt;if&lt;/span&gt; &lt;span class='n'&gt;line&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;endswith&lt;/span&gt;&lt;span class='p'&gt;((&lt;/span&gt;&lt;span class='s'&gt;&amp;quot;&lt;/span&gt;&lt;span class='se'&gt;\r\n&lt;/span&gt;&lt;span class='s'&gt;&amp;quot;&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='s'&gt;&amp;quot;&lt;/span&gt;&lt;span class='se'&gt;\n&lt;/span&gt;&lt;span class='s'&gt;&amp;quot;&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='s'&gt;&amp;quot;&lt;/span&gt;&lt;span class='se'&gt;\r&lt;/span&gt;&lt;span class='s'&gt;&amp;quot;&lt;/span&gt;&lt;span class='p'&gt;)):&lt;/span&gt;
+                    &lt;span class='bp'&gt;self&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;output_buffer&lt;/span&gt;&lt;span class='p'&gt;()&lt;/span&gt;
+
+            &lt;span class='k'&gt;return&lt;/span&gt;
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;Finally, we instantiate the new class and return its arbitrary-chunk callback.&lt;/p&gt;
+&lt;div class='highlight'&gt;&lt;pre&gt;    &lt;span class='k'&gt;return&lt;/span&gt; &lt;span class='n'&gt;Callback&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;line_callback&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;data_callback&lt;/span&gt;
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;h2 id='more_to_come'&gt;More to come&lt;/h2&gt;
+
+&lt;p&gt;This gives us a nice output callback mechanism, to prevent us from buffering the entire contents of the stdout and stderr streams in memory. In later posts, we&amp;#8217;ll look at doing the same with the &lt;em&gt;input&lt;/em&gt; data, and then we&amp;#8217;ll address the second problem, of dealing with more than one subprocess simultaneously.&lt;/p&gt;</content>
+  </entry>
   
   <entry>
     <title>iPhone tethering</title>
