@@ -114,74 +114,36 @@ arbitrary-chunk callback that buffers data as necessary.  Once it
 receives a full line of data, it sends it to the wrapped line
 callback.
 
-We start by declaring the wrapping function.  It will take in a
-line-based callback, and return an arbitrary-chunk callback.
-
-{% highlight python %}
+{% highlight python linenos %}
 def wrap_line_callback(line_callback):
-{% endhighlight %}
-
-We'll need to maintain some state in between invocations of the
-arbitrary-chunk callback — specifically, if a line of output data
-falls across a chunk boundary, we'll need to hold onto the part in the
-first chunk until we receive the part in the second chunk.  One
-relatively easy way to do this is to create a new class, and store the
-state in `self` properties.  Note that the `Callback` class is
-declared inside the `wrap_line_callback` function.
-
-{% highlight python %}
     class Callback(object):
         def __init__(self, line_callback):
             self.line_buffer = []
             self.line_callback = line_callback
-{% endhighlight %}
 
-The buffer is a list of strings.  This needs to be a list to support
-arbitrarily long lines, since we don't know how many chunks we'll need
-to store before outputting the line.
-
-We also declare a method in the class that can output the current
-contents of the saved buffer (if any).  Like the original
-`communicate` method, we join the buffer list together into a single
-string, then pass it onto the wrapped line callback.
-
-{% highlight python %}
         def output_buffer(self):
             line = "".join(self.line_buffer)
             self.line_callback(line)
             self.line_buffer = []
-{% endhighlight %}
 
-Next we can define the arbitrary-chunk callback.  First, it checks to
-see if we've received an EOF indicator (the empty string).  If so, we
-first output whatever is currently in the buffer; then we pass on the
-EOF to the line callback.
-
-{% highlight python %}
         def data_callback(self, data):
+            # If we get an empty string, that represents the end of
+            # the input.  If there is anything in the buffer, send
+            # then out first, then send an empty string on the to line
+            # callback.
+
             if data == "":
                 if len(self.line_buffer) > 0:
                     self.output_buffer()
 
                 self.line_callback("")
                 return
-{% endhighlight %}
 
-If we get some actual data, we first split the current chunk into
-separate lines.  We pass in a `True` parameter to the `splitlines`
-method so that we get the newlines in the split strings.  This will
-let us tell if the final string in the list represents a complete
-line, or if it's the first part of a line that falls across a chunk
-boundary.
+            # Otherwise, we split the new data into separate lines,
+            # each of which we call an “entry”.  We add each entry to
+            # the buffer.  If the entry ends with a newline, we output
+            # the buffer and then clear it.
 
-We then loop through the split strings, adding them to the buffer.  If
-any of them end with one of the newline endings (Unix, Windows, or
-otherwise), we output the buffer.  Note that only the last string in
-the `lines` list can end with something other than a newline; anything
-at the beginning of the list is only a separate element because
-`splitlines` found a newline to split on!
-
-{% highlight python %}
             lines = data.splitlines(True)
             for line in lines:
                 self.line_buffer.append(line)
@@ -189,14 +151,53 @@ at the beginning of the list is only a separate element because
                     self.output_buffer()
 
             return
-{% endhighlight %}
 
-Finally, we instantiate the new class and return its arbitrary-chunk
-callback.
-
-{% highlight python %}
     return Callback(line_callback).data_callback
 {% endhighlight %}
+
+* **line 1** — We start by declaring the wrapping function.  It will
+  take in a line-based callback, and return an arbitrary-chunk
+  callback.
+
+* **lines 2-5** — We'll need to maintain some state in between
+  invocations of the arbitrary-chunk callback — specifically, if a
+  line of output data falls across a chunk boundary, we'll need to
+  hold onto the part in the first chunk until we receive the part in
+  the second chunk.  One relatively easy way to do this is to create a
+  new class, and store the state in `self` properties.  Note that the
+  `Callback` class is declared inside the `wrap_line_callback`
+  function.
+
+  The buffer is a list of strings.  This needs to be a list to support
+  arbitrarily long lines, since we don't know how many chunks we'll
+  need to store before outputting the line.
+
+* **lines 7-10** — We also declare a method in the class that can
+  output the current contents of the saved buffer (if any).  Like the
+  original `communicate` method, we join the buffer list together into
+  a single string, then pass it onto the wrapped line callback.
+
+* **lines 12-23** — Next we can define the arbitrary-chunk callback.
+  First, it checks to see if we've received an EOF indicator (the
+  empty string).  If so, we first output whatever is currently in the
+  buffer; then we pass on the EOF to the line callback.
+
+* **lines 25-34** — If we get some actual data, we first split the
+  current chunk into separate lines.  We pass in a `True` parameter to
+  the `splitlines` method so that we get the newlines in the split
+  strings.  This will let us tell if the final string in the list
+  represents a complete line, or if it's the first part of a line that
+  falls across a chunk boundary.
+
+  We then loop through the split strings, adding them to the buffer.
+  If any of them end with one of the newline endings (Unix, Windows,
+  or otherwise), we output the buffer.  Note that only the last string
+  in the `lines` list can end with something other than a newline;
+  anything at the beginning of the list is only a separate element
+  because `splitlines` found a newline to split on!
+
+* **line 38** — Finally, we instantiate the new class and return its
+  arbitrary-chunk callback.
 
 ## More to come
 

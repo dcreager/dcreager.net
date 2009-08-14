@@ -102,53 +102,76 @@
 <p>One possible issue with the output callbacks in the previous section is that the data is sent into the callback in arbitrary chunks. We might prefer to guarantee that the callback will be called exactly once for each <em>line</em> of output. This would allow us, for intsance, to easily interleave the output lines of a bunch of subprocesses into the output of the parent process, without having to worry about locking.</p>
 
 <p>To use a line-based callback, we have to wrap it, creating a arbitrary-chunk callback that buffers data as necessary. Once it receives a full line of data, it sends it to the wrapped line callback.</p>
+<div class='highlight'><pre><span class='lineno'> 1</span> <span class='k'>def</span> <span class='nf'>wrap_line_callback</span><span class='p'>(</span><span class='n'>line_callback</span><span class='p'>):</span>
+<span class='lineno'> 2</span>     <span class='k'>class</span> <span class='nc'>Callback</span><span class='p'>(</span><span class='nb'>object</span><span class='p'>):</span>
+<span class='lineno'> 3</span>         <span class='k'>def</span> <span class='nf'>__init__</span><span class='p'>(</span><span class='bp'>self</span><span class='p'>,</span> <span class='n'>line_callback</span><span class='p'>):</span>
+<span class='lineno'> 4</span>             <span class='bp'>self</span><span class='o'>.</span><span class='n'>line_buffer</span> <span class='o'>=</span> <span class='p'>[]</span>
+<span class='lineno'> 5</span>             <span class='bp'>self</span><span class='o'>.</span><span class='n'>line_callback</span> <span class='o'>=</span> <span class='n'>line_callback</span>
+<span class='lineno'> 6</span> 
+<span class='lineno'> 7</span>         <span class='k'>def</span> <span class='nf'>output_buffer</span><span class='p'>(</span><span class='bp'>self</span><span class='p'>):</span>
+<span class='lineno'> 8</span>             <span class='n'>line</span> <span class='o'>=</span> <span class='s'>&quot;&quot;</span><span class='o'>.</span><span class='n'>join</span><span class='p'>(</span><span class='bp'>self</span><span class='o'>.</span><span class='n'>line_buffer</span><span class='p'>)</span>
+<span class='lineno'> 9</span>             <span class='bp'>self</span><span class='o'>.</span><span class='n'>line_callback</span><span class='p'>(</span><span class='n'>line</span><span class='p'>)</span>
+<span class='lineno'>10</span>             <span class='bp'>self</span><span class='o'>.</span><span class='n'>line_buffer</span> <span class='o'>=</span> <span class='p'>[]</span>
+<span class='lineno'>11</span> 
+<span class='lineno'>12</span>         <span class='k'>def</span> <span class='nf'>data_callback</span><span class='p'>(</span><span class='bp'>self</span><span class='p'>,</span> <span class='n'>data</span><span class='p'>):</span>
+<span class='lineno'>13</span>             <span class='c'># If we get an empty string, that represents the end of</span>
+<span class='lineno'>14</span>             <span class='c'># the input.  If there is anything in the buffer, send</span>
+<span class='lineno'>15</span>             <span class='c'># then out first, then send an empty string on the to line</span>
+<span class='lineno'>16</span>             <span class='c'># callback.</span>
+<span class='lineno'>17</span> 
+<span class='lineno'>18</span>             <span class='k'>if</span> <span class='n'>data</span> <span class='o'>==</span> <span class='s'>&quot;&quot;</span><span class='p'>:</span>
+<span class='lineno'>19</span>                 <span class='k'>if</span> <span class='nb'>len</span><span class='p'>(</span><span class='bp'>self</span><span class='o'>.</span><span class='n'>line_buffer</span><span class='p'>)</span> <span class='o'>&gt;</span> <span class='mf'>0</span><span class='p'>:</span>
+<span class='lineno'>20</span>                     <span class='bp'>self</span><span class='o'>.</span><span class='n'>output_buffer</span><span class='p'>()</span>
+<span class='lineno'>21</span> 
+<span class='lineno'>22</span>                 <span class='bp'>self</span><span class='o'>.</span><span class='n'>line_callback</span><span class='p'>(</span><span class='s'>&quot;&quot;</span><span class='p'>)</span>
+<span class='lineno'>23</span>                 <span class='k'>return</span>
+<span class='lineno'>24</span> 
+<span class='lineno'>25</span>             <span class='c'># Otherwise, we split the new data into separate lines,</span>
+<span class='lineno'>26</span>             <span class='c'># each of which we call an “entry”.  We add each entry to</span>
+<span class='lineno'>27</span>             <span class='c'># the buffer.  If the entry ends with a newline, we output</span>
+<span class='lineno'>28</span>             <span class='c'># the buffer and then clear it.</span>
+<span class='lineno'>29</span> 
+<span class='lineno'>30</span>             <span class='n'>lines</span> <span class='o'>=</span> <span class='n'>data</span><span class='o'>.</span><span class='n'>splitlines</span><span class='p'>(</span><span class='bp'>True</span><span class='p'>)</span>
+<span class='lineno'>31</span>             <span class='k'>for</span> <span class='n'>line</span> <span class='ow'>in</span> <span class='n'>lines</span><span class='p'>:</span>
+<span class='lineno'>32</span>                 <span class='bp'>self</span><span class='o'>.</span><span class='n'>line_buffer</span><span class='o'>.</span><span class='n'>append</span><span class='p'>(</span><span class='n'>line</span><span class='p'>)</span>
+<span class='lineno'>33</span>                 <span class='k'>if</span> <span class='n'>line</span><span class='o'>.</span><span class='n'>endswith</span><span class='p'>((</span><span class='s'>&quot;</span><span class='se'>\r\n</span><span class='s'>&quot;</span><span class='p'>,</span> <span class='s'>&quot;</span><span class='se'>\n</span><span class='s'>&quot;</span><span class='p'>,</span> <span class='s'>&quot;</span><span class='se'>\r</span><span class='s'>&quot;</span><span class='p'>)):</span>
+<span class='lineno'>34</span>                     <span class='bp'>self</span><span class='o'>.</span><span class='n'>output_buffer</span><span class='p'>()</span>
+<span class='lineno'>35</span> 
+<span class='lineno'>36</span>             <span class='k'>return</span>
+<span class='lineno'>37</span> 
+<span class='lineno'>38</span>     <span class='k'>return</span> <span class='n'>Callback</span><span class='p'>(</span><span class='n'>line_callback</span><span class='p'>)</span><span class='o'>.</span><span class='n'>data_callback</span>
+</pre>
+</div>
+<ul>
+<li>
+<p><strong>line 1</strong> — We start by declaring the wrapping function. It will take in a line-based callback, and return an arbitrary-chunk callback.</p>
+</li>
 
-<p>We start by declaring the wrapping function. It will take in a line-based callback, and return an arbitrary-chunk callback.</p>
-<div class='highlight'><pre><span class='k'>def</span> <span class='nf'>wrap_line_callback</span><span class='p'>(</span><span class='n'>line_callback</span><span class='p'>):</span>
-</pre>
-</div>
-<p>We&#8217;ll need to maintain some state in between invocations of the arbitrary-chunk callback — specifically, if a line of output data falls across a chunk boundary, we&#8217;ll need to hold onto the part in the first chunk until we receive the part in the second chunk. One relatively easy way to do this is to create a new class, and store the state in <code>self</code> properties. Note that the <code>Callback</code> class is declared inside the <code>wrap_line_callback</code> function.</p>
-<div class='highlight'><pre>    <span class='k'>class</span> <span class='nc'>Callback</span><span class='p'>(</span><span class='nb'>object</span><span class='p'>):</span>
-        <span class='k'>def</span> <span class='nf'>__init__</span><span class='p'>(</span><span class='bp'>self</span><span class='p'>,</span> <span class='n'>line_callback</span><span class='p'>):</span>
-            <span class='bp'>self</span><span class='o'>.</span><span class='n'>line_buffer</span> <span class='o'>=</span> <span class='p'>[]</span>
-            <span class='bp'>self</span><span class='o'>.</span><span class='n'>line_callback</span> <span class='o'>=</span> <span class='n'>line_callback</span>
-</pre>
-</div>
+<li>
+<p><strong>lines 2-5</strong> — We&#8217;ll need to maintain some state in between invocations of the arbitrary-chunk callback — specifically, if a line of output data falls across a chunk boundary, we&#8217;ll need to hold onto the part in the first chunk until we receive the part in the second chunk. One relatively easy way to do this is to create a new class, and store the state in <code>self</code> properties. Note that the <code>Callback</code> class is declared inside the <code>wrap_line_callback</code> function.</p>
+
 <p>The buffer is a list of strings. This needs to be a list to support arbitrarily long lines, since we don&#8217;t know how many chunks we&#8217;ll need to store before outputting the line.</p>
+</li>
 
-<p>We also declare a method in the class that can output the current contents of the saved buffer (if any). Like the original <code>communicate</code> method, we join the buffer list together into a single string, then pass it onto the wrapped line callback.</p>
-<div class='highlight'><pre>        <span class='k'>def</span> <span class='nf'>output_buffer</span><span class='p'>(</span><span class='bp'>self</span><span class='p'>):</span>
-            <span class='n'>line</span> <span class='o'>=</span> <span class='s'>&quot;&quot;</span><span class='o'>.</span><span class='n'>join</span><span class='p'>(</span><span class='bp'>self</span><span class='o'>.</span><span class='n'>line_buffer</span><span class='p'>)</span>
-            <span class='bp'>self</span><span class='o'>.</span><span class='n'>line_callback</span><span class='p'>(</span><span class='n'>line</span><span class='p'>)</span>
-            <span class='bp'>self</span><span class='o'>.</span><span class='n'>line_buffer</span> <span class='o'>=</span> <span class='p'>[]</span>
-</pre>
-</div>
-<p>Next we can define the arbitrary-chunk callback. First, it checks to see if we&#8217;ve received an EOF indicator (the empty string). If so, we first output whatever is currently in the buffer; then we pass on the EOF to the line callback.</p>
-<div class='highlight'><pre>        <span class='k'>def</span> <span class='nf'>data_callback</span><span class='p'>(</span><span class='bp'>self</span><span class='p'>,</span> <span class='n'>data</span><span class='p'>):</span>
-            <span class='k'>if</span> <span class='n'>data</span> <span class='o'>==</span> <span class='s'>&quot;&quot;</span><span class='p'>:</span>
-                <span class='k'>if</span> <span class='nb'>len</span><span class='p'>(</span><span class='bp'>self</span><span class='o'>.</span><span class='n'>line_buffer</span><span class='p'>)</span> <span class='o'>&gt;</span> <span class='mf'>0</span><span class='p'>:</span>
-                    <span class='bp'>self</span><span class='o'>.</span><span class='n'>output_buffer</span><span class='p'>()</span>
+<li>
+<p><strong>lines 7-10</strong> — We also declare a method in the class that can output the current contents of the saved buffer (if any). Like the original <code>communicate</code> method, we join the buffer list together into a single string, then pass it onto the wrapped line callback.</p>
+</li>
 
-                <span class='bp'>self</span><span class='o'>.</span><span class='n'>line_callback</span><span class='p'>(</span><span class='s'>&quot;&quot;</span><span class='p'>)</span>
-                <span class='k'>return</span>
-</pre>
-</div>
-<p>If we get some actual data, we first split the current chunk into separate lines. We pass in a <code>True</code> parameter to the <code>splitlines</code> method so that we get the newlines in the split strings. This will let us tell if the final string in the list represents a complete line, or if it&#8217;s the first part of a line that falls across a chunk boundary.</p>
+<li>
+<p><strong>lines 12-23</strong> — Next we can define the arbitrary-chunk callback. First, it checks to see if we&#8217;ve received an EOF indicator (the empty string). If so, we first output whatever is currently in the buffer; then we pass on the EOF to the line callback.</p>
+</li>
+
+<li>
+<p><strong>lines 25-34</strong> — If we get some actual data, we first split the current chunk into separate lines. We pass in a <code>True</code> parameter to the <code>splitlines</code> method so that we get the newlines in the split strings. This will let us tell if the final string in the list represents a complete line, or if it&#8217;s the first part of a line that falls across a chunk boundary.</p>
 
 <p>We then loop through the split strings, adding them to the buffer. If any of them end with one of the newline endings (Unix, Windows, or otherwise), we output the buffer. Note that only the last string in the <code>lines</code> list can end with something other than a newline; anything at the beginning of the list is only a separate element because <code>splitlines</code> found a newline to split on!</p>
-<div class='highlight'><pre>            <span class='n'>lines</span> <span class='o'>=</span> <span class='n'>data</span><span class='o'>.</span><span class='n'>splitlines</span><span class='p'>(</span><span class='bp'>True</span><span class='p'>)</span>
-            <span class='k'>for</span> <span class='n'>line</span> <span class='ow'>in</span> <span class='n'>lines</span><span class='p'>:</span>
-                <span class='bp'>self</span><span class='o'>.</span><span class='n'>line_buffer</span><span class='o'>.</span><span class='n'>append</span><span class='p'>(</span><span class='n'>line</span><span class='p'>)</span>
-                <span class='k'>if</span> <span class='n'>line</span><span class='o'>.</span><span class='n'>endswith</span><span class='p'>((</span><span class='s'>&quot;</span><span class='se'>\r\n</span><span class='s'>&quot;</span><span class='p'>,</span> <span class='s'>&quot;</span><span class='se'>\n</span><span class='s'>&quot;</span><span class='p'>,</span> <span class='s'>&quot;</span><span class='se'>\r</span><span class='s'>&quot;</span><span class='p'>)):</span>
-                    <span class='bp'>self</span><span class='o'>.</span><span class='n'>output_buffer</span><span class='p'>()</span>
+</li>
 
-            <span class='k'>return</span>
-</pre>
-</div>
-<p>Finally, we instantiate the new class and return its arbitrary-chunk callback.</p>
-<div class='highlight'><pre>    <span class='k'>return</span> <span class='n'>Callback</span><span class='p'>(</span><span class='n'>line_callback</span><span class='p'>)</span><span class='o'>.</span><span class='n'>data_callback</span>
-</pre>
-</div>
+<li>
+<p><strong>line 38</strong> — Finally, we instantiate the new class and return its arbitrary-chunk callback.</p>
+</li>
+</ul>
+
 <h2 id='more_to_come'>More to come</h2>
 
 <p>This gives us a nice output callback mechanism, to prevent us from buffering the entire contents of the stdout and stderr streams in memory. In later posts, we&#8217;ll look at doing the same with the <em>input</em> data, and then we&#8217;ll address the second problem, of dealing with more than one subprocess simultaneously.</p>
