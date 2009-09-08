@@ -4,13 +4,143 @@
   <title>dcreager.net</title>
   <link href="http://dcreager.net/atom.xml" rel="self"/>
   <link href="http://dcreager.net/"/>
-  <updated>2009-08-14T14:17:49-04:00</updated>
+  <updated>2009-09-08T11:22:04-04:00</updated>
   <id>http://dcreager.net/</id>
   <author>
     <name>Douglas Creager</name>
     <email>dcreager@dcreager.net</email>
   </author>
 
+  
+  <entry>
+    <title>Downgrading packages in Ubuntu</title>
+    <link href="http://dcreager.net/2009/09/08/ubuntu-downgrading/"/>
+    <updated>2009-09-08T00:00:00-04:00</updated>
+    <id>http://dcreager.net/2009/09/08/ubuntu-downgrading</id>
+    <content type="html">&lt;h2 id='what_kind_of_trouble_did_you_get_yourself_into_this_time'&gt;What kind of trouble did you get yourself into this time?&lt;/h2&gt;
+
+&lt;p&gt;I have recently been setting up a new machine that I&amp;#8217;ll be using jointly as a work machine and a MythTV frontend/backend. As part of setting this up, I&amp;#8217;ve had several issues getting the integrated ATI Radeon HD 3200 display board to work correctly. I&amp;#8217;ll save the details for another post, but the short version is that none of the three available X drivers (ATI&amp;#8217;s &lt;code&gt;fglrx&lt;/code&gt; and the open-source &lt;code&gt;radeon&lt;/code&gt; and &lt;code&gt;radeonhd&lt;/code&gt;) seem to drive the HDMI output connector correctly.&lt;/p&gt;
+
+&lt;p&gt;As part of testing this, I used &lt;a href='https://launchpad.net/~tormodvolden/+archive/ppa'&gt;Tormod Volden&amp;#8217;s packages&lt;/a&gt; for the &lt;code&gt;radeon&lt;/code&gt; and &lt;code&gt;radeonhd&lt;/code&gt; drivers, which are based on newer releases than are available in the mainline Jaunty package trees. For some packages, they are even based on bleeding-edge git checkouts, rather than released tarballs. (More notes on using &lt;code&gt;radeonhd&lt;/code&gt; can be found &lt;a href='https://help.ubuntu.com/community/RadeonHD'&gt;here&lt;/a&gt;.) While neither package was able to use the HDMI connector properly, the &lt;code&gt;radeon&lt;/code&gt; driver was able to give me output on the VGA connector, with full 2D and video acceleration (which I needed for the MythTV front-end). My monitor (a Westinghouse L2410NM) was auto-detected through the connection, so my &lt;em&gt;xorg.conf&lt;/em&gt; is trivial.&lt;/p&gt;
+
+&lt;p&gt;However, neither open-source driver has 3D acceleration support yet. To get this, I&amp;#8217;ll need to use ATI&amp;#8217;s &lt;code&gt;fglrx&lt;/code&gt; driver. Not a problem, right? Just install the packages, then change the &lt;code&gt;radeon&lt;/code&gt; entry in your &lt;em&gt;xorg.conf&lt;/em&gt; over to &lt;code&gt;fglrx&lt;/code&gt;, and you&amp;#8217;re good to go! Except that by using Tormod&amp;#8217;s package tree to pick up the latest &lt;code&gt;radeon&lt;/code&gt; and &lt;code&gt;radeonhd&lt;/code&gt; drivers, I &lt;em&gt;also&lt;/em&gt; pick up more recent versions of &lt;code&gt;xserver&lt;/code&gt; and friends, and it would seem that the &lt;code&gt;fglrx&lt;/code&gt; drivers don&amp;#8217;t play well with the new version — I get segfaults when the X server tries to start using &lt;code&gt;fglrx&lt;/code&gt;, which didn&amp;#8217;t happen before installing Tormod&amp;#8217;s drivers.&lt;/p&gt;
+
+&lt;p&gt;So, I need to back out all of the packages installed from Tormod&amp;#8217;s tree, and revert back to the versions of these packages that I had previously installed from the mainline Jaunty trees.&lt;/p&gt;
+
+&lt;h2 id='how_you_might_think_it_should_work'&gt;How you might think it should work&lt;/h2&gt;
+
+&lt;p&gt;Anticipating that I might want to remove Tormod&amp;#8217;s tree from my &lt;em&gt;sources.list&lt;/em&gt;, I used the nice &lt;em&gt;sources.list.d&lt;/em&gt; facility. Instead of putting all of your package sources into a single file, you put them in separate files in the &lt;em&gt;/etc/apt/sources.list.d&lt;/em&gt; directory. That way, activating and deactivating a particular package tree is as simple as moving a file and re-running &lt;code&gt;apt-get update&lt;/code&gt;:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ sudo mkdir /etc/apt/sources.list.d.unused
+$ sudo mv /etc/apt/sources.list.d/tormod.list /etc/apt/sources.list.d.unused
+$ sudo apt-get update&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Now we&amp;#8217;ve removed Tormod&amp;#8217;s packages from our list of available packages. Ideally, we could run an &lt;code&gt;apt-get&lt;/code&gt; command to “downgrade” our packages to those that are mentioned in our package lists. However, I wasn&amp;#8217;t able to find such a command. If you try to run &lt;code&gt;apt-get upgrade&lt;/code&gt; or &lt;code&gt;apt-get dist-upgrade&lt;/code&gt;, APT will see that you have more recent versions of the X packages installed (the ones from Tormod&amp;#8217;s tree), and won&amp;#8217;t overwrite those with the older packages mentioned in the sources that we&amp;#8217;ve activated. Normally, this is the behavior that we want; but in this case, we&amp;#8217;re boned.&lt;/p&gt;
+
+&lt;h2 id='downgrading_explicitly'&gt;Downgrading explicitly&lt;/h2&gt;
+
+&lt;p&gt;Instead, we&amp;#8217;ll need to remove the newer packages using &lt;code&gt;apt-get
+remove&lt;/code&gt;, and then reinstall them using &lt;code&gt;apt-get install&lt;/code&gt;. Unfortunately, you have to specify which packages you want to remove and reinstall on the command line. So, we need a command pipeline that will tell us “all packages installed from Tormod&amp;#8217;s tree”, so that we can call &lt;code&gt;apt-get remove&lt;/code&gt; and &lt;code&gt;apt-get install&lt;/code&gt; on them.&lt;/p&gt;
+
+&lt;p&gt;First, we can get a list of the packages defined by a particular source by reading the files in &lt;em&gt;/var/lib/apt/lists&lt;/em&gt;. This directory contains the local copies of the package list files that are downloaded from each source. Each source has its own files, which makes it easy to distinguish the packages that came from Tormod&amp;#8217;s tree from those that came from mainline Jaunty. However, there will only be files for the activated sources — so if you&amp;#8217;ve moved the &lt;em&gt;tormod.list&lt;/em&gt; file like I did above, you won&amp;#8217;t find a file for Tormod&amp;#8217;s package tree. First, we&amp;#8217;ll have to reactivate his package tree:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ sudo mv /etc/apt/sources.list.d.unused/tormod.list /etc/apt/sources.list.d
+$ sudo apt-get update&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Now that we&amp;#8217;re sure that Tormod&amp;#8217;s tree has a file in &lt;em&gt;/var/lib/apt/lists&lt;/em&gt;. The filename is based on the URL of the &lt;em&gt;sources.list&lt;/em&gt; entry that you want to deal with. So if you&amp;#8217;re following these instructions for a different package tree than Tormod&amp;#8217;s X packages, you&amp;#8217;ll need to find the correct file and &lt;code&gt;grep&lt;/code&gt; it instead. You&amp;#8217;ll see several files for each source; you want the file that ends in &lt;code&gt;Packages&lt;/code&gt; and contains &lt;code&gt;binary&lt;/code&gt; and your architecture in the name.&lt;/p&gt;
+
+&lt;p&gt;Once we find the file, we can extract out the &lt;code&gt;Package&lt;/code&gt; lines from it:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ cd /var/lib/apt/lists
+$ grep Package ppa.launchpad.net_tormodvolden_ppa_ubuntu_dists_jaunty_main_binary-amd64_Packages
+Package: xserver-xorg-video-ati
+Package: xserver-xorg-video-ati-dbg
+Package: xserver-xorg-video-radeon
+Package: xserver-xorg-video-radeon-dbg
+[...]&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;We only want the package names, though, so we need to use &lt;code&gt;sed&lt;/code&gt; to strip out the &lt;code&gt;Package:&lt;/code&gt; prefix:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ grep Package ppa.launchpad.net_tormodvolden_ppa_ubuntu_dists_jaunty_main_binary-amd64_Packages \
+  | sed -e &amp;#39;s/^Package: //&amp;#39;
+xserver-xorg-video-ati
+xserver-xorg-video-ati-dbg
+xserver-xorg-video-radeon
+xserver-xorg-video-radeon-dbg
+[...]&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This tells us which packages are defined in Tormod&amp;#8217;s package tree. However, we can&amp;#8217;t pass all of them into &lt;code&gt;apt-get install&lt;/code&gt;, because we probably haven&amp;#8217;t installed all of the packages that Tormod made available. We can use &lt;code&gt;dpkg-query&lt;/code&gt; to see which of these packages are actually installed:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ grep Package ppa.launchpad.net_tormodvolden_ppa_ubuntu_dists_jaunty_main_binary-amd64_Packages \
+  | sed -e &amp;#39;s/^Package: //&amp;#39; \
+  | xargs dpkg-query -W 2&amp;gt;/dev/null
+gnome-screensaver	2.24.0-0ubuntu6
+libgl1-mesa-dev	7.4-0ubuntu3.2
+libgl1-mesa-swx11-dev	
+mesa-common-dev	7.4-0ubuntu3.2
+xdmx	
+xnest	
+[...]&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The first four lines of this output describe packages that are installed, while the last two describe packages that are not installed. We can distinguish between the two cases by the presence or absence of the version number. Looking closely, we can see that the package name and version number are separated by a tab character. Hopefully, that tab isn&amp;#8217;t printed for uninstalled packages, which would let us just look for a tab character to filter out the uninstalled packages. Let&amp;#8217;s try it and see:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ grep Package ppa.launchpad.net_tormodvolden_ppa_ubuntu_dists_jaunty_main_binary-amd64_Packages \
+  | sed -e &amp;#39;s/^Package: //&amp;#39; \
+  | xargs dpkg-query -W 2&amp;gt;/dev/null \
+  | less -U
+gnome-screensaver^I2.24.0-0ubuntu6
+libgl1-mesa-dev^I7.4-0ubuntu3.2
+libgl1-mesa-swx11-dev^I
+mesa-common-dev^I7.4-0ubuntu3.2
+xdmx^I
+xnest^I
+[...]&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Ah well, it was worth a try. But as a consolation, we can check for a tab followed by any other character, and we&amp;#8217;ll get the installed packages:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ grep Package ppa.launchpad.net_tormodvolden_ppa_ubuntu_dists_jaunty_main_binary-amd64_Packages \
+  | sed -e &amp;#39;s/^Package: //&amp;#39; \
+  | xargs dpkg-query -W 2&amp;gt;/dev/null \
+  | grep &amp;#39;\t.&amp;#39;
+gnome-screensaver^I2.24.0-0ubuntu6
+libgl1-mesa-dev^I7.4-0ubuntu3.2
+mesa-common-dev^I7.4-0ubuntu3.2
+xscreensaver-data^I5.08-1~rc2
+[...]&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Note that the &lt;code&gt;\t&lt;/code&gt; in the above is an actual tab character, and not a backslash followed by a T. In most shells, you type in the tab character by pressing Control-V and then the Tab key.&lt;/p&gt;
+
+&lt;p&gt;Now we have a list of installed packages that &lt;em&gt;might&lt;/em&gt; have come from Tormod&amp;#8217;s package tree. I say might have, because it&amp;#8217;s possible that the mainline Jaunty has a newer version of a package that Tormod&amp;#8217;s tree does. Earlier, we said we were looking for the packages that &lt;em&gt;definitely&lt;/em&gt; came from Tormod&amp;#8217;s tree, so that we can reinstall them. If we reinstall all of the packages in this list we&amp;#8217;ve just created, then we might end up reinstalling a package that we don&amp;#8217;t need to. But that&amp;#8217;s not the worst thing in the world — we&amp;#8217;re only reinstalling a dozen or so packages in total, so the extra work of reinstalling a couple of packages that we don&amp;#8217;t need to won&amp;#8217;t really kill us.&lt;/p&gt;
+
+&lt;p&gt;So now we need to pass this list into &lt;code&gt;apt-get&lt;/code&gt; to reinstall the packages. &lt;code&gt;apt-get&lt;/code&gt; only wants the package names, not the versions, so we&amp;#8217;ll need to use &lt;code&gt;sed&lt;/code&gt; again to strip these out: (Like before, the two &lt;code&gt;\t&lt;/code&gt; entries are actual tab characters.)&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ grep Package ppa.launchpad.net_tormodvolden_ppa_ubuntu_dists_jaunty_main_binary-amd64_Packages \
+  | sed -e &amp;#39;s/^Package: //&amp;#39; \
+  | xargs dpkg-query -W 2&amp;gt;/dev/null \
+  | grep &amp;#39;\t.&amp;#39; \
+  | sed -e &amp;#39;s/\t.*$//&amp;#39;
+gnome-screensaver
+libgl1-mesa-dev
+mesa-common-dev
+xscreensaver-data
+[...]&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Perfect! Let&amp;#8217;s save this package list into a file.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ grep Package ppa.launchpad.net_tormodvolden_ppa_ubuntu_dists_jaunty_main_binary-amd64_Packages \
+  | sed -e &amp;#39;s/^Package: //&amp;#39; \
+  | xargs dpkg-query -W 2&amp;gt;/dev/null \
+  | grep &amp;#39;\t.&amp;#39; \
+  | sed -e &amp;#39;s/\t.*$//&amp;#39; \
+  &amp;gt; /tmp/tormod.packages&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Then, we can deactivate Tormod&amp;#8217;s tree, and then forcably reinstall any of the packages that we might&amp;#8217;ve gotten from it:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ sudo mv /etc/apt/sources.list.d/tormod.list /etc/apt/sources.list.d.unused
+$ sudo apt-get update
+$ sudo apt-get remove `cat /tmp/tormod.packages`
+$ sudo apt-get install `cat /tmp/tormod.packages`&lt;/code&gt;&lt;/pre&gt;</content>
+  </entry>
   
   <entry>
     <title>Using callbacks with the subprocess module</title>

@@ -1,0 +1,203 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+ 
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>Downgrading packages in Ubuntu</title>
+    <meta name="author" content="Douglas Creager" />
+    <link rel="alternate" type="application/atom+xml"
+          title="dcreager.net" href="/atom.xml"/>
+ 
+    <!-- syntax highlighting CSS -->
+    <link rel="stylesheet" href="/css/syntax.css" type="text/css" />
+
+    <!-- main CSS -->
+    <link rel="stylesheet" href="/css/main.css" type="text/css" />
+  </head>
+
+  <body>
+
+    <div class="site">
+      <div class="site_content">
+        <div class="left">
+          <div class="leftnav">
+            <p><a href="/">Home</a></p>
+<p><a href="/publications/">Publications</a></p>
+
+          </div>
+        </div>
+
+        <div class="body">
+          
+<h1>Downgrading packages in Ubuntu</h1>
+
+<div class="postdate">
+  Tuesday, September 08, 2009
+</div>
+
+<div class="post">
+  <h2 id='what_kind_of_trouble_did_you_get_yourself_into_this_time'>What kind of trouble did you get yourself into this time?</h2>
+
+<p>I have recently been setting up a new machine that I&#8217;ll be using jointly as a work machine and a MythTV frontend/backend. As part of setting this up, I&#8217;ve had several issues getting the integrated ATI Radeon HD 3200 display board to work correctly. I&#8217;ll save the details for another post, but the short version is that none of the three available X drivers (ATI&#8217;s <code>fglrx</code> and the open-source <code>radeon</code> and <code>radeonhd</code>) seem to drive the HDMI output connector correctly.</p>
+
+<p>As part of testing this, I used <a href='https://launchpad.net/~tormodvolden/+archive/ppa'>Tormod Volden&#8217;s packages</a> for the <code>radeon</code> and <code>radeonhd</code> drivers, which are based on newer releases than are available in the mainline Jaunty package trees. For some packages, they are even based on bleeding-edge git checkouts, rather than released tarballs. (More notes on using <code>radeonhd</code> can be found <a href='https://help.ubuntu.com/community/RadeonHD'>here</a>.) While neither package was able to use the HDMI connector properly, the <code>radeon</code> driver was able to give me output on the VGA connector, with full 2D and video acceleration (which I needed for the MythTV front-end). My monitor (a Westinghouse L2410NM) was auto-detected through the connection, so my <em>xorg.conf</em> is trivial.</p>
+
+<p>However, neither open-source driver has 3D acceleration support yet. To get this, I&#8217;ll need to use ATI&#8217;s <code>fglrx</code> driver. Not a problem, right? Just install the packages, then change the <code>radeon</code> entry in your <em>xorg.conf</em> over to <code>fglrx</code>, and you&#8217;re good to go! Except that by using Tormod&#8217;s package tree to pick up the latest <code>radeon</code> and <code>radeonhd</code> drivers, I <em>also</em> pick up more recent versions of <code>xserver</code> and friends, and it would seem that the <code>fglrx</code> drivers don&#8217;t play well with the new version — I get segfaults when the X server tries to start using <code>fglrx</code>, which didn&#8217;t happen before installing Tormod&#8217;s drivers.</p>
+
+<p>So, I need to back out all of the packages installed from Tormod&#8217;s tree, and revert back to the versions of these packages that I had previously installed from the mainline Jaunty trees.</p>
+
+<h2 id='how_you_might_think_it_should_work'>How you might think it should work</h2>
+
+<p>Anticipating that I might want to remove Tormod&#8217;s tree from my <em>sources.list</em>, I used the nice <em>sources.list.d</em> facility. Instead of putting all of your package sources into a single file, you put them in separate files in the <em>/etc/apt/sources.list.d</em> directory. That way, activating and deactivating a particular package tree is as simple as moving a file and re-running <code>apt-get update</code>:</p>
+
+<pre><code>$ sudo mkdir /etc/apt/sources.list.d.unused
+$ sudo mv /etc/apt/sources.list.d/tormod.list /etc/apt/sources.list.d.unused
+$ sudo apt-get update</code></pre>
+
+<p>Now we&#8217;ve removed Tormod&#8217;s packages from our list of available packages. Ideally, we could run an <code>apt-get</code> command to “downgrade” our packages to those that are mentioned in our package lists. However, I wasn&#8217;t able to find such a command. If you try to run <code>apt-get upgrade</code> or <code>apt-get dist-upgrade</code>, APT will see that you have more recent versions of the X packages installed (the ones from Tormod&#8217;s tree), and won&#8217;t overwrite those with the older packages mentioned in the sources that we&#8217;ve activated. Normally, this is the behavior that we want; but in this case, we&#8217;re boned.</p>
+
+<h2 id='downgrading_explicitly'>Downgrading explicitly</h2>
+
+<p>Instead, we&#8217;ll need to remove the newer packages using <code>apt-get
+remove</code>, and then reinstall them using <code>apt-get install</code>. Unfortunately, you have to specify which packages you want to remove and reinstall on the command line. So, we need a command pipeline that will tell us “all packages installed from Tormod&#8217;s tree”, so that we can call <code>apt-get remove</code> and <code>apt-get install</code> on them.</p>
+
+<p>First, we can get a list of the packages defined by a particular source by reading the files in <em>/var/lib/apt/lists</em>. This directory contains the local copies of the package list files that are downloaded from each source. Each source has its own files, which makes it easy to distinguish the packages that came from Tormod&#8217;s tree from those that came from mainline Jaunty. However, there will only be files for the activated sources — so if you&#8217;ve moved the <em>tormod.list</em> file like I did above, you won&#8217;t find a file for Tormod&#8217;s package tree. First, we&#8217;ll have to reactivate his package tree:</p>
+
+<pre><code>$ sudo mv /etc/apt/sources.list.d.unused/tormod.list /etc/apt/sources.list.d
+$ sudo apt-get update</code></pre>
+
+<p>Now that we&#8217;re sure that Tormod&#8217;s tree has a file in <em>/var/lib/apt/lists</em>. The filename is based on the URL of the <em>sources.list</em> entry that you want to deal with. So if you&#8217;re following these instructions for a different package tree than Tormod&#8217;s X packages, you&#8217;ll need to find the correct file and <code>grep</code> it instead. You&#8217;ll see several files for each source; you want the file that ends in <code>Packages</code> and contains <code>binary</code> and your architecture in the name.</p>
+
+<p>Once we find the file, we can extract out the <code>Package</code> lines from it:</p>
+
+<pre><code>$ cd /var/lib/apt/lists
+$ grep Package ppa.launchpad.net_tormodvolden_ppa_ubuntu_dists_jaunty_main_binary-amd64_Packages
+Package: xserver-xorg-video-ati
+Package: xserver-xorg-video-ati-dbg
+Package: xserver-xorg-video-radeon
+Package: xserver-xorg-video-radeon-dbg
+[...]</code></pre>
+
+<p>We only want the package names, though, so we need to use <code>sed</code> to strip out the <code>Package:</code> prefix:</p>
+
+<pre><code>$ grep Package ppa.launchpad.net_tormodvolden_ppa_ubuntu_dists_jaunty_main_binary-amd64_Packages \
+  | sed -e &#39;s/^Package: //&#39;
+xserver-xorg-video-ati
+xserver-xorg-video-ati-dbg
+xserver-xorg-video-radeon
+xserver-xorg-video-radeon-dbg
+[...]</code></pre>
+
+<p>This tells us which packages are defined in Tormod&#8217;s package tree. However, we can&#8217;t pass all of them into <code>apt-get install</code>, because we probably haven&#8217;t installed all of the packages that Tormod made available. We can use <code>dpkg-query</code> to see which of these packages are actually installed:</p>
+
+<pre><code>$ grep Package ppa.launchpad.net_tormodvolden_ppa_ubuntu_dists_jaunty_main_binary-amd64_Packages \
+  | sed -e &#39;s/^Package: //&#39; \
+  | xargs dpkg-query -W 2&gt;/dev/null
+gnome-screensaver	2.24.0-0ubuntu6
+libgl1-mesa-dev	7.4-0ubuntu3.2
+libgl1-mesa-swx11-dev	
+mesa-common-dev	7.4-0ubuntu3.2
+xdmx	
+xnest	
+[...]</code></pre>
+
+<p>The first four lines of this output describe packages that are installed, while the last two describe packages that are not installed. We can distinguish between the two cases by the presence or absence of the version number. Looking closely, we can see that the package name and version number are separated by a tab character. Hopefully, that tab isn&#8217;t printed for uninstalled packages, which would let us just look for a tab character to filter out the uninstalled packages. Let&#8217;s try it and see:</p>
+
+<pre><code>$ grep Package ppa.launchpad.net_tormodvolden_ppa_ubuntu_dists_jaunty_main_binary-amd64_Packages \
+  | sed -e &#39;s/^Package: //&#39; \
+  | xargs dpkg-query -W 2&gt;/dev/null \
+  | less -U
+gnome-screensaver^I2.24.0-0ubuntu6
+libgl1-mesa-dev^I7.4-0ubuntu3.2
+libgl1-mesa-swx11-dev^I
+mesa-common-dev^I7.4-0ubuntu3.2
+xdmx^I
+xnest^I
+[...]</code></pre>
+
+<p>Ah well, it was worth a try. But as a consolation, we can check for a tab followed by any other character, and we&#8217;ll get the installed packages:</p>
+
+<pre><code>$ grep Package ppa.launchpad.net_tormodvolden_ppa_ubuntu_dists_jaunty_main_binary-amd64_Packages \
+  | sed -e &#39;s/^Package: //&#39; \
+  | xargs dpkg-query -W 2&gt;/dev/null \
+  | grep &#39;\t.&#39;
+gnome-screensaver^I2.24.0-0ubuntu6
+libgl1-mesa-dev^I7.4-0ubuntu3.2
+mesa-common-dev^I7.4-0ubuntu3.2
+xscreensaver-data^I5.08-1~rc2
+[...]</code></pre>
+
+<p>Note that the <code>\t</code> in the above is an actual tab character, and not a backslash followed by a T. In most shells, you type in the tab character by pressing Control-V and then the Tab key.</p>
+
+<p>Now we have a list of installed packages that <em>might</em> have come from Tormod&#8217;s package tree. I say might have, because it&#8217;s possible that the mainline Jaunty has a newer version of a package that Tormod&#8217;s tree does. Earlier, we said we were looking for the packages that <em>definitely</em> came from Tormod&#8217;s tree, so that we can reinstall them. If we reinstall all of the packages in this list we&#8217;ve just created, then we might end up reinstalling a package that we don&#8217;t need to. But that&#8217;s not the worst thing in the world — we&#8217;re only reinstalling a dozen or so packages in total, so the extra work of reinstalling a couple of packages that we don&#8217;t need to won&#8217;t really kill us.</p>
+
+<p>So now we need to pass this list into <code>apt-get</code> to reinstall the packages. <code>apt-get</code> only wants the package names, not the versions, so we&#8217;ll need to use <code>sed</code> again to strip these out: (Like before, the two <code>\t</code> entries are actual tab characters.)</p>
+
+<pre><code>$ grep Package ppa.launchpad.net_tormodvolden_ppa_ubuntu_dists_jaunty_main_binary-amd64_Packages \
+  | sed -e &#39;s/^Package: //&#39; \
+  | xargs dpkg-query -W 2&gt;/dev/null \
+  | grep &#39;\t.&#39; \
+  | sed -e &#39;s/\t.*$//&#39;
+gnome-screensaver
+libgl1-mesa-dev
+mesa-common-dev
+xscreensaver-data
+[...]</code></pre>
+
+<p>Perfect! Let&#8217;s save this package list into a file.</p>
+
+<pre><code>$ grep Package ppa.launchpad.net_tormodvolden_ppa_ubuntu_dists_jaunty_main_binary-amd64_Packages \
+  | sed -e &#39;s/^Package: //&#39; \
+  | xargs dpkg-query -W 2&gt;/dev/null \
+  | grep &#39;\t.&#39; \
+  | sed -e &#39;s/\t.*$//&#39; \
+  &gt; /tmp/tormod.packages</code></pre>
+
+<p>Then, we can deactivate Tormod&#8217;s tree, and then forcably reinstall any of the packages that we might&#8217;ve gotten from it:</p>
+
+<pre><code>$ sudo mv /etc/apt/sources.list.d/tormod.list /etc/apt/sources.list.d.unused
+$ sudo apt-get update
+$ sudo apt-get remove `cat /tmp/tormod.packages`
+$ sudo apt-get install `cat /tmp/tormod.packages`</code></pre>
+</div>
+
+        </div>
+
+        
+
+        <div class="body_separator"></div>
+
+        <div class="body">
+          <div id="disqus_thread"></div>
+
+          <script type="text/javascript">
+            var disqus_title = "Downgrading packages in Ubuntu";
+            var disqus_url = "http://dcreager.net/2009/09/08/ubuntu-downgrading/";
+          </script>
+
+          <script
+             type="text/javascript"
+             src="http://disqus.com/forums/dcreager/embed.js">
+          </script>
+          <noscript>
+            <a href="http://dcreager.disqus.com/?url=ref">View the discussion thread.</a>
+          </noscript>
+
+          <a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+        </div>
+
+        
+
+      </div>
+    </div>
+
+    <div class="footer">
+      <div class="copyright">
+        Copyright © 2009, Douglas Creager.  All rights reserved.
+      </div>
+    </div>
+
+  </body>
+</html>
+
