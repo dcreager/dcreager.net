@@ -6,6 +6,12 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <title>{{ page.title }}</title>
     <meta name="author" content="Douglas Creager" />
+
+    {% if page.openid %}
+    <link rel="openid.server" href="http://openid.dcreager.net/index.php" />
+    <link rel="openid.delegate" href="http://openid.dcreager.net/index.php" />
+    {% endif %}
+
     <link rel="alternate" type="application/atom+xml"
           title="dcreager.net" href="/atom.xml"/>
  
