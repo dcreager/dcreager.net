@@ -130,6 +130,12 @@ body {
     font-size: 80%;
 }
 
+.body .postlinks {
+    padding-top: 16px;
+    text-align: center;
+    font-size: 80%;
+}
+
 .footer .copyright {
     padding-top: 1.5em;
     color: #444;

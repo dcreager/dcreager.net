@@ -29,6 +29,7 @@
         <div class="left">
           <div class="leftnav">
             <p><a href="/">Home</a></p>
+<p><a href="/archive/">Archive</a></p>
 <p><a href="/publications/">Publications</a></p>
 
           </div>
@@ -41,48 +42,364 @@
 
         <div class="body">
           
-<h1>Recent posts</h1>
 
-<div id="posts">
-  <ul class="posts">
-    
-    <li>
-      <span>Tue 08 Sep 2009 » </span>
-      <a href="/2009/09/08/ubuntu-downgrading/">Downgrading packages in Ubuntu</a>
-    </li>
-    
-    <li>
-      <span>Thu 13 Aug 2009 » </span>
-      <a href="/2009/08/13/subprocess-callbacks/">Using callbacks with the subprocess module</a>
-    </li>
-    
-    <li>
-      <span>Thu 13 Aug 2009 » </span>
-      <a href="/2009/08/13/iphone-tethering/">iPhone tethering</a>
-    </li>
-    
-    <li>
-      <span>Fri 07 Aug 2009 » </span>
-      <a href="/2009/08/07/disqus-comments/">Adding Disqus comments</a>
-    </li>
-    
-    <li>
-      <span>Thu 06 Aug 2009 » </span>
-      <a href="/2009/08/06/subprocess-communicate-drawbacks/">Problems with Python's subprocess.communicate method</a>
-    </li>
-    
-    <li>
-      <span>Thu 06 Aug 2009 » </span>
-      <a href="/2009/08/06/sbmf-paper/">SBMF07 paper chosen for extended proceedings</a>
-    </li>
-    
-    <li>
-      <span>Wed 05 Aug 2009 » </span>
-      <a href="/2009/08/05/site-setup/">Site layout</a>
-    </li>
-    
-  </ul>
+  
+
+  <h1>Downgrading packages in Ubuntu</h1>
+
+  <div class="postdate">
+    Tuesday, September 08, 2009
+  </div>
+
+  <h2 id='what_kind_of_trouble_did_you_get_yourself_into_this_time'>What kind of trouble did you get yourself into this time?</h2>
+
+<p>I have recently been setting up a new machine that I&#8217;ll be using jointly as a work machine and a MythTV frontend/backend. As part of setting this up, I&#8217;ve had several issues getting the integrated ATI Radeon HD 3200 display board to work correctly. I&#8217;ll save the details for another post, but the short version is that none of the three available X drivers (ATI&#8217;s <code>fglrx</code> and the open-source <code>radeon</code> and <code>radeonhd</code>) seem to drive the HDMI output connector correctly.</p>
+
+<p>As part of testing this, I used <a href='https://launchpad.net/~tormodvolden/+archive/ppa'>Tormod Volden&#8217;s packages</a> for the <code>radeon</code> and <code>radeonhd</code> drivers, which are based on newer releases than are available in the mainline Jaunty package trees. For some packages, they are even based on bleeding-edge git checkouts, rather than released tarballs. (More notes on using <code>radeonhd</code> can be found <a href='https://help.ubuntu.com/community/RadeonHD'>here</a>.) While neither package was able to use the HDMI connector properly, the <code>radeon</code> driver was able to give me output on the VGA connector, with full 2D and video acceleration (which I needed for the MythTV front-end). My monitor (a Westinghouse L2410NM) was auto-detected through the connection, so my <em>xorg.conf</em> is trivial.</p>
+
+<p>However, neither open-source driver has 3D acceleration support yet. To get this, I&#8217;ll need to use ATI&#8217;s <code>fglrx</code> driver. Not a problem, right? Just install the packages, then change the <code>radeon</code> entry in your <em>xorg.conf</em> over to <code>fglrx</code>, and you&#8217;re good to go! Except that by using Tormod&#8217;s package tree to pick up the latest <code>radeon</code> and <code>radeonhd</code> drivers, I <em>also</em> pick up more recent versions of <code>xserver</code> and friends, and it would seem that the <code>fglrx</code> drivers don&#8217;t play well with the new version — I get segfaults when the X server tries to start using <code>fglrx</code>, which didn&#8217;t happen before installing Tormod&#8217;s drivers.</p>
+
+<p>So, I need to back out all of the packages installed from Tormod&#8217;s tree, and revert back to the versions of these packages that I had previously installed from the mainline Jaunty trees.</p>
+
+<h2 id='how_you_might_think_it_should_work'>How you might think it should work</h2>
+
+<p>Anticipating that I might want to remove Tormod&#8217;s tree from my <em>sources.list</em>, I used the nice <em>sources.list.d</em> facility. Instead of putting all of your package sources into a single file, you put them in separate files in the <em>/etc/apt/sources.list.d</em> directory. That way, activating and deactivating a particular package tree is as simple as moving a file and re-running <code>apt-get update</code>:</p>
+
+<pre><code>$ sudo mkdir /etc/apt/sources.list.d.unused
+$ sudo mv /etc/apt/sources.list.d/tormod.list /etc/apt/sources.list.d.unused
+$ sudo apt-get update</code></pre>
+
+<p>Now we&#8217;ve removed Tormod&#8217;s packages from our list of available packages. Ideally, we could run an <code>apt-get</code> command to “downgrade” our packages to those that are mentioned in our package lists. However, I wasn&#8217;t able to find such a command. If you try to run <code>apt-get upgrade</code> or <code>apt-get dist-upgrade</code>, APT will see that you have more recent versions of the X packages installed (the ones from Tormod&#8217;s tree), and won&#8217;t overwrite those with the older packages mentioned in the sources that we&#8217;ve activated. Normally, this is the behavior that we want; but in this case, we&#8217;re boned.</p>
+
+<h2 id='downgrading_explicitly'>Downgrading explicitly</h2>
+
+<p>Instead, we&#8217;ll need to remove the newer packages using <code>apt-get
+remove</code>, and then reinstall them using <code>apt-get install</code>. Unfortunately, you have to specify which packages you want to remove and reinstall on the command line. So, we need a command pipeline that will tell us “all packages installed from Tormod&#8217;s tree”, so that we can call <code>apt-get remove</code> and <code>apt-get install</code> on them.</p>
+
+<p>First, we can get a list of the packages defined by a particular source by reading the files in <em>/var/lib/apt/lists</em>. This directory contains the local copies of the package list files that are downloaded from each source. Each source has its own files, which makes it easy to distinguish the packages that came from Tormod&#8217;s tree from those that came from mainline Jaunty. However, there will only be files for the activated sources — so if you&#8217;ve moved the <em>tormod.list</em> file like I did above, you won&#8217;t find a file for Tormod&#8217;s package tree. First, we&#8217;ll have to reactivate his package tree:</p>
+
+<pre><code>$ sudo mv /etc/apt/sources.list.d.unused/tormod.list /etc/apt/sources.list.d
+$ sudo apt-get update</code></pre>
+
+<p>Now that we&#8217;re sure that Tormod&#8217;s tree has a file in <em>/var/lib/apt/lists</em>. The filename is based on the URL of the <em>sources.list</em> entry that you want to deal with. So if you&#8217;re following these instructions for a different package tree than Tormod&#8217;s X packages, you&#8217;ll need to find the correct file and <code>grep</code> it instead. You&#8217;ll see several files for each source; you want the file that ends in <code>Packages</code> and contains <code>binary</code> and your architecture in the name.</p>
+
+<p>Once we find the file, we can extract out the <code>Package</code> lines from it:</p>
+
+<pre><code>$ cd /var/lib/apt/lists
+$ grep Package ppa.launchpad.net_tormodvolden_ppa_ubuntu_dists_jaunty_main_binary-amd64_Packages
+Package: xserver-xorg-video-ati
+Package: xserver-xorg-video-ati-dbg
+Package: xserver-xorg-video-radeon
+Package: xserver-xorg-video-radeon-dbg
+[...]</code></pre>
+
+<p>We only want the package names, though, so we need to use <code>sed</code> to strip out the <code>Package:</code> prefix:</p>
+
+<pre><code>$ grep Package ppa.launchpad.net_tormodvolden_ppa_ubuntu_dists_jaunty_main_binary-amd64_Packages \
+  | sed -e &#39;s/^Package: //&#39;
+xserver-xorg-video-ati
+xserver-xorg-video-ati-dbg
+xserver-xorg-video-radeon
+xserver-xorg-video-radeon-dbg
+[...]</code></pre>
+
+<p>This tells us which packages are defined in Tormod&#8217;s package tree. However, we can&#8217;t pass all of them into <code>apt-get install</code>, because we probably haven&#8217;t installed all of the packages that Tormod made available. We can use <code>dpkg-query</code> to see which of these packages are actually installed:</p>
+
+<pre><code>$ grep Package ppa.launchpad.net_tormodvolden_ppa_ubuntu_dists_jaunty_main_binary-amd64_Packages \
+  | sed -e &#39;s/^Package: //&#39; \
+  | xargs dpkg-query -W 2&gt;/dev/null
+gnome-screensaver	2.24.0-0ubuntu6
+libgl1-mesa-dev	7.4-0ubuntu3.2
+libgl1-mesa-swx11-dev	
+mesa-common-dev	7.4-0ubuntu3.2
+xdmx	
+xnest	
+[...]</code></pre>
+
+<p>The first four lines of this output describe packages that are installed, while the last two describe packages that are not installed. We can distinguish between the two cases by the presence or absence of the version number. Looking closely, we can see that the package name and version number are separated by a tab character. Hopefully, that tab isn&#8217;t printed for uninstalled packages, which would let us just look for a tab character to filter out the uninstalled packages. Let&#8217;s try it and see:</p>
+
+<pre><code>$ grep Package ppa.launchpad.net_tormodvolden_ppa_ubuntu_dists_jaunty_main_binary-amd64_Packages \
+  | sed -e &#39;s/^Package: //&#39; \
+  | xargs dpkg-query -W 2&gt;/dev/null \
+  | less -U
+gnome-screensaver^I2.24.0-0ubuntu6
+libgl1-mesa-dev^I7.4-0ubuntu3.2
+libgl1-mesa-swx11-dev^I
+mesa-common-dev^I7.4-0ubuntu3.2
+xdmx^I
+xnest^I
+[...]</code></pre>
+
+<p>Ah well, it was worth a try. But as a consolation, we can check for a tab followed by any other character, and we&#8217;ll get the installed packages:</p>
+
+<pre><code>$ grep Package ppa.launchpad.net_tormodvolden_ppa_ubuntu_dists_jaunty_main_binary-amd64_Packages \
+  | sed -e &#39;s/^Package: //&#39; \
+  | xargs dpkg-query -W 2&gt;/dev/null \
+  | grep &#39;\t.&#39;
+gnome-screensaver^I2.24.0-0ubuntu6
+libgl1-mesa-dev^I7.4-0ubuntu3.2
+mesa-common-dev^I7.4-0ubuntu3.2
+xscreensaver-data^I5.08-1~rc2
+[...]</code></pre>
+
+<p>Note that the <code>\t</code> in the above is an actual tab character, and not a backslash followed by a T. In most shells, you type in the tab character by pressing Control-V and then the Tab key.</p>
+
+<p>Now we have a list of installed packages that <em>might</em> have come from Tormod&#8217;s package tree. I say might have, because it&#8217;s possible that the mainline Jaunty has a newer version of a package that Tormod&#8217;s tree does. Earlier, we said we were looking for the packages that <em>definitely</em> came from Tormod&#8217;s tree, so that we can reinstall them. If we reinstall all of the packages in this list we&#8217;ve just created, then we might end up reinstalling a package that we don&#8217;t need to. But that&#8217;s not the worst thing in the world — we&#8217;re only reinstalling a dozen or so packages in total, so the extra work of reinstalling a couple of packages that we don&#8217;t need to won&#8217;t really kill us.</p>
+
+<p>So now we need to pass this list into <code>apt-get</code> to reinstall the packages. <code>apt-get</code> only wants the package names, not the versions, so we&#8217;ll need to use <code>sed</code> again to strip these out: (Like before, the two <code>\t</code> entries are actual tab characters.)</p>
+
+<pre><code>$ grep Package ppa.launchpad.net_tormodvolden_ppa_ubuntu_dists_jaunty_main_binary-amd64_Packages \
+  | sed -e &#39;s/^Package: //&#39; \
+  | xargs dpkg-query -W 2&gt;/dev/null \
+  | grep &#39;\t.&#39; \
+  | sed -e &#39;s/\t.*$//&#39;
+gnome-screensaver
+libgl1-mesa-dev
+mesa-common-dev
+xscreensaver-data
+[...]</code></pre>
+
+<p>Perfect! Let&#8217;s save this package list into a file.</p>
+
+<pre><code>$ grep Package ppa.launchpad.net_tormodvolden_ppa_ubuntu_dists_jaunty_main_binary-amd64_Packages \
+  | sed -e &#39;s/^Package: //&#39; \
+  | xargs dpkg-query -W 2&gt;/dev/null \
+  | grep &#39;\t.&#39; \
+  | sed -e &#39;s/\t.*$//&#39; \
+  &gt; /tmp/tormod.packages</code></pre>
+
+<p>Then, we can deactivate Tormod&#8217;s tree, and then forcably reinstall any of the packages that we might&#8217;ve gotten from it:</p>
+
+<pre><code>$ sudo mv /etc/apt/sources.list.d/tormod.list /etc/apt/sources.list.d.unused
+$ sudo apt-get update
+$ sudo apt-get remove `cat /tmp/tormod.packages`
+$ sudo apt-get install `cat /tmp/tormod.packages`</code></pre>
+
+  <div class="postlinks">
+    <a href="/2009/09/08/ubuntu-downgrading/">Permanent link</a>
+    |
+    <a href="/2009/09/08/ubuntu-downgrading/#disqus_thread">Comments</a>
+  </div>
+
+  
+  </div>
+<div class="body_separator"></div>
+<div class="body">
+
+  
+
+  <h1>Using callbacks with the subprocess module</h1>
+
+  <div class="postdate">
+    Thursday, August 13, 2009
+  </div>
+
+  <p>In a <a href='/2009/08/06/subprocess-communicate-drawbacks/'>previous post</a>, we pointed out two drawbacks of Python&#8217;s <code>subprocess.communicate</code> method. In this post, we look at the first problem in more detail. To reiterate, the problem is that we collect the subprocess&#8217;s output streams into strings. If the subprocess is going to generate a huge amount of output, it can be better to process the output data in a stream-oriented manner — that way we use a constant amount of memory regardless of how much output is produced.</p>
+
+<p>If we look at the <a href='http://svn.python.org/view/python/trunk/Lib/subprocess.py?revision=74029&amp;view=markup'>implementation</a> of the <code>communicate</code> method, we see this:</p>
+<div class='highlight'><pre><span class='lineno'> 1</span> <span class='k'>def</span> <span class='nf'>_communicate_with_select</span><span class='p'>(</span><span class='bp'>self</span><span class='p'>,</span> <span class='nb'>input</span><span class='p'>):</span>
+<span class='lineno'> 2</span>     <span class='n'>read_set</span> <span class='o'>=</span> <span class='p'>[]</span>
+<span class='lineno'> 3</span>     <span class='n'>write_set</span> <span class='o'>=</span> <span class='p'>[]</span>
+<span class='lineno'> 4</span>     <span class='n'>stdout</span> <span class='o'>=</span> <span class='bp'>None</span> <span class='c'># Return</span>
+<span class='lineno'> 5</span>     <span class='n'>stderr</span> <span class='o'>=</span> <span class='bp'>None</span> <span class='c'># Return</span>
+<span class='lineno'> 6</span> 
+<span class='lineno'> 7</span>     <span class='k'>if</span> <span class='bp'>self</span><span class='o'>.</span><span class='n'>stdin</span> <span class='ow'>and</span> <span class='nb'>input</span><span class='p'>:</span>
+<span class='lineno'> 8</span>         <span class='n'>write_set</span><span class='o'>.</span><span class='n'>append</span><span class='p'>(</span><span class='bp'>self</span><span class='o'>.</span><span class='n'>stdin</span><span class='p'>)</span>
+<span class='lineno'> 9</span>     <span class='k'>if</span> <span class='bp'>self</span><span class='o'>.</span><span class='n'>stdout</span><span class='p'>:</span>
+<span class='lineno'>10</span>         <span class='n'>read_set</span><span class='o'>.</span><span class='n'>append</span><span class='p'>(</span><span class='bp'>self</span><span class='o'>.</span><span class='n'>stdout</span><span class='p'>)</span>
+<span class='lineno'>11</span>         <span class='n'>stdout</span> <span class='o'>=</span> <span class='p'>[]</span>
+<span class='lineno'>12</span>     <span class='k'>if</span> <span class='bp'>self</span><span class='o'>.</span><span class='n'>stderr</span><span class='p'>:</span>
+<span class='lineno'>13</span>         <span class='n'>read_set</span><span class='o'>.</span><span class='n'>append</span><span class='p'>(</span><span class='bp'>self</span><span class='o'>.</span><span class='n'>stderr</span><span class='p'>)</span>
+<span class='lineno'>14</span>         <span class='n'>stderr</span> <span class='o'>=</span> <span class='p'>[]</span>
+<span class='lineno'>15</span> 
+<span class='lineno'>16</span>     <span class='n'>input_offset</span> <span class='o'>=</span> <span class='mf'>0</span>
+<span class='lineno'>17</span>     <span class='k'>while</span> <span class='n'>read_set</span> <span class='ow'>or</span> <span class='n'>write_set</span><span class='p'>:</span>
+<span class='lineno'>18</span>         <span class='k'>try</span><span class='p'>:</span>
+<span class='lineno'>19</span>             <span class='n'>rlist</span><span class='p'>,</span> <span class='n'>wlist</span><span class='p'>,</span> <span class='n'>xlist</span> <span class='o'>=</span> <span class='n'>select</span><span class='o'>.</span><span class='n'>select</span><span class='p'>(</span><span class='n'>read_set</span><span class='p'>,</span> <span class='n'>write_set</span><span class='p'>,</span> <span class='p'>[])</span>
+<span class='lineno'>20</span>         <span class='k'>except</span> <span class='n'>select</span><span class='o'>.</span><span class='n'>error</span><span class='p'>,</span> <span class='n'>e</span><span class='p'>:</span>
+<span class='lineno'>21</span>             <span class='k'>if</span> <span class='n'>e</span><span class='o'>.</span><span class='n'>args</span><span class='p'>[</span><span class='mf'>0</span><span class='p'>]</span> <span class='o'>==</span> <span class='n'>errno</span><span class='o'>.</span><span class='n'>EINTR</span><span class='p'>:</span>
+<span class='lineno'>22</span>                 <span class='k'>continue</span>
+<span class='lineno'>23</span>             <span class='k'>raise</span>
+<span class='lineno'>24</span> 
+<span class='lineno'>25</span>         <span class='k'>if</span> <span class='bp'>self</span><span class='o'>.</span><span class='n'>stdin</span> <span class='ow'>in</span> <span class='n'>wlist</span><span class='p'>:</span>
+<span class='lineno'>26</span>             <span class='n'>chunk</span> <span class='o'>=</span> <span class='nb'>input</span><span class='p'>[</span><span class='n'>input_offset</span> <span class='p'>:</span> <span class='n'>input_offset</span> <span class='o'>+</span> <span class='n'>_PIPE_BUF</span><span class='p'>]</span>
+<span class='lineno'>27</span>             <span class='n'>bytes_written</span> <span class='o'>=</span> <span class='n'>os</span><span class='o'>.</span><span class='n'>write</span><span class='p'>(</span><span class='bp'>self</span><span class='o'>.</span><span class='n'>stdin</span><span class='o'>.</span><span class='n'>fileno</span><span class='p'>(),</span> <span class='n'>chunk</span><span class='p'>)</span>
+<span class='lineno'>28</span>             <span class='n'>input_offset</span> <span class='o'>+=</span> <span class='n'>bytes_written</span>
+<span class='lineno'>29</span>             <span class='k'>if</span> <span class='n'>input_offset</span> <span class='o'>&gt;=</span> <span class='nb'>len</span><span class='p'>(</span><span class='nb'>input</span><span class='p'>):</span>
+<span class='lineno'>30</span>                 <span class='bp'>self</span><span class='o'>.</span><span class='n'>stdin</span><span class='o'>.</span><span class='n'>close</span><span class='p'>()</span>
+<span class='lineno'>31</span>                 <span class='n'>write_set</span><span class='o'>.</span><span class='n'>remove</span><span class='p'>(</span><span class='bp'>self</span><span class='o'>.</span><span class='n'>stdin</span><span class='p'>)</span>
+<span class='lineno'>32</span> 
+<span class='lineno'>33</span>         <span class='k'>if</span> <span class='bp'>self</span><span class='o'>.</span><span class='n'>stdout</span> <span class='ow'>in</span> <span class='n'>rlist</span><span class='p'>:</span>
+<span class='lineno'>34</span>             <span class='n'>data</span> <span class='o'>=</span> <span class='n'>os</span><span class='o'>.</span><span class='n'>read</span><span class='p'>(</span><span class='bp'>self</span><span class='o'>.</span><span class='n'>stdout</span><span class='o'>.</span><span class='n'>fileno</span><span class='p'>(),</span> <span class='mf'>1024</span><span class='p'>)</span>
+<span class='lineno'>35</span>             <span class='k'>if</span> <span class='n'>data</span> <span class='o'>==</span> <span class='s'>&quot;&quot;</span><span class='p'>:</span>
+<span class='lineno'>36</span>                 <span class='bp'>self</span><span class='o'>.</span><span class='n'>stdout</span><span class='o'>.</span><span class='n'>close</span><span class='p'>()</span>
+<span class='lineno'>37</span>                 <span class='n'>read_set</span><span class='o'>.</span><span class='n'>remove</span><span class='p'>(</span><span class='bp'>self</span><span class='o'>.</span><span class='n'>stdout</span><span class='p'>)</span>
+<span class='lineno'>38</span>             <span class='n'>stdout</span><span class='o'>.</span><span class='n'>append</span><span class='p'>(</span><span class='n'>data</span><span class='p'>)</span>
+<span class='lineno'>39</span> 
+<span class='lineno'>40</span>         <span class='k'>if</span> <span class='bp'>self</span><span class='o'>.</span><span class='n'>stderr</span> <span class='ow'>in</span> <span class='n'>rlist</span><span class='p'>:</span>
+<span class='lineno'>41</span>             <span class='n'>data</span> <span class='o'>=</span> <span class='n'>os</span><span class='o'>.</span><span class='n'>read</span><span class='p'>(</span><span class='bp'>self</span><span class='o'>.</span><span class='n'>stderr</span><span class='o'>.</span><span class='n'>fileno</span><span class='p'>(),</span> <span class='mf'>1024</span><span class='p'>)</span>
+<span class='lineno'>42</span>             <span class='k'>if</span> <span class='n'>data</span> <span class='o'>==</span> <span class='s'>&quot;&quot;</span><span class='p'>:</span>
+<span class='lineno'>43</span>                 <span class='bp'>self</span><span class='o'>.</span><span class='n'>stderr</span><span class='o'>.</span><span class='n'>close</span><span class='p'>()</span>
+<span class='lineno'>44</span>                 <span class='n'>read_set</span><span class='o'>.</span><span class='n'>remove</span><span class='p'>(</span><span class='bp'>self</span><span class='o'>.</span><span class='n'>stderr</span><span class='p'>)</span>
+<span class='lineno'>45</span>             <span class='n'>stderr</span><span class='o'>.</span><span class='n'>append</span><span class='p'>(</span><span class='n'>data</span><span class='p'>)</span>
+<span class='lineno'>46</span> 
+<span class='lineno'>47</span>     <span class='k'>return</span> <span class='p'>(</span><span class='n'>stdout</span><span class='p'>,</span> <span class='n'>stderr</span><span class='p'>)</span>
+</pre>
 </div>
+<p>(There are actually several different <code>communicate</code> implementations in the module: a Windows-specific implementation, an implementation using the POSIX <code>poll</code> function, and one using POSIX <code>select</code>. We&#8217;re going to look at the <code>select</code> implementation; the modifications we make can be rolled into the other methods, too.)</p>
+
+<h2 id='output_callbacks'>Output callbacks</h2>
+
+<p>For collecting stdout, the important part is lines 33-38. If the <code>select</code> call tells us that the stdout stream is ready for reading, we try to read up to 1024 bytes from it. If we get the empty string, this means we&#8217;ve reached EOF, and can close down the stream. (We also no longer have to keep passing it in to further <code>select</code> calls, since we know we&#8217;re done with this stream.) If we get a non-empty string, then we append it into a list. The function that calls <code>_communicate_with_select</code> will eventually <code>join</code> this list of strings together, yielding a single string.</p>
+
+<p>It&#8217;s actually a very simple change to make this process the output using a stream-based callback. For now, we assume that we&#8217;ve been given the callback, in a <code>stdout_callback</code> variable. Then, we can change line 38 to</p>
+<div class='highlight'><pre>            <span class='n'>stdout_callback</span><span class='p'>(</span><span class='n'>data</span><span class='p'>)</span>
+</pre>
+</div>
+<p>The callback can be any Python callable object; it should accept a single argument, which is the next chunk of data from stdout. We can make a similar change to line 45 to send the stderr data to its own <code>stderr_callback</code>.</p>
+
+<h2 id='lineoriented_callbacks'>Line-oriented callbacks</h2>
+
+<p>One possible issue with the output callbacks in the previous section is that the data is sent into the callback in arbitrary chunks. We might prefer to guarantee that the callback will be called exactly once for each <em>line</em> of output. This would allow us, for intsance, to easily interleave the output lines of a bunch of subprocesses into the output of the parent process, without having to worry about locking.</p>
+
+<p>To use a line-based callback, we have to wrap it, creating a arbitrary-chunk callback that buffers data as necessary. Once it receives a full line of data, it sends it to the wrapped line callback.</p>
+<div class='highlight'><pre><span class='lineno'> 1</span> <span class='k'>def</span> <span class='nf'>wrap_line_callback</span><span class='p'>(</span><span class='n'>line_callback</span><span class='p'>):</span>
+<span class='lineno'> 2</span>     <span class='k'>class</span> <span class='nc'>Callback</span><span class='p'>(</span><span class='nb'>object</span><span class='p'>):</span>
+<span class='lineno'> 3</span>         <span class='k'>def</span> <span class='nf'>__init__</span><span class='p'>(</span><span class='bp'>self</span><span class='p'>,</span> <span class='n'>line_callback</span><span class='p'>):</span>
+<span class='lineno'> 4</span>             <span class='bp'>self</span><span class='o'>.</span><span class='n'>line_buffer</span> <span class='o'>=</span> <span class='p'>[]</span>
+<span class='lineno'> 5</span>             <span class='bp'>self</span><span class='o'>.</span><span class='n'>line_callback</span> <span class='o'>=</span> <span class='n'>line_callback</span>
+<span class='lineno'> 6</span> 
+<span class='lineno'> 7</span>         <span class='k'>def</span> <span class='nf'>output_buffer</span><span class='p'>(</span><span class='bp'>self</span><span class='p'>):</span>
+<span class='lineno'> 8</span>             <span class='n'>line</span> <span class='o'>=</span> <span class='s'>&quot;&quot;</span><span class='o'>.</span><span class='n'>join</span><span class='p'>(</span><span class='bp'>self</span><span class='o'>.</span><span class='n'>line_buffer</span><span class='p'>)</span>
+<span class='lineno'> 9</span>             <span class='bp'>self</span><span class='o'>.</span><span class='n'>line_callback</span><span class='p'>(</span><span class='n'>line</span><span class='p'>)</span>
+<span class='lineno'>10</span>             <span class='bp'>self</span><span class='o'>.</span><span class='n'>line_buffer</span> <span class='o'>=</span> <span class='p'>[]</span>
+<span class='lineno'>11</span> 
+<span class='lineno'>12</span>         <span class='k'>def</span> <span class='nf'>data_callback</span><span class='p'>(</span><span class='bp'>self</span><span class='p'>,</span> <span class='n'>data</span><span class='p'>):</span>
+<span class='lineno'>13</span>             <span class='c'># If we get an empty string, that represents the end of</span>
+<span class='lineno'>14</span>             <span class='c'># the input.  If there is anything in the buffer, send</span>
+<span class='lineno'>15</span>             <span class='c'># then out first, then send an empty string on the to line</span>
+<span class='lineno'>16</span>             <span class='c'># callback.</span>
+<span class='lineno'>17</span> 
+<span class='lineno'>18</span>             <span class='k'>if</span> <span class='n'>data</span> <span class='o'>==</span> <span class='s'>&quot;&quot;</span><span class='p'>:</span>
+<span class='lineno'>19</span>                 <span class='k'>if</span> <span class='nb'>len</span><span class='p'>(</span><span class='bp'>self</span><span class='o'>.</span><span class='n'>line_buffer</span><span class='p'>)</span> <span class='o'>&gt;</span> <span class='mf'>0</span><span class='p'>:</span>
+<span class='lineno'>20</span>                     <span class='bp'>self</span><span class='o'>.</span><span class='n'>output_buffer</span><span class='p'>()</span>
+<span class='lineno'>21</span> 
+<span class='lineno'>22</span>                 <span class='bp'>self</span><span class='o'>.</span><span class='n'>line_callback</span><span class='p'>(</span><span class='s'>&quot;&quot;</span><span class='p'>)</span>
+<span class='lineno'>23</span>                 <span class='k'>return</span>
+<span class='lineno'>24</span> 
+<span class='lineno'>25</span>             <span class='c'># Otherwise, we split the new data into separate lines,</span>
+<span class='lineno'>26</span>             <span class='c'># each of which we call an “entry”.  We add each entry to</span>
+<span class='lineno'>27</span>             <span class='c'># the buffer.  If the entry ends with a newline, we output</span>
+<span class='lineno'>28</span>             <span class='c'># the buffer and then clear it.</span>
+<span class='lineno'>29</span> 
+<span class='lineno'>30</span>             <span class='n'>lines</span> <span class='o'>=</span> <span class='n'>data</span><span class='o'>.</span><span class='n'>splitlines</span><span class='p'>(</span><span class='bp'>True</span><span class='p'>)</span>
+<span class='lineno'>31</span>             <span class='k'>for</span> <span class='n'>line</span> <span class='ow'>in</span> <span class='n'>lines</span><span class='p'>:</span>
+<span class='lineno'>32</span>                 <span class='bp'>self</span><span class='o'>.</span><span class='n'>line_buffer</span><span class='o'>.</span><span class='n'>append</span><span class='p'>(</span><span class='n'>line</span><span class='p'>)</span>
+<span class='lineno'>33</span>                 <span class='k'>if</span> <span class='n'>line</span><span class='o'>.</span><span class='n'>endswith</span><span class='p'>((</span><span class='s'>&quot;</span><span class='se'>\r\n</span><span class='s'>&quot;</span><span class='p'>,</span> <span class='s'>&quot;</span><span class='se'>\n</span><span class='s'>&quot;</span><span class='p'>,</span> <span class='s'>&quot;</span><span class='se'>\r</span><span class='s'>&quot;</span><span class='p'>)):</span>
+<span class='lineno'>34</span>                     <span class='bp'>self</span><span class='o'>.</span><span class='n'>output_buffer</span><span class='p'>()</span>
+<span class='lineno'>35</span> 
+<span class='lineno'>36</span>             <span class='k'>return</span>
+<span class='lineno'>37</span> 
+<span class='lineno'>38</span>     <span class='k'>return</span> <span class='n'>Callback</span><span class='p'>(</span><span class='n'>line_callback</span><span class='p'>)</span><span class='o'>.</span><span class='n'>data_callback</span>
+</pre>
+</div>
+<ul>
+<li>
+<p><strong>line 1</strong> — We start by declaring the wrapping function. It will take in a line-based callback, and return an arbitrary-chunk callback.</p>
+</li>
+
+<li>
+<p><strong>lines 2-5</strong> — We&#8217;ll need to maintain some state in between invocations of the arbitrary-chunk callback — specifically, if a line of output data falls across a chunk boundary, we&#8217;ll need to hold onto the part in the first chunk until we receive the part in the second chunk. One relatively easy way to do this is to create a new class, and store the state in <code>self</code> properties. Note that the <code>Callback</code> class is declared inside the <code>wrap_line_callback</code> function.</p>
+
+<p>The buffer is a list of strings. This needs to be a list to support arbitrarily long lines, since we don&#8217;t know how many chunks we&#8217;ll need to store before outputting the line.</p>
+</li>
+
+<li>
+<p><strong>lines 7-10</strong> — We also declare a method in the class that can output the current contents of the saved buffer (if any). Like the original <code>communicate</code> method, we join the buffer list together into a single string, then pass it onto the wrapped line callback.</p>
+</li>
+
+<li>
+<p><strong>lines 12-23</strong> — Next we can define the arbitrary-chunk callback. First, it checks to see if we&#8217;ve received an EOF indicator (the empty string). If so, we first output whatever is currently in the buffer; then we pass on the EOF to the line callback.</p>
+</li>
+
+<li>
+<p><strong>lines 25-34</strong> — If we get some actual data, we first split the current chunk into separate lines. We pass in a <code>True</code> parameter to the <code>splitlines</code> method so that we get the newlines in the split strings. This will let us tell if the final string in the list represents a complete line, or if it&#8217;s the first part of a line that falls across a chunk boundary.</p>
+
+<p>We then loop through the split strings, adding them to the buffer. If any of them end with one of the newline endings (Unix, Windows, or otherwise), we output the buffer. Note that only the last string in the <code>lines</code> list can end with something other than a newline; anything at the beginning of the list is only a separate element because <code>splitlines</code> found a newline to split on!</p>
+</li>
+
+<li>
+<p><strong>line 38</strong> — Finally, we instantiate the new class and return its arbitrary-chunk callback.</p>
+</li>
+</ul>
+
+<h2 id='more_to_come'>More to come</h2>
+
+<p>This gives us a nice output callback mechanism, to prevent us from buffering the entire contents of the stdout and stderr streams in memory. In later posts, we&#8217;ll look at doing the same with the <em>input</em> data, and then we&#8217;ll address the second problem, of dealing with more than one subprocess simultaneously.</p>
+
+  <div class="postlinks">
+    <a href="/2009/08/13/subprocess-callbacks/">Permanent link</a>
+    |
+    <a href="/2009/08/13/subprocess-callbacks/#disqus_thread">Comments</a>
+  </div>
+
+  
+  </div>
+<div class="body_separator"></div>
+<div class="body">
+
+  
+
+  <h1>iPhone tethering</h1>
+
+  <div class="postdate">
+    Thursday, August 13, 2009
+  </div>
+
+  <p>While attending the <a href='http://mil-oss.org/'>Mil-OSS conference</a> this week, I had the opportunity to use one of the coolest features of my new iPhone 3GS — Bluetooth Internet tethering. Assuming that your mobile carrier allows the feature on their network, it provides a very easy way to have a persistent Internet connection, for those situations where a free Ethernet drop or WiFi access point aren&#8217;t readily available.</p>
+
+<p>I happened to have my Dell Mini 9 (running Ubuntu Jaunty) with me for the conference, rather than my MacBook, so I thought that it might be difficult to get the Bluetooth connection working between the phone and laptop. This <a href='http://xn--9bi.net/2009/06/17/tethering-iphone-3-0-to-ubuntu-9-04/'>blog posting</a>, however, provided exactly what I needed.</p>
+
+<p>Following this process, the connection worked without a hitch. One caveat is that I didn&#8217;t need to explicitly pair my phone with my laptop; the first time I ran the <code>pand --connect</code> command, my phone prompted me with the pairing confirmation dialog. Later connections didn&#8217;t require re-pairing.</p>
+
+<p>As for bandwidth, the connection was perfectly reasonable for email and basic Web surfing as long as I had decent 3G coverage — 3 of 5 bars or higher and I was good to go. I also did an <code>apt-get</code> package update as a “beefier” test; I was usually seeing around 20-30 Kb/sec of download speed, which would be fine for small daily updates, but would probably be unworkable for something large like a GNOME, texlive, or GHC update. All in all, not bad for some surreptitious email checking during the talks.</p>
+
+<h2 id='commandline_scripts'>Command-line scripts</h2>
+
+<p>One thing that can be cumbersome about the instructions on the blog post is that you have to run the <code>pand</code> and <code>ifup</code>/<code>ifdown</code> commands separately each time you want to start or stop the Bluetooth connection. Not a huge waste of effort, to be sure, but we can do better. So I wrote a quick little Bash script that will start and stop the connection with a single command. You can find the script in <a href='http://github.com/dcreager/home/commit/f5c0db363049f7433494924c63d4a2a19e325b6c'>this commit</a> on my Github page.</p>
+
+<p>The script is fairly straightforward; you start your Bluetooth tether by running</p>
+
+<pre><code>tether up</code></pre>
+
+<p>and you stop it by running</p>
+
+<pre><code>tether down</code></pre>
+
+<p>Instead of hard-coding your phone&#8217;s Bluetooth MAC address into the script itself, you place it into the <em>$HOME/etc/bluetooth.conf</em> file. This file isn&#8217;t checked into Git, so that I&#8217;m not putting my personal MAC addresses into the public repository. Instead, the commit contains a <em>$HOME/etc/bluetooth.conf.sample</em> file, which you copy over to <em>bluetooth.conf</em>, and then edit appropriately.</p>
+
+<h2 id='issues'>Issues</h2>
+
+<p>While this script worked great for during the conference, there are two main issues with it as it stands.</p>
+
+<ul>
+<li>
+<p><strong>dbus integration</strong> — Many applications now listen to the system&#8217;s dbus message bus to determine different facts about the current state of the system, including whether there&#8217;s an active Internet connection. The NetworkManager application knows to publish the correct dbus messages when it starts and stops a network connection. The <code>tether</code> script does not. This means that each time I open up Firefox after turning on the tether, I have to manually uncheck the <em>File › Work Offline</em> menu option to be able to access any web pages.</p>
+
+<p>Fixing this issue should only require finding the appropriate dbus messages to send, and adding them to the <code>up</code> and <code>down</code> cases in the script.</p>
+</li>
+
+<li>
+<p><strong>GUI access</strong> — While I don&#8217;t mind running a simple command to activate and deactivate the network connection, I realize that a GUI control within the NetworkManager applet would be more ideal. (This would also eliminate the first issue, since NetworkManager would then send the appropriate dbus messages when the connection is started or stopped.) Luckily, Dan Williams has recently <a href='http://blogs.gnome.org/dcbw/2009/07/10/unwire-with-networkmanager/'>added Bluetooth PAN support</a> to <code>nm-applet</code>. The new code is in the bleeding edge tree, so hopefully it will make it into a release in time to be picked up for October&#8217;s Karmic release.</p>
+</li>
+</ul>
+
+  <div class="postlinks">
+    <a href="/2009/08/13/iphone-tethering/">Permanent link</a>
+    |
+    <a href="/2009/08/13/iphone-tethering/#disqus_thread">Comments</a>
+  </div>
+
 
         </div>
 
