@@ -32,7 +32,13 @@ body {
     text-align: center;
 }
 
-.site_content { padding-top: 20px; }
+/*
+ * No longer want this, since the site logo should be flush top.  We
+ * make sure to put the right padding between the site_header div and
+ * the first body div.
+ */
+
+/* .site_content { padding-top: 20px; } */
 
 .body_separator { padding-top: 20px; }
 
@@ -131,6 +137,29 @@ body {
 }
 
 /*--------------------------------------------------------------------
+ * Site header
+ */
+
+.site_header {
+    margin-left: 396px;
+    margin-right: 16px;
+    padding-top: 8px;
+    margin-bottom: 12px;
+}
+
+.site_header .title {
+    color: #282828;
+    font-weight: bold;
+    font-size: 140%;
+    margin-bottom: -3px;
+}
+
+.site_header .subtitle {
+    color: #444;
+    font-size: 80%;
+}
+
+/*--------------------------------------------------------------------
  * Citations
  */
 
@@ -222,7 +251,7 @@ body {
  */
 
 .leftnav {
-    padding-top: 300px;
+    padding-top: 320px;         /* 300px for the logo, 20px for padding */
 }
 
 .leftnav p {
