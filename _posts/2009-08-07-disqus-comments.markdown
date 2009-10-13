@@ -40,6 +40,24 @@ website, you see the snippet of code to include.  For
 </a>
 {% endhighlight %}
 
+<div class="warning">
+  <p>
+    <strong>UPDATE</strong>: Please do not copy-paste this JavaScript
+    snippet directly into your own website!  There are several
+    occurrences of the string “<code>dcreager</code>” which should be
+    replaced with the name of your own Disqus account.  If you don't
+    do this, your comment threads won't be associated with your
+    account, and you therefore won't be able to moderate or export
+    those comments.  Plus, it clutters up my own moderation panel.
+  </p>
+
+  <p>
+    To see the specific JavaScript snippet for your own site, please
+    go to <a
+    href="http://www.disqus.com/comments/install/">http://www.disqus.com/comments/install/</a>.
+  </p>
+</div>
+
 I have to wrap this in another `<div>` element, to fit into the CSS
 layout that I'm using, but otherwise it's a straightforward
 copy/paste.

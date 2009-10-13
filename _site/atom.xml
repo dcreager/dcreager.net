@@ -4,7 +4,7 @@
   <title>dcreager.net</title>
   <link href="http://dcreager.net/atom.xml" rel="self"/>
   <link href="http://dcreager.net/"/>
-  <updated>2009-10-08T18:38:19-04:00</updated>
+  <updated>2009-10-13T12:50:10-04:00</updated>
   <id>http://dcreager.net/</id>
   <author>
     <name>Douglas Creager</name>
@@ -361,6 +361,21 @@ $ sudo apt-get install `cat /tmp/tormod.packages`&lt;/code&gt;&lt;/pre&gt;</cont
   &lt;span class='nx'&gt;blog&lt;/span&gt; &lt;span class='nx'&gt;comments&lt;/span&gt; &lt;span class='nx'&gt;powered&lt;/span&gt; &lt;span class='nx'&gt;by&lt;/span&gt; &lt;span class='o'&gt;&amp;lt;&lt;/span&gt;&lt;span class='nx'&gt;span&lt;/span&gt; &lt;span class='nx'&gt;class&lt;/span&gt;&lt;span class='o'&gt;=&lt;/span&gt;&lt;span class='s2'&gt;&amp;quot;logo-disqus&amp;quot;&lt;/span&gt;&lt;span class='o'&gt;&amp;gt;&lt;/span&gt;&lt;span class='nx'&gt;Disqus&lt;/span&gt;&lt;span class='o'&gt;&amp;lt;/&lt;/span&gt;&lt;span class='nx'&gt;span&lt;/span&gt;&lt;span class='o'&gt;&amp;gt;&lt;/span&gt;
 &lt;span class='o'&gt;&amp;lt;/&lt;/span&gt;&lt;span class='nx'&gt;a&lt;/span&gt;&lt;span class='o'&gt;&amp;gt;&lt;/span&gt;
 &lt;/pre&gt;
+&lt;/div&gt;&lt;div class='warning'&gt;
+  &lt;p&gt;
+    &lt;strong&gt;UPDATE&lt;/strong&gt;: Please do not copy-paste this JavaScript
+    snippet directly into your own website!  There are several
+    occurrences of the string “&lt;code&gt;dcreager&lt;/code&gt;” which should be
+    replaced with the name of your own Disqus account.  If you don't
+    do this, your comment threads won't be associated with your
+    account, and you therefore won't be able to moderate or export
+    those comments.  Plus, it clutters up my own moderation panel.
+  &lt;/p&gt;
+
+  &lt;p&gt;
+    To see the specific JavaScript snippet for your own site, please
+    go to &lt;a href='http://www.disqus.com/comments/install/'&gt;http://www.disqus.com/comments/install/&lt;/a&gt;.
+  &lt;/p&gt;
 &lt;/div&gt;
 &lt;p&gt;I have to wrap this in another &lt;code&gt;&amp;lt;div&amp;gt;&lt;/code&gt; element, to fit into the CSS layout that I&amp;#8217;m using, but otherwise it&amp;#8217;s a straightforward copy/paste.&lt;/p&gt;
 

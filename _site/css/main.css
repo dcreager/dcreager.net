@@ -75,6 +75,23 @@ body {
     margin-left: 32px;
 }
 
+.body blockquote {
+    margin-left: 32px;
+}
+
+.body .warning {
+    margin-left: 64px;
+    margin-top: 12px;
+    padding-left: 8px;
+    border-left: 3px solid #f00;
+}
+
+.body .warning p {
+    margin-top: 8px;
+    padding-top: 0px;
+    margin-left: 0px;
+}
+
 .body code {
     font-size: 80%;
 }
