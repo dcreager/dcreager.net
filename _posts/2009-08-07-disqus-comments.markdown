@@ -29,10 +29,10 @@ website, you see the snippet of code to include.  For
 
 <script
    type="text/javascript"
-   src="http://disqus.com/forums/dcreager/embed.js">
+   src="http://disqus.com/forums/«account»/embed.js">
 </script>
 <noscript>
-  <a href="http://dcreager.disqus.com/?url=ref">View the discussion thread.</a>
+  <a href="http://«account».disqus.com/?url=ref">View the discussion thread.</a>
 </noscript>
 
 <a href="http://disqus.com" class="dsq-brlink">
@@ -44,11 +44,11 @@ website, you see the snippet of code to include.  For
   <p>
     <strong>UPDATE</strong>: Please do not copy-paste this JavaScript
     snippet directly into your own website!  There are several
-    occurrences of the string “<code>dcreager</code>” which should be
+    occurrences of the string “<code>«account»</code>” which should be
     replaced with the name of your own Disqus account.  If you don't
     do this, your comment threads won't be associated with your
     account, and you therefore won't be able to moderate or export
-    those comments.  Plus, it clutters up my own moderation panel.
+    those comments.
   </p>
 
   <p>
@@ -130,10 +130,10 @@ variable is `true`:
 
 <script
    type="text/javascript"
-   src="http://disqus.com/forums/dcreager/embed.js">
+   src="http://disqus.com/forums/«account»/embed.js">
 </script>
 <noscript>
-  <a href="http://dcreager.disqus.com/?url=ref">View the discussion thread.</a>
+  <a href="http://«account».disqus.com/?url=ref">View the discussion thread.</a>
 </noscript>
 
 <a href="http://disqus.com" class="dsq-brlink">

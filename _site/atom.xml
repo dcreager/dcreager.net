@@ -4,7 +4,7 @@
   <title>dcreager.net</title>
   <link href="http://dcreager.net/atom.xml" rel="self"/>
   <link href="http://dcreager.net/"/>
-  <updated>2009-10-13T12:50:10-04:00</updated>
+  <updated>2009-10-14T12:01:17-04:00</updated>
   <id>http://dcreager.net/</id>
   <author>
     <name>Douglas Creager</name>
@@ -351,10 +351,10 @@ $ sudo apt-get install `cat /tmp/tormod.packages`&lt;/code&gt;&lt;/pre&gt;</cont
 
 &lt;span class='o'&gt;&amp;lt;&lt;/span&gt;&lt;span class='nx'&gt;script&lt;/span&gt;
    &lt;span class='nx'&gt;type&lt;/span&gt;&lt;span class='o'&gt;=&lt;/span&gt;&lt;span class='s2'&gt;&amp;quot;text/javascript&amp;quot;&lt;/span&gt;
-   &lt;span class='nx'&gt;src&lt;/span&gt;&lt;span class='o'&gt;=&lt;/span&gt;&lt;span class='s2'&gt;&amp;quot;http://disqus.com/forums/dcreager/embed.js&amp;quot;&lt;/span&gt;&lt;span class='o'&gt;&amp;gt;&lt;/span&gt;
+   &lt;span class='nx'&gt;src&lt;/span&gt;&lt;span class='o'&gt;=&lt;/span&gt;&lt;span class='s2'&gt;&amp;quot;http://disqus.com/forums/«account»/embed.js&amp;quot;&lt;/span&gt;&lt;span class='o'&gt;&amp;gt;&lt;/span&gt;
 &lt;span class='o'&gt;&amp;lt;/&lt;/span&gt;&lt;span class='nx'&gt;script&lt;/span&gt;&lt;span class='o'&gt;&amp;gt;&lt;/span&gt;
 &lt;span class='o'&gt;&amp;lt;&lt;/span&gt;&lt;span class='nx'&gt;noscript&lt;/span&gt;&lt;span class='o'&gt;&amp;gt;&lt;/span&gt;
-  &lt;span class='o'&gt;&amp;lt;&lt;/span&gt;&lt;span class='nx'&gt;a&lt;/span&gt; &lt;span class='nx'&gt;href&lt;/span&gt;&lt;span class='o'&gt;=&lt;/span&gt;&lt;span class='s2'&gt;&amp;quot;http://dcreager.disqus.com/?url=ref&amp;quot;&lt;/span&gt;&lt;span class='o'&gt;&amp;gt;&lt;/span&gt;&lt;span class='nx'&gt;View&lt;/span&gt; &lt;span class='nx'&gt;the&lt;/span&gt; &lt;span class='nx'&gt;discussion&lt;/span&gt; &lt;span class='nx'&gt;thread&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='o'&gt;&amp;lt;/&lt;/span&gt;&lt;span class='nx'&gt;a&lt;/span&gt;&lt;span class='o'&gt;&amp;gt;&lt;/span&gt;
+  &lt;span class='o'&gt;&amp;lt;&lt;/span&gt;&lt;span class='nx'&gt;a&lt;/span&gt; &lt;span class='nx'&gt;href&lt;/span&gt;&lt;span class='o'&gt;=&lt;/span&gt;&lt;span class='s2'&gt;&amp;quot;http://«account».disqus.com/?url=ref&amp;quot;&lt;/span&gt;&lt;span class='o'&gt;&amp;gt;&lt;/span&gt;&lt;span class='nx'&gt;View&lt;/span&gt; &lt;span class='nx'&gt;the&lt;/span&gt; &lt;span class='nx'&gt;discussion&lt;/span&gt; &lt;span class='nx'&gt;thread&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='o'&gt;&amp;lt;/&lt;/span&gt;&lt;span class='nx'&gt;a&lt;/span&gt;&lt;span class='o'&gt;&amp;gt;&lt;/span&gt;
 &lt;span class='o'&gt;&amp;lt;/&lt;/span&gt;&lt;span class='nx'&gt;noscript&lt;/span&gt;&lt;span class='o'&gt;&amp;gt;&lt;/span&gt;
 
 &lt;span class='o'&gt;&amp;lt;&lt;/span&gt;&lt;span class='nx'&gt;a&lt;/span&gt; &lt;span class='nx'&gt;href&lt;/span&gt;&lt;span class='o'&gt;=&lt;/span&gt;&lt;span class='s2'&gt;&amp;quot;http://disqus.com&amp;quot;&lt;/span&gt; &lt;span class='nx'&gt;class&lt;/span&gt;&lt;span class='o'&gt;=&lt;/span&gt;&lt;span class='s2'&gt;&amp;quot;dsq-brlink&amp;quot;&lt;/span&gt;&lt;span class='o'&gt;&amp;gt;&lt;/span&gt;
@@ -365,11 +365,11 @@ $ sudo apt-get install `cat /tmp/tormod.packages`&lt;/code&gt;&lt;/pre&gt;</cont
   &lt;p&gt;
     &lt;strong&gt;UPDATE&lt;/strong&gt;: Please do not copy-paste this JavaScript
     snippet directly into your own website!  There are several
-    occurrences of the string “&lt;code&gt;dcreager&lt;/code&gt;” which should be
+    occurrences of the string “&lt;code&gt;«account»&lt;/code&gt;” which should be
     replaced with the name of your own Disqus account.  If you don't
     do this, your comment threads won't be associated with your
     account, and you therefore won't be able to moderate or export
-    those comments.  Plus, it clutters up my own moderation panel.
+    those comments.
   &lt;/p&gt;
 
   &lt;p&gt;
@@ -418,10 +418,10 @@ $ sudo apt-get install `cat /tmp/tormod.packages`&lt;/code&gt;&lt;/pre&gt;</cont
 
 &lt;span class='o'&gt;&amp;lt;&lt;/span&gt;&lt;span class='nx'&gt;script&lt;/span&gt;
    &lt;span class='nx'&gt;type&lt;/span&gt;&lt;span class='o'&gt;=&lt;/span&gt;&lt;span class='s2'&gt;&amp;quot;text/javascript&amp;quot;&lt;/span&gt;
-   &lt;span class='nx'&gt;src&lt;/span&gt;&lt;span class='o'&gt;=&lt;/span&gt;&lt;span class='s2'&gt;&amp;quot;http://disqus.com/forums/dcreager/embed.js&amp;quot;&lt;/span&gt;&lt;span class='o'&gt;&amp;gt;&lt;/span&gt;
+   &lt;span class='nx'&gt;src&lt;/span&gt;&lt;span class='o'&gt;=&lt;/span&gt;&lt;span class='s2'&gt;&amp;quot;http://disqus.com/forums/«account»/embed.js&amp;quot;&lt;/span&gt;&lt;span class='o'&gt;&amp;gt;&lt;/span&gt;
 &lt;span class='o'&gt;&amp;lt;/&lt;/span&gt;&lt;span class='nx'&gt;script&lt;/span&gt;&lt;span class='o'&gt;&amp;gt;&lt;/span&gt;
 &lt;span class='o'&gt;&amp;lt;&lt;/span&gt;&lt;span class='nx'&gt;noscript&lt;/span&gt;&lt;span class='o'&gt;&amp;gt;&lt;/span&gt;
-  &lt;span class='o'&gt;&amp;lt;&lt;/span&gt;&lt;span class='nx'&gt;a&lt;/span&gt; &lt;span class='nx'&gt;href&lt;/span&gt;&lt;span class='o'&gt;=&lt;/span&gt;&lt;span class='s2'&gt;&amp;quot;http://dcreager.disqus.com/?url=ref&amp;quot;&lt;/span&gt;&lt;span class='o'&gt;&amp;gt;&lt;/span&gt;&lt;span class='nx'&gt;View&lt;/span&gt; &lt;span class='nx'&gt;the&lt;/span&gt; &lt;span class='nx'&gt;discussion&lt;/span&gt; &lt;span class='nx'&gt;thread&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='o'&gt;&amp;lt;/&lt;/span&gt;&lt;span class='nx'&gt;a&lt;/span&gt;&lt;span class='o'&gt;&amp;gt;&lt;/span&gt;
+  &lt;span class='o'&gt;&amp;lt;&lt;/span&gt;&lt;span class='nx'&gt;a&lt;/span&gt; &lt;span class='nx'&gt;href&lt;/span&gt;&lt;span class='o'&gt;=&lt;/span&gt;&lt;span class='s2'&gt;&amp;quot;http://«account».disqus.com/?url=ref&amp;quot;&lt;/span&gt;&lt;span class='o'&gt;&amp;gt;&lt;/span&gt;&lt;span class='nx'&gt;View&lt;/span&gt; &lt;span class='nx'&gt;the&lt;/span&gt; &lt;span class='nx'&gt;discussion&lt;/span&gt; &lt;span class='nx'&gt;thread&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='o'&gt;&amp;lt;/&lt;/span&gt;&lt;span class='nx'&gt;a&lt;/span&gt;&lt;span class='o'&gt;&amp;gt;&lt;/span&gt;
 &lt;span class='o'&gt;&amp;lt;/&lt;/span&gt;&lt;span class='nx'&gt;noscript&lt;/span&gt;&lt;span class='o'&gt;&amp;gt;&lt;/span&gt;
 
 &lt;span class='o'&gt;&amp;lt;&lt;/span&gt;&lt;span class='nx'&gt;a&lt;/span&gt; &lt;span class='nx'&gt;href&lt;/span&gt;&lt;span class='o'&gt;=&lt;/span&gt;&lt;span class='s2'&gt;&amp;quot;http://disqus.com&amp;quot;&lt;/span&gt; &lt;span class='nx'&gt;class&lt;/span&gt;&lt;span class='o'&gt;=&lt;/span&gt;&lt;span class='s2'&gt;&amp;quot;dsq-brlink&amp;quot;&lt;/span&gt;&lt;span class='o'&gt;&amp;gt;&lt;/span&gt;
