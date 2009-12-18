@@ -64,12 +64,12 @@
 <span class='lineno'>13</span>         <span class='n'>read_set</span><span class='o'>.</span><span class='n'>append</span><span class='p'>(</span><span class='bp'>self</span><span class='o'>.</span><span class='n'>stderr</span><span class='p'>)</span>
 <span class='lineno'>14</span>         <span class='n'>stderr</span> <span class='o'>=</span> <span class='p'>[]</span>
 <span class='lineno'>15</span> 
-<span class='lineno'>16</span>     <span class='n'>input_offset</span> <span class='o'>=</span> <span class='mf'>0</span>
+<span class='lineno'>16</span>     <span class='n'>input_offset</span> <span class='o'>=</span> <span class='mi'>0</span>
 <span class='lineno'>17</span>     <span class='k'>while</span> <span class='n'>read_set</span> <span class='ow'>or</span> <span class='n'>write_set</span><span class='p'>:</span>
 <span class='lineno'>18</span>         <span class='k'>try</span><span class='p'>:</span>
 <span class='lineno'>19</span>             <span class='n'>rlist</span><span class='p'>,</span> <span class='n'>wlist</span><span class='p'>,</span> <span class='n'>xlist</span> <span class='o'>=</span> <span class='n'>select</span><span class='o'>.</span><span class='n'>select</span><span class='p'>(</span><span class='n'>read_set</span><span class='p'>,</span> <span class='n'>write_set</span><span class='p'>,</span> <span class='p'>[])</span>
 <span class='lineno'>20</span>         <span class='k'>except</span> <span class='n'>select</span><span class='o'>.</span><span class='n'>error</span><span class='p'>,</span> <span class='n'>e</span><span class='p'>:</span>
-<span class='lineno'>21</span>             <span class='k'>if</span> <span class='n'>e</span><span class='o'>.</span><span class='n'>args</span><span class='p'>[</span><span class='mf'>0</span><span class='p'>]</span> <span class='o'>==</span> <span class='n'>errno</span><span class='o'>.</span><span class='n'>EINTR</span><span class='p'>:</span>
+<span class='lineno'>21</span>             <span class='k'>if</span> <span class='n'>e</span><span class='o'>.</span><span class='n'>args</span><span class='p'>[</span><span class='mi'>0</span><span class='p'>]</span> <span class='o'>==</span> <span class='n'>errno</span><span class='o'>.</span><span class='n'>EINTR</span><span class='p'>:</span>
 <span class='lineno'>22</span>                 <span class='k'>continue</span>
 <span class='lineno'>23</span>             <span class='k'>raise</span>
 <span class='lineno'>24</span> 
@@ -82,14 +82,14 @@
 <span class='lineno'>31</span>                 <span class='n'>write_set</span><span class='o'>.</span><span class='n'>remove</span><span class='p'>(</span><span class='bp'>self</span><span class='o'>.</span><span class='n'>stdin</span><span class='p'>)</span>
 <span class='lineno'>32</span> 
 <span class='lineno'>33</span>         <span class='k'>if</span> <span class='bp'>self</span><span class='o'>.</span><span class='n'>stdout</span> <span class='ow'>in</span> <span class='n'>rlist</span><span class='p'>:</span>
-<span class='lineno'>34</span>             <span class='n'>data</span> <span class='o'>=</span> <span class='n'>os</span><span class='o'>.</span><span class='n'>read</span><span class='p'>(</span><span class='bp'>self</span><span class='o'>.</span><span class='n'>stdout</span><span class='o'>.</span><span class='n'>fileno</span><span class='p'>(),</span> <span class='mf'>1024</span><span class='p'>)</span>
+<span class='lineno'>34</span>             <span class='n'>data</span> <span class='o'>=</span> <span class='n'>os</span><span class='o'>.</span><span class='n'>read</span><span class='p'>(</span><span class='bp'>self</span><span class='o'>.</span><span class='n'>stdout</span><span class='o'>.</span><span class='n'>fileno</span><span class='p'>(),</span> <span class='mi'>1024</span><span class='p'>)</span>
 <span class='lineno'>35</span>             <span class='k'>if</span> <span class='n'>data</span> <span class='o'>==</span> <span class='s'>&quot;&quot;</span><span class='p'>:</span>
 <span class='lineno'>36</span>                 <span class='bp'>self</span><span class='o'>.</span><span class='n'>stdout</span><span class='o'>.</span><span class='n'>close</span><span class='p'>()</span>
 <span class='lineno'>37</span>                 <span class='n'>read_set</span><span class='o'>.</span><span class='n'>remove</span><span class='p'>(</span><span class='bp'>self</span><span class='o'>.</span><span class='n'>stdout</span><span class='p'>)</span>
 <span class='lineno'>38</span>             <span class='n'>stdout</span><span class='o'>.</span><span class='n'>append</span><span class='p'>(</span><span class='n'>data</span><span class='p'>)</span>
 <span class='lineno'>39</span> 
 <span class='lineno'>40</span>         <span class='k'>if</span> <span class='bp'>self</span><span class='o'>.</span><span class='n'>stderr</span> <span class='ow'>in</span> <span class='n'>rlist</span><span class='p'>:</span>
-<span class='lineno'>41</span>             <span class='n'>data</span> <span class='o'>=</span> <span class='n'>os</span><span class='o'>.</span><span class='n'>read</span><span class='p'>(</span><span class='bp'>self</span><span class='o'>.</span><span class='n'>stderr</span><span class='o'>.</span><span class='n'>fileno</span><span class='p'>(),</span> <span class='mf'>1024</span><span class='p'>)</span>
+<span class='lineno'>41</span>             <span class='n'>data</span> <span class='o'>=</span> <span class='n'>os</span><span class='o'>.</span><span class='n'>read</span><span class='p'>(</span><span class='bp'>self</span><span class='o'>.</span><span class='n'>stderr</span><span class='o'>.</span><span class='n'>fileno</span><span class='p'>(),</span> <span class='mi'>1024</span><span class='p'>)</span>
 <span class='lineno'>42</span>             <span class='k'>if</span> <span class='n'>data</span> <span class='o'>==</span> <span class='s'>&quot;&quot;</span><span class='p'>:</span>
 <span class='lineno'>43</span>                 <span class='bp'>self</span><span class='o'>.</span><span class='n'>stderr</span><span class='o'>.</span><span class='n'>close</span><span class='p'>()</span>
 <span class='lineno'>44</span>                 <span class='n'>read_set</span><span class='o'>.</span><span class='n'>remove</span><span class='p'>(</span><span class='bp'>self</span><span class='o'>.</span><span class='n'>stderr</span><span class='p'>)</span>
@@ -133,7 +133,7 @@
 <span class='lineno'>16</span>             <span class='c'># callback.</span>
 <span class='lineno'>17</span> 
 <span class='lineno'>18</span>             <span class='k'>if</span> <span class='n'>data</span> <span class='o'>==</span> <span class='s'>&quot;&quot;</span><span class='p'>:</span>
-<span class='lineno'>19</span>                 <span class='k'>if</span> <span class='nb'>len</span><span class='p'>(</span><span class='bp'>self</span><span class='o'>.</span><span class='n'>line_buffer</span><span class='p'>)</span> <span class='o'>&gt;</span> <span class='mf'>0</span><span class='p'>:</span>
+<span class='lineno'>19</span>                 <span class='k'>if</span> <span class='nb'>len</span><span class='p'>(</span><span class='bp'>self</span><span class='o'>.</span><span class='n'>line_buffer</span><span class='p'>)</span> <span class='o'>&gt;</span> <span class='mi'>0</span><span class='p'>:</span>
 <span class='lineno'>20</span>                     <span class='bp'>self</span><span class='o'>.</span><span class='n'>output_buffer</span><span class='p'>()</span>
 <span class='lineno'>21</span> 
 <span class='lineno'>22</span>                 <span class='bp'>self</span><span class='o'>.</span><span class='n'>line_callback</span><span class='p'>(</span><span class='s'>&quot;&quot;</span><span class='p'>)</span>
