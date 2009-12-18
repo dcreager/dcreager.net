@@ -45,6 +45,56 @@
 
   
 
+  <h1>Simulating “make distclean” in SCons</h1>
+
+  <div class="postdate">
+    Friday, December 18, 2009
+  </div>
+
+  <p>SCons provides an automatic “clean” target out of the box — just run <code>scons -c</code>, and SCons will delete all of the objects that it knows how to build. This is a very useful feature; however, there are two main missing features that I want to add to my build scripts. First, I want to be able to delete all of the temporary files SCons uses, such as its configuration cache and any files I use to store variable values. These aren&#8217;t included in the default list of the files to clean up. Second, I want more control over which items are deleted by default, when you specify <code>scons -c</code> without any targets. I&#8217;ll describe my solution to the first problem in this post. I&#8217;ll write up the second problem in another post.</p>
+
+<h2 id='deleting_sconss_temporary_files'>Deleting SCons&#8217;s temporary files</h2>
+
+<p>This feature is akin to the <code>make distclean</code> target that Automake puts into the Makefiles that it generates. This differs from <code>make clean</code>; <code>make clean</code> is intended to delete all of the build products, but leave behind the results of the <code>configure</code> step, whereas <code>make
+distclean</code> is supposed delete <em>everything</em>, returning the source tree to the same state as when you&#8217;d just unpacked the tarball.</p>
+
+<p>The <code>scons -c</code> command is analogous to <code>make clean</code>, and requires no setup. It will automatically delete any of the build products that are created by running <code>scons</code>. There are several cache files that SCons creates, however, and it would be nice to have an equivalent to <code>make distclean</code>. This is especially useful when developing a new <code>Configuration</code> check, for instance — if you make a change to the test, you want to be able to (easily) force SCons to ignore any cached results, and try all of the tests again.</p>
+
+<p>This is actually fairly easy to set up, assuming you know the list of temporary files that SCons will create. You can add the following rule to your top-level <em>SConstruct</em> file:</p>
+<div class='highlight'><pre><span class='lineno'>1</span> <span class='n'>env</span><span class='o'>.</span><span class='n'>Clean</span><span class='p'>(</span><span class='s'>&quot;distclean&quot;</span><span class='p'>,</span>
+<span class='lineno'>2</span>           <span class='p'>[</span>
+<span class='lineno'>3</span>            <span class='s'>&quot;.sconsign.dblite&quot;</span><span class='p'>,</span>
+<span class='lineno'>4</span>            <span class='s'>&quot;.sconf_temp&quot;</span><span class='p'>,</span>
+<span class='lineno'>5</span>            <span class='s'>&quot;config.log&quot;</span><span class='p'>,</span>
+<span class='lineno'>6</span>           <span class='p'>])</span>
+</pre>
+</div>
+<p>As far as I can tell, these three files are always created by SCons. To delete these files, you simply run <code>scons -c distclean</code>. Because we&#8217;ve defined the target using <code>Clean</code>, it will only be run when you pass in the <code>-c</code> option to <code>scons</code>.</p>
+
+<p>Since we&#8217;re putting together the file list manually, you should make sure to add any additional cache files that your SCons scripts use. For instance, I&#8217;m using some <code>Variable</code> options, which I store into a file called <em>.scons.vars</em>. (This means that the user doesn&#8217;t have to type them in with every invocation of <code>scons</code>.) By using these variables, I have to add another entry to the <code>distclean</code> target:</p>
+<div class='highlight'><pre><span class='lineno'>1</span> <span class='nb'>vars</span> <span class='o'>=</span> <span class='n'>Variables</span><span class='p'>(</span><span class='s'>&#39;.scons.vars&#39;</span><span class='p'>,</span> <span class='n'>ARGUMENTS</span><span class='p'>)</span>
+<span class='lineno'>2</span> <span class='c'># ...define a bunch of variables</span>
+<span class='lineno'>3</span> <span class='nb'>vars</span><span class='o'>.</span><span class='n'>Update</span><span class='p'>(</span><span class='n'>env</span><span class='p'>)</span>
+<span class='lineno'>4</span> <span class='nb'>vars</span><span class='o'>.</span><span class='n'>Save</span><span class='p'>(</span><span class='s'>&quot;.scons.vars&quot;</span><span class='p'>,</span> <span class='n'>env</span><span class='p'>)</span>
+<span class='lineno'>5</span> 
+<span class='lineno'>6</span> <span class='n'>env</span><span class='o'>.</span><span class='n'>Clean</span><span class='p'>(</span><span class='s'>&quot;distclean&quot;</span><span class='p'>,</span> <span class='p'>[</span><span class='s'>&quot;.scons.vars&quot;</span><span class='p'>])</span>
+</pre>
+</div>
+<p>Note how, just like with any SCons target, I can define the <code>distclean</code> target multiple times. SCons will take care of merging them into a single action, deleting all of the specified files when you run <code>scons -c distclean</code>.</p>
+
+  <div class="postlinks">
+    <a href="/2009/12/18/make-distclean-in-scons/">Permanent link</a>
+    |
+    <a href="/2009/12/18/make-distclean-in-scons/#disqus_thread">Comments</a>
+  </div>
+
+  
+  </div>
+<div class="body_separator"></div>
+<div class="body">
+
+  
+
   <h1>Downgrading packages in Ubuntu</h1>
 
   <div class="postdate">
@@ -341,63 +391,6 @@ $ sudo apt-get install `cat /tmp/tormod.packages`</code></pre>
     <a href="/2009/08/13/subprocess-callbacks/">Permanent link</a>
     |
     <a href="/2009/08/13/subprocess-callbacks/#disqus_thread">Comments</a>
-  </div>
-
-  
-  </div>
-<div class="body_separator"></div>
-<div class="body">
-
-  
-
-  <h1>iPhone tethering</h1>
-
-  <div class="postdate">
-    Thursday, August 13, 2009
-  </div>
-
-  <p>While attending the <a href='http://mil-oss.org/'>Mil-OSS conference</a> this week, I had the opportunity to use one of the coolest features of my new iPhone 3GS — Bluetooth Internet tethering. Assuming that your mobile carrier allows the feature on their network, it provides a very easy way to have a persistent Internet connection, for those situations where a free Ethernet drop or WiFi access point aren&#8217;t readily available.</p>
-
-<p>I happened to have my Dell Mini 9 (running Ubuntu Jaunty) with me for the conference, rather than my MacBook, so I thought that it might be difficult to get the Bluetooth connection working between the phone and laptop. This <a href='http://xn--9bi.net/2009/06/17/tethering-iphone-3-0-to-ubuntu-9-04/'>blog posting</a>, however, provided exactly what I needed.</p>
-
-<p>Following this process, the connection worked without a hitch. One caveat is that I didn&#8217;t need to explicitly pair my phone with my laptop; the first time I ran the <code>pand --connect</code> command, my phone prompted me with the pairing confirmation dialog. Later connections didn&#8217;t require re-pairing.</p>
-
-<p>As for bandwidth, the connection was perfectly reasonable for email and basic Web surfing as long as I had decent 3G coverage — 3 of 5 bars or higher and I was good to go. I also did an <code>apt-get</code> package update as a “beefier” test; I was usually seeing around 20-30 Kb/sec of download speed, which would be fine for small daily updates, but would probably be unworkable for something large like a GNOME, texlive, or GHC update. All in all, not bad for some surreptitious email checking during the talks.</p>
-
-<h2 id='commandline_scripts'>Command-line scripts</h2>
-
-<p>One thing that can be cumbersome about the instructions on the blog post is that you have to run the <code>pand</code> and <code>ifup</code>/<code>ifdown</code> commands separately each time you want to start or stop the Bluetooth connection. Not a huge waste of effort, to be sure, but we can do better. So I wrote a quick little Bash script that will start and stop the connection with a single command. You can find the script in <a href='http://github.com/dcreager/home/commit/f5c0db363049f7433494924c63d4a2a19e325b6c'>this commit</a> on my Github page.</p>
-
-<p>The script is fairly straightforward; you start your Bluetooth tether by running</p>
-
-<pre><code>tether up</code></pre>
-
-<p>and you stop it by running</p>
-
-<pre><code>tether down</code></pre>
-
-<p>Instead of hard-coding your phone&#8217;s Bluetooth MAC address into the script itself, you place it into the <em>$HOME/etc/bluetooth.conf</em> file. This file isn&#8217;t checked into Git, so that I&#8217;m not putting my personal MAC addresses into the public repository. Instead, the commit contains a <em>$HOME/etc/bluetooth.conf.sample</em> file, which you copy over to <em>bluetooth.conf</em>, and then edit appropriately.</p>
-
-<h2 id='issues'>Issues</h2>
-
-<p>While this script worked great for during the conference, there are two main issues with it as it stands.</p>
-
-<ul>
-<li>
-<p><strong>dbus integration</strong> — Many applications now listen to the system&#8217;s dbus message bus to determine different facts about the current state of the system, including whether there&#8217;s an active Internet connection. The NetworkManager application knows to publish the correct dbus messages when it starts and stops a network connection. The <code>tether</code> script does not. This means that each time I open up Firefox after turning on the tether, I have to manually uncheck the <em>File › Work Offline</em> menu option to be able to access any web pages.</p>
-
-<p>Fixing this issue should only require finding the appropriate dbus messages to send, and adding them to the <code>up</code> and <code>down</code> cases in the script.</p>
-</li>
-
-<li>
-<p><strong>GUI access</strong> — While I don&#8217;t mind running a simple command to activate and deactivate the network connection, I realize that a GUI control within the NetworkManager applet would be more ideal. (This would also eliminate the first issue, since NetworkManager would then send the appropriate dbus messages when the connection is started or stopped.) Luckily, Dan Williams has recently <a href='http://blogs.gnome.org/dcbw/2009/07/10/unwire-with-networkmanager/'>added Bluetooth PAN support</a> to <code>nm-applet</code>. The new code is in the bleeding edge tree, so hopefully it will make it into a release in time to be picked up for October&#8217;s Karmic release.</p>
-</li>
-</ul>
-
-  <div class="postlinks">
-    <a href="/2009/08/13/iphone-tethering/">Permanent link</a>
-    |
-    <a href="/2009/08/13/iphone-tethering/#disqus_thread">Comments</a>
   </div>
 
 
