@@ -23,6 +23,8 @@ body > .site { height: auto; min-height: 100%; }
  * Basic formatting
  */
 
+div.preload { display: none; }
+
 body {
     background-color: #a0a0a0;
     background-image: url('/images/imperial-logo-396-306.png');
