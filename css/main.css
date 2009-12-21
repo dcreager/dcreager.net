@@ -275,6 +275,13 @@ body {
     width: 200px;
 }
 
+.leftsep {
+    margin-top: 20px;
+    margin-left: 10px;
+    margin-right: 10px;
+    border-bottom: 1px solid #444;
+}
+
 /*--------------------------------------------------------------------
  * Navigation bar
  */
@@ -297,6 +304,20 @@ body {
 
 .leftnav a:hover {
     color: #ccc;
+}
+
+/*--------------------------------------------------------------------
+ * About box
+ */
+
+.leftbio {
+    padding-top: 5px;
+}
+
+.leftbio h1 {
+    color: #444;
+    font-size: 80%;
+    font-weight: normal;
 }
 
 /*--------------------------------------------------------------------
