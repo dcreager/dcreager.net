@@ -56,6 +56,60 @@
 
   
 
+  <h1>Decentralized datatypes</h1>
+
+  <div class="postdate">
+    Monday, December 21, 2009
+  </div>
+
+  <p>Over the past year or so there have been quite a few blog postings in the REST world about MIME types, and their role in the REST architecture. A lot of the discussion seems to be prompted by WADL, which is an attempt to define a WSDL-style interface description language for REST services. <a href='http://bitworking.org/news/193/Do-we-need-WADL'>Joe Gregorio</a> argues that MIME types are more useful for describing the semantics of a service than a WADL document, since there are parts of the service&#8217;s semantics that just can&#8217;t be encoded in a machine-readable format. MIME types acknowledge this, providing a standard way of identifying a data format and pointing to the human- and machine-readable documents (such as RFCs and XSDs) that define the syntax and accompanying semantics.</p>
+
+<p>Following this idea, several people have begun debating whether or not the centralized assignment of MIME types is the right way to handle the variety of data formats that REST-based systems produce and consume. <a href='http://www.markbaker.ca/blog/2008/02/media-type-centralization-is-a-feature-not-a-bug/'>Mark Baker</a> comes in on the side of centralized assignment, whereas <a href='http://www.innoq.com/blog/st/2008/02/decentralizing_media_types.html'>Stefan Tilkov</a>, <a href='http://netzooid.com/blog/2008/02/07/why-a-restful-idl-is-an-oxymoron-and-what-we-really-need-instead/'>Dan Diephouse</a>, and <a href='http://macstrac.blogspot.com/2007/11/atompub-services-and-auto-detecting.html'>James Strachan</a> argue in favor of decentralized types. <a href='http://bill.burkecentral.com/2008/03/05/restful-xml-content-negotitation/'>Bill Burke</a> and <a href='http://soundadvice.id.au/blog/2009/08/16/#mimeLimitation'>Benjamin Carlyle</a> have good summaries of the different proposed technical solutions that would enable decentralized types.</p>
+
+<h2 id='extended_types'>“Extended” types</h2>
+
+<p>One of the arguments in favor of centralized assignment is that allowing everyone to invent their own MIME types would ruin interoperability. And for certain cases, this seems pretty obviously true. It&#8217;s a good thing that we have a standardized <code>image/png</code> MIME type; this allows your browser to correctly display the website logo you see up in the upper left corner. If I were daft, I could decide to serve that logo using a MIME type of <code>image/x-dcreager-png</code> (or similar) to indicate that I&#8217;ve included some particular set of metadata in an ancillary chunk of the PNG.</p>
+
+<p>Why would I want to do this? Maybe I&#8217;m writing an application that knows how to process this metadata, and I&#8217;d like to easily determine whether a particular resource I&#8217;m accessing has this metadata or not. The <a href='http://www.openmicroscopy.org'>Open Microscopy Environment</a> does exactly this; they&#8217;ve defined an XML schema that allows biology researchers to provide additional scientific metadata about an image or movie captured from a high-end microscope. One way to encode an image and its metadata is as an “OME-TIFF”, a data format that includes the metadata in an optional TIFF section. OME-TIFF files are also perfectly valid as regular TIFF files. This has the benefit that an OME-aware application can access the scientific metadata, whereas a “regular” image processing application can read the image using its normal TIFF decoder.</p>
+
+<p>Of course, now we have competing goals that we have to reconcile. On the one hand, we need to ensure that OME-aware applications can see that a particular image is an OME-TIFF. On the other, we need non-OME-aware applications to see the image as a regular TIFF. One of the decentralized proposals — MIME type parameters — tries to address this. For instance, a MIME type for an OME-TIFF might be <code>image/tiff;
+ome=xml</code>. By using the standard <code>image/tiff</code> as the base MIME type, non-OME-aware applications correctly treat it as a simple TIFF. OME-aware applications would know that the <code>ome=xml</code> parameter indicates that the OME-specific metadata is present.</p>
+
+<h2 id='the_multitude_of_xml_types'>The multitude of XML types</h2>
+
+<p>Another example given is that of an XML document. Most applications will generate XML documents that conform to a particular schema (for instance, a company-specific purchase order), which they might encode as an XSD. Now, the XSD on its own doesn&#8217;t give you the full story on how to process that data, but it does provide some detail on how the data is structured. If you&#8217;re writing an application that consumes this data, having the XSD available would be helpful. More interesting is an application that can consume <em>any</em> XML document — and which might use an XSD or RelaxNG schema to customize the UI used to display the document.</p>
+
+<p>In both cases, the schema is necessary to process the document, but for different reasons. In the first case, the consuming application was built with advance knowledge of how the data should be handled, and the schema is used to direct a particular document to the code that implements this knowledge. In the second case, the particular datatype is unimportant, and the application-specific semantics aren&#8217;t used; the data is only consumed as a “generic XML document”, and the schema is used to describe the specific structure of the elements.</p>
+
+<h2 id='data_doesnt_have_a_single_type'>Data doesn&#8217;t have a single type</h2>
+
+<p>The common theme in both of these examples is that a single datatype isn&#8217;t enough to describe the data we&#8217;re dealing with. As Roy Fielding <a href='http://roy.gbiv.com/untangled/2009/wrangling-mimetypes'>points out</a>, “all data formats correspond to multiple media types”. It&#8217;s tempting to think of a datatype as just “the syntax and structure of the data”. But it must also include some intuition about how the data will be used.</p>
+
+<p>From this point of view, the generic XML processing application does <em>not</em> handle a multitude of datatypes. Instead, it handles exactly one: “generic XML document with associated schema”. The application that knows how to process this particular schema will handle a different, completely distinct, datatype: “company-specific purchase order XML document”. And the particular XML document in question — a single sequence of bytes that is a single representation of a single resource — is an instance of both types.</p>
+
+<p>Why shift things around like this? Doesn&#8217;t it just move the complexity from the consumer (who used to consume multiple types) to the producer (who must now publish the XML document under different types)? Not necessarily. The key idea is that we can use <em>transformation graphs</em> to encode the relationships between the datatypes:</p>
+<div class='figure'>
+  <img src='/images/2009/12/21/decentralized-datatypes/xform-graph.png' alt='transformation graph' />
+</div>
+<p>In this specific example, the transformation is simple — since the same sequence of bytes is a valid instance of both types, we don&#8217;t have to modify the data itself. The decentralized MIME types (especially the MIME parameter proposal) already support these kinds of “no-op” transformations: the more generic type is the “base” MIME type, and the more specific extensions are encoded as MIME parameters. However, by modeling the type relationships as an arbitrary graph, we open up the possibility of more complex sets of types, which might require actual code to transform between them, but which can be defined in a decentralized manner.</p>
+
+<p>Even though the model is more complex, we haven&#8217;t required the producer or consumer to be more complex. A transformation graph is necessary to translate between the two different (but compatible) types, but the graph doesn&#8217;t have to specifically live at the producer or the consumer. The producer can publish the data using the only type it knows about (the “company-specific” type), and a consumer can request the data using the only type it knows about (such as the “generic XML” type). Anywhere along the path from the producer to the consumer, we can use the transformation graph to automatically transform the data from one type to the other.</p>
+
+<p>More details on transformation graphs, including more complex examples, can be found in my <a href='/publications/012-dphil-thesis'>DPhil thesis</a>.</p>
+
+  <div class="postlinks">
+    <a href="/2009/12/21/decentralized-datatypes/">Permanent link</a>
+    |
+    <a href="/2009/12/21/decentralized-datatypes/#disqus_thread">Comments</a>
+  </div>
+
+  
+  </div>
+<div class="body_separator"></div>
+<div class="body">
+
+  
+
   <h1>Simulating “make distclean” in SCons</h1>
 
   <div class="postdate">
@@ -240,168 +294,6 @@ $ sudo apt-get install `cat /tmp/tormod.packages`</code></pre>
     <a href="/2009/09/08/ubuntu-downgrading/">Permanent link</a>
     |
     <a href="/2009/09/08/ubuntu-downgrading/#disqus_thread">Comments</a>
-  </div>
-
-  
-  </div>
-<div class="body_separator"></div>
-<div class="body">
-
-  
-
-  <h1>Using callbacks with the subprocess module</h1>
-
-  <div class="postdate">
-    Thursday, August 13, 2009
-  </div>
-
-  <p>In a <a href='/2009/08/06/subprocess-communicate-drawbacks/'>previous post</a>, we pointed out two drawbacks of Python&#8217;s <code>subprocess.communicate</code> method. In this post, we look at the first problem in more detail. To reiterate, the problem is that we collect the subprocess&#8217;s output streams into strings. If the subprocess is going to generate a huge amount of output, it can be better to process the output data in a stream-oriented manner — that way we use a constant amount of memory regardless of how much output is produced.</p>
-
-<p>If we look at the <a href='http://svn.python.org/view/python/trunk/Lib/subprocess.py?revision=74029&amp;view=markup'>implementation</a> of the <code>communicate</code> method, we see this:</p>
-<div class='highlight'><pre><span class='lineno'> 1</span> <span class='k'>def</span> <span class='nf'>_communicate_with_select</span><span class='p'>(</span><span class='bp'>self</span><span class='p'>,</span> <span class='nb'>input</span><span class='p'>):</span>
-<span class='lineno'> 2</span>     <span class='n'>read_set</span> <span class='o'>=</span> <span class='p'>[]</span>
-<span class='lineno'> 3</span>     <span class='n'>write_set</span> <span class='o'>=</span> <span class='p'>[]</span>
-<span class='lineno'> 4</span>     <span class='n'>stdout</span> <span class='o'>=</span> <span class='bp'>None</span> <span class='c'># Return</span>
-<span class='lineno'> 5</span>     <span class='n'>stderr</span> <span class='o'>=</span> <span class='bp'>None</span> <span class='c'># Return</span>
-<span class='lineno'> 6</span> 
-<span class='lineno'> 7</span>     <span class='k'>if</span> <span class='bp'>self</span><span class='o'>.</span><span class='n'>stdin</span> <span class='ow'>and</span> <span class='nb'>input</span><span class='p'>:</span>
-<span class='lineno'> 8</span>         <span class='n'>write_set</span><span class='o'>.</span><span class='n'>append</span><span class='p'>(</span><span class='bp'>self</span><span class='o'>.</span><span class='n'>stdin</span><span class='p'>)</span>
-<span class='lineno'> 9</span>     <span class='k'>if</span> <span class='bp'>self</span><span class='o'>.</span><span class='n'>stdout</span><span class='p'>:</span>
-<span class='lineno'>10</span>         <span class='n'>read_set</span><span class='o'>.</span><span class='n'>append</span><span class='p'>(</span><span class='bp'>self</span><span class='o'>.</span><span class='n'>stdout</span><span class='p'>)</span>
-<span class='lineno'>11</span>         <span class='n'>stdout</span> <span class='o'>=</span> <span class='p'>[]</span>
-<span class='lineno'>12</span>     <span class='k'>if</span> <span class='bp'>self</span><span class='o'>.</span><span class='n'>stderr</span><span class='p'>:</span>
-<span class='lineno'>13</span>         <span class='n'>read_set</span><span class='o'>.</span><span class='n'>append</span><span class='p'>(</span><span class='bp'>self</span><span class='o'>.</span><span class='n'>stderr</span><span class='p'>)</span>
-<span class='lineno'>14</span>         <span class='n'>stderr</span> <span class='o'>=</span> <span class='p'>[]</span>
-<span class='lineno'>15</span> 
-<span class='lineno'>16</span>     <span class='n'>input_offset</span> <span class='o'>=</span> <span class='mi'>0</span>
-<span class='lineno'>17</span>     <span class='k'>while</span> <span class='n'>read_set</span> <span class='ow'>or</span> <span class='n'>write_set</span><span class='p'>:</span>
-<span class='lineno'>18</span>         <span class='k'>try</span><span class='p'>:</span>
-<span class='lineno'>19</span>             <span class='n'>rlist</span><span class='p'>,</span> <span class='n'>wlist</span><span class='p'>,</span> <span class='n'>xlist</span> <span class='o'>=</span> <span class='n'>select</span><span class='o'>.</span><span class='n'>select</span><span class='p'>(</span><span class='n'>read_set</span><span class='p'>,</span> <span class='n'>write_set</span><span class='p'>,</span> <span class='p'>[])</span>
-<span class='lineno'>20</span>         <span class='k'>except</span> <span class='n'>select</span><span class='o'>.</span><span class='n'>error</span><span class='p'>,</span> <span class='n'>e</span><span class='p'>:</span>
-<span class='lineno'>21</span>             <span class='k'>if</span> <span class='n'>e</span><span class='o'>.</span><span class='n'>args</span><span class='p'>[</span><span class='mi'>0</span><span class='p'>]</span> <span class='o'>==</span> <span class='n'>errno</span><span class='o'>.</span><span class='n'>EINTR</span><span class='p'>:</span>
-<span class='lineno'>22</span>                 <span class='k'>continue</span>
-<span class='lineno'>23</span>             <span class='k'>raise</span>
-<span class='lineno'>24</span> 
-<span class='lineno'>25</span>         <span class='k'>if</span> <span class='bp'>self</span><span class='o'>.</span><span class='n'>stdin</span> <span class='ow'>in</span> <span class='n'>wlist</span><span class='p'>:</span>
-<span class='lineno'>26</span>             <span class='n'>chunk</span> <span class='o'>=</span> <span class='nb'>input</span><span class='p'>[</span><span class='n'>input_offset</span> <span class='p'>:</span> <span class='n'>input_offset</span> <span class='o'>+</span> <span class='n'>_PIPE_BUF</span><span class='p'>]</span>
-<span class='lineno'>27</span>             <span class='n'>bytes_written</span> <span class='o'>=</span> <span class='n'>os</span><span class='o'>.</span><span class='n'>write</span><span class='p'>(</span><span class='bp'>self</span><span class='o'>.</span><span class='n'>stdin</span><span class='o'>.</span><span class='n'>fileno</span><span class='p'>(),</span> <span class='n'>chunk</span><span class='p'>)</span>
-<span class='lineno'>28</span>             <span class='n'>input_offset</span> <span class='o'>+=</span> <span class='n'>bytes_written</span>
-<span class='lineno'>29</span>             <span class='k'>if</span> <span class='n'>input_offset</span> <span class='o'>&gt;=</span> <span class='nb'>len</span><span class='p'>(</span><span class='nb'>input</span><span class='p'>):</span>
-<span class='lineno'>30</span>                 <span class='bp'>self</span><span class='o'>.</span><span class='n'>stdin</span><span class='o'>.</span><span class='n'>close</span><span class='p'>()</span>
-<span class='lineno'>31</span>                 <span class='n'>write_set</span><span class='o'>.</span><span class='n'>remove</span><span class='p'>(</span><span class='bp'>self</span><span class='o'>.</span><span class='n'>stdin</span><span class='p'>)</span>
-<span class='lineno'>32</span> 
-<span class='lineno'>33</span>         <span class='k'>if</span> <span class='bp'>self</span><span class='o'>.</span><span class='n'>stdout</span> <span class='ow'>in</span> <span class='n'>rlist</span><span class='p'>:</span>
-<span class='lineno'>34</span>             <span class='n'>data</span> <span class='o'>=</span> <span class='n'>os</span><span class='o'>.</span><span class='n'>read</span><span class='p'>(</span><span class='bp'>self</span><span class='o'>.</span><span class='n'>stdout</span><span class='o'>.</span><span class='n'>fileno</span><span class='p'>(),</span> <span class='mi'>1024</span><span class='p'>)</span>
-<span class='lineno'>35</span>             <span class='k'>if</span> <span class='n'>data</span> <span class='o'>==</span> <span class='s'>&quot;&quot;</span><span class='p'>:</span>
-<span class='lineno'>36</span>                 <span class='bp'>self</span><span class='o'>.</span><span class='n'>stdout</span><span class='o'>.</span><span class='n'>close</span><span class='p'>()</span>
-<span class='lineno'>37</span>                 <span class='n'>read_set</span><span class='o'>.</span><span class='n'>remove</span><span class='p'>(</span><span class='bp'>self</span><span class='o'>.</span><span class='n'>stdout</span><span class='p'>)</span>
-<span class='lineno'>38</span>             <span class='n'>stdout</span><span class='o'>.</span><span class='n'>append</span><span class='p'>(</span><span class='n'>data</span><span class='p'>)</span>
-<span class='lineno'>39</span> 
-<span class='lineno'>40</span>         <span class='k'>if</span> <span class='bp'>self</span><span class='o'>.</span><span class='n'>stderr</span> <span class='ow'>in</span> <span class='n'>rlist</span><span class='p'>:</span>
-<span class='lineno'>41</span>             <span class='n'>data</span> <span class='o'>=</span> <span class='n'>os</span><span class='o'>.</span><span class='n'>read</span><span class='p'>(</span><span class='bp'>self</span><span class='o'>.</span><span class='n'>stderr</span><span class='o'>.</span><span class='n'>fileno</span><span class='p'>(),</span> <span class='mi'>1024</span><span class='p'>)</span>
-<span class='lineno'>42</span>             <span class='k'>if</span> <span class='n'>data</span> <span class='o'>==</span> <span class='s'>&quot;&quot;</span><span class='p'>:</span>
-<span class='lineno'>43</span>                 <span class='bp'>self</span><span class='o'>.</span><span class='n'>stderr</span><span class='o'>.</span><span class='n'>close</span><span class='p'>()</span>
-<span class='lineno'>44</span>                 <span class='n'>read_set</span><span class='o'>.</span><span class='n'>remove</span><span class='p'>(</span><span class='bp'>self</span><span class='o'>.</span><span class='n'>stderr</span><span class='p'>)</span>
-<span class='lineno'>45</span>             <span class='n'>stderr</span><span class='o'>.</span><span class='n'>append</span><span class='p'>(</span><span class='n'>data</span><span class='p'>)</span>
-<span class='lineno'>46</span> 
-<span class='lineno'>47</span>     <span class='k'>return</span> <span class='p'>(</span><span class='n'>stdout</span><span class='p'>,</span> <span class='n'>stderr</span><span class='p'>)</span>
-</pre>
-</div>
-<p>(There are actually several different <code>communicate</code> implementations in the module: a Windows-specific implementation, an implementation using the POSIX <code>poll</code> function, and one using POSIX <code>select</code>. We&#8217;re going to look at the <code>select</code> implementation; the modifications we make can be rolled into the other methods, too.)</p>
-
-<h2 id='output_callbacks'>Output callbacks</h2>
-
-<p>For collecting stdout, the important part is lines 33-38. If the <code>select</code> call tells us that the stdout stream is ready for reading, we try to read up to 1024 bytes from it. If we get the empty string, this means we&#8217;ve reached EOF, and can close down the stream. (We also no longer have to keep passing it in to further <code>select</code> calls, since we know we&#8217;re done with this stream.) If we get a non-empty string, then we append it into a list. The function that calls <code>_communicate_with_select</code> will eventually <code>join</code> this list of strings together, yielding a single string.</p>
-
-<p>It&#8217;s actually a very simple change to make this process the output using a stream-based callback. For now, we assume that we&#8217;ve been given the callback, in a <code>stdout_callback</code> variable. Then, we can change line 38 to</p>
-<div class='highlight'><pre>            <span class='n'>stdout_callback</span><span class='p'>(</span><span class='n'>data</span><span class='p'>)</span>
-</pre>
-</div>
-<p>The callback can be any Python callable object; it should accept a single argument, which is the next chunk of data from stdout. We can make a similar change to line 45 to send the stderr data to its own <code>stderr_callback</code>.</p>
-
-<h2 id='lineoriented_callbacks'>Line-oriented callbacks</h2>
-
-<p>One possible issue with the output callbacks in the previous section is that the data is sent into the callback in arbitrary chunks. We might prefer to guarantee that the callback will be called exactly once for each <em>line</em> of output. This would allow us, for intsance, to easily interleave the output lines of a bunch of subprocesses into the output of the parent process, without having to worry about locking.</p>
-
-<p>To use a line-based callback, we have to wrap it, creating a arbitrary-chunk callback that buffers data as necessary. Once it receives a full line of data, it sends it to the wrapped line callback.</p>
-<div class='highlight'><pre><span class='lineno'> 1</span> <span class='k'>def</span> <span class='nf'>wrap_line_callback</span><span class='p'>(</span><span class='n'>line_callback</span><span class='p'>):</span>
-<span class='lineno'> 2</span>     <span class='k'>class</span> <span class='nc'>Callback</span><span class='p'>(</span><span class='nb'>object</span><span class='p'>):</span>
-<span class='lineno'> 3</span>         <span class='k'>def</span> <span class='nf'>__init__</span><span class='p'>(</span><span class='bp'>self</span><span class='p'>,</span> <span class='n'>line_callback</span><span class='p'>):</span>
-<span class='lineno'> 4</span>             <span class='bp'>self</span><span class='o'>.</span><span class='n'>line_buffer</span> <span class='o'>=</span> <span class='p'>[]</span>
-<span class='lineno'> 5</span>             <span class='bp'>self</span><span class='o'>.</span><span class='n'>line_callback</span> <span class='o'>=</span> <span class='n'>line_callback</span>
-<span class='lineno'> 6</span> 
-<span class='lineno'> 7</span>         <span class='k'>def</span> <span class='nf'>output_buffer</span><span class='p'>(</span><span class='bp'>self</span><span class='p'>):</span>
-<span class='lineno'> 8</span>             <span class='n'>line</span> <span class='o'>=</span> <span class='s'>&quot;&quot;</span><span class='o'>.</span><span class='n'>join</span><span class='p'>(</span><span class='bp'>self</span><span class='o'>.</span><span class='n'>line_buffer</span><span class='p'>)</span>
-<span class='lineno'> 9</span>             <span class='bp'>self</span><span class='o'>.</span><span class='n'>line_callback</span><span class='p'>(</span><span class='n'>line</span><span class='p'>)</span>
-<span class='lineno'>10</span>             <span class='bp'>self</span><span class='o'>.</span><span class='n'>line_buffer</span> <span class='o'>=</span> <span class='p'>[]</span>
-<span class='lineno'>11</span> 
-<span class='lineno'>12</span>         <span class='k'>def</span> <span class='nf'>data_callback</span><span class='p'>(</span><span class='bp'>self</span><span class='p'>,</span> <span class='n'>data</span><span class='p'>):</span>
-<span class='lineno'>13</span>             <span class='c'># If we get an empty string, that represents the end of</span>
-<span class='lineno'>14</span>             <span class='c'># the input.  If there is anything in the buffer, send</span>
-<span class='lineno'>15</span>             <span class='c'># then out first, then send an empty string on the to line</span>
-<span class='lineno'>16</span>             <span class='c'># callback.</span>
-<span class='lineno'>17</span> 
-<span class='lineno'>18</span>             <span class='k'>if</span> <span class='n'>data</span> <span class='o'>==</span> <span class='s'>&quot;&quot;</span><span class='p'>:</span>
-<span class='lineno'>19</span>                 <span class='k'>if</span> <span class='nb'>len</span><span class='p'>(</span><span class='bp'>self</span><span class='o'>.</span><span class='n'>line_buffer</span><span class='p'>)</span> <span class='o'>&gt;</span> <span class='mi'>0</span><span class='p'>:</span>
-<span class='lineno'>20</span>                     <span class='bp'>self</span><span class='o'>.</span><span class='n'>output_buffer</span><span class='p'>()</span>
-<span class='lineno'>21</span> 
-<span class='lineno'>22</span>                 <span class='bp'>self</span><span class='o'>.</span><span class='n'>line_callback</span><span class='p'>(</span><span class='s'>&quot;&quot;</span><span class='p'>)</span>
-<span class='lineno'>23</span>                 <span class='k'>return</span>
-<span class='lineno'>24</span> 
-<span class='lineno'>25</span>             <span class='c'># Otherwise, we split the new data into separate lines,</span>
-<span class='lineno'>26</span>             <span class='c'># each of which we call an “entry”.  We add each entry to</span>
-<span class='lineno'>27</span>             <span class='c'># the buffer.  If the entry ends with a newline, we output</span>
-<span class='lineno'>28</span>             <span class='c'># the buffer and then clear it.</span>
-<span class='lineno'>29</span> 
-<span class='lineno'>30</span>             <span class='n'>lines</span> <span class='o'>=</span> <span class='n'>data</span><span class='o'>.</span><span class='n'>splitlines</span><span class='p'>(</span><span class='bp'>True</span><span class='p'>)</span>
-<span class='lineno'>31</span>             <span class='k'>for</span> <span class='n'>line</span> <span class='ow'>in</span> <span class='n'>lines</span><span class='p'>:</span>
-<span class='lineno'>32</span>                 <span class='bp'>self</span><span class='o'>.</span><span class='n'>line_buffer</span><span class='o'>.</span><span class='n'>append</span><span class='p'>(</span><span class='n'>line</span><span class='p'>)</span>
-<span class='lineno'>33</span>                 <span class='k'>if</span> <span class='n'>line</span><span class='o'>.</span><span class='n'>endswith</span><span class='p'>((</span><span class='s'>&quot;</span><span class='se'>\r\n</span><span class='s'>&quot;</span><span class='p'>,</span> <span class='s'>&quot;</span><span class='se'>\n</span><span class='s'>&quot;</span><span class='p'>,</span> <span class='s'>&quot;</span><span class='se'>\r</span><span class='s'>&quot;</span><span class='p'>)):</span>
-<span class='lineno'>34</span>                     <span class='bp'>self</span><span class='o'>.</span><span class='n'>output_buffer</span><span class='p'>()</span>
-<span class='lineno'>35</span> 
-<span class='lineno'>36</span>             <span class='k'>return</span>
-<span class='lineno'>37</span> 
-<span class='lineno'>38</span>     <span class='k'>return</span> <span class='n'>Callback</span><span class='p'>(</span><span class='n'>line_callback</span><span class='p'>)</span><span class='o'>.</span><span class='n'>data_callback</span>
-</pre>
-</div>
-<ul>
-<li>
-<p><strong>line 1</strong> — We start by declaring the wrapping function. It will take in a line-based callback, and return an arbitrary-chunk callback.</p>
-</li>
-
-<li>
-<p><strong>lines 2-5</strong> — We&#8217;ll need to maintain some state in between invocations of the arbitrary-chunk callback — specifically, if a line of output data falls across a chunk boundary, we&#8217;ll need to hold onto the part in the first chunk until we receive the part in the second chunk. One relatively easy way to do this is to create a new class, and store the state in <code>self</code> properties. Note that the <code>Callback</code> class is declared inside the <code>wrap_line_callback</code> function.</p>
-
-<p>The buffer is a list of strings. This needs to be a list to support arbitrarily long lines, since we don&#8217;t know how many chunks we&#8217;ll need to store before outputting the line.</p>
-</li>
-
-<li>
-<p><strong>lines 7-10</strong> — We also declare a method in the class that can output the current contents of the saved buffer (if any). Like the original <code>communicate</code> method, we join the buffer list together into a single string, then pass it onto the wrapped line callback.</p>
-</li>
-
-<li>
-<p><strong>lines 12-23</strong> — Next we can define the arbitrary-chunk callback. First, it checks to see if we&#8217;ve received an EOF indicator (the empty string). If so, we first output whatever is currently in the buffer; then we pass on the EOF to the line callback.</p>
-</li>
-
-<li>
-<p><strong>lines 25-34</strong> — If we get some actual data, we first split the current chunk into separate lines. We pass in a <code>True</code> parameter to the <code>splitlines</code> method so that we get the newlines in the split strings. This will let us tell if the final string in the list represents a complete line, or if it&#8217;s the first part of a line that falls across a chunk boundary.</p>
-
-<p>We then loop through the split strings, adding them to the buffer. If any of them end with one of the newline endings (Unix, Windows, or otherwise), we output the buffer. Note that only the last string in the <code>lines</code> list can end with something other than a newline; anything at the beginning of the list is only a separate element because <code>splitlines</code> found a newline to split on!</p>
-</li>
-
-<li>
-<p><strong>line 38</strong> — Finally, we instantiate the new class and return its arbitrary-chunk callback.</p>
-</li>
-</ul>
-
-<h2 id='more_to_come'>More to come</h2>
-
-<p>This gives us a nice output callback mechanism, to prevent us from buffering the entire contents of the stdout and stderr streams in memory. In later posts, we&#8217;ll look at doing the same with the <em>input</em> data, and then we&#8217;ll address the second problem, of dealing with more than one subprocess simultaneously.</p>
-
-  <div class="postlinks">
-    <a href="/2009/08/13/subprocess-callbacks/">Permanent link</a>
-    |
-    <a href="/2009/08/13/subprocess-callbacks/#disqus_thread">Comments</a>
   </div>
 
 

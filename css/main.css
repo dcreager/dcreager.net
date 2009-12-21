@@ -112,6 +112,10 @@ body {
     font-size: 100%;
 }
 
+.body .figure {
+    text-align: center;
+}
+
 .body ul {
     padding-top: 8px;
     margin-left: 64px;
