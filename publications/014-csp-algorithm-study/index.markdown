@@ -16,8 +16,7 @@ title: dcreager.net — Publication details
     In <em>Proceedings of the Brazilian Symposium on Formal Methods
       (SBMF 2007)</em>.
 
-    SBC, August 2007.
-    Ouro Preto, Brazil.
+    ENTCS, to appear.
   </div>
 </div>
 
