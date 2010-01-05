@@ -15,11 +15,11 @@ Of course, creating the figure isn't enough — since I write my papers
 in LaTeX, I have to export my figures into EPS or PDF (depending on
 whether I'm creating a PostScript or PDF version of the paper) before
 I can use them in my documents.  It's easy enough to use the Export
-dialog to do this (keyboard shortcut: Command-Option-E), but ideally
-I'd like the ability to export figures from the command line.  Coupled
-with a good Makefile, this would let me run a simple `make paper`
-command, and automatically re-export any necessary figures before
-rebuilding the paper itself.
+dialog to do this (keyboard shortcut: ⌥⌘E), but ideally I'd like the
+ability to export figures from the command line.  Coupled with a good
+Makefile, this would let me run a simple `make paper` command, and
+automatically re-export any necessary figures before rebuilding the
+paper itself.
 
 Luckily, OmniGraffle has always had rather good support for being
 controlled via AppleScript.  The commands can be somewhat

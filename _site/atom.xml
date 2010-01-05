@@ -4,7 +4,7 @@
   <title>dcreager.net</title>
   <link href="http://dcreager.net/atom.xml" rel="self"/>
   <link href="http://dcreager.net/"/>
-  <updated>2010-01-05T12:29:14-05:00</updated>
+  <updated>2010-01-05T13:32:20-05:00</updated>
   <id>http://dcreager.net/</id>
   <author>
     <name>Douglas Creager</name>
@@ -19,7 +19,7 @@
     <id>http://dcreager.net/2010/01/05/omnigraffle-export</id>
     <content type="html">&lt;p&gt;&lt;a href='http://www.omnigroup.com/applications/OmniGraffle/'&gt;OmniGraffle&lt;/a&gt; is my tool of choice for creating figures for my papers. It&amp;#8217;s biggest drawback is that it&amp;#8217;s only available for Mac OS, which can make it cumbersome if I&amp;#8217;m working on one of my Linux machines and need to create or modify a figure. But it&amp;#8217;s ease-of-use and the quality of the figures it creates are hard to beat.&lt;/p&gt;
 
-&lt;p&gt;Of course, creating the figure isn&amp;#8217;t enough — since I write my papers in LaTeX, I have to export my figures into EPS or PDF (depending on whether I&amp;#8217;m creating a PostScript or PDF version of the paper) before I can use them in my documents. It&amp;#8217;s easy enough to use the Export dialog to do this (keyboard shortcut: Command-Option-E), but ideally I&amp;#8217;d like the ability to export figures from the command line. Coupled with a good Makefile, this would let me run a simple &lt;code&gt;make paper&lt;/code&gt; command, and automatically re-export any necessary figures before rebuilding the paper itself.&lt;/p&gt;
+&lt;p&gt;Of course, creating the figure isn&amp;#8217;t enough — since I write my papers in LaTeX, I have to export my figures into EPS or PDF (depending on whether I&amp;#8217;m creating a PostScript or PDF version of the paper) before I can use them in my documents. It&amp;#8217;s easy enough to use the Export dialog to do this (keyboard shortcut: ⌥⌘E), but ideally I&amp;#8217;d like the ability to export figures from the command line. Coupled with a good Makefile, this would let me run a simple &lt;code&gt;make paper&lt;/code&gt; command, and automatically re-export any necessary figures before rebuilding the paper itself.&lt;/p&gt;
 
 &lt;p&gt;Luckily, OmniGraffle has always had rather good support for being controlled via AppleScript. The commands can be somewhat undocumented, requiring a bit of trial and error, but while entrenched in our PhD studies at Oxford, my colleague David Faitelson and I were able to whip together a script that suited our needs. I&amp;#8217;ve recently extracted the code from our Oxford SVN repository and uploaded it to &lt;a href='http://github.com/dcreager/graffle-export'&gt;Github&lt;/a&gt;.&lt;/p&gt;
 
