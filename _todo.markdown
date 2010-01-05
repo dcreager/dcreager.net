@@ -1,6 +1,6 @@
 # List of posts to write
 
-* graffle-export
+* tags
 * LaTeX Makefile
 * “scons -c” default targets
 * push parser intro

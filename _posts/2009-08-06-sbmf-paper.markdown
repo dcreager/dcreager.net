@@ -1,6 +1,7 @@
 ---
 layout: post
 title: SBMF07 paper chosen for extended proceedings
+tags: papers
 ---
 
 My SBMF07 [paper](/publications/014-csp-algorithm-study/), “Empirical

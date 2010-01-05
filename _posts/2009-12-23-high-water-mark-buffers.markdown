@@ -1,6 +1,7 @@
 ---
 layout: post
 title: “High-water mark” buffers
+tags: [c, libhwm]
 ---
 
 My coding project for today was to extract out some code for dealing

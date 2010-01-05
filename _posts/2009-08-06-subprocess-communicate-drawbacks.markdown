@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Problems with Python's subprocess.communicate method
+tags: [python, subprocess]
 ---
 
 The [`subprocess`](http://docs.python.org/library/subprocess.html)

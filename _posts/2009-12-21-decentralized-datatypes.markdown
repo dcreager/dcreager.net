@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Decentralized datatypes
+tags: [datatypes, data-transformation]
 ---
 
 Over the past year or so there have been quite a few blog postings in

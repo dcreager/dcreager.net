@@ -12,3 +12,14 @@ comments: true
 <div class="post">
   {{ content }}
 </div>
+
+{% if page.tags != empty %}
+<div class="posttags">
+  Tags:
+  <ul>
+    {% for tag in page.tags %}
+    <li><a href="/tags/{{ tag }}/">{{ tag }}</a></li>
+    {% endfor %}
+  </ul>
+</div>
+{% endif %}

@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Adding Disqus comments
+tags: [dcreager.net, disqus, jekyll]
 ---
 
 I've just enabled comments on the posts on my website.  On its own,

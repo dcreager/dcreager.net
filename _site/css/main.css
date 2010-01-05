@@ -166,6 +166,41 @@ body {
 }
 
 /*--------------------------------------------------------------------
+ * Tag list at bottom of each post
+ */
+
+.body .posttags {
+    font-size: 80%;
+    color: #444;
+    padding-top: 20px;
+    /*margin-left: 16px;*/
+    text-align: center;
+}
+
+.body .posttags ul {
+    list-style: none;
+    display: inline;
+    margin-left: 0px;
+}
+
+.body .posttags li {
+    display: inline;
+    margin-left: 4px;
+}
+
+.body .posttags a {
+    text-decoration: none;
+    color: #000;
+    padding: 2px 4px;
+    border: 1px solid #888;
+    background-color: #9f9;
+}
+
+.body .posttags a:hover {
+    background-color: #696;
+}
+
+/*--------------------------------------------------------------------
  * Site header
  */
 

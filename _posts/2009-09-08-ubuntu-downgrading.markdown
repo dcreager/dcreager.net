@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Downgrading packages in Ubuntu
+tags: ubuntu
 ---
 
 ## What kind of trouble did you get yourself into this time?

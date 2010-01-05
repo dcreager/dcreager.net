@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Exporting OmniGraffle documents from the command line
+tags: [omnigraffle, papers]
 ---
 
 [OmniGraffle](http://www.omnigroup.com/applications/OmniGraffle/) is

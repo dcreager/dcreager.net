@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Using callbacks with the subprocess module
+tags: [python, subprocess]
 ---
 
 In a [previous post](/2009/08/06/subprocess-communicate-drawbacks/),

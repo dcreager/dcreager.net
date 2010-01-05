@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Site layout
+tags: [dcreager.net, jekyll]
 ---
 
 This post will probably end up being more useful to me than to anyone

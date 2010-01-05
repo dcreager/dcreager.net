@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Simulating “make distclean” in SCons
+tags: scons
 ---
 
 SCons provides an automatic “clean” target out of the box — just run

@@ -1,6 +1,7 @@
 ---
 layout: post
 title: iPhone tethering
+tags: [iphone, ubuntu]
 ---
 
 While attending the [Mil-OSS conference](http://mil-oss.org/) this
