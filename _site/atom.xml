@@ -4,7 +4,7 @@
   <title>dcreager.net</title>
   <link href="http://dcreager.net/atom.xml" rel="self"/>
   <link href="http://dcreager.net/"/>
-  <updated>2010-01-08T11:49:36-05:00</updated>
+  <updated>2010-01-08T11:50:52-05:00</updated>
   <id>http://dcreager.net/</id>
   <author>
     <name>Douglas Creager</name>
@@ -91,21 +91,21 @@ $ scons -c build-tests&lt;/code&gt;&lt;/pre&gt;
 &lt;h3 id='step_1_fixedlength_records'&gt;Step 1: Fixed-length records&lt;/h3&gt;
 
 &lt;p&gt;Let&amp;#8217;s say that we need to read each record into a simple &lt;code&gt;struct&lt;/code&gt;. For now, we&amp;#8217;re going to use nice, fixed-length fields:&lt;/p&gt;
-&lt;div class='highlight'&gt;&lt;pre&gt;&lt;span class='k'&gt;typedef&lt;/span&gt; &lt;span class='k'&gt;struct&lt;/span&gt;
-&lt;span class='p'&gt;{&lt;/span&gt;
-    &lt;span class='kt'&gt;uint32_t&lt;/span&gt;  &lt;span class='n'&gt;id&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
-    &lt;span class='kt'&gt;uint32_t&lt;/span&gt;  &lt;span class='n'&gt;num_bananas&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
-&lt;span class='p'&gt;}&lt;/span&gt; &lt;span class='n'&gt;rec1_t&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
+&lt;div class='highlight'&gt;&lt;pre&gt;&lt;span class='lineno'&gt;1&lt;/span&gt; &lt;span class='k'&gt;typedef&lt;/span&gt; &lt;span class='k'&gt;struct&lt;/span&gt;
+&lt;span class='lineno'&gt;2&lt;/span&gt; &lt;span class='p'&gt;{&lt;/span&gt;
+&lt;span class='lineno'&gt;3&lt;/span&gt;     &lt;span class='kt'&gt;uint32_t&lt;/span&gt;  &lt;span class='n'&gt;id&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
+&lt;span class='lineno'&gt;4&lt;/span&gt;     &lt;span class='kt'&gt;uint32_t&lt;/span&gt;  &lt;span class='n'&gt;num_bananas&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
+&lt;span class='lineno'&gt;5&lt;/span&gt; &lt;span class='p'&gt;}&lt;/span&gt; &lt;span class='n'&gt;rec1_t&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
 &lt;/pre&gt;
 &lt;/div&gt;
 &lt;p&gt;With this datatype, we can actually read data from a file very quickly; we&amp;#8217;ll just store each record directly in the file, in binary, using 8 bytes. (To simplify things, I&amp;#8217;m not worrying about the endianness of the integers, or whether the &lt;code&gt;struct&lt;/code&gt; is packed; both are easily handled with some pretty simple macro-fu.)&lt;/p&gt;
-&lt;div class='highlight'&gt;&lt;pre&gt;&lt;span class='kt'&gt;FILE&lt;/span&gt;  &lt;span class='o'&gt;*&lt;/span&gt;&lt;span class='n'&gt;file&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='cm'&gt;/* whatever */&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
-&lt;span class='n'&gt;rec1_t&lt;/span&gt;  &lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
-
-&lt;span class='k'&gt;while&lt;/span&gt; &lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;fread&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='o'&gt;&amp;amp;&lt;/span&gt;&lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='k'&gt;sizeof&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;rec1_t&lt;/span&gt;&lt;span class='p'&gt;),&lt;/span&gt; &lt;span class='mi'&gt;1&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='n'&gt;file&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt; &lt;span class='o'&gt;==&lt;/span&gt; &lt;span class='mi'&gt;1&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt;
-&lt;span class='p'&gt;{&lt;/span&gt;
-    &lt;span class='cm'&gt;/* process the record */&lt;/span&gt;
-&lt;span class='p'&gt;}&lt;/span&gt;
+&lt;div class='highlight'&gt;&lt;pre&gt;&lt;span class='lineno'&gt;1&lt;/span&gt; &lt;span class='kt'&gt;FILE&lt;/span&gt;  &lt;span class='o'&gt;*&lt;/span&gt;&lt;span class='n'&gt;file&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='cm'&gt;/* whatever */&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
+&lt;span class='lineno'&gt;2&lt;/span&gt; &lt;span class='n'&gt;rec1_t&lt;/span&gt;  &lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
+&lt;span class='lineno'&gt;3&lt;/span&gt; 
+&lt;span class='lineno'&gt;4&lt;/span&gt; &lt;span class='k'&gt;while&lt;/span&gt; &lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;fread&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='o'&gt;&amp;amp;&lt;/span&gt;&lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='k'&gt;sizeof&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;rec1_t&lt;/span&gt;&lt;span class='p'&gt;),&lt;/span&gt; &lt;span class='mi'&gt;1&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='n'&gt;file&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt; &lt;span class='o'&gt;==&lt;/span&gt; &lt;span class='mi'&gt;1&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt;
+&lt;span class='lineno'&gt;5&lt;/span&gt; &lt;span class='p'&gt;{&lt;/span&gt;
+&lt;span class='lineno'&gt;6&lt;/span&gt;     &lt;span class='cm'&gt;/* process the record */&lt;/span&gt;
+&lt;span class='lineno'&gt;7&lt;/span&gt; &lt;span class='p'&gt;}&lt;/span&gt;
 &lt;/pre&gt;
 &lt;/div&gt;
 &lt;p&gt;The C library&amp;#8217;s stream API (&lt;code&gt;fread&lt;/code&gt; and friends) will buffer the data from the actual file, so this gives us pretty good performance.&lt;/p&gt;
@@ -113,62 +113,62 @@ $ scons -c build-tests&lt;/code&gt;&lt;/pre&gt;
 &lt;h3 id='step_2_variablelength_records'&gt;Step 2: Variable-length records&lt;/h3&gt;
 
 &lt;p&gt;What if we have a variable-length field in our &lt;code&gt;struct&lt;/code&gt;, though?&lt;/p&gt;
-&lt;div class='highlight'&gt;&lt;pre&gt;&lt;span class='k'&gt;typedef&lt;/span&gt; &lt;span class='k'&gt;struct&lt;/span&gt;
-&lt;span class='p'&gt;{&lt;/span&gt;
-    &lt;span class='kt'&gt;uint32_t&lt;/span&gt;  &lt;span class='n'&gt;id&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
-    &lt;span class='kt'&gt;uint32_t&lt;/span&gt;  &lt;span class='n'&gt;num_bananas&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
-    &lt;span class='kt'&gt;char&lt;/span&gt;  &lt;span class='o'&gt;*&lt;/span&gt;&lt;span class='n'&gt;name&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
-&lt;span class='p'&gt;}&lt;/span&gt; &lt;span class='n'&gt;rec2_t&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
+&lt;div class='highlight'&gt;&lt;pre&gt;&lt;span class='lineno'&gt;1&lt;/span&gt; &lt;span class='k'&gt;typedef&lt;/span&gt; &lt;span class='k'&gt;struct&lt;/span&gt;
+&lt;span class='lineno'&gt;2&lt;/span&gt; &lt;span class='p'&gt;{&lt;/span&gt;
+&lt;span class='lineno'&gt;3&lt;/span&gt;     &lt;span class='kt'&gt;uint32_t&lt;/span&gt;  &lt;span class='n'&gt;id&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
+&lt;span class='lineno'&gt;4&lt;/span&gt;     &lt;span class='kt'&gt;uint32_t&lt;/span&gt;  &lt;span class='n'&gt;num_bananas&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
+&lt;span class='lineno'&gt;5&lt;/span&gt;     &lt;span class='kt'&gt;char&lt;/span&gt;  &lt;span class='o'&gt;*&lt;/span&gt;&lt;span class='n'&gt;name&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
+&lt;span class='lineno'&gt;6&lt;/span&gt; &lt;span class='p'&gt;}&lt;/span&gt; &lt;span class='n'&gt;rec2_t&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
 &lt;/pre&gt;
 &lt;/div&gt;
 &lt;p&gt;Often in these cases, you can simplify the problem by deciding not to let &lt;code&gt;name&lt;/code&gt; be a variable-length field. Instead, you decide that you&amp;#8217;ll use (say) exactly 20 bytes for the name, padding out short names and truncating long names as necessary. We don&amp;#8217;t want to do that, however — we want to have a truly variable-length field.&lt;/p&gt;
 
 &lt;p&gt;To store this variable-length field in the file, we need some way of encoding the length of a particular record&amp;#8217;s &lt;code&gt;name&lt;/code&gt; field. If we can assume that none of the records has a name that&amp;#8217;s longer than 4 billion characters, we can use a 32-bit length prefix:&lt;/p&gt;
-&lt;div class='highlight'&gt;&lt;pre&gt;&lt;span class='kt'&gt;FILE&lt;/span&gt;  &lt;span class='o'&gt;*&lt;/span&gt;&lt;span class='n'&gt;file&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='cm'&gt;/* whatever */&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
-&lt;span class='n'&gt;rec2_t&lt;/span&gt;  &lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
-
-&lt;span class='k'&gt;do&lt;/span&gt;
-&lt;span class='p'&gt;{&lt;/span&gt;
-    &lt;span class='kt'&gt;uint32_t&lt;/span&gt;  &lt;span class='n'&gt;name_length&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
-
-    &lt;span class='k'&gt;if&lt;/span&gt; &lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;fread&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='o'&gt;&amp;amp;&lt;/span&gt;&lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;id&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt;
-              &lt;span class='k'&gt;sizeof&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='kt'&gt;uint32_t&lt;/span&gt;&lt;span class='p'&gt;),&lt;/span&gt; &lt;span class='mi'&gt;1&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='n'&gt;file&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt; &lt;span class='o'&gt;&amp;lt;&lt;/span&gt; &lt;span class='mi'&gt;1&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt;
-        &lt;span class='k'&gt;break&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
-    &lt;span class='k'&gt;if&lt;/span&gt; &lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;fread&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='o'&gt;&amp;amp;&lt;/span&gt;&lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;num_bananas&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt;
-              &lt;span class='k'&gt;sizeof&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='kt'&gt;uint32_t&lt;/span&gt;&lt;span class='p'&gt;),&lt;/span&gt; &lt;span class='mi'&gt;1&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='n'&gt;file&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt; &lt;span class='o'&gt;&amp;lt;&lt;/span&gt; &lt;span class='mi'&gt;1&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt;
-        &lt;span class='k'&gt;break&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
-    &lt;span class='k'&gt;if&lt;/span&gt; &lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;fread&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='o'&gt;&amp;amp;&lt;/span&gt;&lt;span class='n'&gt;name_length&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt;
-              &lt;span class='k'&gt;sizeof&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='kt'&gt;uint32_t&lt;/span&gt;&lt;span class='p'&gt;),&lt;/span&gt; &lt;span class='mi'&gt;1&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='n'&gt;file&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt; &lt;span class='o'&gt;&amp;lt;&lt;/span&gt; &lt;span class='mi'&gt;1&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt;
-        &lt;span class='k'&gt;break&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
-    &lt;span class='k'&gt;if&lt;/span&gt; &lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;fread&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;name&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt;
-              &lt;span class='k'&gt;sizeof&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='kt'&gt;char&lt;/span&gt;&lt;span class='p'&gt;),&lt;/span&gt; &lt;span class='n'&gt;name_length&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='n'&gt;file&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt; &lt;span class='o'&gt;&amp;lt;&lt;/span&gt; &lt;span class='n'&gt;name_length&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt;
-        &lt;span class='k'&gt;break&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
-    &lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;name&lt;/span&gt;&lt;span class='p'&gt;[&lt;/span&gt;&lt;span class='n'&gt;name_length&lt;/span&gt;&lt;span class='p'&gt;]&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='sc'&gt;&amp;#39;\0&amp;#39;&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
-
-    &lt;span class='cm'&gt;/* process the record */&lt;/span&gt;
-&lt;span class='p'&gt;}&lt;/span&gt; &lt;span class='k'&gt;while&lt;/span&gt; &lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='nb'&gt;true&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
+&lt;div class='highlight'&gt;&lt;pre&gt;&lt;span class='lineno'&gt; 1&lt;/span&gt; &lt;span class='kt'&gt;FILE&lt;/span&gt;  &lt;span class='o'&gt;*&lt;/span&gt;&lt;span class='n'&gt;file&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='cm'&gt;/* whatever */&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
+&lt;span class='lineno'&gt; 2&lt;/span&gt; &lt;span class='n'&gt;rec2_t&lt;/span&gt;  &lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
+&lt;span class='lineno'&gt; 3&lt;/span&gt; 
+&lt;span class='lineno'&gt; 4&lt;/span&gt; &lt;span class='k'&gt;do&lt;/span&gt;
+&lt;span class='lineno'&gt; 5&lt;/span&gt; &lt;span class='p'&gt;{&lt;/span&gt;
+&lt;span class='lineno'&gt; 6&lt;/span&gt;     &lt;span class='kt'&gt;uint32_t&lt;/span&gt;  &lt;span class='n'&gt;name_length&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
+&lt;span class='lineno'&gt; 7&lt;/span&gt; 
+&lt;span class='lineno'&gt; 8&lt;/span&gt;     &lt;span class='k'&gt;if&lt;/span&gt; &lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;fread&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='o'&gt;&amp;amp;&lt;/span&gt;&lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;id&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt;
+&lt;span class='lineno'&gt; 9&lt;/span&gt;               &lt;span class='k'&gt;sizeof&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='kt'&gt;uint32_t&lt;/span&gt;&lt;span class='p'&gt;),&lt;/span&gt; &lt;span class='mi'&gt;1&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='n'&gt;file&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt; &lt;span class='o'&gt;&amp;lt;&lt;/span&gt; &lt;span class='mi'&gt;1&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt;
+&lt;span class='lineno'&gt;10&lt;/span&gt;         &lt;span class='k'&gt;break&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
+&lt;span class='lineno'&gt;11&lt;/span&gt;     &lt;span class='k'&gt;if&lt;/span&gt; &lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;fread&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='o'&gt;&amp;amp;&lt;/span&gt;&lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;num_bananas&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt;
+&lt;span class='lineno'&gt;12&lt;/span&gt;               &lt;span class='k'&gt;sizeof&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='kt'&gt;uint32_t&lt;/span&gt;&lt;span class='p'&gt;),&lt;/span&gt; &lt;span class='mi'&gt;1&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='n'&gt;file&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt; &lt;span class='o'&gt;&amp;lt;&lt;/span&gt; &lt;span class='mi'&gt;1&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt;
+&lt;span class='lineno'&gt;13&lt;/span&gt;         &lt;span class='k'&gt;break&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
+&lt;span class='lineno'&gt;14&lt;/span&gt;     &lt;span class='k'&gt;if&lt;/span&gt; &lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;fread&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='o'&gt;&amp;amp;&lt;/span&gt;&lt;span class='n'&gt;name_length&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt;
+&lt;span class='lineno'&gt;15&lt;/span&gt;               &lt;span class='k'&gt;sizeof&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='kt'&gt;uint32_t&lt;/span&gt;&lt;span class='p'&gt;),&lt;/span&gt; &lt;span class='mi'&gt;1&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='n'&gt;file&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt; &lt;span class='o'&gt;&amp;lt;&lt;/span&gt; &lt;span class='mi'&gt;1&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt;
+&lt;span class='lineno'&gt;16&lt;/span&gt;         &lt;span class='k'&gt;break&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
+&lt;span class='lineno'&gt;17&lt;/span&gt;     &lt;span class='k'&gt;if&lt;/span&gt; &lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;fread&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;name&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt;
+&lt;span class='lineno'&gt;18&lt;/span&gt;               &lt;span class='k'&gt;sizeof&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='kt'&gt;char&lt;/span&gt;&lt;span class='p'&gt;),&lt;/span&gt; &lt;span class='n'&gt;name_length&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='n'&gt;file&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt; &lt;span class='o'&gt;&amp;lt;&lt;/span&gt; &lt;span class='n'&gt;name_length&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt;
+&lt;span class='lineno'&gt;19&lt;/span&gt;         &lt;span class='k'&gt;break&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
+&lt;span class='lineno'&gt;20&lt;/span&gt;     &lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;name&lt;/span&gt;&lt;span class='p'&gt;[&lt;/span&gt;&lt;span class='n'&gt;name_length&lt;/span&gt;&lt;span class='p'&gt;]&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='sc'&gt;&amp;#39;\0&amp;#39;&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
+&lt;span class='lineno'&gt;21&lt;/span&gt; 
+&lt;span class='lineno'&gt;22&lt;/span&gt;     &lt;span class='cm'&gt;/* process the record */&lt;/span&gt;
+&lt;span class='lineno'&gt;23&lt;/span&gt; &lt;span class='p'&gt;}&lt;/span&gt; &lt;span class='k'&gt;while&lt;/span&gt; &lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='nb'&gt;true&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
 &lt;/pre&gt;
 &lt;/div&gt;
 &lt;p&gt;That&amp;#8217;s pretty ugly and repetitive, so let&amp;#8217;s play some macro games:&lt;/p&gt;
-&lt;div class='highlight'&gt;&lt;pre&gt;&lt;span class='kt'&gt;FILE&lt;/span&gt;  &lt;span class='o'&gt;*&lt;/span&gt;&lt;span class='n'&gt;file&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='cm'&gt;/* whatever */&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
-&lt;span class='n'&gt;rec2_t&lt;/span&gt;  &lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
-
-&lt;span class='cp'&gt;#define READ_FIELD(dest, type, count) \&lt;/span&gt;
-&lt;span class='cp'&gt;    if (fread(dest, sizeof(type), count, file) &amp;lt; count) \&lt;/span&gt;
-&lt;span class='cp'&gt;        break;&lt;/span&gt;
-
-&lt;span class='k'&gt;do&lt;/span&gt;
-&lt;span class='p'&gt;{&lt;/span&gt;
-    &lt;span class='kt'&gt;uint32_t&lt;/span&gt;  &lt;span class='n'&gt;name_length&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
-
-    &lt;span class='n'&gt;READ_FIELD&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='o'&gt;&amp;amp;&lt;/span&gt;&lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;id&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='kt'&gt;uint32_t&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='mi'&gt;1&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
-    &lt;span class='n'&gt;READ_FIELD&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='o'&gt;&amp;amp;&lt;/span&gt;&lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;num_bananas&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='kt'&gt;uint32_t&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='mi'&gt;1&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
-    &lt;span class='n'&gt;READ_FIELD&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='o'&gt;&amp;amp;&lt;/span&gt;&lt;span class='n'&gt;name_length&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='kt'&gt;uint32_t&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='mi'&gt;1&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
-    &lt;span class='n'&gt;READ_FIELD&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;name&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='kt'&gt;char&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='n'&gt;name_length&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
-    &lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;name&lt;/span&gt;&lt;span class='p'&gt;[&lt;/span&gt;&lt;span class='n'&gt;name_length&lt;/span&gt;&lt;span class='p'&gt;]&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='sc'&gt;&amp;#39;\0&amp;#39;&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
-
-    &lt;span class='cm'&gt;/* process the record */&lt;/span&gt;
-&lt;span class='p'&gt;}&lt;/span&gt; &lt;span class='k'&gt;while&lt;/span&gt; &lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='nb'&gt;true&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
+&lt;div class='highlight'&gt;&lt;pre&gt;&lt;span class='lineno'&gt; 1&lt;/span&gt; &lt;span class='kt'&gt;FILE&lt;/span&gt;  &lt;span class='o'&gt;*&lt;/span&gt;&lt;span class='n'&gt;file&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='cm'&gt;/* whatever */&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
+&lt;span class='lineno'&gt; 2&lt;/span&gt; &lt;span class='n'&gt;rec2_t&lt;/span&gt;  &lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
+&lt;span class='lineno'&gt; 3&lt;/span&gt; 
+&lt;span class='lineno'&gt; 4&lt;/span&gt; &lt;span class='cp'&gt;#define READ_FIELD(dest, type, count) \&lt;/span&gt;
+&lt;span class='lineno'&gt; 5&lt;/span&gt; &lt;span class='cp'&gt;    if (fread(dest, sizeof(type), count, file) &amp;lt; count) \&lt;/span&gt;
+&lt;span class='lineno'&gt; 6&lt;/span&gt; &lt;span class='cp'&gt;        break;&lt;/span&gt;
+&lt;span class='lineno'&gt; 7&lt;/span&gt; 
+&lt;span class='lineno'&gt; 8&lt;/span&gt; &lt;span class='k'&gt;do&lt;/span&gt;
+&lt;span class='lineno'&gt; 9&lt;/span&gt; &lt;span class='p'&gt;{&lt;/span&gt;
+&lt;span class='lineno'&gt;10&lt;/span&gt;     &lt;span class='kt'&gt;uint32_t&lt;/span&gt;  &lt;span class='n'&gt;name_length&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
+&lt;span class='lineno'&gt;11&lt;/span&gt; 
+&lt;span class='lineno'&gt;12&lt;/span&gt;     &lt;span class='n'&gt;READ_FIELD&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='o'&gt;&amp;amp;&lt;/span&gt;&lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;id&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='kt'&gt;uint32_t&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='mi'&gt;1&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
+&lt;span class='lineno'&gt;13&lt;/span&gt;     &lt;span class='n'&gt;READ_FIELD&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='o'&gt;&amp;amp;&lt;/span&gt;&lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;num_bananas&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='kt'&gt;uint32_t&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='mi'&gt;1&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
+&lt;span class='lineno'&gt;14&lt;/span&gt;     &lt;span class='n'&gt;READ_FIELD&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='o'&gt;&amp;amp;&lt;/span&gt;&lt;span class='n'&gt;name_length&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='kt'&gt;uint32_t&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='mi'&gt;1&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
+&lt;span class='lineno'&gt;15&lt;/span&gt;     &lt;span class='n'&gt;READ_FIELD&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;name&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='kt'&gt;char&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='n'&gt;name_length&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
+&lt;span class='lineno'&gt;16&lt;/span&gt;     &lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;name&lt;/span&gt;&lt;span class='p'&gt;[&lt;/span&gt;&lt;span class='n'&gt;name_length&lt;/span&gt;&lt;span class='p'&gt;]&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='sc'&gt;&amp;#39;\0&amp;#39;&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
+&lt;span class='lineno'&gt;17&lt;/span&gt; 
+&lt;span class='lineno'&gt;18&lt;/span&gt;     &lt;span class='cm'&gt;/* process the record */&lt;/span&gt;
+&lt;span class='lineno'&gt;19&lt;/span&gt; &lt;span class='p'&gt;}&lt;/span&gt; &lt;span class='k'&gt;while&lt;/span&gt; &lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='nb'&gt;true&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
 &lt;/pre&gt;
 &lt;/div&gt;
 &lt;p&gt;So the basic idea here is pretty sound — we can store a name of any length without wasted space. And the code is still rather fast; we&amp;#8217;ll have a larger overhead from calling &lt;code&gt;fread&lt;/code&gt; multiple times, but the number of low-level I/O reads will still be roughly the same.&lt;/p&gt;
@@ -178,33 +178,33 @@ $ scons -c build-tests&lt;/code&gt;&lt;/pre&gt;
 &lt;h3 id='step_3_allocate_some_memory'&gt;Step 3: Allocate some memory&lt;/h3&gt;
 
 &lt;p&gt;So what&amp;#8217;s the simplest way we can allocate memory for the &lt;code&gt;record.name&lt;/code&gt; field? The naïve approach would be to &lt;code&gt;malloc&lt;/code&gt; a new string for every record:&lt;/p&gt;
-&lt;div class='highlight'&gt;&lt;pre&gt;&lt;span class='kt'&gt;FILE&lt;/span&gt;  &lt;span class='o'&gt;*&lt;/span&gt;&lt;span class='n'&gt;file&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='cm'&gt;/* whatever */&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
-&lt;span class='n'&gt;rec2_t&lt;/span&gt;  &lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
-
-&lt;span class='cp'&gt;#define READ_FIELD(dest, type, count) \&lt;/span&gt;
-&lt;span class='cp'&gt;    if (fread(dest, sizeof(type), count, file) &amp;lt; count) \&lt;/span&gt;
-&lt;span class='cp'&gt;        break;&lt;/span&gt;
-
-&lt;span class='k'&gt;do&lt;/span&gt;
-&lt;span class='p'&gt;{&lt;/span&gt;
-    &lt;span class='kt'&gt;uint32_t&lt;/span&gt;  &lt;span class='n'&gt;name_length&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
-
-    &lt;span class='n'&gt;READ_FIELD&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='o'&gt;&amp;amp;&lt;/span&gt;&lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;id&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='kt'&gt;uint32_t&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='mi'&gt;1&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
-    &lt;span class='n'&gt;READ_FIELD&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='o'&gt;&amp;amp;&lt;/span&gt;&lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;num_bananas&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='kt'&gt;uint32_t&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='mi'&gt;1&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
-    &lt;span class='n'&gt;READ_FIELD&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='o'&gt;&amp;amp;&lt;/span&gt;&lt;span class='n'&gt;name_length&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='kt'&gt;uint32_t&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='mi'&gt;1&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
-
-    &lt;span class='cm'&gt;/* Remember to include an extra byte for the NUL terminator! */&lt;/span&gt;
-
-    &lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;name&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='kt'&gt;char&lt;/span&gt; &lt;span class='o'&gt;*&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt; &lt;span class='n'&gt;malloc&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='k'&gt;sizeof&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='kt'&gt;char&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt; &lt;span class='o'&gt;*&lt;/span&gt; &lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;name_length&lt;/span&gt;&lt;span class='o'&gt;+&lt;/span&gt;&lt;span class='mi'&gt;1&lt;/span&gt;&lt;span class='p'&gt;));&lt;/span&gt;
-    &lt;span class='k'&gt;if&lt;/span&gt; &lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;name&lt;/span&gt; &lt;span class='o'&gt;==&lt;/span&gt; &lt;span class='nb'&gt;NULL&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt; &lt;span class='k'&gt;break&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
-
-    &lt;span class='n'&gt;READ_FIELD&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;name&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='kt'&gt;char&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='n'&gt;name_length&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
-    &lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;name&lt;/span&gt;&lt;span class='p'&gt;[&lt;/span&gt;&lt;span class='n'&gt;name_length&lt;/span&gt;&lt;span class='p'&gt;]&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='sc'&gt;&amp;#39;\0&amp;#39;&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
-
-    &lt;span class='cm'&gt;/* process the record */&lt;/span&gt;
-
-    &lt;span class='n'&gt;free&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;name&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
-&lt;span class='p'&gt;}&lt;/span&gt; &lt;span class='k'&gt;while&lt;/span&gt; &lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='nb'&gt;true&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
+&lt;div class='highlight'&gt;&lt;pre&gt;&lt;span class='lineno'&gt; 1&lt;/span&gt; &lt;span class='kt'&gt;FILE&lt;/span&gt;  &lt;span class='o'&gt;*&lt;/span&gt;&lt;span class='n'&gt;file&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='cm'&gt;/* whatever */&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
+&lt;span class='lineno'&gt; 2&lt;/span&gt; &lt;span class='n'&gt;rec2_t&lt;/span&gt;  &lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
+&lt;span class='lineno'&gt; 3&lt;/span&gt; 
+&lt;span class='lineno'&gt; 4&lt;/span&gt; &lt;span class='cp'&gt;#define READ_FIELD(dest, type, count) \&lt;/span&gt;
+&lt;span class='lineno'&gt; 5&lt;/span&gt; &lt;span class='cp'&gt;    if (fread(dest, sizeof(type), count, file) &amp;lt; count) \&lt;/span&gt;
+&lt;span class='lineno'&gt; 6&lt;/span&gt; &lt;span class='cp'&gt;        break;&lt;/span&gt;
+&lt;span class='lineno'&gt; 7&lt;/span&gt; 
+&lt;span class='lineno'&gt; 8&lt;/span&gt; &lt;span class='k'&gt;do&lt;/span&gt;
+&lt;span class='lineno'&gt; 9&lt;/span&gt; &lt;span class='p'&gt;{&lt;/span&gt;
+&lt;span class='lineno'&gt;10&lt;/span&gt;     &lt;span class='kt'&gt;uint32_t&lt;/span&gt;  &lt;span class='n'&gt;name_length&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
+&lt;span class='lineno'&gt;11&lt;/span&gt; 
+&lt;span class='lineno'&gt;12&lt;/span&gt;     &lt;span class='n'&gt;READ_FIELD&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='o'&gt;&amp;amp;&lt;/span&gt;&lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;id&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='kt'&gt;uint32_t&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='mi'&gt;1&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
+&lt;span class='lineno'&gt;13&lt;/span&gt;     &lt;span class='n'&gt;READ_FIELD&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='o'&gt;&amp;amp;&lt;/span&gt;&lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;num_bananas&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='kt'&gt;uint32_t&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='mi'&gt;1&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
+&lt;span class='lineno'&gt;14&lt;/span&gt;     &lt;span class='n'&gt;READ_FIELD&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='o'&gt;&amp;amp;&lt;/span&gt;&lt;span class='n'&gt;name_length&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='kt'&gt;uint32_t&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='mi'&gt;1&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
+&lt;span class='lineno'&gt;15&lt;/span&gt; 
+&lt;span class='lineno'&gt;16&lt;/span&gt;     &lt;span class='cm'&gt;/* Remember to include an extra byte for the NUL terminator! */&lt;/span&gt;
+&lt;span class='lineno'&gt;17&lt;/span&gt; 
+&lt;span class='lineno'&gt;18&lt;/span&gt;     &lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;name&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='kt'&gt;char&lt;/span&gt; &lt;span class='o'&gt;*&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt; &lt;span class='n'&gt;malloc&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='k'&gt;sizeof&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='kt'&gt;char&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt; &lt;span class='o'&gt;*&lt;/span&gt; &lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;name_length&lt;/span&gt;&lt;span class='o'&gt;+&lt;/span&gt;&lt;span class='mi'&gt;1&lt;/span&gt;&lt;span class='p'&gt;));&lt;/span&gt;
+&lt;span class='lineno'&gt;19&lt;/span&gt;     &lt;span class='k'&gt;if&lt;/span&gt; &lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;name&lt;/span&gt; &lt;span class='o'&gt;==&lt;/span&gt; &lt;span class='nb'&gt;NULL&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt; &lt;span class='k'&gt;break&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
+&lt;span class='lineno'&gt;20&lt;/span&gt; 
+&lt;span class='lineno'&gt;21&lt;/span&gt;     &lt;span class='n'&gt;READ_FIELD&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;name&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='kt'&gt;char&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='n'&gt;name_length&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
+&lt;span class='lineno'&gt;22&lt;/span&gt;     &lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;name&lt;/span&gt;&lt;span class='p'&gt;[&lt;/span&gt;&lt;span class='n'&gt;name_length&lt;/span&gt;&lt;span class='p'&gt;]&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='sc'&gt;&amp;#39;\0&amp;#39;&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
+&lt;span class='lineno'&gt;23&lt;/span&gt; 
+&lt;span class='lineno'&gt;24&lt;/span&gt;     &lt;span class='cm'&gt;/* process the record */&lt;/span&gt;
+&lt;span class='lineno'&gt;25&lt;/span&gt; 
+&lt;span class='lineno'&gt;26&lt;/span&gt;     &lt;span class='n'&gt;free&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;name&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
+&lt;span class='lineno'&gt;27&lt;/span&gt; &lt;span class='p'&gt;}&lt;/span&gt; &lt;span class='k'&gt;while&lt;/span&gt; &lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='nb'&gt;true&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
 &lt;/pre&gt;
 &lt;/div&gt;
 &lt;p&gt;This will avoid the segfault, and let you process your data, but it will perform &lt;em&gt;horribly&lt;/em&gt;, since we&amp;#8217;re calling down into the heap management code for &lt;strong&gt;every single record&lt;/strong&gt;! And remember, we&amp;#8217;re talking about millions of records here.&lt;/p&gt;
@@ -214,45 +214,45 @@ $ scons -c build-tests&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;So what&amp;#8217;s the solution? A high-water mark buffer. The idea is that instead of allocating a new string each time through the loop, you remember how large your current string is. As long as the next record&amp;#8217;s &lt;code&gt;name&lt;/code&gt; isn&amp;#8217;t longer than your buffer, you can reuse it, saving you a call to &lt;code&gt;malloc&lt;/code&gt;. If it is longer, you &lt;code&gt;realloc&lt;/code&gt; it to be large enough for the new string. If you think of the lengths of the &lt;code&gt;name&lt;/code&gt; strings as a rising tide of water, you see where the name of the buffer comes from.&lt;/p&gt;
 
 &lt;p&gt;We can do a high-water mark buffer by hand:&lt;/p&gt;
-&lt;div class='highlight'&gt;&lt;pre&gt;&lt;span class='kt'&gt;FILE&lt;/span&gt;  &lt;span class='o'&gt;*&lt;/span&gt;&lt;span class='n'&gt;file&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='cm'&gt;/* whatever */&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
-&lt;span class='n'&gt;rec2_t&lt;/span&gt;  &lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
-&lt;span class='kt'&gt;size_t&lt;/span&gt;  &lt;span class='n'&gt;allocated_name_size&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='mi'&gt;0&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
-
-&lt;span class='cp'&gt;#define READ_FIELD(dest, type, count) \&lt;/span&gt;
-&lt;span class='cp'&gt;    if (fread(dest, sizeof(type), count, file) &amp;lt; count) \&lt;/span&gt;
-&lt;span class='cp'&gt;        break;&lt;/span&gt;
-
-&lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;name&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='nb'&gt;NULL&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
-
-&lt;span class='k'&gt;do&lt;/span&gt;
-&lt;span class='p'&gt;{&lt;/span&gt;
-    &lt;span class='kt'&gt;uint32_t&lt;/span&gt;  &lt;span class='n'&gt;name_length&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
-    &lt;span class='kt'&gt;size_t&lt;/span&gt;  &lt;span class='n'&gt;name_size&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
-
-    &lt;span class='n'&gt;READ_FIELD&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='o'&gt;&amp;amp;&lt;/span&gt;&lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;id&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='kt'&gt;uint32_t&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='mi'&gt;1&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
-    &lt;span class='n'&gt;READ_FIELD&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='o'&gt;&amp;amp;&lt;/span&gt;&lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;num_bananas&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='kt'&gt;uint32_t&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='mi'&gt;1&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
-    &lt;span class='n'&gt;READ_FIELD&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='o'&gt;&amp;amp;&lt;/span&gt;&lt;span class='n'&gt;name_length&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='kt'&gt;uint32_t&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='mi'&gt;1&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
-
-    &lt;span class='cm'&gt;/* Remember to include an extra byte for the NUL terminator! */&lt;/span&gt;
-
-    &lt;span class='n'&gt;name_size&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='k'&gt;sizeof&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='kt'&gt;char&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt; &lt;span class='o'&gt;*&lt;/span&gt; &lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;name_length&lt;/span&gt;&lt;span class='o'&gt;+&lt;/span&gt;&lt;span class='mi'&gt;1&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
-
-    &lt;span class='cm'&gt;/* Reallocate the buffer if it&amp;#39;s not big enough */&lt;/span&gt;
-    &lt;span class='k'&gt;if&lt;/span&gt; &lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;name_size&lt;/span&gt; &lt;span class='o'&gt;&amp;gt;&lt;/span&gt; &lt;span class='n'&gt;allocated_name_size&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt;
-    &lt;span class='p'&gt;{&lt;/span&gt;
-        &lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;name&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='kt'&gt;char&lt;/span&gt; &lt;span class='o'&gt;*&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt; &lt;span class='n'&gt;realloc&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;name&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='n'&gt;name_size&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
-        &lt;span class='k'&gt;if&lt;/span&gt; &lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;name&lt;/span&gt; &lt;span class='o'&gt;==&lt;/span&gt; &lt;span class='nb'&gt;NULL&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt; &lt;span class='k'&gt;break&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
-        &lt;span class='n'&gt;allocated_name_size&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='n'&gt;name_size&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
-    &lt;span class='p'&gt;}&lt;/span&gt;
-
-    &lt;span class='n'&gt;READ_FIELD&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;name&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='kt'&gt;char&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='n'&gt;name_length&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
-    &lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;name&lt;/span&gt;&lt;span class='p'&gt;[&lt;/span&gt;&lt;span class='n'&gt;name_length&lt;/span&gt;&lt;span class='p'&gt;]&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='sc'&gt;&amp;#39;\0&amp;#39;&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
-
-    &lt;span class='cm'&gt;/* process the record */&lt;/span&gt;
-&lt;span class='p'&gt;}&lt;/span&gt; &lt;span class='k'&gt;while&lt;/span&gt; &lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='nb'&gt;true&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
-
-&lt;span class='k'&gt;if&lt;/span&gt; &lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;name&lt;/span&gt; &lt;span class='o'&gt;!=&lt;/span&gt; &lt;span class='nb'&gt;NULL&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt;
-    &lt;span class='n'&gt;free&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;name&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
+&lt;div class='highlight'&gt;&lt;pre&gt;&lt;span class='lineno'&gt; 1&lt;/span&gt; &lt;span class='kt'&gt;FILE&lt;/span&gt;  &lt;span class='o'&gt;*&lt;/span&gt;&lt;span class='n'&gt;file&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='cm'&gt;/* whatever */&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
+&lt;span class='lineno'&gt; 2&lt;/span&gt; &lt;span class='n'&gt;rec2_t&lt;/span&gt;  &lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
+&lt;span class='lineno'&gt; 3&lt;/span&gt; &lt;span class='kt'&gt;size_t&lt;/span&gt;  &lt;span class='n'&gt;allocated_name_size&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='mi'&gt;0&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
+&lt;span class='lineno'&gt; 4&lt;/span&gt; 
+&lt;span class='lineno'&gt; 5&lt;/span&gt; &lt;span class='cp'&gt;#define READ_FIELD(dest, type, count) \&lt;/span&gt;
+&lt;span class='lineno'&gt; 6&lt;/span&gt; &lt;span class='cp'&gt;    if (fread(dest, sizeof(type), count, file) &amp;lt; count) \&lt;/span&gt;
+&lt;span class='lineno'&gt; 7&lt;/span&gt; &lt;span class='cp'&gt;        break;&lt;/span&gt;
+&lt;span class='lineno'&gt; 8&lt;/span&gt; 
+&lt;span class='lineno'&gt; 9&lt;/span&gt; &lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;name&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='nb'&gt;NULL&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
+&lt;span class='lineno'&gt;10&lt;/span&gt; 
+&lt;span class='lineno'&gt;11&lt;/span&gt; &lt;span class='k'&gt;do&lt;/span&gt;
+&lt;span class='lineno'&gt;12&lt;/span&gt; &lt;span class='p'&gt;{&lt;/span&gt;
+&lt;span class='lineno'&gt;13&lt;/span&gt;     &lt;span class='kt'&gt;uint32_t&lt;/span&gt;  &lt;span class='n'&gt;name_length&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
+&lt;span class='lineno'&gt;14&lt;/span&gt;     &lt;span class='kt'&gt;size_t&lt;/span&gt;  &lt;span class='n'&gt;name_size&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
+&lt;span class='lineno'&gt;15&lt;/span&gt; 
+&lt;span class='lineno'&gt;16&lt;/span&gt;     &lt;span class='n'&gt;READ_FIELD&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='o'&gt;&amp;amp;&lt;/span&gt;&lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;id&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='kt'&gt;uint32_t&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='mi'&gt;1&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
+&lt;span class='lineno'&gt;17&lt;/span&gt;     &lt;span class='n'&gt;READ_FIELD&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='o'&gt;&amp;amp;&lt;/span&gt;&lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;num_bananas&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='kt'&gt;uint32_t&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='mi'&gt;1&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
+&lt;span class='lineno'&gt;18&lt;/span&gt;     &lt;span class='n'&gt;READ_FIELD&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='o'&gt;&amp;amp;&lt;/span&gt;&lt;span class='n'&gt;name_length&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='kt'&gt;uint32_t&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='mi'&gt;1&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
+&lt;span class='lineno'&gt;19&lt;/span&gt; 
+&lt;span class='lineno'&gt;20&lt;/span&gt;     &lt;span class='cm'&gt;/* Remember to include an extra byte for the NUL terminator! */&lt;/span&gt;
+&lt;span class='lineno'&gt;21&lt;/span&gt; 
+&lt;span class='lineno'&gt;22&lt;/span&gt;     &lt;span class='n'&gt;name_size&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='k'&gt;sizeof&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='kt'&gt;char&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt; &lt;span class='o'&gt;*&lt;/span&gt; &lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;name_length&lt;/span&gt;&lt;span class='o'&gt;+&lt;/span&gt;&lt;span class='mi'&gt;1&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
+&lt;span class='lineno'&gt;23&lt;/span&gt; 
+&lt;span class='lineno'&gt;24&lt;/span&gt;     &lt;span class='cm'&gt;/* Reallocate the buffer if it&amp;#39;s not big enough */&lt;/span&gt;
+&lt;span class='lineno'&gt;25&lt;/span&gt;     &lt;span class='k'&gt;if&lt;/span&gt; &lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;name_size&lt;/span&gt; &lt;span class='o'&gt;&amp;gt;&lt;/span&gt; &lt;span class='n'&gt;allocated_name_size&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt;
+&lt;span class='lineno'&gt;26&lt;/span&gt;     &lt;span class='p'&gt;{&lt;/span&gt;
+&lt;span class='lineno'&gt;27&lt;/span&gt;         &lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;name&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='kt'&gt;char&lt;/span&gt; &lt;span class='o'&gt;*&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt; &lt;span class='n'&gt;realloc&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;name&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='n'&gt;name_size&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
+&lt;span class='lineno'&gt;28&lt;/span&gt;         &lt;span class='k'&gt;if&lt;/span&gt; &lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;name&lt;/span&gt; &lt;span class='o'&gt;==&lt;/span&gt; &lt;span class='nb'&gt;NULL&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt; &lt;span class='k'&gt;break&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
+&lt;span class='lineno'&gt;29&lt;/span&gt;         &lt;span class='n'&gt;allocated_name_size&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='n'&gt;name_size&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
+&lt;span class='lineno'&gt;30&lt;/span&gt;     &lt;span class='p'&gt;}&lt;/span&gt;
+&lt;span class='lineno'&gt;31&lt;/span&gt; 
+&lt;span class='lineno'&gt;32&lt;/span&gt;     &lt;span class='n'&gt;READ_FIELD&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;name&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='kt'&gt;char&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='n'&gt;name_length&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
+&lt;span class='lineno'&gt;33&lt;/span&gt;     &lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;name&lt;/span&gt;&lt;span class='p'&gt;[&lt;/span&gt;&lt;span class='n'&gt;name_length&lt;/span&gt;&lt;span class='p'&gt;]&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='sc'&gt;&amp;#39;\0&amp;#39;&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
+&lt;span class='lineno'&gt;34&lt;/span&gt; 
+&lt;span class='lineno'&gt;35&lt;/span&gt;     &lt;span class='cm'&gt;/* process the record */&lt;/span&gt;
+&lt;span class='lineno'&gt;36&lt;/span&gt; &lt;span class='p'&gt;}&lt;/span&gt; &lt;span class='k'&gt;while&lt;/span&gt; &lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='nb'&gt;true&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
+&lt;span class='lineno'&gt;37&lt;/span&gt; 
+&lt;span class='lineno'&gt;38&lt;/span&gt; &lt;span class='k'&gt;if&lt;/span&gt; &lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;name&lt;/span&gt; &lt;span class='o'&gt;!=&lt;/span&gt; &lt;span class='nb'&gt;NULL&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt;
+&lt;span class='lineno'&gt;39&lt;/span&gt;     &lt;span class='n'&gt;free&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;name&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
 &lt;/pre&gt;
 &lt;/div&gt;
 &lt;p&gt;Note that &lt;code&gt;realloc&lt;/code&gt; does the “right thing” if &lt;code&gt;record.name&lt;/code&gt; is &lt;code&gt;NULL&lt;/code&gt;; this indicates that we haven&amp;#8217;t allocated a buffer yet, and so &lt;code&gt;realloc&lt;/code&gt; acts like &lt;code&gt;malloc&lt;/code&gt; in this case.&lt;/p&gt;
@@ -260,47 +260,47 @@ $ scons -c build-tests&lt;/code&gt;&lt;/pre&gt;
 &lt;h2 id='highwater_mark_library'&gt;High-water mark library&lt;/h2&gt;
 
 &lt;p&gt;So, we&amp;#8217;ve described why you&amp;#8217;d want a high-water mark buffer, and how to implement one. But once you write that same code three or four times, you decide to factor it out into a library. Hence &lt;a href='http://github.com/dcreager/libhwm/'&gt;libhwm&lt;/a&gt;. Here&amp;#8217;s the same file reading code using the library:&lt;/p&gt;
-&lt;div class='highlight'&gt;&lt;pre&gt;&lt;span class='k'&gt;typedef&lt;/span&gt; &lt;span class='k'&gt;struct&lt;/span&gt;
-&lt;span class='p'&gt;{&lt;/span&gt;
-    &lt;span class='kt'&gt;uint32_t&lt;/span&gt;  &lt;span class='n'&gt;id&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
-    &lt;span class='kt'&gt;uint32_t&lt;/span&gt;  &lt;span class='n'&gt;num_bananas&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
-    &lt;span class='n'&gt;hwm_buffer_t&lt;/span&gt;  &lt;span class='n'&gt;name&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
-&lt;span class='p'&gt;}&lt;/span&gt; &lt;span class='n'&gt;rec3_t&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
+&lt;div class='highlight'&gt;&lt;pre&gt;&lt;span class='lineno'&gt;1&lt;/span&gt; &lt;span class='k'&gt;typedef&lt;/span&gt; &lt;span class='k'&gt;struct&lt;/span&gt;
+&lt;span class='lineno'&gt;2&lt;/span&gt; &lt;span class='p'&gt;{&lt;/span&gt;
+&lt;span class='lineno'&gt;3&lt;/span&gt;     &lt;span class='kt'&gt;uint32_t&lt;/span&gt;  &lt;span class='n'&gt;id&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
+&lt;span class='lineno'&gt;4&lt;/span&gt;     &lt;span class='kt'&gt;uint32_t&lt;/span&gt;  &lt;span class='n'&gt;num_bananas&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
+&lt;span class='lineno'&gt;5&lt;/span&gt;     &lt;span class='n'&gt;hwm_buffer_t&lt;/span&gt;  &lt;span class='n'&gt;name&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
+&lt;span class='lineno'&gt;6&lt;/span&gt; &lt;span class='p'&gt;}&lt;/span&gt; &lt;span class='n'&gt;rec3_t&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
 &lt;/pre&gt;
-&lt;/div&gt;&lt;div class='highlight'&gt;&lt;pre&gt;&lt;span class='kt'&gt;FILE&lt;/span&gt;  &lt;span class='o'&gt;*&lt;/span&gt;&lt;span class='n'&gt;file&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='cm'&gt;/* whatever */&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
-&lt;span class='n'&gt;rec3_t&lt;/span&gt;  &lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
-
-&lt;span class='cp'&gt;#define READ_FIELD(dest, type, count) \&lt;/span&gt;
-&lt;span class='cp'&gt;    if (fread(dest, sizeof(type), count, file) &amp;lt; count) \&lt;/span&gt;
-&lt;span class='cp'&gt;        break;&lt;/span&gt;
-
-&lt;span class='n'&gt;hwm_buffer_init&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='o'&gt;&amp;amp;&lt;/span&gt;&lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;name&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
-
-&lt;span class='k'&gt;do&lt;/span&gt;
-&lt;span class='p'&gt;{&lt;/span&gt;
-    &lt;span class='kt'&gt;uint32_t&lt;/span&gt;  &lt;span class='n'&gt;name_length&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
-    &lt;span class='kt'&gt;char&lt;/span&gt;  &lt;span class='o'&gt;*&lt;/span&gt;&lt;span class='n'&gt;name_ptr&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
-
-    &lt;span class='n'&gt;READ_FIELD&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='o'&gt;&amp;amp;&lt;/span&gt;&lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;id&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='kt'&gt;uint32_t&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='mi'&gt;1&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
-    &lt;span class='n'&gt;READ_FIELD&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='o'&gt;&amp;amp;&lt;/span&gt;&lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;num_bananas&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='kt'&gt;uint32_t&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='mi'&gt;1&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
-    &lt;span class='n'&gt;READ_FIELD&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='o'&gt;&amp;amp;&lt;/span&gt;&lt;span class='n'&gt;name_length&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='kt'&gt;uint32_t&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='mi'&gt;1&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
-
-    &lt;span class='cm'&gt;/* Remember to include an extra byte for the NUL terminator! */&lt;/span&gt;
-
-    &lt;span class='n'&gt;name_size&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='k'&gt;sizeof&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='kt'&gt;char&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt; &lt;span class='o'&gt;*&lt;/span&gt; &lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;name_length&lt;/span&gt;&lt;span class='o'&gt;+&lt;/span&gt;&lt;span class='mi'&gt;1&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
-
-    &lt;span class='cm'&gt;/* Read into the HWM buffer */&lt;/span&gt;
-    &lt;span class='k'&gt;if&lt;/span&gt; &lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='o'&gt;!&lt;/span&gt;&lt;span class='n'&gt;hwm_buffer_ensure_size&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='o'&gt;&amp;amp;&lt;/span&gt;&lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;name&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='n'&gt;name_size&lt;/span&gt;&lt;span class='p'&gt;))&lt;/span&gt;
-        &lt;span class='k'&gt;break&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
-
-    &lt;span class='n'&gt;name_ptr&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='n'&gt;hwm_buffer_writable_mem&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='o'&gt;&amp;amp;&lt;/span&gt;&lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;name&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='kt'&gt;char&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
-    &lt;span class='n'&gt;READ_FIELD&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;name_ptr&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='kt'&gt;char&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='n'&gt;name_length&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
-    &lt;span class='n'&gt;name_ptr&lt;/span&gt;&lt;span class='p'&gt;[&lt;/span&gt;&lt;span class='n'&gt;name_length&lt;/span&gt;&lt;span class='p'&gt;]&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='sc'&gt;&amp;#39;\0&amp;#39;&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
-
-    &lt;span class='cm'&gt;/* process the record */&lt;/span&gt;
-&lt;span class='p'&gt;}&lt;/span&gt; &lt;span class='k'&gt;while&lt;/span&gt; &lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='nb'&gt;true&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
-
-&lt;span class='n'&gt;hwm_buffer_done&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='o'&gt;&amp;amp;&lt;/span&gt;&lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;name&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
+&lt;/div&gt;&lt;div class='highlight'&gt;&lt;pre&gt;&lt;span class='lineno'&gt; 1&lt;/span&gt; &lt;span class='kt'&gt;FILE&lt;/span&gt;  &lt;span class='o'&gt;*&lt;/span&gt;&lt;span class='n'&gt;file&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='cm'&gt;/* whatever */&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
+&lt;span class='lineno'&gt; 2&lt;/span&gt; &lt;span class='n'&gt;rec3_t&lt;/span&gt;  &lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
+&lt;span class='lineno'&gt; 3&lt;/span&gt; 
+&lt;span class='lineno'&gt; 4&lt;/span&gt; &lt;span class='cp'&gt;#define READ_FIELD(dest, type, count) \&lt;/span&gt;
+&lt;span class='lineno'&gt; 5&lt;/span&gt; &lt;span class='cp'&gt;    if (fread(dest, sizeof(type), count, file) &amp;lt; count) \&lt;/span&gt;
+&lt;span class='lineno'&gt; 6&lt;/span&gt; &lt;span class='cp'&gt;        break;&lt;/span&gt;
+&lt;span class='lineno'&gt; 7&lt;/span&gt; 
+&lt;span class='lineno'&gt; 8&lt;/span&gt; &lt;span class='n'&gt;hwm_buffer_init&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='o'&gt;&amp;amp;&lt;/span&gt;&lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;name&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
+&lt;span class='lineno'&gt; 9&lt;/span&gt; 
+&lt;span class='lineno'&gt;10&lt;/span&gt; &lt;span class='k'&gt;do&lt;/span&gt;
+&lt;span class='lineno'&gt;11&lt;/span&gt; &lt;span class='p'&gt;{&lt;/span&gt;
+&lt;span class='lineno'&gt;12&lt;/span&gt;     &lt;span class='kt'&gt;uint32_t&lt;/span&gt;  &lt;span class='n'&gt;name_length&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
+&lt;span class='lineno'&gt;13&lt;/span&gt;     &lt;span class='kt'&gt;char&lt;/span&gt;  &lt;span class='o'&gt;*&lt;/span&gt;&lt;span class='n'&gt;name_ptr&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
+&lt;span class='lineno'&gt;14&lt;/span&gt; 
+&lt;span class='lineno'&gt;15&lt;/span&gt;     &lt;span class='n'&gt;READ_FIELD&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='o'&gt;&amp;amp;&lt;/span&gt;&lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;id&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='kt'&gt;uint32_t&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='mi'&gt;1&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
+&lt;span class='lineno'&gt;16&lt;/span&gt;     &lt;span class='n'&gt;READ_FIELD&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='o'&gt;&amp;amp;&lt;/span&gt;&lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;num_bananas&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='kt'&gt;uint32_t&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='mi'&gt;1&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
+&lt;span class='lineno'&gt;17&lt;/span&gt;     &lt;span class='n'&gt;READ_FIELD&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='o'&gt;&amp;amp;&lt;/span&gt;&lt;span class='n'&gt;name_length&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='kt'&gt;uint32_t&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='mi'&gt;1&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
+&lt;span class='lineno'&gt;18&lt;/span&gt; 
+&lt;span class='lineno'&gt;19&lt;/span&gt;     &lt;span class='cm'&gt;/* Remember to include an extra byte for the NUL terminator! */&lt;/span&gt;
+&lt;span class='lineno'&gt;20&lt;/span&gt; 
+&lt;span class='lineno'&gt;21&lt;/span&gt;     &lt;span class='n'&gt;name_size&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='k'&gt;sizeof&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='kt'&gt;char&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt; &lt;span class='o'&gt;*&lt;/span&gt; &lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;name_length&lt;/span&gt;&lt;span class='o'&gt;+&lt;/span&gt;&lt;span class='mi'&gt;1&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
+&lt;span class='lineno'&gt;22&lt;/span&gt; 
+&lt;span class='lineno'&gt;23&lt;/span&gt;     &lt;span class='cm'&gt;/* Read into the HWM buffer */&lt;/span&gt;
+&lt;span class='lineno'&gt;24&lt;/span&gt;     &lt;span class='k'&gt;if&lt;/span&gt; &lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='o'&gt;!&lt;/span&gt;&lt;span class='n'&gt;hwm_buffer_ensure_size&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='o'&gt;&amp;amp;&lt;/span&gt;&lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;name&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='n'&gt;name_size&lt;/span&gt;&lt;span class='p'&gt;))&lt;/span&gt;
+&lt;span class='lineno'&gt;25&lt;/span&gt;         &lt;span class='k'&gt;break&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
+&lt;span class='lineno'&gt;26&lt;/span&gt; 
+&lt;span class='lineno'&gt;27&lt;/span&gt;     &lt;span class='n'&gt;name_ptr&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='n'&gt;hwm_buffer_writable_mem&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='o'&gt;&amp;amp;&lt;/span&gt;&lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;name&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='kt'&gt;char&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
+&lt;span class='lineno'&gt;28&lt;/span&gt;     &lt;span class='n'&gt;READ_FIELD&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;name_ptr&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='kt'&gt;char&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='n'&gt;name_length&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
+&lt;span class='lineno'&gt;29&lt;/span&gt;     &lt;span class='n'&gt;name_ptr&lt;/span&gt;&lt;span class='p'&gt;[&lt;/span&gt;&lt;span class='n'&gt;name_length&lt;/span&gt;&lt;span class='p'&gt;]&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='sc'&gt;&amp;#39;\0&amp;#39;&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
+&lt;span class='lineno'&gt;30&lt;/span&gt; 
+&lt;span class='lineno'&gt;31&lt;/span&gt;     &lt;span class='cm'&gt;/* process the record */&lt;/span&gt;
+&lt;span class='lineno'&gt;32&lt;/span&gt; &lt;span class='p'&gt;}&lt;/span&gt; &lt;span class='k'&gt;while&lt;/span&gt; &lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='nb'&gt;true&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
+&lt;span class='lineno'&gt;33&lt;/span&gt; 
+&lt;span class='lineno'&gt;34&lt;/span&gt; &lt;span class='n'&gt;hwm_buffer_done&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='o'&gt;&amp;amp;&lt;/span&gt;&lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;name&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
 &lt;/pre&gt;
 &lt;/div&gt;
 &lt;p&gt;Et voila. Of course, this last code snippet makes me realize that we could make things even simpler with an &lt;code&gt;hwm_buffer_fread&lt;/code&gt; function! The story never ends&amp;#8230;&lt;/p&gt;</content>

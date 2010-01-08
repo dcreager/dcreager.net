@@ -23,7 +23,7 @@ millions of records, but we want the code to scale well past that.
 Let's say that we need to read each record into a simple `struct`.
 For now, we're going to use nice, fixed-length fields:
 
-{% highlight c %}
+{% highlight c linenos %}
 typedef struct
 {
     uint32_t  id;
@@ -37,7 +37,7 @@ using 8 bytes.  (To simplify things, I'm not worrying about the
 endianness of the integers, or whether the `struct` is packed; both
 are easily handled with some pretty simple macro-fu.)
 
-{% highlight c %}
+{% highlight c linenos %}
 FILE  *file = /* whatever */;
 rec1_t  record;
 
@@ -54,7 +54,7 @@ from the actual file, so this gives us pretty good performance.
 
 What if we have a variable-length field in our `struct`, though?
 
-{% highlight c %}
+{% highlight c linenos %}
 typedef struct
 {
     uint32_t  id;
@@ -74,7 +74,7 @@ encoding the length of a particular record's `name` field.  If we can
 assume that none of the records has a name that's longer than 4
 billion characters, we can use a 32-bit length prefix:
 
-{% highlight c %}
+{% highlight c linenos %}
 FILE  *file = /* whatever */;
 rec2_t  record;
 
@@ -102,7 +102,7 @@ do
 
 That's pretty ugly and repetitive, so let's play some macro games:
 
-{% highlight c %}
+{% highlight c linenos %}
 FILE  *file = /* whatever */;
 rec2_t  record;
 
@@ -139,7 +139,7 @@ So what's the simplest way we can allocate memory for the
 `record.name` field?  The naïve approach would be to `malloc` a new
 string for every record:
 
-{% highlight c %}
+{% highlight c linenos %}
 FILE  *file = /* whatever */;
 rec2_t  record;
 
@@ -187,7 +187,7 @@ of the buffer comes from.
 
 We can do a high-water mark buffer by hand:
 
-{% highlight c %}
+{% highlight c linenos %}
 FILE  *file = /* whatever */;
 rec2_t  record;
 size_t  allocated_name_size = 0;
@@ -241,7 +241,7 @@ times, you decide to factor it out into a library.  Hence
 [libhwm](http://github.com/dcreager/libhwm/).  Here's the same file
 reading code using the library:
 
-{% highlight c %}
+{% highlight c linenos %}
 typedef struct
 {
     uint32_t  id;
@@ -250,7 +250,7 @@ typedef struct
 } rec3_t;
 {% endhighlight %}
 
-{% highlight c %}
+{% highlight c linenos %}
 FILE  *file = /* whatever */;
 rec3_t  record;
 
