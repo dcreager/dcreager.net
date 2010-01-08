@@ -65,19 +65,19 @@
 <p>At the core of Disqus is a snippet of HTML and JavaScript that&#8217;s embedded into each of the webpages that you want to contain a comments section. If you&#8217;re using one of the standard blog engines for your website, Disqus can automatically “install” itself, adding the Disqus snippet to your pages for you. If you&#8217;re not using one of these blog engines, however, you have to install the Disqus snippet yourself.</p>
 
 <p>Luckily, this is very easy. If you choose the “generic code” installation target when setting up the Disqus account for your website, you see the snippet of code to include. For <a href='http://dcreager.net/'>dcreager.net</a>, it looks like this:</p>
-<div class='highlight'><pre><span class='o'>&lt;</span><span class='nx'>div</span> <span class='nx'>id</span><span class='o'>=</span><span class='s2'>&quot;disqus_thread&quot;</span><span class='o'>&gt;&lt;</span><span class='err'>/div&gt;</span>
-
-<span class='o'>&lt;</span><span class='nx'>script</span>
-   <span class='nx'>type</span><span class='o'>=</span><span class='s2'>&quot;text/javascript&quot;</span>
-   <span class='nx'>src</span><span class='o'>=</span><span class='s2'>&quot;http://disqus.com/forums/«account»/embed.js&quot;</span><span class='o'>&gt;</span>
-<span class='o'>&lt;</span><span class='err'>/script&gt;</span>
-<span class='o'>&lt;</span><span class='nx'>noscript</span><span class='o'>&gt;</span>
-  <span class='o'>&lt;</span><span class='nx'>a</span> <span class='nx'>href</span><span class='o'>=</span><span class='s2'>&quot;http://«account».disqus.com/?url=ref&quot;</span><span class='o'>&gt;</span><span class='nx'>View</span> <span class='nx'>the</span> <span class='nx'>discussion</span> <span class='nx'>thread</span><span class='p'>.</span><span class='o'>&lt;</span><span class='err'>/a&gt;</span>
-<span class='o'>&lt;</span><span class='err'>/noscript&gt;</span>
-
-<span class='o'>&lt;</span><span class='nx'>a</span> <span class='nx'>href</span><span class='o'>=</span><span class='s2'>&quot;http://disqus.com&quot;</span> <span class='kr'>class</span><span class='o'>=</span><span class='s2'>&quot;dsq-brlink&quot;</span><span class='o'>&gt;</span>
-  <span class='nx'>blog</span> <span class='nx'>comments</span> <span class='nx'>powered</span> <span class='nx'>by</span> <span class='o'>&lt;</span><span class='nx'>span</span> <span class='kr'>class</span><span class='o'>=</span><span class='s2'>&quot;logo-disqus&quot;</span><span class='o'>&gt;</span><span class='nx'>Disqus</span><span class='o'>&lt;</span><span class='err'>/span&gt;</span>
-<span class='o'>&lt;</span><span class='err'>/a&gt;</span>
+<div class='highlight'><pre><span class='lineno'> 1</span> <span class='nt'>&lt;div</span> <span class='na'>id=</span><span class='s'>&quot;disqus_thread&quot;</span><span class='nt'>&gt;&lt;/div&gt;</span>
+<span class='lineno'> 2</span> 
+<span class='lineno'> 3</span> <span class='nt'>&lt;script</span>
+<span class='lineno'> 4</span> <span class='nt'>   </span><span class='na'>type=</span><span class='s'>&quot;text/javascript&quot;</span>
+<span class='lineno'> 5</span>    <span class='na'>src=</span><span class='s'>&quot;http://disqus.com/forums/«account»/embed.js&quot;</span><span class='nt'>&gt;</span>
+<span class='lineno'> 6</span> <span class='nt'>&lt;/script&gt;</span>
+<span class='lineno'> 7</span> <span class='nt'>&lt;noscript&gt;</span>
+<span class='lineno'> 8</span>   <span class='nt'>&lt;a</span> <span class='na'>href=</span><span class='s'>&quot;http://«account».disqus.com/?url=ref&quot;</span><span class='nt'>&gt;</span>View the discussion thread.<span class='nt'>&lt;/a&gt;</span>
+<span class='lineno'> 9</span> <span class='nt'>&lt;/noscript&gt;</span>
+<span class='lineno'>10</span> 
+<span class='lineno'>11</span> <span class='nt'>&lt;a</span> <span class='na'>href=</span><span class='s'>&quot;http://disqus.com&quot;</span> <span class='na'>class=</span><span class='s'>&quot;dsq-brlink&quot;</span><span class='nt'>&gt;</span>
+<span class='lineno'>12</span>   blog comments powered by <span class='nt'>&lt;span</span> <span class='na'>class=</span><span class='s'>&quot;logo-disqus&quot;</span><span class='nt'>&gt;</span>Disqus<span class='nt'>&lt;/span&gt;</span>
+<span class='lineno'>13</span> <span class='nt'>&lt;/a&gt;</span>
 </pre>
 </div><div class='warning'>
   <p>
@@ -130,23 +130,23 @@
 <p>in that page&#8217;s YAML header.</p>
 
 <p>Then, instead of including the Disqus snippet directly in the <em>post.html</em> layout, I put it into the <em>default.html</em> layout that every page eventually uses. I wrap the snippet in a Liquid <code>if</code> statement to only include the Disqus comment section if the <code>comments</code> YAML variable is <code>true</code>:</p>
-<div class='highlight'><pre><span class='p'>{</span><span class='o'>%</span> <span class='k'>if</span> <span class='nx'>page</span><span class='p'>.</span><span class='nx'>comments</span> <span class='o'>%</span><span class='p'>}</span>
-
-<span class='o'>&lt;</span><span class='nx'>div</span> <span class='nx'>id</span><span class='o'>=</span><span class='s2'>&quot;disqus_thread&quot;</span><span class='o'>&gt;&lt;</span><span class='err'>/div&gt;</span>
-
-<span class='o'>&lt;</span><span class='nx'>script</span>
-   <span class='nx'>type</span><span class='o'>=</span><span class='s2'>&quot;text/javascript&quot;</span>
-   <span class='nx'>src</span><span class='o'>=</span><span class='s2'>&quot;http://disqus.com/forums/«account»/embed.js&quot;</span><span class='o'>&gt;</span>
-<span class='o'>&lt;</span><span class='err'>/script&gt;</span>
-<span class='o'>&lt;</span><span class='nx'>noscript</span><span class='o'>&gt;</span>
-  <span class='o'>&lt;</span><span class='nx'>a</span> <span class='nx'>href</span><span class='o'>=</span><span class='s2'>&quot;http://«account».disqus.com/?url=ref&quot;</span><span class='o'>&gt;</span><span class='nx'>View</span> <span class='nx'>the</span> <span class='nx'>discussion</span> <span class='nx'>thread</span><span class='p'>.</span><span class='o'>&lt;</span><span class='err'>/a&gt;</span>
-<span class='o'>&lt;</span><span class='err'>/noscript&gt;</span>
-
-<span class='o'>&lt;</span><span class='nx'>a</span> <span class='nx'>href</span><span class='o'>=</span><span class='s2'>&quot;http://disqus.com&quot;</span> <span class='kr'>class</span><span class='o'>=</span><span class='s2'>&quot;dsq-brlink&quot;</span><span class='o'>&gt;</span>
-  <span class='nx'>blog</span> <span class='nx'>comments</span> <span class='nx'>powered</span> <span class='nx'>by</span> <span class='o'>&lt;</span><span class='nx'>span</span> <span class='kr'>class</span><span class='o'>=</span><span class='s2'>&quot;logo-disqus&quot;</span><span class='o'>&gt;</span><span class='nx'>Disqus</span><span class='o'>&lt;</span><span class='err'>/span&gt;</span>
-<span class='o'>&lt;</span><span class='err'>/a&gt;</span>
-
-<span class='p'>{</span><span class='o'>%</span> <span class='nx'>endif</span> <span class='o'>%</span><span class='p'>}</span>
+<div class='highlight'><pre><span class='lineno'> 1</span> {% if page.comments %}
+<span class='lineno'> 2</span> 
+<span class='lineno'> 3</span> <span class='nt'>&lt;div</span> <span class='na'>id=</span><span class='s'>&quot;disqus_thread&quot;</span><span class='nt'>&gt;&lt;/div&gt;</span>
+<span class='lineno'> 4</span> 
+<span class='lineno'> 5</span> <span class='nt'>&lt;script</span>
+<span class='lineno'> 6</span> <span class='nt'>   </span><span class='na'>type=</span><span class='s'>&quot;text/javascript&quot;</span>
+<span class='lineno'> 7</span>    <span class='na'>src=</span><span class='s'>&quot;http://disqus.com/forums/«account»/embed.js&quot;</span><span class='nt'>&gt;</span>
+<span class='lineno'> 8</span> <span class='nt'>&lt;/script&gt;</span>
+<span class='lineno'> 9</span> <span class='nt'>&lt;noscript&gt;</span>
+<span class='lineno'>10</span>   <span class='nt'>&lt;a</span> <span class='na'>href=</span><span class='s'>&quot;http://«account».disqus.com/?url=ref&quot;</span><span class='nt'>&gt;</span>View the discussion thread.<span class='nt'>&lt;/a&gt;</span>
+<span class='lineno'>11</span> <span class='nt'>&lt;/noscript&gt;</span>
+<span class='lineno'>12</span> 
+<span class='lineno'>13</span> <span class='nt'>&lt;a</span> <span class='na'>href=</span><span class='s'>&quot;http://disqus.com&quot;</span> <span class='na'>class=</span><span class='s'>&quot;dsq-brlink&quot;</span><span class='nt'>&gt;</span>
+<span class='lineno'>14</span>   blog comments powered by <span class='nt'>&lt;span</span> <span class='na'>class=</span><span class='s'>&quot;logo-disqus&quot;</span><span class='nt'>&gt;</span>Disqus<span class='nt'>&lt;/span&gt;</span>
+<span class='lineno'>15</span> <span class='nt'>&lt;/a&gt;</span>
+<span class='lineno'>16</span> 
+<span class='lineno'>17</span> {% endif %}
 </pre>
 </div>
 <p>If the <code>comments</code> YAML variable isn&#8217;t defined for the current page, the <code>if</code> statement treats it as false, giving us the behavior that we want — no comments section unless we ask for it.</p>

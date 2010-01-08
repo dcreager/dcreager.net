@@ -4,7 +4,7 @@
   <title>dcreager.net</title>
   <link href="http://dcreager.net/atom.xml" rel="self"/>
   <link href="http://dcreager.net/"/>
-  <updated>2010-01-08T11:45:37-05:00</updated>
+  <updated>2010-01-08T11:49:36-05:00</updated>
   <id>http://dcreager.net/</id>
   <author>
     <name>Douglas Creager</name>
@@ -719,19 +719,19 @@ $ sudo apt-get install `cat /tmp/tormod.packages`&lt;/code&gt;&lt;/pre&gt;</cont
 &lt;p&gt;At the core of Disqus is a snippet of HTML and JavaScript that&amp;#8217;s embedded into each of the webpages that you want to contain a comments section. If you&amp;#8217;re using one of the standard blog engines for your website, Disqus can automatically “install” itself, adding the Disqus snippet to your pages for you. If you&amp;#8217;re not using one of these blog engines, however, you have to install the Disqus snippet yourself.&lt;/p&gt;
 
 &lt;p&gt;Luckily, this is very easy. If you choose the “generic code” installation target when setting up the Disqus account for your website, you see the snippet of code to include. For &lt;a href='http://dcreager.net/'&gt;dcreager.net&lt;/a&gt;, it looks like this:&lt;/p&gt;
-&lt;div class='highlight'&gt;&lt;pre&gt;&lt;span class='o'&gt;&amp;lt;&lt;/span&gt;&lt;span class='nx'&gt;div&lt;/span&gt; &lt;span class='nx'&gt;id&lt;/span&gt;&lt;span class='o'&gt;=&lt;/span&gt;&lt;span class='s2'&gt;&amp;quot;disqus_thread&amp;quot;&lt;/span&gt;&lt;span class='o'&gt;&amp;gt;&amp;lt;&lt;/span&gt;&lt;span class='err'&gt;/div&amp;gt;&lt;/span&gt;
-
-&lt;span class='o'&gt;&amp;lt;&lt;/span&gt;&lt;span class='nx'&gt;script&lt;/span&gt;
-   &lt;span class='nx'&gt;type&lt;/span&gt;&lt;span class='o'&gt;=&lt;/span&gt;&lt;span class='s2'&gt;&amp;quot;text/javascript&amp;quot;&lt;/span&gt;
-   &lt;span class='nx'&gt;src&lt;/span&gt;&lt;span class='o'&gt;=&lt;/span&gt;&lt;span class='s2'&gt;&amp;quot;http://disqus.com/forums/«account»/embed.js&amp;quot;&lt;/span&gt;&lt;span class='o'&gt;&amp;gt;&lt;/span&gt;
-&lt;span class='o'&gt;&amp;lt;&lt;/span&gt;&lt;span class='err'&gt;/script&amp;gt;&lt;/span&gt;
-&lt;span class='o'&gt;&amp;lt;&lt;/span&gt;&lt;span class='nx'&gt;noscript&lt;/span&gt;&lt;span class='o'&gt;&amp;gt;&lt;/span&gt;
-  &lt;span class='o'&gt;&amp;lt;&lt;/span&gt;&lt;span class='nx'&gt;a&lt;/span&gt; &lt;span class='nx'&gt;href&lt;/span&gt;&lt;span class='o'&gt;=&lt;/span&gt;&lt;span class='s2'&gt;&amp;quot;http://«account».disqus.com/?url=ref&amp;quot;&lt;/span&gt;&lt;span class='o'&gt;&amp;gt;&lt;/span&gt;&lt;span class='nx'&gt;View&lt;/span&gt; &lt;span class='nx'&gt;the&lt;/span&gt; &lt;span class='nx'&gt;discussion&lt;/span&gt; &lt;span class='nx'&gt;thread&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='o'&gt;&amp;lt;&lt;/span&gt;&lt;span class='err'&gt;/a&amp;gt;&lt;/span&gt;
-&lt;span class='o'&gt;&amp;lt;&lt;/span&gt;&lt;span class='err'&gt;/noscript&amp;gt;&lt;/span&gt;
-
-&lt;span class='o'&gt;&amp;lt;&lt;/span&gt;&lt;span class='nx'&gt;a&lt;/span&gt; &lt;span class='nx'&gt;href&lt;/span&gt;&lt;span class='o'&gt;=&lt;/span&gt;&lt;span class='s2'&gt;&amp;quot;http://disqus.com&amp;quot;&lt;/span&gt; &lt;span class='kr'&gt;class&lt;/span&gt;&lt;span class='o'&gt;=&lt;/span&gt;&lt;span class='s2'&gt;&amp;quot;dsq-brlink&amp;quot;&lt;/span&gt;&lt;span class='o'&gt;&amp;gt;&lt;/span&gt;
-  &lt;span class='nx'&gt;blog&lt;/span&gt; &lt;span class='nx'&gt;comments&lt;/span&gt; &lt;span class='nx'&gt;powered&lt;/span&gt; &lt;span class='nx'&gt;by&lt;/span&gt; &lt;span class='o'&gt;&amp;lt;&lt;/span&gt;&lt;span class='nx'&gt;span&lt;/span&gt; &lt;span class='kr'&gt;class&lt;/span&gt;&lt;span class='o'&gt;=&lt;/span&gt;&lt;span class='s2'&gt;&amp;quot;logo-disqus&amp;quot;&lt;/span&gt;&lt;span class='o'&gt;&amp;gt;&lt;/span&gt;&lt;span class='nx'&gt;Disqus&lt;/span&gt;&lt;span class='o'&gt;&amp;lt;&lt;/span&gt;&lt;span class='err'&gt;/span&amp;gt;&lt;/span&gt;
-&lt;span class='o'&gt;&amp;lt;&lt;/span&gt;&lt;span class='err'&gt;/a&amp;gt;&lt;/span&gt;
+&lt;div class='highlight'&gt;&lt;pre&gt;&lt;span class='lineno'&gt; 1&lt;/span&gt; &lt;span class='nt'&gt;&amp;lt;div&lt;/span&gt; &lt;span class='na'&gt;id=&lt;/span&gt;&lt;span class='s'&gt;&amp;quot;disqus_thread&amp;quot;&lt;/span&gt;&lt;span class='nt'&gt;&amp;gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+&lt;span class='lineno'&gt; 2&lt;/span&gt; 
+&lt;span class='lineno'&gt; 3&lt;/span&gt; &lt;span class='nt'&gt;&amp;lt;script&lt;/span&gt;
+&lt;span class='lineno'&gt; 4&lt;/span&gt; &lt;span class='nt'&gt;   &lt;/span&gt;&lt;span class='na'&gt;type=&lt;/span&gt;&lt;span class='s'&gt;&amp;quot;text/javascript&amp;quot;&lt;/span&gt;
+&lt;span class='lineno'&gt; 5&lt;/span&gt;    &lt;span class='na'&gt;src=&lt;/span&gt;&lt;span class='s'&gt;&amp;quot;http://disqus.com/forums/«account»/embed.js&amp;quot;&lt;/span&gt;&lt;span class='nt'&gt;&amp;gt;&lt;/span&gt;
+&lt;span class='lineno'&gt; 6&lt;/span&gt; &lt;span class='nt'&gt;&amp;lt;/script&amp;gt;&lt;/span&gt;
+&lt;span class='lineno'&gt; 7&lt;/span&gt; &lt;span class='nt'&gt;&amp;lt;noscript&amp;gt;&lt;/span&gt;
+&lt;span class='lineno'&gt; 8&lt;/span&gt;   &lt;span class='nt'&gt;&amp;lt;a&lt;/span&gt; &lt;span class='na'&gt;href=&lt;/span&gt;&lt;span class='s'&gt;&amp;quot;http://«account».disqus.com/?url=ref&amp;quot;&lt;/span&gt;&lt;span class='nt'&gt;&amp;gt;&lt;/span&gt;View the discussion thread.&lt;span class='nt'&gt;&amp;lt;/a&amp;gt;&lt;/span&gt;
+&lt;span class='lineno'&gt; 9&lt;/span&gt; &lt;span class='nt'&gt;&amp;lt;/noscript&amp;gt;&lt;/span&gt;
+&lt;span class='lineno'&gt;10&lt;/span&gt; 
+&lt;span class='lineno'&gt;11&lt;/span&gt; &lt;span class='nt'&gt;&amp;lt;a&lt;/span&gt; &lt;span class='na'&gt;href=&lt;/span&gt;&lt;span class='s'&gt;&amp;quot;http://disqus.com&amp;quot;&lt;/span&gt; &lt;span class='na'&gt;class=&lt;/span&gt;&lt;span class='s'&gt;&amp;quot;dsq-brlink&amp;quot;&lt;/span&gt;&lt;span class='nt'&gt;&amp;gt;&lt;/span&gt;
+&lt;span class='lineno'&gt;12&lt;/span&gt;   blog comments powered by &lt;span class='nt'&gt;&amp;lt;span&lt;/span&gt; &lt;span class='na'&gt;class=&lt;/span&gt;&lt;span class='s'&gt;&amp;quot;logo-disqus&amp;quot;&lt;/span&gt;&lt;span class='nt'&gt;&amp;gt;&lt;/span&gt;Disqus&lt;span class='nt'&gt;&amp;lt;/span&amp;gt;&lt;/span&gt;
+&lt;span class='lineno'&gt;13&lt;/span&gt; &lt;span class='nt'&gt;&amp;lt;/a&amp;gt;&lt;/span&gt;
 &lt;/pre&gt;
 &lt;/div&gt;&lt;div class='warning'&gt;
   &lt;p&gt;
@@ -784,23 +784,23 @@ $ sudo apt-get install `cat /tmp/tormod.packages`&lt;/code&gt;&lt;/pre&gt;</cont
 &lt;p&gt;in that page&amp;#8217;s YAML header.&lt;/p&gt;
 
 &lt;p&gt;Then, instead of including the Disqus snippet directly in the &lt;em&gt;post.html&lt;/em&gt; layout, I put it into the &lt;em&gt;default.html&lt;/em&gt; layout that every page eventually uses. I wrap the snippet in a Liquid &lt;code&gt;if&lt;/code&gt; statement to only include the Disqus comment section if the &lt;code&gt;comments&lt;/code&gt; YAML variable is &lt;code&gt;true&lt;/code&gt;:&lt;/p&gt;
-&lt;div class='highlight'&gt;&lt;pre&gt;&lt;span class='p'&gt;{&lt;/span&gt;&lt;span class='o'&gt;%&lt;/span&gt; &lt;span class='k'&gt;if&lt;/span&gt; &lt;span class='nx'&gt;page&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='nx'&gt;comments&lt;/span&gt; &lt;span class='o'&gt;%&lt;/span&gt;&lt;span class='p'&gt;}&lt;/span&gt;
-
-&lt;span class='o'&gt;&amp;lt;&lt;/span&gt;&lt;span class='nx'&gt;div&lt;/span&gt; &lt;span class='nx'&gt;id&lt;/span&gt;&lt;span class='o'&gt;=&lt;/span&gt;&lt;span class='s2'&gt;&amp;quot;disqus_thread&amp;quot;&lt;/span&gt;&lt;span class='o'&gt;&amp;gt;&amp;lt;&lt;/span&gt;&lt;span class='err'&gt;/div&amp;gt;&lt;/span&gt;
-
-&lt;span class='o'&gt;&amp;lt;&lt;/span&gt;&lt;span class='nx'&gt;script&lt;/span&gt;
-   &lt;span class='nx'&gt;type&lt;/span&gt;&lt;span class='o'&gt;=&lt;/span&gt;&lt;span class='s2'&gt;&amp;quot;text/javascript&amp;quot;&lt;/span&gt;
-   &lt;span class='nx'&gt;src&lt;/span&gt;&lt;span class='o'&gt;=&lt;/span&gt;&lt;span class='s2'&gt;&amp;quot;http://disqus.com/forums/«account»/embed.js&amp;quot;&lt;/span&gt;&lt;span class='o'&gt;&amp;gt;&lt;/span&gt;
-&lt;span class='o'&gt;&amp;lt;&lt;/span&gt;&lt;span class='err'&gt;/script&amp;gt;&lt;/span&gt;
-&lt;span class='o'&gt;&amp;lt;&lt;/span&gt;&lt;span class='nx'&gt;noscript&lt;/span&gt;&lt;span class='o'&gt;&amp;gt;&lt;/span&gt;
-  &lt;span class='o'&gt;&amp;lt;&lt;/span&gt;&lt;span class='nx'&gt;a&lt;/span&gt; &lt;span class='nx'&gt;href&lt;/span&gt;&lt;span class='o'&gt;=&lt;/span&gt;&lt;span class='s2'&gt;&amp;quot;http://«account».disqus.com/?url=ref&amp;quot;&lt;/span&gt;&lt;span class='o'&gt;&amp;gt;&lt;/span&gt;&lt;span class='nx'&gt;View&lt;/span&gt; &lt;span class='nx'&gt;the&lt;/span&gt; &lt;span class='nx'&gt;discussion&lt;/span&gt; &lt;span class='nx'&gt;thread&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='o'&gt;&amp;lt;&lt;/span&gt;&lt;span class='err'&gt;/a&amp;gt;&lt;/span&gt;
-&lt;span class='o'&gt;&amp;lt;&lt;/span&gt;&lt;span class='err'&gt;/noscript&amp;gt;&lt;/span&gt;
-
-&lt;span class='o'&gt;&amp;lt;&lt;/span&gt;&lt;span class='nx'&gt;a&lt;/span&gt; &lt;span class='nx'&gt;href&lt;/span&gt;&lt;span class='o'&gt;=&lt;/span&gt;&lt;span class='s2'&gt;&amp;quot;http://disqus.com&amp;quot;&lt;/span&gt; &lt;span class='kr'&gt;class&lt;/span&gt;&lt;span class='o'&gt;=&lt;/span&gt;&lt;span class='s2'&gt;&amp;quot;dsq-brlink&amp;quot;&lt;/span&gt;&lt;span class='o'&gt;&amp;gt;&lt;/span&gt;
-  &lt;span class='nx'&gt;blog&lt;/span&gt; &lt;span class='nx'&gt;comments&lt;/span&gt; &lt;span class='nx'&gt;powered&lt;/span&gt; &lt;span class='nx'&gt;by&lt;/span&gt; &lt;span class='o'&gt;&amp;lt;&lt;/span&gt;&lt;span class='nx'&gt;span&lt;/span&gt; &lt;span class='kr'&gt;class&lt;/span&gt;&lt;span class='o'&gt;=&lt;/span&gt;&lt;span class='s2'&gt;&amp;quot;logo-disqus&amp;quot;&lt;/span&gt;&lt;span class='o'&gt;&amp;gt;&lt;/span&gt;&lt;span class='nx'&gt;Disqus&lt;/span&gt;&lt;span class='o'&gt;&amp;lt;&lt;/span&gt;&lt;span class='err'&gt;/span&amp;gt;&lt;/span&gt;
-&lt;span class='o'&gt;&amp;lt;&lt;/span&gt;&lt;span class='err'&gt;/a&amp;gt;&lt;/span&gt;
-
-&lt;span class='p'&gt;{&lt;/span&gt;&lt;span class='o'&gt;%&lt;/span&gt; &lt;span class='nx'&gt;endif&lt;/span&gt; &lt;span class='o'&gt;%&lt;/span&gt;&lt;span class='p'&gt;}&lt;/span&gt;
+&lt;div class='highlight'&gt;&lt;pre&gt;&lt;span class='lineno'&gt; 1&lt;/span&gt; {% if page.comments %}
+&lt;span class='lineno'&gt; 2&lt;/span&gt; 
+&lt;span class='lineno'&gt; 3&lt;/span&gt; &lt;span class='nt'&gt;&amp;lt;div&lt;/span&gt; &lt;span class='na'&gt;id=&lt;/span&gt;&lt;span class='s'&gt;&amp;quot;disqus_thread&amp;quot;&lt;/span&gt;&lt;span class='nt'&gt;&amp;gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+&lt;span class='lineno'&gt; 4&lt;/span&gt; 
+&lt;span class='lineno'&gt; 5&lt;/span&gt; &lt;span class='nt'&gt;&amp;lt;script&lt;/span&gt;
+&lt;span class='lineno'&gt; 6&lt;/span&gt; &lt;span class='nt'&gt;   &lt;/span&gt;&lt;span class='na'&gt;type=&lt;/span&gt;&lt;span class='s'&gt;&amp;quot;text/javascript&amp;quot;&lt;/span&gt;
+&lt;span class='lineno'&gt; 7&lt;/span&gt;    &lt;span class='na'&gt;src=&lt;/span&gt;&lt;span class='s'&gt;&amp;quot;http://disqus.com/forums/«account»/embed.js&amp;quot;&lt;/span&gt;&lt;span class='nt'&gt;&amp;gt;&lt;/span&gt;
+&lt;span class='lineno'&gt; 8&lt;/span&gt; &lt;span class='nt'&gt;&amp;lt;/script&amp;gt;&lt;/span&gt;
+&lt;span class='lineno'&gt; 9&lt;/span&gt; &lt;span class='nt'&gt;&amp;lt;noscript&amp;gt;&lt;/span&gt;
+&lt;span class='lineno'&gt;10&lt;/span&gt;   &lt;span class='nt'&gt;&amp;lt;a&lt;/span&gt; &lt;span class='na'&gt;href=&lt;/span&gt;&lt;span class='s'&gt;&amp;quot;http://«account».disqus.com/?url=ref&amp;quot;&lt;/span&gt;&lt;span class='nt'&gt;&amp;gt;&lt;/span&gt;View the discussion thread.&lt;span class='nt'&gt;&amp;lt;/a&amp;gt;&lt;/span&gt;
+&lt;span class='lineno'&gt;11&lt;/span&gt; &lt;span class='nt'&gt;&amp;lt;/noscript&amp;gt;&lt;/span&gt;
+&lt;span class='lineno'&gt;12&lt;/span&gt; 
+&lt;span class='lineno'&gt;13&lt;/span&gt; &lt;span class='nt'&gt;&amp;lt;a&lt;/span&gt; &lt;span class='na'&gt;href=&lt;/span&gt;&lt;span class='s'&gt;&amp;quot;http://disqus.com&amp;quot;&lt;/span&gt; &lt;span class='na'&gt;class=&lt;/span&gt;&lt;span class='s'&gt;&amp;quot;dsq-brlink&amp;quot;&lt;/span&gt;&lt;span class='nt'&gt;&amp;gt;&lt;/span&gt;
+&lt;span class='lineno'&gt;14&lt;/span&gt;   blog comments powered by &lt;span class='nt'&gt;&amp;lt;span&lt;/span&gt; &lt;span class='na'&gt;class=&lt;/span&gt;&lt;span class='s'&gt;&amp;quot;logo-disqus&amp;quot;&lt;/span&gt;&lt;span class='nt'&gt;&amp;gt;&lt;/span&gt;Disqus&lt;span class='nt'&gt;&amp;lt;/span&amp;gt;&lt;/span&gt;
+&lt;span class='lineno'&gt;15&lt;/span&gt; &lt;span class='nt'&gt;&amp;lt;/a&amp;gt;&lt;/span&gt;
+&lt;span class='lineno'&gt;16&lt;/span&gt; 
+&lt;span class='lineno'&gt;17&lt;/span&gt; {% endif %}
 &lt;/pre&gt;
 &lt;/div&gt;
 &lt;p&gt;If the &lt;code&gt;comments&lt;/code&gt; YAML variable isn&amp;#8217;t defined for the current page, the &lt;code&gt;if&lt;/code&gt; statement treats it as false, giving us the behavior that we want — no comments section unless we ask for it.&lt;/p&gt;

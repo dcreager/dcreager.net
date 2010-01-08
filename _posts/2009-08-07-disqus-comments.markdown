@@ -25,7 +25,7 @@ installation target when setting up the Disqus account for your
 website, you see the snippet of code to include.  For
 [dcreager.net](http://dcreager.net/), it looks like this:
 
-{% highlight javascript %}
+{% highlight html linenos %}
 <div id="disqus_thread"></div>
 
 <script
@@ -124,7 +124,7 @@ page eventually uses.  I wrap the snippet in a Liquid `if` statement
 to only include the Disqus comment section if the `comments` YAML
 variable is `true`:
 
-{% highlight javascript %}
+{% highlight html linenos %}
 {{ "{%" }} if page.comments %}
 
 <div id="disqus_thread"></div>
