@@ -56,6 +56,74 @@
           
   
 
+  <h1>Updating graffle-export to work with OmniGraffle 5</h1>
+
+  <div class="postdate">
+    Friday, February 05, 2010
+  </div>
+
+  <p>I recently upgraded to OmniGraffle 5, which caused my <a href='http://github.com/dcreager/graffle-export/'>graffle-export</a> script to break:</p>
+
+<pre><code>$ graffle.sh ~/git/cwa/figures/analyst.graffle foo.pdf 
+OmniGraffle Professional 5
+/Users/dcreager/git/cwa/figures/analyst.graffle
+./graffle.scpt: execution error: OmniGraffle Professional 5 got an error: The document cannot be exported to the &quot;pdf&quot; format. (-50)</code></pre>
+
+<p>(This was first reported to me by Nima Talebi as <a href='http://github.com/dcreager/graffle-export/issues/issue/1'>a ticket</a> on graffle-export&#8217;s Github page.)</p>
+
+<p>Before we can understand what error we&#8217;re seeing, a little explanation is in order. The core logic of the OmniGraffle exporter is an AppleScript. Unfortunately, AppleScripts are stored in a binary format, so if you go to the Github page, you can&#8217;t easily view the contents of the file. The important line of the script is:</p>
+<div class='highlight'><pre><code class='applescript'><span class='nv'>save</span> <span class='nv'>doc</span> <span class='k'>as</span> <span class='nv'>format</span> <span class='k'>in</span> <span class='nv'>file</span> <span class='nv'>output</span>
+</code></pre>
+</div>
+<p>This saves an OmniGraffle document (which an earlier part of the script makes sure is open) into a new output file. The <code>output</code> variable is the name of the desired output file, and is taken directly from the <em>graffle.sh</em> command line.</p>
+
+<p>The <code>format</code> variable is what&#8217;s causing us problems. This parameter to the <code>save</code> command tells OmniGraffle what format to use for the file it&#8217;s about to save. This is how we get our export functionality; we just give it the name of one of the export formats that it supports. The value of our <code>format</code> variable comes from the optional first parameter to the <em>graffle.sh</em> script. Previously, if no value was specified, I used &#8221;<code>pdf</code>&#8221; as a default.</p>
+
+<p>Now, there&#8217;s no real documentation that I&#8217;ve been able to find out what values are allowed for this parameter. I came across <code>pdf</code> simply by trial and error. &#8221;<code>PDF</code>&#8221; also seems to work, as does &#8221;<code>PDF
+vector image</code>&#8221;, which is the text that appears in the Format entry of OmniGraffle&#8217;s Export dialog box.</p>
+
+<p>Or, to be more accurate, I should say that these values all work <strong>in OmniGraffle 4</strong>. Once you upgrade to version 5, these values no longer seem to be valid choices for that parameter of the <code>save</code> command — hence the error message. A quick, non-exhaustive test shows that none of these variations work for EPS or SVG, either. The only one that seems to still work is PNG.</p>
+
+<p>So, what are we to do? After looking at several other related AppleScripts on the web, it seems that the <code>as</code> parameter of the <code>save</code> command is optional. After some experimentation, it turns out that if you leave out this parameter, OmniGraffle tries to deduce the correct output format based on the extension of your output filename. So, we change our <code>save</code> command to the following:</p>
+<div class='highlight'><pre><code class='applescript'><span class='k'>if</span> <span class='nv'>format</span> <span class='o'>=</span> <span class='s2'>&quot;&quot;</span> <span class='k'>then</span>
+  <span class='nv'>save</span> <span class='nv'>doc</span> <span class='k'>in</span> <span class='nv'>file</span> <span class='nv'>output</span>
+<span class='k'>else</span>
+  <span class='nv'>save</span> <span class='nv'>doc</span> <span class='k'>as</span> <span class='nv'>format</span> <span class='k'>in</span> <span class='nv'>file</span> <span class='nv'>output</span>
+<span class='k'>end</span> <span class='k'>if</span>
+</code></pre>
+</div>
+<p>(We also have to modify the <em>graffle.sh</em> wrapper script to not use <code>pdf</code> as a default, but you can see that change <a href='http://github.com/dcreager/graffle-export/commit/b605b461a29b73ab4c21bd42b48549bd8bad8fcc'>on Github</a>.) This lets us export a PDF version of a <em>.graffle</em> file by giving an output filename ending in <em>.pdf</em>, and leaving out the format parameter.</p>
+
+<p>I still have my old copy of OmniGraffle 4, and it looks like this trick works with that version as well. So, this is now the default behavior, regardless of which version you have installed.</p>
+
+<p>It would be nice if there was an accurate list of what values were allowed for the <code>as</code> parameter, but we do have a working solution, at least. The only problem is if you want to export a PDF with a different extension; with this solution, you&#8217;d have to export to a <em>.pdf</em> file and then rename it to your new extension. But then again, why would you want to do that?</p>
+
+  
+  <div class="posttags">
+    Tags:
+    <ul>
+      
+      <li><a href="/tags/omnigraffle/">omnigraffle</a></li>
+      
+      <li><a href="/tags/papers/">papers</a></li>
+      
+    </ul>
+  </div>
+  
+
+  <div class="postlinks">
+    <a href="/2010/02/05/omnigraffle-5-export/">Permanent link</a>
+    |
+    <a href="/2010/02/05/omnigraffle-5-export/#disqus_thread">Comments</a>
+  </div>
+
+  
+  </div>
+<div class="body_separator"></div>
+<div class="body">
+
+  
+
   <h1>Default “scons -c” targets</h1>
 
   <div class="postdate">
@@ -160,263 +228,6 @@ $ scons -c build-tests</code></pre>
     <a href="/2010/01/05/omnigraffle-export/">Permanent link</a>
     |
     <a href="/2010/01/05/omnigraffle-export/#disqus_thread">Comments</a>
-  </div>
-
-  
-  </div>
-<div class="body_separator"></div>
-<div class="body">
-
-  
-
-  <h1>“High-water mark” buffers</h1>
-
-  <div class="postdate">
-    Wednesday, December 23, 2009
-  </div>
-
-  <p>My coding project for today was to extract out some code for dealing with “high-water mark buffers”, putting it in a separate library call <code>libhwm</code>. In this post, I&#8217;m going to describe the rationale for using them, and a brief overview of how to use the library. (The library is hosted on <a href='http://github.com/dcreager/libhwm/'>Github</a>).</p>
-
-<p>By the way, this post (and the library) is all in C.</p>
-
-<h2 id='whats_all_this_then'>What&#8217;s all this then?</h2>
-
-<p>A common idiom I&#8217;m having to deal with these days is reading a really large number of records from a data file. We&#8217;re talking well into the millions of records, but we want the code to scale well past that.</p>
-
-<h3 id='step_1_fixedlength_records'>Step 1: Fixed-length records</h3>
-
-<p>Let&#8217;s say that we need to read each record into a simple <code>struct</code>. For now, we&#8217;re going to use nice, fixed-length fields:</p>
-<div class='highlight'><pre><code class='c'><span class='lineno'>1</span> <span class='k'>typedef</span> <span class='k'>struct</span>
-<span class='lineno'>2</span> <span class='p'>{</span>
-<span class='lineno'>3</span>     <span class='kt'>uint32_t</span>  <span class='n'>id</span><span class='p'>;</span>
-<span class='lineno'>4</span>     <span class='kt'>uint32_t</span>  <span class='n'>num_bananas</span><span class='p'>;</span>
-<span class='lineno'>5</span> <span class='p'>}</span> <span class='n'>rec1_t</span><span class='p'>;</span>
-</code></pre>
-</div>
-<p>With this datatype, we can actually read data from a file very quickly; we&#8217;ll just store each record directly in the file, in binary, using 8 bytes. (To simplify things, I&#8217;m not worrying about the endianness of the integers, or whether the <code>struct</code> is packed; both are easily handled with some pretty simple macro-fu.)</p>
-<div class='highlight'><pre><code class='c'><span class='lineno'>1</span> <span class='kt'>FILE</span>  <span class='o'>*</span><span class='n'>file</span> <span class='o'>=</span> <span class='c'>/* whatever */</span><span class='p'>;</span>
-<span class='lineno'>2</span> <span class='n'>rec1_t</span>  <span class='n'>record</span><span class='p'>;</span>
-<span class='lineno'>3</span> 
-<span class='lineno'>4</span> <span class='k'>while</span> <span class='p'>(</span><span class='n'>fread</span><span class='p'>(</span><span class='o'>&amp;</span><span class='n'>record</span><span class='p'>,</span> <span class='k'>sizeof</span><span class='p'>(</span><span class='n'>rec1_t</span><span class='p'>),</span> <span class='mi'>1</span><span class='p'>,</span> <span class='n'>file</span><span class='p'>)</span> <span class='o'>==</span> <span class='mi'>1</span><span class='p'>)</span>
-<span class='lineno'>5</span> <span class='p'>{</span>
-<span class='lineno'>6</span>     <span class='c'>/* process the record */</span>
-<span class='lineno'>7</span> <span class='p'>}</span>
-</code></pre>
-</div>
-<p>The C library&#8217;s stream API (<code>fread</code> and friends) will buffer the data from the actual file, so this gives us pretty good performance.</p>
-
-<h3 id='step_2_variablelength_records'>Step 2: Variable-length records</h3>
-
-<p>What if we have a variable-length field in our <code>struct</code>, though?</p>
-<div class='highlight'><pre><code class='c'><span class='lineno'>1</span> <span class='k'>typedef</span> <span class='k'>struct</span>
-<span class='lineno'>2</span> <span class='p'>{</span>
-<span class='lineno'>3</span>     <span class='kt'>uint32_t</span>  <span class='n'>id</span><span class='p'>;</span>
-<span class='lineno'>4</span>     <span class='kt'>uint32_t</span>  <span class='n'>num_bananas</span><span class='p'>;</span>
-<span class='lineno'>5</span>     <span class='kt'>char</span>  <span class='o'>*</span><span class='n'>name</span><span class='p'>;</span>
-<span class='lineno'>6</span> <span class='p'>}</span> <span class='n'>rec2_t</span><span class='p'>;</span>
-</code></pre>
-</div>
-<p>Often in these cases, you can simplify the problem by deciding not to let <code>name</code> be a variable-length field. Instead, you decide that you&#8217;ll use (say) exactly 20 bytes for the name, padding out short names and truncating long names as necessary. We don&#8217;t want to do that, however — we want to have a truly variable-length field.</p>
-
-<p>To store this variable-length field in the file, we need some way of encoding the length of a particular record&#8217;s <code>name</code> field. If we can assume that none of the records has a name that&#8217;s longer than 4 billion characters, we can use a 32-bit length prefix:</p>
-<div class='highlight'><pre><code class='c'><span class='lineno'> 1</span> <span class='kt'>FILE</span>  <span class='o'>*</span><span class='n'>file</span> <span class='o'>=</span> <span class='c'>/* whatever */</span><span class='p'>;</span>
-<span class='lineno'> 2</span> <span class='n'>rec2_t</span>  <span class='n'>record</span><span class='p'>;</span>
-<span class='lineno'> 3</span> 
-<span class='lineno'> 4</span> <span class='k'>do</span>
-<span class='lineno'> 5</span> <span class='p'>{</span>
-<span class='lineno'> 6</span>     <span class='kt'>uint32_t</span>  <span class='n'>name_length</span><span class='p'>;</span>
-<span class='lineno'> 7</span> 
-<span class='lineno'> 8</span>     <span class='k'>if</span> <span class='p'>(</span><span class='n'>fread</span><span class='p'>(</span><span class='o'>&amp;</span><span class='n'>record</span><span class='p'>.</span><span class='n'>id</span><span class='p'>,</span>
-<span class='lineno'> 9</span>               <span class='k'>sizeof</span><span class='p'>(</span><span class='kt'>uint32_t</span><span class='p'>),</span> <span class='mi'>1</span><span class='p'>,</span> <span class='n'>file</span><span class='p'>)</span> <span class='o'>&lt;</span> <span class='mi'>1</span><span class='p'>)</span>
-<span class='lineno'>10</span>         <span class='k'>break</span><span class='p'>;</span>
-<span class='lineno'>11</span>     <span class='k'>if</span> <span class='p'>(</span><span class='n'>fread</span><span class='p'>(</span><span class='o'>&amp;</span><span class='n'>record</span><span class='p'>.</span><span class='n'>num_bananas</span><span class='p'>,</span>
-<span class='lineno'>12</span>               <span class='k'>sizeof</span><span class='p'>(</span><span class='kt'>uint32_t</span><span class='p'>),</span> <span class='mi'>1</span><span class='p'>,</span> <span class='n'>file</span><span class='p'>)</span> <span class='o'>&lt;</span> <span class='mi'>1</span><span class='p'>)</span>
-<span class='lineno'>13</span>         <span class='k'>break</span><span class='p'>;</span>
-<span class='lineno'>14</span>     <span class='k'>if</span> <span class='p'>(</span><span class='n'>fread</span><span class='p'>(</span><span class='o'>&amp;</span><span class='n'>name_length</span><span class='p'>,</span>
-<span class='lineno'>15</span>               <span class='k'>sizeof</span><span class='p'>(</span><span class='kt'>uint32_t</span><span class='p'>),</span> <span class='mi'>1</span><span class='p'>,</span> <span class='n'>file</span><span class='p'>)</span> <span class='o'>&lt;</span> <span class='mi'>1</span><span class='p'>)</span>
-<span class='lineno'>16</span>         <span class='k'>break</span><span class='p'>;</span>
-<span class='lineno'>17</span>     <span class='k'>if</span> <span class='p'>(</span><span class='n'>fread</span><span class='p'>(</span><span class='n'>record</span><span class='p'>.</span><span class='n'>name</span><span class='p'>,</span>
-<span class='lineno'>18</span>               <span class='k'>sizeof</span><span class='p'>(</span><span class='kt'>char</span><span class='p'>),</span> <span class='n'>name_length</span><span class='p'>,</span> <span class='n'>file</span><span class='p'>)</span> <span class='o'>&lt;</span> <span class='n'>name_length</span><span class='p'>)</span>
-<span class='lineno'>19</span>         <span class='k'>break</span><span class='p'>;</span>
-<span class='lineno'>20</span>     <span class='n'>record</span><span class='p'>.</span><span class='n'>name</span><span class='p'>[</span><span class='n'>name_length</span><span class='p'>]</span> <span class='o'>=</span> <span class='sc'>&#39;\0&#39;</span><span class='p'>;</span>
-<span class='lineno'>21</span> 
-<span class='lineno'>22</span>     <span class='c'>/* process the record */</span>
-<span class='lineno'>23</span> <span class='p'>}</span> <span class='k'>while</span> <span class='p'>(</span><span class='nb'>true</span><span class='p'>);</span>
-</code></pre>
-</div>
-<p>That&#8217;s pretty ugly and repetitive, so let&#8217;s play some macro games:</p>
-<div class='highlight'><pre><code class='c'><span class='lineno'> 1</span> <span class='kt'>FILE</span>  <span class='o'>*</span><span class='n'>file</span> <span class='o'>=</span> <span class='c'>/* whatever */</span><span class='p'>;</span>
-<span class='lineno'> 2</span> <span class='n'>rec2_t</span>  <span class='n'>record</span><span class='p'>;</span>
-<span class='lineno'> 3</span> 
-<span class='lineno'> 4</span> <span class='cp'>#define READ_FIELD(dest, type, count) \</span>
-<span class='lineno'> 5</span> <span class='cp'>    if (fread(dest, sizeof(type), count, file) &lt; count) \</span>
-<span class='lineno'> 6</span> <span class='cp'>        break;</span>
-<span class='lineno'> 7</span> 
-<span class='lineno'> 8</span> <span class='k'>do</span>
-<span class='lineno'> 9</span> <span class='p'>{</span>
-<span class='lineno'>10</span>     <span class='kt'>uint32_t</span>  <span class='n'>name_length</span><span class='p'>;</span>
-<span class='lineno'>11</span> 
-<span class='lineno'>12</span>     <span class='n'>READ_FIELD</span><span class='p'>(</span><span class='o'>&amp;</span><span class='n'>record</span><span class='p'>.</span><span class='n'>id</span><span class='p'>,</span> <span class='kt'>uint32_t</span><span class='p'>,</span> <span class='mi'>1</span><span class='p'>);</span>
-<span class='lineno'>13</span>     <span class='n'>READ_FIELD</span><span class='p'>(</span><span class='o'>&amp;</span><span class='n'>record</span><span class='p'>.</span><span class='n'>num_bananas</span><span class='p'>,</span> <span class='kt'>uint32_t</span><span class='p'>,</span> <span class='mi'>1</span><span class='p'>);</span>
-<span class='lineno'>14</span>     <span class='n'>READ_FIELD</span><span class='p'>(</span><span class='o'>&amp;</span><span class='n'>name_length</span><span class='p'>,</span> <span class='kt'>uint32_t</span><span class='p'>,</span> <span class='mi'>1</span><span class='p'>);</span>
-<span class='lineno'>15</span>     <span class='n'>READ_FIELD</span><span class='p'>(</span><span class='n'>record</span><span class='p'>.</span><span class='n'>name</span><span class='p'>,</span> <span class='kt'>char</span><span class='p'>,</span> <span class='n'>name_length</span><span class='p'>);</span>
-<span class='lineno'>16</span>     <span class='n'>record</span><span class='p'>.</span><span class='n'>name</span><span class='p'>[</span><span class='n'>name_length</span><span class='p'>]</span> <span class='o'>=</span> <span class='sc'>&#39;\0&#39;</span><span class='p'>;</span>
-<span class='lineno'>17</span> 
-<span class='lineno'>18</span>     <span class='c'>/* process the record */</span>
-<span class='lineno'>19</span> <span class='p'>}</span> <span class='k'>while</span> <span class='p'>(</span><span class='nb'>true</span><span class='p'>);</span>
-</code></pre>
-</div>
-<p>So the basic idea here is pretty sound — we can store a name of any length without wasted space. And the code is still rather fast; we&#8217;ll have a larger overhead from calling <code>fread</code> multiple times, but the number of low-level I/O reads will still be roughly the same.</p>
-
-<p>But unfortunately, there&#8217;s a glaring error here. This code will segfault, since we haven&#8217;t actually allocated any memory for the <code>record.name</code> field.</p>
-
-<h3 id='step_3_allocate_some_memory'>Step 3: Allocate some memory</h3>
-
-<p>So what&#8217;s the simplest way we can allocate memory for the <code>record.name</code> field? The naïve approach would be to <code>malloc</code> a new string for every record:</p>
-<div class='highlight'><pre><code class='c'><span class='lineno'> 1</span> <span class='kt'>FILE</span>  <span class='o'>*</span><span class='n'>file</span> <span class='o'>=</span> <span class='c'>/* whatever */</span><span class='p'>;</span>
-<span class='lineno'> 2</span> <span class='n'>rec2_t</span>  <span class='n'>record</span><span class='p'>;</span>
-<span class='lineno'> 3</span> 
-<span class='lineno'> 4</span> <span class='cp'>#define READ_FIELD(dest, type, count) \</span>
-<span class='lineno'> 5</span> <span class='cp'>    if (fread(dest, sizeof(type), count, file) &lt; count) \</span>
-<span class='lineno'> 6</span> <span class='cp'>        break;</span>
-<span class='lineno'> 7</span> 
-<span class='lineno'> 8</span> <span class='k'>do</span>
-<span class='lineno'> 9</span> <span class='p'>{</span>
-<span class='lineno'>10</span>     <span class='kt'>uint32_t</span>  <span class='n'>name_length</span><span class='p'>;</span>
-<span class='lineno'>11</span> 
-<span class='lineno'>12</span>     <span class='n'>READ_FIELD</span><span class='p'>(</span><span class='o'>&amp;</span><span class='n'>record</span><span class='p'>.</span><span class='n'>id</span><span class='p'>,</span> <span class='kt'>uint32_t</span><span class='p'>,</span> <span class='mi'>1</span><span class='p'>);</span>
-<span class='lineno'>13</span>     <span class='n'>READ_FIELD</span><span class='p'>(</span><span class='o'>&amp;</span><span class='n'>record</span><span class='p'>.</span><span class='n'>num_bananas</span><span class='p'>,</span> <span class='kt'>uint32_t</span><span class='p'>,</span> <span class='mi'>1</span><span class='p'>);</span>
-<span class='lineno'>14</span>     <span class='n'>READ_FIELD</span><span class='p'>(</span><span class='o'>&amp;</span><span class='n'>name_length</span><span class='p'>,</span> <span class='kt'>uint32_t</span><span class='p'>,</span> <span class='mi'>1</span><span class='p'>);</span>
-<span class='lineno'>15</span> 
-<span class='lineno'>16</span>     <span class='c'>/* Remember to include an extra byte for the NUL terminator! */</span>
-<span class='lineno'>17</span> 
-<span class='lineno'>18</span>     <span class='n'>record</span><span class='p'>.</span><span class='n'>name</span> <span class='o'>=</span> <span class='p'>(</span><span class='kt'>char</span> <span class='o'>*</span><span class='p'>)</span> <span class='n'>malloc</span><span class='p'>(</span><span class='k'>sizeof</span><span class='p'>(</span><span class='kt'>char</span><span class='p'>)</span> <span class='o'>*</span> <span class='p'>(</span><span class='n'>name_length</span><span class='o'>+</span><span class='mi'>1</span><span class='p'>));</span>
-<span class='lineno'>19</span>     <span class='k'>if</span> <span class='p'>(</span><span class='n'>record</span><span class='p'>.</span><span class='n'>name</span> <span class='o'>==</span> <span class='nb'>NULL</span><span class='p'>)</span> <span class='k'>break</span><span class='p'>;</span>
-<span class='lineno'>20</span> 
-<span class='lineno'>21</span>     <span class='n'>READ_FIELD</span><span class='p'>(</span><span class='n'>record</span><span class='p'>.</span><span class='n'>name</span><span class='p'>,</span> <span class='kt'>char</span><span class='p'>,</span> <span class='n'>name_length</span><span class='p'>);</span>
-<span class='lineno'>22</span>     <span class='n'>record</span><span class='p'>.</span><span class='n'>name</span><span class='p'>[</span><span class='n'>name_length</span><span class='p'>]</span> <span class='o'>=</span> <span class='sc'>&#39;\0&#39;</span><span class='p'>;</span>
-<span class='lineno'>23</span> 
-<span class='lineno'>24</span>     <span class='c'>/* process the record */</span>
-<span class='lineno'>25</span> 
-<span class='lineno'>26</span>     <span class='n'>free</span><span class='p'>(</span><span class='n'>record</span><span class='p'>.</span><span class='n'>name</span><span class='p'>);</span>
-<span class='lineno'>27</span> <span class='p'>}</span> <span class='k'>while</span> <span class='p'>(</span><span class='nb'>true</span><span class='p'>);</span>
-</code></pre>
-</div>
-<p>This will avoid the segfault, and let you process your data, but it will perform <em>horribly</em>, since we&#8217;re calling down into the heap management code for <strong>every single record</strong>! And remember, we&#8217;re talking about millions of records here.</p>
-
-<h2 id='step_4_highwater_mark_buffers'>Step 4: High-water mark buffers</h2>
-
-<p>So what&#8217;s the solution? A high-water mark buffer. The idea is that instead of allocating a new string each time through the loop, you remember how large your current string is. As long as the next record&#8217;s <code>name</code> isn&#8217;t longer than your buffer, you can reuse it, saving you a call to <code>malloc</code>. If it is longer, you <code>realloc</code> it to be large enough for the new string. If you think of the lengths of the <code>name</code> strings as a rising tide of water, you see where the name of the buffer comes from.</p>
-
-<p>We can do a high-water mark buffer by hand:</p>
-<div class='highlight'><pre><code class='c'><span class='lineno'> 1</span> <span class='kt'>FILE</span>  <span class='o'>*</span><span class='n'>file</span> <span class='o'>=</span> <span class='c'>/* whatever */</span><span class='p'>;</span>
-<span class='lineno'> 2</span> <span class='n'>rec2_t</span>  <span class='n'>record</span><span class='p'>;</span>
-<span class='lineno'> 3</span> <span class='kt'>size_t</span>  <span class='n'>allocated_name_size</span> <span class='o'>=</span> <span class='mi'>0</span><span class='p'>;</span>
-<span class='lineno'> 4</span> 
-<span class='lineno'> 5</span> <span class='cp'>#define READ_FIELD(dest, type, count) \</span>
-<span class='lineno'> 6</span> <span class='cp'>    if (fread(dest, sizeof(type), count, file) &lt; count) \</span>
-<span class='lineno'> 7</span> <span class='cp'>        break;</span>
-<span class='lineno'> 8</span> 
-<span class='lineno'> 9</span> <span class='n'>record</span><span class='p'>.</span><span class='n'>name</span> <span class='o'>=</span> <span class='nb'>NULL</span><span class='p'>;</span>
-<span class='lineno'>10</span> 
-<span class='lineno'>11</span> <span class='k'>do</span>
-<span class='lineno'>12</span> <span class='p'>{</span>
-<span class='lineno'>13</span>     <span class='kt'>uint32_t</span>  <span class='n'>name_length</span><span class='p'>;</span>
-<span class='lineno'>14</span>     <span class='kt'>size_t</span>  <span class='n'>name_size</span><span class='p'>;</span>
-<span class='lineno'>15</span> 
-<span class='lineno'>16</span>     <span class='n'>READ_FIELD</span><span class='p'>(</span><span class='o'>&amp;</span><span class='n'>record</span><span class='p'>.</span><span class='n'>id</span><span class='p'>,</span> <span class='kt'>uint32_t</span><span class='p'>,</span> <span class='mi'>1</span><span class='p'>);</span>
-<span class='lineno'>17</span>     <span class='n'>READ_FIELD</span><span class='p'>(</span><span class='o'>&amp;</span><span class='n'>record</span><span class='p'>.</span><span class='n'>num_bananas</span><span class='p'>,</span> <span class='kt'>uint32_t</span><span class='p'>,</span> <span class='mi'>1</span><span class='p'>);</span>
-<span class='lineno'>18</span>     <span class='n'>READ_FIELD</span><span class='p'>(</span><span class='o'>&amp;</span><span class='n'>name_length</span><span class='p'>,</span> <span class='kt'>uint32_t</span><span class='p'>,</span> <span class='mi'>1</span><span class='p'>);</span>
-<span class='lineno'>19</span> 
-<span class='lineno'>20</span>     <span class='c'>/* Remember to include an extra byte for the NUL terminator! */</span>
-<span class='lineno'>21</span> 
-<span class='lineno'>22</span>     <span class='n'>name_size</span> <span class='o'>=</span> <span class='k'>sizeof</span><span class='p'>(</span><span class='kt'>char</span><span class='p'>)</span> <span class='o'>*</span> <span class='p'>(</span><span class='n'>name_length</span><span class='o'>+</span><span class='mi'>1</span><span class='p'>);</span>
-<span class='lineno'>23</span> 
-<span class='lineno'>24</span>     <span class='c'>/* Reallocate the buffer if it&#39;s not big enough */</span>
-<span class='lineno'>25</span>     <span class='k'>if</span> <span class='p'>(</span><span class='n'>name_size</span> <span class='o'>&gt;</span> <span class='n'>allocated_name_size</span><span class='p'>)</span>
-<span class='lineno'>26</span>     <span class='p'>{</span>
-<span class='lineno'>27</span>         <span class='n'>record</span><span class='p'>.</span><span class='n'>name</span> <span class='o'>=</span> <span class='p'>(</span><span class='kt'>char</span> <span class='o'>*</span><span class='p'>)</span> <span class='n'>realloc</span><span class='p'>(</span><span class='n'>record</span><span class='p'>.</span><span class='n'>name</span><span class='p'>,</span> <span class='n'>name_size</span><span class='p'>);</span>
-<span class='lineno'>28</span>         <span class='k'>if</span> <span class='p'>(</span><span class='n'>record</span><span class='p'>.</span><span class='n'>name</span> <span class='o'>==</span> <span class='nb'>NULL</span><span class='p'>)</span> <span class='k'>break</span><span class='p'>;</span>
-<span class='lineno'>29</span>         <span class='n'>allocated_name_size</span> <span class='o'>=</span> <span class='n'>name_size</span><span class='p'>;</span>
-<span class='lineno'>30</span>     <span class='p'>}</span>
-<span class='lineno'>31</span> 
-<span class='lineno'>32</span>     <span class='n'>READ_FIELD</span><span class='p'>(</span><span class='n'>record</span><span class='p'>.</span><span class='n'>name</span><span class='p'>,</span> <span class='kt'>char</span><span class='p'>,</span> <span class='n'>name_length</span><span class='p'>);</span>
-<span class='lineno'>33</span>     <span class='n'>record</span><span class='p'>.</span><span class='n'>name</span><span class='p'>[</span><span class='n'>name_length</span><span class='p'>]</span> <span class='o'>=</span> <span class='sc'>&#39;\0&#39;</span><span class='p'>;</span>
-<span class='lineno'>34</span> 
-<span class='lineno'>35</span>     <span class='c'>/* process the record */</span>
-<span class='lineno'>36</span> <span class='p'>}</span> <span class='k'>while</span> <span class='p'>(</span><span class='nb'>true</span><span class='p'>);</span>
-<span class='lineno'>37</span> 
-<span class='lineno'>38</span> <span class='k'>if</span> <span class='p'>(</span><span class='n'>record</span><span class='p'>.</span><span class='n'>name</span> <span class='o'>!=</span> <span class='nb'>NULL</span><span class='p'>)</span>
-<span class='lineno'>39</span>     <span class='n'>free</span><span class='p'>(</span><span class='n'>record</span><span class='p'>.</span><span class='n'>name</span><span class='p'>);</span>
-</code></pre>
-</div>
-<p>Note that <code>realloc</code> does the “right thing” if <code>record.name</code> is <code>NULL</code>; this indicates that we haven&#8217;t allocated a buffer yet, and so <code>realloc</code> acts like <code>malloc</code> in this case.</p>
-
-<h2 id='highwater_mark_library'>High-water mark library</h2>
-
-<p>So, we&#8217;ve described why you&#8217;d want a high-water mark buffer, and how to implement one. But once you write that same code three or four times, you decide to factor it out into a library. Hence <a href='http://github.com/dcreager/libhwm/'>libhwm</a>. Here&#8217;s the same file reading code using the library:</p>
-<div class='highlight'><pre><code class='c'><span class='lineno'>1</span> <span class='k'>typedef</span> <span class='k'>struct</span>
-<span class='lineno'>2</span> <span class='p'>{</span>
-<span class='lineno'>3</span>     <span class='kt'>uint32_t</span>  <span class='n'>id</span><span class='p'>;</span>
-<span class='lineno'>4</span>     <span class='kt'>uint32_t</span>  <span class='n'>num_bananas</span><span class='p'>;</span>
-<span class='lineno'>5</span>     <span class='n'>hwm_buffer_t</span>  <span class='n'>name</span><span class='p'>;</span>
-<span class='lineno'>6</span> <span class='p'>}</span> <span class='n'>rec3_t</span><span class='p'>;</span>
-</code></pre>
-</div><div class='highlight'><pre><code class='c'><span class='lineno'> 1</span> <span class='kt'>FILE</span>  <span class='o'>*</span><span class='n'>file</span> <span class='o'>=</span> <span class='c'>/* whatever */</span><span class='p'>;</span>
-<span class='lineno'> 2</span> <span class='n'>rec3_t</span>  <span class='n'>record</span><span class='p'>;</span>
-<span class='lineno'> 3</span> 
-<span class='lineno'> 4</span> <span class='cp'>#define READ_FIELD(dest, type, count) \</span>
-<span class='lineno'> 5</span> <span class='cp'>    if (fread(dest, sizeof(type), count, file) &lt; count) \</span>
-<span class='lineno'> 6</span> <span class='cp'>        break;</span>
-<span class='lineno'> 7</span> 
-<span class='lineno'> 8</span> <span class='n'>hwm_buffer_init</span><span class='p'>(</span><span class='o'>&amp;</span><span class='n'>record</span><span class='p'>.</span><span class='n'>name</span><span class='p'>);</span>
-<span class='lineno'> 9</span> 
-<span class='lineno'>10</span> <span class='k'>do</span>
-<span class='lineno'>11</span> <span class='p'>{</span>
-<span class='lineno'>12</span>     <span class='kt'>uint32_t</span>  <span class='n'>name_length</span><span class='p'>;</span>
-<span class='lineno'>13</span>     <span class='kt'>char</span>  <span class='o'>*</span><span class='n'>name_ptr</span><span class='p'>;</span>
-<span class='lineno'>14</span> 
-<span class='lineno'>15</span>     <span class='n'>READ_FIELD</span><span class='p'>(</span><span class='o'>&amp;</span><span class='n'>record</span><span class='p'>.</span><span class='n'>id</span><span class='p'>,</span> <span class='kt'>uint32_t</span><span class='p'>,</span> <span class='mi'>1</span><span class='p'>);</span>
-<span class='lineno'>16</span>     <span class='n'>READ_FIELD</span><span class='p'>(</span><span class='o'>&amp;</span><span class='n'>record</span><span class='p'>.</span><span class='n'>num_bananas</span><span class='p'>,</span> <span class='kt'>uint32_t</span><span class='p'>,</span> <span class='mi'>1</span><span class='p'>);</span>
-<span class='lineno'>17</span>     <span class='n'>READ_FIELD</span><span class='p'>(</span><span class='o'>&amp;</span><span class='n'>name_length</span><span class='p'>,</span> <span class='kt'>uint32_t</span><span class='p'>,</span> <span class='mi'>1</span><span class='p'>);</span>
-<span class='lineno'>18</span> 
-<span class='lineno'>19</span>     <span class='c'>/* Remember to include an extra byte for the NUL terminator! */</span>
-<span class='lineno'>20</span> 
-<span class='lineno'>21</span>     <span class='n'>name_size</span> <span class='o'>=</span> <span class='k'>sizeof</span><span class='p'>(</span><span class='kt'>char</span><span class='p'>)</span> <span class='o'>*</span> <span class='p'>(</span><span class='n'>name_length</span><span class='o'>+</span><span class='mi'>1</span><span class='p'>);</span>
-<span class='lineno'>22</span> 
-<span class='lineno'>23</span>     <span class='c'>/* Read into the HWM buffer */</span>
-<span class='lineno'>24</span>     <span class='k'>if</span> <span class='p'>(</span><span class='o'>!</span><span class='n'>hwm_buffer_ensure_size</span><span class='p'>(</span><span class='o'>&amp;</span><span class='n'>record</span><span class='p'>.</span><span class='n'>name</span><span class='p'>,</span> <span class='n'>name_size</span><span class='p'>))</span>
-<span class='lineno'>25</span>         <span class='k'>break</span><span class='p'>;</span>
-<span class='lineno'>26</span> 
-<span class='lineno'>27</span>     <span class='n'>name_ptr</span> <span class='o'>=</span> <span class='n'>hwm_buffer_writable_mem</span><span class='p'>(</span><span class='o'>&amp;</span><span class='n'>record</span><span class='p'>.</span><span class='n'>name</span><span class='p'>,</span> <span class='kt'>char</span><span class='p'>);</span>
-<span class='lineno'>28</span>     <span class='n'>READ_FIELD</span><span class='p'>(</span><span class='n'>name_ptr</span><span class='p'>,</span> <span class='kt'>char</span><span class='p'>,</span> <span class='n'>name_length</span><span class='p'>);</span>
-<span class='lineno'>29</span>     <span class='n'>name_ptr</span><span class='p'>[</span><span class='n'>name_length</span><span class='p'>]</span> <span class='o'>=</span> <span class='sc'>&#39;\0&#39;</span><span class='p'>;</span>
-<span class='lineno'>30</span> 
-<span class='lineno'>31</span>     <span class='c'>/* process the record */</span>
-<span class='lineno'>32</span> <span class='p'>}</span> <span class='k'>while</span> <span class='p'>(</span><span class='nb'>true</span><span class='p'>);</span>
-<span class='lineno'>33</span> 
-<span class='lineno'>34</span> <span class='n'>hwm_buffer_done</span><span class='p'>(</span><span class='o'>&amp;</span><span class='n'>record</span><span class='p'>.</span><span class='n'>name</span><span class='p'>);</span>
-</code></pre>
-</div>
-<p>Et voila. Of course, this last code snippet makes me realize that we could make things even simpler with an <code>hwm_buffer_fread</code> function! The story never ends&#8230;</p>
-
-  
-  <div class="posttags">
-    Tags:
-    <ul>
-      
-      <li><a href="/tags/c/">c</a></li>
-      
-      <li><a href="/tags/libhwm/">libhwm</a></li>
-      
-    </ul>
-  </div>
-  
-
-  <div class="postlinks">
-    <a href="/2009/12/23/high-water-mark-buffers/">Permanent link</a>
-    |
-    <a href="/2009/12/23/high-water-mark-buffers/#disqus_thread">Comments</a>
   </div>
 
 
