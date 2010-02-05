@@ -4,7 +4,7 @@
   <title>dcreager.net</title>
   <link href="http://dcreager.net/atom.xml" rel="self"/>
   <link href="http://dcreager.net/"/>
-  <updated>2010-01-08T11:50:52-05:00</updated>
+  <updated>2010-02-05T11:34:58-05:00</updated>
   <id>http://dcreager.net/</id>
   <author>
     <name>Douglas Creager</name>
@@ -20,13 +20,13 @@
     <content type="html">&lt;p&gt;As I mentioned in a &lt;a href='/2009/12/18/make-distclean-in-scons/'&gt;previous post&lt;/a&gt;, the automatic “clean” target provided by SCons (&lt;code&gt;scons -c&lt;/code&gt;) is very useful for cleaning out build files, without requiring much in the way of configuration. Anything that SCons generates when you run &lt;code&gt;scons&lt;/code&gt; will be automatically cleaned when you run &lt;code&gt;scons -c&lt;/code&gt;.&lt;/p&gt;
 
 &lt;p&gt;While useful, I&amp;#8217;d like more control over the behavior of &lt;code&gt;scons -c&lt;/code&gt;. Specifically, being a good TDD junkie, I have several test cases that I can run using &lt;code&gt;scons test&lt;/code&gt;:&lt;/p&gt;
-&lt;div class='highlight'&gt;&lt;pre&gt;&lt;span class='lineno'&gt;1&lt;/span&gt; &lt;span class='n'&gt;build_test&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='n'&gt;env&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;Program&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt; &lt;span class='o'&gt;...&lt;/span&gt; &lt;span class='p'&gt;)&lt;/span&gt;
+&lt;div class='highlight'&gt;&lt;pre&gt;&lt;code class='python'&gt;&lt;span class='lineno'&gt;1&lt;/span&gt; &lt;span class='n'&gt;build_test&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='n'&gt;env&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;Program&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt; &lt;span class='o'&gt;...&lt;/span&gt; &lt;span class='p'&gt;)&lt;/span&gt;
 &lt;span class='lineno'&gt;2&lt;/span&gt; &lt;span class='n'&gt;env&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;Alias&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='s'&gt;&amp;quot;build-tests&amp;quot;&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='n'&gt;build_test&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt;
 &lt;span class='lineno'&gt;3&lt;/span&gt; 
 &lt;span class='lineno'&gt;4&lt;/span&gt; &lt;span class='n'&gt;run_test&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='n'&gt;env&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;Alias&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='s'&gt;&amp;quot;test&amp;quot;&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='p'&gt;[&lt;/span&gt;&lt;span class='n'&gt;build_test&lt;/span&gt;&lt;span class='p'&gt;],&lt;/span&gt;
-&lt;span class='lineno'&gt;5&lt;/span&gt;                      &lt;span class='p'&gt;[&lt;/span&gt;&lt;span class='s'&gt;&amp;quot;@&lt;/span&gt;&lt;span class='si'&gt;%s&lt;/span&gt;&lt;span class='s'&gt;&amp;quot;&lt;/span&gt; &lt;span class='o'&gt;%&lt;/span&gt; &lt;span class='n'&gt;build_test&lt;/span&gt;&lt;span class='p'&gt;[&lt;/span&gt;&lt;span class='mi'&gt;0&lt;/span&gt;&lt;span class='p'&gt;]&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;abspath&lt;/span&gt;&lt;span class='p'&gt;])&lt;/span&gt;
+&lt;span class='lineno'&gt;5&lt;/span&gt;                      &lt;span class='p'&gt;[&lt;/span&gt;&lt;span class='s'&gt;&amp;quot;@&lt;/span&gt;&lt;span class='si'&gt;%s&lt;/span&gt;&lt;span class='s'&gt;&amp;quot;&lt;/span&gt; &lt;span class='o'&gt;%&lt;/span&gt; &lt;span class='n'&gt;build_test&lt;/span&gt;&lt;span class='p'&gt;[&lt;/span&gt;&lt;span class='mf'&gt;0&lt;/span&gt;&lt;span class='p'&gt;]&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;abspath&lt;/span&gt;&lt;span class='p'&gt;])&lt;/span&gt;
 &lt;span class='lineno'&gt;6&lt;/span&gt; &lt;span class='n'&gt;env&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;AlwaysBuild&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;run_test&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt;
-&lt;/pre&gt;
+&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;p&gt;By setting it up this way, the test programs aren&amp;#8217;t built by default: you have to explicitly run &lt;code&gt;scons build-tests&lt;/code&gt; (if you want to build the tests but not run them) or &lt;code&gt;scons test&lt;/code&gt; (if you want to build and run them). Moreover, because of SCons&amp;#8217;s dependency tracking, I can just use &lt;code&gt;scons test&lt;/code&gt; as my usual build command during my Edit-Test-Debug loop. SCons will automatically rebuild any changed source files before running the tests.&lt;/p&gt;
 
@@ -42,15 +42,15 @@ $ scons -c build-tests&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;So how to fix this? First we need to understand how SCons decides what to clean when you run &lt;code&gt;scons -c&lt;/code&gt;. The answer is “exactly what&amp;#8217;s built by &lt;code&gt;scons&lt;/code&gt;”. And how does SCons decide what to build when you run &lt;code&gt;scons&lt;/code&gt;? That&amp;#8217;s what the &lt;code&gt;Default&lt;/code&gt; command is for.&lt;/p&gt;
 
 &lt;p&gt;For instance, I could add&lt;/p&gt;
-&lt;div class='highlight'&gt;&lt;pre&gt;&lt;span class='lineno'&gt;1&lt;/span&gt; &lt;span class='n'&gt;env&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;Default&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='s'&gt;&amp;quot;build-tests&amp;quot;&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt;
-&lt;/pre&gt;
+&lt;div class='highlight'&gt;&lt;pre&gt;&lt;code class='python'&gt;&lt;span class='lineno'&gt;1&lt;/span&gt; &lt;span class='n'&gt;env&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;Default&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='s'&gt;&amp;quot;build-tests&amp;quot;&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;p&gt;to my &lt;em&gt;SConstruct&lt;/em&gt; file. This would cause all of my tests to be built by default, and by extension, to have them all cleaned by default, as well.&lt;/p&gt;
 
 &lt;p&gt;This is close, since &lt;code&gt;scons -c&lt;/code&gt; now does what we want, but this means that &lt;code&gt;scons&lt;/code&gt; is now building more than we would like. What we need is a way to have a different list of default targets depending on whether we&amp;#8217;re building or cleaning. Luckily, the &lt;code&gt;GetOption&lt;/code&gt; function gives us exactly that:&lt;/p&gt;
-&lt;div class='highlight'&gt;&lt;pre&gt;&lt;span class='lineno'&gt;1&lt;/span&gt; &lt;span class='k'&gt;if&lt;/span&gt; &lt;span class='n'&gt;GetOption&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='s'&gt;&amp;quot;clean&amp;quot;&lt;/span&gt;&lt;span class='p'&gt;):&lt;/span&gt;
+&lt;div class='highlight'&gt;&lt;pre&gt;&lt;code class='python'&gt;&lt;span class='lineno'&gt;1&lt;/span&gt; &lt;span class='k'&gt;if&lt;/span&gt; &lt;span class='n'&gt;GetOption&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='s'&gt;&amp;quot;clean&amp;quot;&lt;/span&gt;&lt;span class='p'&gt;):&lt;/span&gt;
 &lt;span class='lineno'&gt;2&lt;/span&gt;     &lt;span class='n'&gt;env&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;Default&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='s'&gt;&amp;quot;build-tests&amp;quot;&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt;
-&lt;/pre&gt;
+&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;p&gt;With this in our &lt;em&gt;SConstruct&lt;/em&gt; file, the tests will be considered a default target when we&amp;#8217;re cleaning, but not when we&amp;#8217;re building. So now we have what we want: &lt;code&gt;scons&lt;/code&gt; builds just the code, &lt;code&gt;scons test&lt;/code&gt; builds and runs the tests, and &lt;code&gt;scons -c&lt;/code&gt; cleans it all.&lt;/p&gt;</content>
   </entry>
@@ -91,40 +91,40 @@ $ scons -c build-tests&lt;/code&gt;&lt;/pre&gt;
 &lt;h3 id='step_1_fixedlength_records'&gt;Step 1: Fixed-length records&lt;/h3&gt;
 
 &lt;p&gt;Let&amp;#8217;s say that we need to read each record into a simple &lt;code&gt;struct&lt;/code&gt;. For now, we&amp;#8217;re going to use nice, fixed-length fields:&lt;/p&gt;
-&lt;div class='highlight'&gt;&lt;pre&gt;&lt;span class='lineno'&gt;1&lt;/span&gt; &lt;span class='k'&gt;typedef&lt;/span&gt; &lt;span class='k'&gt;struct&lt;/span&gt;
+&lt;div class='highlight'&gt;&lt;pre&gt;&lt;code class='c'&gt;&lt;span class='lineno'&gt;1&lt;/span&gt; &lt;span class='k'&gt;typedef&lt;/span&gt; &lt;span class='k'&gt;struct&lt;/span&gt;
 &lt;span class='lineno'&gt;2&lt;/span&gt; &lt;span class='p'&gt;{&lt;/span&gt;
 &lt;span class='lineno'&gt;3&lt;/span&gt;     &lt;span class='kt'&gt;uint32_t&lt;/span&gt;  &lt;span class='n'&gt;id&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
 &lt;span class='lineno'&gt;4&lt;/span&gt;     &lt;span class='kt'&gt;uint32_t&lt;/span&gt;  &lt;span class='n'&gt;num_bananas&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
 &lt;span class='lineno'&gt;5&lt;/span&gt; &lt;span class='p'&gt;}&lt;/span&gt; &lt;span class='n'&gt;rec1_t&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
-&lt;/pre&gt;
+&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;p&gt;With this datatype, we can actually read data from a file very quickly; we&amp;#8217;ll just store each record directly in the file, in binary, using 8 bytes. (To simplify things, I&amp;#8217;m not worrying about the endianness of the integers, or whether the &lt;code&gt;struct&lt;/code&gt; is packed; both are easily handled with some pretty simple macro-fu.)&lt;/p&gt;
-&lt;div class='highlight'&gt;&lt;pre&gt;&lt;span class='lineno'&gt;1&lt;/span&gt; &lt;span class='kt'&gt;FILE&lt;/span&gt;  &lt;span class='o'&gt;*&lt;/span&gt;&lt;span class='n'&gt;file&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='cm'&gt;/* whatever */&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
+&lt;div class='highlight'&gt;&lt;pre&gt;&lt;code class='c'&gt;&lt;span class='lineno'&gt;1&lt;/span&gt; &lt;span class='kt'&gt;FILE&lt;/span&gt;  &lt;span class='o'&gt;*&lt;/span&gt;&lt;span class='n'&gt;file&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='c'&gt;/* whatever */&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
 &lt;span class='lineno'&gt;2&lt;/span&gt; &lt;span class='n'&gt;rec1_t&lt;/span&gt;  &lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
 &lt;span class='lineno'&gt;3&lt;/span&gt; 
 &lt;span class='lineno'&gt;4&lt;/span&gt; &lt;span class='k'&gt;while&lt;/span&gt; &lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;fread&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='o'&gt;&amp;amp;&lt;/span&gt;&lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='k'&gt;sizeof&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;rec1_t&lt;/span&gt;&lt;span class='p'&gt;),&lt;/span&gt; &lt;span class='mi'&gt;1&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='n'&gt;file&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt; &lt;span class='o'&gt;==&lt;/span&gt; &lt;span class='mi'&gt;1&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt;
 &lt;span class='lineno'&gt;5&lt;/span&gt; &lt;span class='p'&gt;{&lt;/span&gt;
-&lt;span class='lineno'&gt;6&lt;/span&gt;     &lt;span class='cm'&gt;/* process the record */&lt;/span&gt;
+&lt;span class='lineno'&gt;6&lt;/span&gt;     &lt;span class='c'&gt;/* process the record */&lt;/span&gt;
 &lt;span class='lineno'&gt;7&lt;/span&gt; &lt;span class='p'&gt;}&lt;/span&gt;
-&lt;/pre&gt;
+&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;p&gt;The C library&amp;#8217;s stream API (&lt;code&gt;fread&lt;/code&gt; and friends) will buffer the data from the actual file, so this gives us pretty good performance.&lt;/p&gt;
 
 &lt;h3 id='step_2_variablelength_records'&gt;Step 2: Variable-length records&lt;/h3&gt;
 
 &lt;p&gt;What if we have a variable-length field in our &lt;code&gt;struct&lt;/code&gt;, though?&lt;/p&gt;
-&lt;div class='highlight'&gt;&lt;pre&gt;&lt;span class='lineno'&gt;1&lt;/span&gt; &lt;span class='k'&gt;typedef&lt;/span&gt; &lt;span class='k'&gt;struct&lt;/span&gt;
+&lt;div class='highlight'&gt;&lt;pre&gt;&lt;code class='c'&gt;&lt;span class='lineno'&gt;1&lt;/span&gt; &lt;span class='k'&gt;typedef&lt;/span&gt; &lt;span class='k'&gt;struct&lt;/span&gt;
 &lt;span class='lineno'&gt;2&lt;/span&gt; &lt;span class='p'&gt;{&lt;/span&gt;
 &lt;span class='lineno'&gt;3&lt;/span&gt;     &lt;span class='kt'&gt;uint32_t&lt;/span&gt;  &lt;span class='n'&gt;id&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
 &lt;span class='lineno'&gt;4&lt;/span&gt;     &lt;span class='kt'&gt;uint32_t&lt;/span&gt;  &lt;span class='n'&gt;num_bananas&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
 &lt;span class='lineno'&gt;5&lt;/span&gt;     &lt;span class='kt'&gt;char&lt;/span&gt;  &lt;span class='o'&gt;*&lt;/span&gt;&lt;span class='n'&gt;name&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
 &lt;span class='lineno'&gt;6&lt;/span&gt; &lt;span class='p'&gt;}&lt;/span&gt; &lt;span class='n'&gt;rec2_t&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
-&lt;/pre&gt;
+&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;p&gt;Often in these cases, you can simplify the problem by deciding not to let &lt;code&gt;name&lt;/code&gt; be a variable-length field. Instead, you decide that you&amp;#8217;ll use (say) exactly 20 bytes for the name, padding out short names and truncating long names as necessary. We don&amp;#8217;t want to do that, however — we want to have a truly variable-length field.&lt;/p&gt;
 
 &lt;p&gt;To store this variable-length field in the file, we need some way of encoding the length of a particular record&amp;#8217;s &lt;code&gt;name&lt;/code&gt; field. If we can assume that none of the records has a name that&amp;#8217;s longer than 4 billion characters, we can use a 32-bit length prefix:&lt;/p&gt;
-&lt;div class='highlight'&gt;&lt;pre&gt;&lt;span class='lineno'&gt; 1&lt;/span&gt; &lt;span class='kt'&gt;FILE&lt;/span&gt;  &lt;span class='o'&gt;*&lt;/span&gt;&lt;span class='n'&gt;file&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='cm'&gt;/* whatever */&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
+&lt;div class='highlight'&gt;&lt;pre&gt;&lt;code class='c'&gt;&lt;span class='lineno'&gt; 1&lt;/span&gt; &lt;span class='kt'&gt;FILE&lt;/span&gt;  &lt;span class='o'&gt;*&lt;/span&gt;&lt;span class='n'&gt;file&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='c'&gt;/* whatever */&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
 &lt;span class='lineno'&gt; 2&lt;/span&gt; &lt;span class='n'&gt;rec2_t&lt;/span&gt;  &lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
 &lt;span class='lineno'&gt; 3&lt;/span&gt; 
 &lt;span class='lineno'&gt; 4&lt;/span&gt; &lt;span class='k'&gt;do&lt;/span&gt;
@@ -145,12 +145,12 @@ $ scons -c build-tests&lt;/code&gt;&lt;/pre&gt;
 &lt;span class='lineno'&gt;19&lt;/span&gt;         &lt;span class='k'&gt;break&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
 &lt;span class='lineno'&gt;20&lt;/span&gt;     &lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;name&lt;/span&gt;&lt;span class='p'&gt;[&lt;/span&gt;&lt;span class='n'&gt;name_length&lt;/span&gt;&lt;span class='p'&gt;]&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='sc'&gt;&amp;#39;\0&amp;#39;&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
 &lt;span class='lineno'&gt;21&lt;/span&gt; 
-&lt;span class='lineno'&gt;22&lt;/span&gt;     &lt;span class='cm'&gt;/* process the record */&lt;/span&gt;
+&lt;span class='lineno'&gt;22&lt;/span&gt;     &lt;span class='c'&gt;/* process the record */&lt;/span&gt;
 &lt;span class='lineno'&gt;23&lt;/span&gt; &lt;span class='p'&gt;}&lt;/span&gt; &lt;span class='k'&gt;while&lt;/span&gt; &lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='nb'&gt;true&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
-&lt;/pre&gt;
+&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;p&gt;That&amp;#8217;s pretty ugly and repetitive, so let&amp;#8217;s play some macro games:&lt;/p&gt;
-&lt;div class='highlight'&gt;&lt;pre&gt;&lt;span class='lineno'&gt; 1&lt;/span&gt; &lt;span class='kt'&gt;FILE&lt;/span&gt;  &lt;span class='o'&gt;*&lt;/span&gt;&lt;span class='n'&gt;file&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='cm'&gt;/* whatever */&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
+&lt;div class='highlight'&gt;&lt;pre&gt;&lt;code class='c'&gt;&lt;span class='lineno'&gt; 1&lt;/span&gt; &lt;span class='kt'&gt;FILE&lt;/span&gt;  &lt;span class='o'&gt;*&lt;/span&gt;&lt;span class='n'&gt;file&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='c'&gt;/* whatever */&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
 &lt;span class='lineno'&gt; 2&lt;/span&gt; &lt;span class='n'&gt;rec2_t&lt;/span&gt;  &lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
 &lt;span class='lineno'&gt; 3&lt;/span&gt; 
 &lt;span class='lineno'&gt; 4&lt;/span&gt; &lt;span class='cp'&gt;#define READ_FIELD(dest, type, count) \&lt;/span&gt;
@@ -167,9 +167,9 @@ $ scons -c build-tests&lt;/code&gt;&lt;/pre&gt;
 &lt;span class='lineno'&gt;15&lt;/span&gt;     &lt;span class='n'&gt;READ_FIELD&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;name&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='kt'&gt;char&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='n'&gt;name_length&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
 &lt;span class='lineno'&gt;16&lt;/span&gt;     &lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;name&lt;/span&gt;&lt;span class='p'&gt;[&lt;/span&gt;&lt;span class='n'&gt;name_length&lt;/span&gt;&lt;span class='p'&gt;]&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='sc'&gt;&amp;#39;\0&amp;#39;&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
 &lt;span class='lineno'&gt;17&lt;/span&gt; 
-&lt;span class='lineno'&gt;18&lt;/span&gt;     &lt;span class='cm'&gt;/* process the record */&lt;/span&gt;
+&lt;span class='lineno'&gt;18&lt;/span&gt;     &lt;span class='c'&gt;/* process the record */&lt;/span&gt;
 &lt;span class='lineno'&gt;19&lt;/span&gt; &lt;span class='p'&gt;}&lt;/span&gt; &lt;span class='k'&gt;while&lt;/span&gt; &lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='nb'&gt;true&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
-&lt;/pre&gt;
+&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;p&gt;So the basic idea here is pretty sound — we can store a name of any length without wasted space. And the code is still rather fast; we&amp;#8217;ll have a larger overhead from calling &lt;code&gt;fread&lt;/code&gt; multiple times, but the number of low-level I/O reads will still be roughly the same.&lt;/p&gt;
 
@@ -178,7 +178,7 @@ $ scons -c build-tests&lt;/code&gt;&lt;/pre&gt;
 &lt;h3 id='step_3_allocate_some_memory'&gt;Step 3: Allocate some memory&lt;/h3&gt;
 
 &lt;p&gt;So what&amp;#8217;s the simplest way we can allocate memory for the &lt;code&gt;record.name&lt;/code&gt; field? The naïve approach would be to &lt;code&gt;malloc&lt;/code&gt; a new string for every record:&lt;/p&gt;
-&lt;div class='highlight'&gt;&lt;pre&gt;&lt;span class='lineno'&gt; 1&lt;/span&gt; &lt;span class='kt'&gt;FILE&lt;/span&gt;  &lt;span class='o'&gt;*&lt;/span&gt;&lt;span class='n'&gt;file&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='cm'&gt;/* whatever */&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
+&lt;div class='highlight'&gt;&lt;pre&gt;&lt;code class='c'&gt;&lt;span class='lineno'&gt; 1&lt;/span&gt; &lt;span class='kt'&gt;FILE&lt;/span&gt;  &lt;span class='o'&gt;*&lt;/span&gt;&lt;span class='n'&gt;file&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='c'&gt;/* whatever */&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
 &lt;span class='lineno'&gt; 2&lt;/span&gt; &lt;span class='n'&gt;rec2_t&lt;/span&gt;  &lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
 &lt;span class='lineno'&gt; 3&lt;/span&gt; 
 &lt;span class='lineno'&gt; 4&lt;/span&gt; &lt;span class='cp'&gt;#define READ_FIELD(dest, type, count) \&lt;/span&gt;
@@ -193,7 +193,7 @@ $ scons -c build-tests&lt;/code&gt;&lt;/pre&gt;
 &lt;span class='lineno'&gt;13&lt;/span&gt;     &lt;span class='n'&gt;READ_FIELD&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='o'&gt;&amp;amp;&lt;/span&gt;&lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;num_bananas&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='kt'&gt;uint32_t&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='mi'&gt;1&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
 &lt;span class='lineno'&gt;14&lt;/span&gt;     &lt;span class='n'&gt;READ_FIELD&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='o'&gt;&amp;amp;&lt;/span&gt;&lt;span class='n'&gt;name_length&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='kt'&gt;uint32_t&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='mi'&gt;1&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
 &lt;span class='lineno'&gt;15&lt;/span&gt; 
-&lt;span class='lineno'&gt;16&lt;/span&gt;     &lt;span class='cm'&gt;/* Remember to include an extra byte for the NUL terminator! */&lt;/span&gt;
+&lt;span class='lineno'&gt;16&lt;/span&gt;     &lt;span class='c'&gt;/* Remember to include an extra byte for the NUL terminator! */&lt;/span&gt;
 &lt;span class='lineno'&gt;17&lt;/span&gt; 
 &lt;span class='lineno'&gt;18&lt;/span&gt;     &lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;name&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='kt'&gt;char&lt;/span&gt; &lt;span class='o'&gt;*&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt; &lt;span class='n'&gt;malloc&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='k'&gt;sizeof&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='kt'&gt;char&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt; &lt;span class='o'&gt;*&lt;/span&gt; &lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;name_length&lt;/span&gt;&lt;span class='o'&gt;+&lt;/span&gt;&lt;span class='mi'&gt;1&lt;/span&gt;&lt;span class='p'&gt;));&lt;/span&gt;
 &lt;span class='lineno'&gt;19&lt;/span&gt;     &lt;span class='k'&gt;if&lt;/span&gt; &lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;name&lt;/span&gt; &lt;span class='o'&gt;==&lt;/span&gt; &lt;span class='nb'&gt;NULL&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt; &lt;span class='k'&gt;break&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
@@ -201,11 +201,11 @@ $ scons -c build-tests&lt;/code&gt;&lt;/pre&gt;
 &lt;span class='lineno'&gt;21&lt;/span&gt;     &lt;span class='n'&gt;READ_FIELD&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;name&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='kt'&gt;char&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='n'&gt;name_length&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
 &lt;span class='lineno'&gt;22&lt;/span&gt;     &lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;name&lt;/span&gt;&lt;span class='p'&gt;[&lt;/span&gt;&lt;span class='n'&gt;name_length&lt;/span&gt;&lt;span class='p'&gt;]&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='sc'&gt;&amp;#39;\0&amp;#39;&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
 &lt;span class='lineno'&gt;23&lt;/span&gt; 
-&lt;span class='lineno'&gt;24&lt;/span&gt;     &lt;span class='cm'&gt;/* process the record */&lt;/span&gt;
+&lt;span class='lineno'&gt;24&lt;/span&gt;     &lt;span class='c'&gt;/* process the record */&lt;/span&gt;
 &lt;span class='lineno'&gt;25&lt;/span&gt; 
 &lt;span class='lineno'&gt;26&lt;/span&gt;     &lt;span class='n'&gt;free&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;name&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
 &lt;span class='lineno'&gt;27&lt;/span&gt; &lt;span class='p'&gt;}&lt;/span&gt; &lt;span class='k'&gt;while&lt;/span&gt; &lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='nb'&gt;true&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
-&lt;/pre&gt;
+&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;p&gt;This will avoid the segfault, and let you process your data, but it will perform &lt;em&gt;horribly&lt;/em&gt;, since we&amp;#8217;re calling down into the heap management code for &lt;strong&gt;every single record&lt;/strong&gt;! And remember, we&amp;#8217;re talking about millions of records here.&lt;/p&gt;
 
@@ -214,7 +214,7 @@ $ scons -c build-tests&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;So what&amp;#8217;s the solution? A high-water mark buffer. The idea is that instead of allocating a new string each time through the loop, you remember how large your current string is. As long as the next record&amp;#8217;s &lt;code&gt;name&lt;/code&gt; isn&amp;#8217;t longer than your buffer, you can reuse it, saving you a call to &lt;code&gt;malloc&lt;/code&gt;. If it is longer, you &lt;code&gt;realloc&lt;/code&gt; it to be large enough for the new string. If you think of the lengths of the &lt;code&gt;name&lt;/code&gt; strings as a rising tide of water, you see where the name of the buffer comes from.&lt;/p&gt;
 
 &lt;p&gt;We can do a high-water mark buffer by hand:&lt;/p&gt;
-&lt;div class='highlight'&gt;&lt;pre&gt;&lt;span class='lineno'&gt; 1&lt;/span&gt; &lt;span class='kt'&gt;FILE&lt;/span&gt;  &lt;span class='o'&gt;*&lt;/span&gt;&lt;span class='n'&gt;file&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='cm'&gt;/* whatever */&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
+&lt;div class='highlight'&gt;&lt;pre&gt;&lt;code class='c'&gt;&lt;span class='lineno'&gt; 1&lt;/span&gt; &lt;span class='kt'&gt;FILE&lt;/span&gt;  &lt;span class='o'&gt;*&lt;/span&gt;&lt;span class='n'&gt;file&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='c'&gt;/* whatever */&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
 &lt;span class='lineno'&gt; 2&lt;/span&gt; &lt;span class='n'&gt;rec2_t&lt;/span&gt;  &lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
 &lt;span class='lineno'&gt; 3&lt;/span&gt; &lt;span class='kt'&gt;size_t&lt;/span&gt;  &lt;span class='n'&gt;allocated_name_size&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='mi'&gt;0&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
 &lt;span class='lineno'&gt; 4&lt;/span&gt; 
@@ -233,11 +233,11 @@ $ scons -c build-tests&lt;/code&gt;&lt;/pre&gt;
 &lt;span class='lineno'&gt;17&lt;/span&gt;     &lt;span class='n'&gt;READ_FIELD&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='o'&gt;&amp;amp;&lt;/span&gt;&lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;num_bananas&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='kt'&gt;uint32_t&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='mi'&gt;1&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
 &lt;span class='lineno'&gt;18&lt;/span&gt;     &lt;span class='n'&gt;READ_FIELD&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='o'&gt;&amp;amp;&lt;/span&gt;&lt;span class='n'&gt;name_length&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='kt'&gt;uint32_t&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='mi'&gt;1&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
 &lt;span class='lineno'&gt;19&lt;/span&gt; 
-&lt;span class='lineno'&gt;20&lt;/span&gt;     &lt;span class='cm'&gt;/* Remember to include an extra byte for the NUL terminator! */&lt;/span&gt;
+&lt;span class='lineno'&gt;20&lt;/span&gt;     &lt;span class='c'&gt;/* Remember to include an extra byte for the NUL terminator! */&lt;/span&gt;
 &lt;span class='lineno'&gt;21&lt;/span&gt; 
 &lt;span class='lineno'&gt;22&lt;/span&gt;     &lt;span class='n'&gt;name_size&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='k'&gt;sizeof&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='kt'&gt;char&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt; &lt;span class='o'&gt;*&lt;/span&gt; &lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;name_length&lt;/span&gt;&lt;span class='o'&gt;+&lt;/span&gt;&lt;span class='mi'&gt;1&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
 &lt;span class='lineno'&gt;23&lt;/span&gt; 
-&lt;span class='lineno'&gt;24&lt;/span&gt;     &lt;span class='cm'&gt;/* Reallocate the buffer if it&amp;#39;s not big enough */&lt;/span&gt;
+&lt;span class='lineno'&gt;24&lt;/span&gt;     &lt;span class='c'&gt;/* Reallocate the buffer if it&amp;#39;s not big enough */&lt;/span&gt;
 &lt;span class='lineno'&gt;25&lt;/span&gt;     &lt;span class='k'&gt;if&lt;/span&gt; &lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;name_size&lt;/span&gt; &lt;span class='o'&gt;&amp;gt;&lt;/span&gt; &lt;span class='n'&gt;allocated_name_size&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt;
 &lt;span class='lineno'&gt;26&lt;/span&gt;     &lt;span class='p'&gt;{&lt;/span&gt;
 &lt;span class='lineno'&gt;27&lt;/span&gt;         &lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;name&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='kt'&gt;char&lt;/span&gt; &lt;span class='o'&gt;*&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt; &lt;span class='n'&gt;realloc&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;name&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='n'&gt;name_size&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
@@ -248,26 +248,26 @@ $ scons -c build-tests&lt;/code&gt;&lt;/pre&gt;
 &lt;span class='lineno'&gt;32&lt;/span&gt;     &lt;span class='n'&gt;READ_FIELD&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;name&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='kt'&gt;char&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='n'&gt;name_length&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
 &lt;span class='lineno'&gt;33&lt;/span&gt;     &lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;name&lt;/span&gt;&lt;span class='p'&gt;[&lt;/span&gt;&lt;span class='n'&gt;name_length&lt;/span&gt;&lt;span class='p'&gt;]&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='sc'&gt;&amp;#39;\0&amp;#39;&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
 &lt;span class='lineno'&gt;34&lt;/span&gt; 
-&lt;span class='lineno'&gt;35&lt;/span&gt;     &lt;span class='cm'&gt;/* process the record */&lt;/span&gt;
+&lt;span class='lineno'&gt;35&lt;/span&gt;     &lt;span class='c'&gt;/* process the record */&lt;/span&gt;
 &lt;span class='lineno'&gt;36&lt;/span&gt; &lt;span class='p'&gt;}&lt;/span&gt; &lt;span class='k'&gt;while&lt;/span&gt; &lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='nb'&gt;true&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
 &lt;span class='lineno'&gt;37&lt;/span&gt; 
 &lt;span class='lineno'&gt;38&lt;/span&gt; &lt;span class='k'&gt;if&lt;/span&gt; &lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;name&lt;/span&gt; &lt;span class='o'&gt;!=&lt;/span&gt; &lt;span class='nb'&gt;NULL&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt;
 &lt;span class='lineno'&gt;39&lt;/span&gt;     &lt;span class='n'&gt;free&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;name&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
-&lt;/pre&gt;
+&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;p&gt;Note that &lt;code&gt;realloc&lt;/code&gt; does the “right thing” if &lt;code&gt;record.name&lt;/code&gt; is &lt;code&gt;NULL&lt;/code&gt;; this indicates that we haven&amp;#8217;t allocated a buffer yet, and so &lt;code&gt;realloc&lt;/code&gt; acts like &lt;code&gt;malloc&lt;/code&gt; in this case.&lt;/p&gt;
 
 &lt;h2 id='highwater_mark_library'&gt;High-water mark library&lt;/h2&gt;
 
 &lt;p&gt;So, we&amp;#8217;ve described why you&amp;#8217;d want a high-water mark buffer, and how to implement one. But once you write that same code three or four times, you decide to factor it out into a library. Hence &lt;a href='http://github.com/dcreager/libhwm/'&gt;libhwm&lt;/a&gt;. Here&amp;#8217;s the same file reading code using the library:&lt;/p&gt;
-&lt;div class='highlight'&gt;&lt;pre&gt;&lt;span class='lineno'&gt;1&lt;/span&gt; &lt;span class='k'&gt;typedef&lt;/span&gt; &lt;span class='k'&gt;struct&lt;/span&gt;
+&lt;div class='highlight'&gt;&lt;pre&gt;&lt;code class='c'&gt;&lt;span class='lineno'&gt;1&lt;/span&gt; &lt;span class='k'&gt;typedef&lt;/span&gt; &lt;span class='k'&gt;struct&lt;/span&gt;
 &lt;span class='lineno'&gt;2&lt;/span&gt; &lt;span class='p'&gt;{&lt;/span&gt;
 &lt;span class='lineno'&gt;3&lt;/span&gt;     &lt;span class='kt'&gt;uint32_t&lt;/span&gt;  &lt;span class='n'&gt;id&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
 &lt;span class='lineno'&gt;4&lt;/span&gt;     &lt;span class='kt'&gt;uint32_t&lt;/span&gt;  &lt;span class='n'&gt;num_bananas&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
 &lt;span class='lineno'&gt;5&lt;/span&gt;     &lt;span class='n'&gt;hwm_buffer_t&lt;/span&gt;  &lt;span class='n'&gt;name&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
 &lt;span class='lineno'&gt;6&lt;/span&gt; &lt;span class='p'&gt;}&lt;/span&gt; &lt;span class='n'&gt;rec3_t&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
-&lt;/pre&gt;
-&lt;/div&gt;&lt;div class='highlight'&gt;&lt;pre&gt;&lt;span class='lineno'&gt; 1&lt;/span&gt; &lt;span class='kt'&gt;FILE&lt;/span&gt;  &lt;span class='o'&gt;*&lt;/span&gt;&lt;span class='n'&gt;file&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='cm'&gt;/* whatever */&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;&lt;div class='highlight'&gt;&lt;pre&gt;&lt;code class='c'&gt;&lt;span class='lineno'&gt; 1&lt;/span&gt; &lt;span class='kt'&gt;FILE&lt;/span&gt;  &lt;span class='o'&gt;*&lt;/span&gt;&lt;span class='n'&gt;file&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='c'&gt;/* whatever */&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
 &lt;span class='lineno'&gt; 2&lt;/span&gt; &lt;span class='n'&gt;rec3_t&lt;/span&gt;  &lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
 &lt;span class='lineno'&gt; 3&lt;/span&gt; 
 &lt;span class='lineno'&gt; 4&lt;/span&gt; &lt;span class='cp'&gt;#define READ_FIELD(dest, type, count) \&lt;/span&gt;
@@ -285,11 +285,11 @@ $ scons -c build-tests&lt;/code&gt;&lt;/pre&gt;
 &lt;span class='lineno'&gt;16&lt;/span&gt;     &lt;span class='n'&gt;READ_FIELD&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='o'&gt;&amp;amp;&lt;/span&gt;&lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;num_bananas&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='kt'&gt;uint32_t&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='mi'&gt;1&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
 &lt;span class='lineno'&gt;17&lt;/span&gt;     &lt;span class='n'&gt;READ_FIELD&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='o'&gt;&amp;amp;&lt;/span&gt;&lt;span class='n'&gt;name_length&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='kt'&gt;uint32_t&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='mi'&gt;1&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
 &lt;span class='lineno'&gt;18&lt;/span&gt; 
-&lt;span class='lineno'&gt;19&lt;/span&gt;     &lt;span class='cm'&gt;/* Remember to include an extra byte for the NUL terminator! */&lt;/span&gt;
+&lt;span class='lineno'&gt;19&lt;/span&gt;     &lt;span class='c'&gt;/* Remember to include an extra byte for the NUL terminator! */&lt;/span&gt;
 &lt;span class='lineno'&gt;20&lt;/span&gt; 
 &lt;span class='lineno'&gt;21&lt;/span&gt;     &lt;span class='n'&gt;name_size&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='k'&gt;sizeof&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='kt'&gt;char&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt; &lt;span class='o'&gt;*&lt;/span&gt; &lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;name_length&lt;/span&gt;&lt;span class='o'&gt;+&lt;/span&gt;&lt;span class='mi'&gt;1&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
 &lt;span class='lineno'&gt;22&lt;/span&gt; 
-&lt;span class='lineno'&gt;23&lt;/span&gt;     &lt;span class='cm'&gt;/* Read into the HWM buffer */&lt;/span&gt;
+&lt;span class='lineno'&gt;23&lt;/span&gt;     &lt;span class='c'&gt;/* Read into the HWM buffer */&lt;/span&gt;
 &lt;span class='lineno'&gt;24&lt;/span&gt;     &lt;span class='k'&gt;if&lt;/span&gt; &lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='o'&gt;!&lt;/span&gt;&lt;span class='n'&gt;hwm_buffer_ensure_size&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='o'&gt;&amp;amp;&lt;/span&gt;&lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;name&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='n'&gt;name_size&lt;/span&gt;&lt;span class='p'&gt;))&lt;/span&gt;
 &lt;span class='lineno'&gt;25&lt;/span&gt;         &lt;span class='k'&gt;break&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
 &lt;span class='lineno'&gt;26&lt;/span&gt; 
@@ -297,11 +297,11 @@ $ scons -c build-tests&lt;/code&gt;&lt;/pre&gt;
 &lt;span class='lineno'&gt;28&lt;/span&gt;     &lt;span class='n'&gt;READ_FIELD&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;name_ptr&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='kt'&gt;char&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='n'&gt;name_length&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
 &lt;span class='lineno'&gt;29&lt;/span&gt;     &lt;span class='n'&gt;name_ptr&lt;/span&gt;&lt;span class='p'&gt;[&lt;/span&gt;&lt;span class='n'&gt;name_length&lt;/span&gt;&lt;span class='p'&gt;]&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='sc'&gt;&amp;#39;\0&amp;#39;&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
 &lt;span class='lineno'&gt;30&lt;/span&gt; 
-&lt;span class='lineno'&gt;31&lt;/span&gt;     &lt;span class='cm'&gt;/* process the record */&lt;/span&gt;
+&lt;span class='lineno'&gt;31&lt;/span&gt;     &lt;span class='c'&gt;/* process the record */&lt;/span&gt;
 &lt;span class='lineno'&gt;32&lt;/span&gt; &lt;span class='p'&gt;}&lt;/span&gt; &lt;span class='k'&gt;while&lt;/span&gt; &lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='nb'&gt;true&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
 &lt;span class='lineno'&gt;33&lt;/span&gt; 
 &lt;span class='lineno'&gt;34&lt;/span&gt; &lt;span class='n'&gt;hwm_buffer_done&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='o'&gt;&amp;amp;&lt;/span&gt;&lt;span class='n'&gt;record&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;name&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
-&lt;/pre&gt;
+&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;p&gt;Et voila. Of course, this last code snippet makes me realize that we could make things even simpler with an &lt;code&gt;hwm_buffer_fread&lt;/code&gt; function! The story never ends&amp;#8230;&lt;/p&gt;</content>
   </entry>
@@ -362,24 +362,24 @@ distclean&lt;/code&gt; is supposed delete &lt;em&gt;everything&lt;/em&gt;, retur
 &lt;p&gt;The &lt;code&gt;scons -c&lt;/code&gt; command is analogous to &lt;code&gt;make clean&lt;/code&gt;, and requires no setup. It will automatically delete any of the build products that are created by running &lt;code&gt;scons&lt;/code&gt;. There are several cache files that SCons creates, however, and it would be nice to have an equivalent to &lt;code&gt;make distclean&lt;/code&gt;. This is especially useful when developing a new &lt;code&gt;Configuration&lt;/code&gt; check, for instance — if you make a change to the test, you want to be able to (easily) force SCons to ignore any cached results, and try all of the tests again.&lt;/p&gt;
 
 &lt;p&gt;This is actually fairly easy to set up, assuming you know the list of temporary files that SCons will create. You can add the following rule to your top-level &lt;em&gt;SConstruct&lt;/em&gt; file:&lt;/p&gt;
-&lt;div class='highlight'&gt;&lt;pre&gt;&lt;span class='lineno'&gt;1&lt;/span&gt; &lt;span class='n'&gt;env&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;Clean&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='s'&gt;&amp;quot;distclean&amp;quot;&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt;
+&lt;div class='highlight'&gt;&lt;pre&gt;&lt;code class='python'&gt;&lt;span class='lineno'&gt;1&lt;/span&gt; &lt;span class='n'&gt;env&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;Clean&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='s'&gt;&amp;quot;distclean&amp;quot;&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt;
 &lt;span class='lineno'&gt;2&lt;/span&gt;           &lt;span class='p'&gt;[&lt;/span&gt;
 &lt;span class='lineno'&gt;3&lt;/span&gt;            &lt;span class='s'&gt;&amp;quot;.sconsign.dblite&amp;quot;&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt;
 &lt;span class='lineno'&gt;4&lt;/span&gt;            &lt;span class='s'&gt;&amp;quot;.sconf_temp&amp;quot;&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt;
 &lt;span class='lineno'&gt;5&lt;/span&gt;            &lt;span class='s'&gt;&amp;quot;config.log&amp;quot;&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt;
 &lt;span class='lineno'&gt;6&lt;/span&gt;           &lt;span class='p'&gt;])&lt;/span&gt;
-&lt;/pre&gt;
+&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;p&gt;As far as I can tell, these three files are always created by SCons. To delete these files, you simply run &lt;code&gt;scons -c distclean&lt;/code&gt;. Because we&amp;#8217;ve defined the target using &lt;code&gt;Clean&lt;/code&gt;, it will only be run when you pass in the &lt;code&gt;-c&lt;/code&gt; option to &lt;code&gt;scons&lt;/code&gt;.&lt;/p&gt;
 
 &lt;p&gt;Since we&amp;#8217;re putting together the file list manually, you should make sure to add any additional cache files that your SCons scripts use. For instance, I&amp;#8217;m using some &lt;code&gt;Variable&lt;/code&gt; options, which I store into a file called &lt;em&gt;.scons.vars&lt;/em&gt;. (This means that the user doesn&amp;#8217;t have to type them in with every invocation of &lt;code&gt;scons&lt;/code&gt;.) By using these variables, I have to add another entry to the &lt;code&gt;distclean&lt;/code&gt; target:&lt;/p&gt;
-&lt;div class='highlight'&gt;&lt;pre&gt;&lt;span class='lineno'&gt;1&lt;/span&gt; &lt;span class='nb'&gt;vars&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='n'&gt;Variables&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='s'&gt;&amp;#39;.scons.vars&amp;#39;&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='n'&gt;ARGUMENTS&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt;
+&lt;div class='highlight'&gt;&lt;pre&gt;&lt;code class='python'&gt;&lt;span class='lineno'&gt;1&lt;/span&gt; &lt;span class='nb'&gt;vars&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='n'&gt;Variables&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='s'&gt;&amp;#39;.scons.vars&amp;#39;&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='n'&gt;ARGUMENTS&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt;
 &lt;span class='lineno'&gt;2&lt;/span&gt; &lt;span class='c'&gt;# ...define a bunch of variables&lt;/span&gt;
 &lt;span class='lineno'&gt;3&lt;/span&gt; &lt;span class='nb'&gt;vars&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;Update&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;env&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt;
 &lt;span class='lineno'&gt;4&lt;/span&gt; &lt;span class='nb'&gt;vars&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;Save&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='s'&gt;&amp;quot;.scons.vars&amp;quot;&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='n'&gt;env&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt;
 &lt;span class='lineno'&gt;5&lt;/span&gt; 
 &lt;span class='lineno'&gt;6&lt;/span&gt; &lt;span class='n'&gt;env&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;Clean&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='s'&gt;&amp;quot;distclean&amp;quot;&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='p'&gt;[&lt;/span&gt;&lt;span class='s'&gt;&amp;quot;.scons.vars&amp;quot;&lt;/span&gt;&lt;span class='p'&gt;])&lt;/span&gt;
-&lt;/pre&gt;
+&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;p&gt;Note how, just like with any SCons target, I can define the &lt;code&gt;distclean&lt;/code&gt; target multiple times. SCons will take care of merging them into a single action, deleting all of the specified files when you run &lt;code&gt;scons -c distclean&lt;/code&gt;.&lt;/p&gt;</content>
   </entry>
@@ -522,7 +522,7 @@ $ sudo apt-get install `cat /tmp/tormod.packages`&lt;/code&gt;&lt;/pre&gt;</cont
     <content type="html">&lt;p&gt;In a &lt;a href='/2009/08/06/subprocess-communicate-drawbacks/'&gt;previous post&lt;/a&gt;, we pointed out two drawbacks of Python&amp;#8217;s &lt;code&gt;subprocess.communicate&lt;/code&gt; method. In this post, we look at the first problem in more detail. To reiterate, the problem is that we collect the subprocess&amp;#8217;s output streams into strings. If the subprocess is going to generate a huge amount of output, it can be better to process the output data in a stream-oriented manner — that way we use a constant amount of memory regardless of how much output is produced.&lt;/p&gt;
 
 &lt;p&gt;If we look at the &lt;a href='http://svn.python.org/view/python/trunk/Lib/subprocess.py?revision=74029&amp;amp;view=markup'&gt;implementation&lt;/a&gt; of the &lt;code&gt;communicate&lt;/code&gt; method, we see this:&lt;/p&gt;
-&lt;div class='highlight'&gt;&lt;pre&gt;&lt;span class='lineno'&gt; 1&lt;/span&gt; &lt;span class='k'&gt;def&lt;/span&gt; &lt;span class='nf'&gt;_communicate_with_select&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='bp'&gt;self&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='nb'&gt;input&lt;/span&gt;&lt;span class='p'&gt;):&lt;/span&gt;
+&lt;div class='highlight'&gt;&lt;pre&gt;&lt;code class='python'&gt;&lt;span class='lineno'&gt; 1&lt;/span&gt; &lt;span class='k'&gt;def&lt;/span&gt; &lt;span class='nf'&gt;_communicate_with_select&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='bp'&gt;self&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='nb'&gt;input&lt;/span&gt;&lt;span class='p'&gt;):&lt;/span&gt;
 &lt;span class='lineno'&gt; 2&lt;/span&gt;     &lt;span class='n'&gt;read_set&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='p'&gt;[]&lt;/span&gt;
 &lt;span class='lineno'&gt; 3&lt;/span&gt;     &lt;span class='n'&gt;write_set&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='p'&gt;[]&lt;/span&gt;
 &lt;span class='lineno'&gt; 4&lt;/span&gt;     &lt;span class='n'&gt;stdout&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='bp'&gt;None&lt;/span&gt; &lt;span class='c'&gt;# Return&lt;/span&gt;
@@ -537,12 +537,12 @@ $ sudo apt-get install `cat /tmp/tormod.packages`&lt;/code&gt;&lt;/pre&gt;</cont
 &lt;span class='lineno'&gt;13&lt;/span&gt;         &lt;span class='n'&gt;read_set&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;append&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='bp'&gt;self&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;stderr&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt;
 &lt;span class='lineno'&gt;14&lt;/span&gt;         &lt;span class='n'&gt;stderr&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='p'&gt;[]&lt;/span&gt;
 &lt;span class='lineno'&gt;15&lt;/span&gt; 
-&lt;span class='lineno'&gt;16&lt;/span&gt;     &lt;span class='n'&gt;input_offset&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='mi'&gt;0&lt;/span&gt;
+&lt;span class='lineno'&gt;16&lt;/span&gt;     &lt;span class='n'&gt;input_offset&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='mf'&gt;0&lt;/span&gt;
 &lt;span class='lineno'&gt;17&lt;/span&gt;     &lt;span class='k'&gt;while&lt;/span&gt; &lt;span class='n'&gt;read_set&lt;/span&gt; &lt;span class='ow'&gt;or&lt;/span&gt; &lt;span class='n'&gt;write_set&lt;/span&gt;&lt;span class='p'&gt;:&lt;/span&gt;
 &lt;span class='lineno'&gt;18&lt;/span&gt;         &lt;span class='k'&gt;try&lt;/span&gt;&lt;span class='p'&gt;:&lt;/span&gt;
 &lt;span class='lineno'&gt;19&lt;/span&gt;             &lt;span class='n'&gt;rlist&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='n'&gt;wlist&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='n'&gt;xlist&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='n'&gt;select&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;select&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;read_set&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='n'&gt;write_set&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='p'&gt;[])&lt;/span&gt;
 &lt;span class='lineno'&gt;20&lt;/span&gt;         &lt;span class='k'&gt;except&lt;/span&gt; &lt;span class='n'&gt;select&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;error&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='n'&gt;e&lt;/span&gt;&lt;span class='p'&gt;:&lt;/span&gt;
-&lt;span class='lineno'&gt;21&lt;/span&gt;             &lt;span class='k'&gt;if&lt;/span&gt; &lt;span class='n'&gt;e&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;args&lt;/span&gt;&lt;span class='p'&gt;[&lt;/span&gt;&lt;span class='mi'&gt;0&lt;/span&gt;&lt;span class='p'&gt;]&lt;/span&gt; &lt;span class='o'&gt;==&lt;/span&gt; &lt;span class='n'&gt;errno&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;EINTR&lt;/span&gt;&lt;span class='p'&gt;:&lt;/span&gt;
+&lt;span class='lineno'&gt;21&lt;/span&gt;             &lt;span class='k'&gt;if&lt;/span&gt; &lt;span class='n'&gt;e&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;args&lt;/span&gt;&lt;span class='p'&gt;[&lt;/span&gt;&lt;span class='mf'&gt;0&lt;/span&gt;&lt;span class='p'&gt;]&lt;/span&gt; &lt;span class='o'&gt;==&lt;/span&gt; &lt;span class='n'&gt;errno&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;EINTR&lt;/span&gt;&lt;span class='p'&gt;:&lt;/span&gt;
 &lt;span class='lineno'&gt;22&lt;/span&gt;                 &lt;span class='k'&gt;continue&lt;/span&gt;
 &lt;span class='lineno'&gt;23&lt;/span&gt;             &lt;span class='k'&gt;raise&lt;/span&gt;
 &lt;span class='lineno'&gt;24&lt;/span&gt; 
@@ -555,21 +555,21 @@ $ sudo apt-get install `cat /tmp/tormod.packages`&lt;/code&gt;&lt;/pre&gt;</cont
 &lt;span class='lineno'&gt;31&lt;/span&gt;                 &lt;span class='n'&gt;write_set&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;remove&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='bp'&gt;self&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;stdin&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt;
 &lt;span class='lineno'&gt;32&lt;/span&gt; 
 &lt;span class='lineno'&gt;33&lt;/span&gt;         &lt;span class='k'&gt;if&lt;/span&gt; &lt;span class='bp'&gt;self&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;stdout&lt;/span&gt; &lt;span class='ow'&gt;in&lt;/span&gt; &lt;span class='n'&gt;rlist&lt;/span&gt;&lt;span class='p'&gt;:&lt;/span&gt;
-&lt;span class='lineno'&gt;34&lt;/span&gt;             &lt;span class='n'&gt;data&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='n'&gt;os&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;read&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='bp'&gt;self&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;stdout&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;fileno&lt;/span&gt;&lt;span class='p'&gt;(),&lt;/span&gt; &lt;span class='mi'&gt;1024&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt;
+&lt;span class='lineno'&gt;34&lt;/span&gt;             &lt;span class='n'&gt;data&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='n'&gt;os&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;read&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='bp'&gt;self&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;stdout&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;fileno&lt;/span&gt;&lt;span class='p'&gt;(),&lt;/span&gt; &lt;span class='mf'&gt;1024&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt;
 &lt;span class='lineno'&gt;35&lt;/span&gt;             &lt;span class='k'&gt;if&lt;/span&gt; &lt;span class='n'&gt;data&lt;/span&gt; &lt;span class='o'&gt;==&lt;/span&gt; &lt;span class='s'&gt;&amp;quot;&amp;quot;&lt;/span&gt;&lt;span class='p'&gt;:&lt;/span&gt;
 &lt;span class='lineno'&gt;36&lt;/span&gt;                 &lt;span class='bp'&gt;self&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;stdout&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;close&lt;/span&gt;&lt;span class='p'&gt;()&lt;/span&gt;
 &lt;span class='lineno'&gt;37&lt;/span&gt;                 &lt;span class='n'&gt;read_set&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;remove&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='bp'&gt;self&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;stdout&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt;
 &lt;span class='lineno'&gt;38&lt;/span&gt;             &lt;span class='n'&gt;stdout&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;append&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;data&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt;
 &lt;span class='lineno'&gt;39&lt;/span&gt; 
 &lt;span class='lineno'&gt;40&lt;/span&gt;         &lt;span class='k'&gt;if&lt;/span&gt; &lt;span class='bp'&gt;self&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;stderr&lt;/span&gt; &lt;span class='ow'&gt;in&lt;/span&gt; &lt;span class='n'&gt;rlist&lt;/span&gt;&lt;span class='p'&gt;:&lt;/span&gt;
-&lt;span class='lineno'&gt;41&lt;/span&gt;             &lt;span class='n'&gt;data&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='n'&gt;os&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;read&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='bp'&gt;self&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;stderr&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;fileno&lt;/span&gt;&lt;span class='p'&gt;(),&lt;/span&gt; &lt;span class='mi'&gt;1024&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt;
+&lt;span class='lineno'&gt;41&lt;/span&gt;             &lt;span class='n'&gt;data&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='n'&gt;os&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;read&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='bp'&gt;self&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;stderr&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;fileno&lt;/span&gt;&lt;span class='p'&gt;(),&lt;/span&gt; &lt;span class='mf'&gt;1024&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt;
 &lt;span class='lineno'&gt;42&lt;/span&gt;             &lt;span class='k'&gt;if&lt;/span&gt; &lt;span class='n'&gt;data&lt;/span&gt; &lt;span class='o'&gt;==&lt;/span&gt; &lt;span class='s'&gt;&amp;quot;&amp;quot;&lt;/span&gt;&lt;span class='p'&gt;:&lt;/span&gt;
 &lt;span class='lineno'&gt;43&lt;/span&gt;                 &lt;span class='bp'&gt;self&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;stderr&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;close&lt;/span&gt;&lt;span class='p'&gt;()&lt;/span&gt;
 &lt;span class='lineno'&gt;44&lt;/span&gt;                 &lt;span class='n'&gt;read_set&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;remove&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='bp'&gt;self&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;stderr&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt;
 &lt;span class='lineno'&gt;45&lt;/span&gt;             &lt;span class='n'&gt;stderr&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;append&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;data&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt;
 &lt;span class='lineno'&gt;46&lt;/span&gt; 
 &lt;span class='lineno'&gt;47&lt;/span&gt;     &lt;span class='k'&gt;return&lt;/span&gt; &lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;stdout&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='n'&gt;stderr&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt;
-&lt;/pre&gt;
+&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;p&gt;(There are actually several different &lt;code&gt;communicate&lt;/code&gt; implementations in the module: a Windows-specific implementation, an implementation using the POSIX &lt;code&gt;poll&lt;/code&gt; function, and one using POSIX &lt;code&gt;select&lt;/code&gt;. We&amp;#8217;re going to look at the &lt;code&gt;select&lt;/code&gt; implementation; the modifications we make can be rolled into the other methods, too.)&lt;/p&gt;
 
@@ -578,8 +578,8 @@ $ sudo apt-get install `cat /tmp/tormod.packages`&lt;/code&gt;&lt;/pre&gt;</cont
 &lt;p&gt;For collecting stdout, the important part is lines 33-38. If the &lt;code&gt;select&lt;/code&gt; call tells us that the stdout stream is ready for reading, we try to read up to 1024 bytes from it. If we get the empty string, this means we&amp;#8217;ve reached EOF, and can close down the stream. (We also no longer have to keep passing it in to further &lt;code&gt;select&lt;/code&gt; calls, since we know we&amp;#8217;re done with this stream.) If we get a non-empty string, then we append it into a list. The function that calls &lt;code&gt;_communicate_with_select&lt;/code&gt; will eventually &lt;code&gt;join&lt;/code&gt; this list of strings together, yielding a single string.&lt;/p&gt;
 
 &lt;p&gt;It&amp;#8217;s actually a very simple change to make this process the output using a stream-based callback. For now, we assume that we&amp;#8217;ve been given the callback, in a &lt;code&gt;stdout_callback&lt;/code&gt; variable. Then, we can change line 38 to&lt;/p&gt;
-&lt;div class='highlight'&gt;&lt;pre&gt;            &lt;span class='n'&gt;stdout_callback&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;data&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt;
-&lt;/pre&gt;
+&lt;div class='highlight'&gt;&lt;pre&gt;&lt;code class='python'&gt;            &lt;span class='n'&gt;stdout_callback&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;data&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;p&gt;The callback can be any Python callable object; it should accept a single argument, which is the next chunk of data from stdout. We can make a similar change to line 45 to send the stderr data to its own &lt;code&gt;stderr_callback&lt;/code&gt;.&lt;/p&gt;
 
@@ -588,7 +588,7 @@ $ sudo apt-get install `cat /tmp/tormod.packages`&lt;/code&gt;&lt;/pre&gt;</cont
 &lt;p&gt;One possible issue with the output callbacks in the previous section is that the data is sent into the callback in arbitrary chunks. We might prefer to guarantee that the callback will be called exactly once for each &lt;em&gt;line&lt;/em&gt; of output. This would allow us, for intsance, to easily interleave the output lines of a bunch of subprocesses into the output of the parent process, without having to worry about locking.&lt;/p&gt;
 
 &lt;p&gt;To use a line-based callback, we have to wrap it, creating a arbitrary-chunk callback that buffers data as necessary. Once it receives a full line of data, it sends it to the wrapped line callback.&lt;/p&gt;
-&lt;div class='highlight'&gt;&lt;pre&gt;&lt;span class='lineno'&gt; 1&lt;/span&gt; &lt;span class='k'&gt;def&lt;/span&gt; &lt;span class='nf'&gt;wrap_line_callback&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;line_callback&lt;/span&gt;&lt;span class='p'&gt;):&lt;/span&gt;
+&lt;div class='highlight'&gt;&lt;pre&gt;&lt;code class='python'&gt;&lt;span class='lineno'&gt; 1&lt;/span&gt; &lt;span class='k'&gt;def&lt;/span&gt; &lt;span class='nf'&gt;wrap_line_callback&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;line_callback&lt;/span&gt;&lt;span class='p'&gt;):&lt;/span&gt;
 &lt;span class='lineno'&gt; 2&lt;/span&gt;     &lt;span class='k'&gt;class&lt;/span&gt; &lt;span class='nc'&gt;Callback&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='nb'&gt;object&lt;/span&gt;&lt;span class='p'&gt;):&lt;/span&gt;
 &lt;span class='lineno'&gt; 3&lt;/span&gt;         &lt;span class='k'&gt;def&lt;/span&gt; &lt;span class='nf'&gt;__init__&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='bp'&gt;self&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='n'&gt;line_callback&lt;/span&gt;&lt;span class='p'&gt;):&lt;/span&gt;
 &lt;span class='lineno'&gt; 4&lt;/span&gt;             &lt;span class='bp'&gt;self&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;line_buffer&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='p'&gt;[]&lt;/span&gt;
@@ -606,7 +606,7 @@ $ sudo apt-get install `cat /tmp/tormod.packages`&lt;/code&gt;&lt;/pre&gt;</cont
 &lt;span class='lineno'&gt;16&lt;/span&gt;             &lt;span class='c'&gt;# callback.&lt;/span&gt;
 &lt;span class='lineno'&gt;17&lt;/span&gt; 
 &lt;span class='lineno'&gt;18&lt;/span&gt;             &lt;span class='k'&gt;if&lt;/span&gt; &lt;span class='n'&gt;data&lt;/span&gt; &lt;span class='o'&gt;==&lt;/span&gt; &lt;span class='s'&gt;&amp;quot;&amp;quot;&lt;/span&gt;&lt;span class='p'&gt;:&lt;/span&gt;
-&lt;span class='lineno'&gt;19&lt;/span&gt;                 &lt;span class='k'&gt;if&lt;/span&gt; &lt;span class='nb'&gt;len&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='bp'&gt;self&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;line_buffer&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt; &lt;span class='o'&gt;&amp;gt;&lt;/span&gt; &lt;span class='mi'&gt;0&lt;/span&gt;&lt;span class='p'&gt;:&lt;/span&gt;
+&lt;span class='lineno'&gt;19&lt;/span&gt;                 &lt;span class='k'&gt;if&lt;/span&gt; &lt;span class='nb'&gt;len&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='bp'&gt;self&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;line_buffer&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt; &lt;span class='o'&gt;&amp;gt;&lt;/span&gt; &lt;span class='mf'&gt;0&lt;/span&gt;&lt;span class='p'&gt;:&lt;/span&gt;
 &lt;span class='lineno'&gt;20&lt;/span&gt;                     &lt;span class='bp'&gt;self&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;output_buffer&lt;/span&gt;&lt;span class='p'&gt;()&lt;/span&gt;
 &lt;span class='lineno'&gt;21&lt;/span&gt; 
 &lt;span class='lineno'&gt;22&lt;/span&gt;                 &lt;span class='bp'&gt;self&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;line_callback&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='s'&gt;&amp;quot;&amp;quot;&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt;
@@ -626,7 +626,7 @@ $ sudo apt-get install `cat /tmp/tormod.packages`&lt;/code&gt;&lt;/pre&gt;</cont
 &lt;span class='lineno'&gt;36&lt;/span&gt;             &lt;span class='k'&gt;return&lt;/span&gt;
 &lt;span class='lineno'&gt;37&lt;/span&gt; 
 &lt;span class='lineno'&gt;38&lt;/span&gt;     &lt;span class='k'&gt;return&lt;/span&gt; &lt;span class='n'&gt;Callback&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;line_callback&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;data_callback&lt;/span&gt;
-&lt;/pre&gt;
+&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;ul&gt;
 &lt;li&gt;
@@ -719,7 +719,7 @@ $ sudo apt-get install `cat /tmp/tormod.packages`&lt;/code&gt;&lt;/pre&gt;</cont
 &lt;p&gt;At the core of Disqus is a snippet of HTML and JavaScript that&amp;#8217;s embedded into each of the webpages that you want to contain a comments section. If you&amp;#8217;re using one of the standard blog engines for your website, Disqus can automatically “install” itself, adding the Disqus snippet to your pages for you. If you&amp;#8217;re not using one of these blog engines, however, you have to install the Disqus snippet yourself.&lt;/p&gt;
 
 &lt;p&gt;Luckily, this is very easy. If you choose the “generic code” installation target when setting up the Disqus account for your website, you see the snippet of code to include. For &lt;a href='http://dcreager.net/'&gt;dcreager.net&lt;/a&gt;, it looks like this:&lt;/p&gt;
-&lt;div class='highlight'&gt;&lt;pre&gt;&lt;span class='lineno'&gt; 1&lt;/span&gt; &lt;span class='nt'&gt;&amp;lt;div&lt;/span&gt; &lt;span class='na'&gt;id=&lt;/span&gt;&lt;span class='s'&gt;&amp;quot;disqus_thread&amp;quot;&lt;/span&gt;&lt;span class='nt'&gt;&amp;gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+&lt;div class='highlight'&gt;&lt;pre&gt;&lt;code class='html'&gt;&lt;span class='lineno'&gt; 1&lt;/span&gt; &lt;span class='nt'&gt;&amp;lt;div&lt;/span&gt; &lt;span class='na'&gt;id=&lt;/span&gt;&lt;span class='s'&gt;&amp;quot;disqus_thread&amp;quot;&lt;/span&gt;&lt;span class='nt'&gt;&amp;gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
 &lt;span class='lineno'&gt; 2&lt;/span&gt; 
 &lt;span class='lineno'&gt; 3&lt;/span&gt; &lt;span class='nt'&gt;&amp;lt;script&lt;/span&gt;
 &lt;span class='lineno'&gt; 4&lt;/span&gt; &lt;span class='nt'&gt;   &lt;/span&gt;&lt;span class='na'&gt;type=&lt;/span&gt;&lt;span class='s'&gt;&amp;quot;text/javascript&amp;quot;&lt;/span&gt;
@@ -732,7 +732,7 @@ $ sudo apt-get install `cat /tmp/tormod.packages`&lt;/code&gt;&lt;/pre&gt;</cont
 &lt;span class='lineno'&gt;11&lt;/span&gt; &lt;span class='nt'&gt;&amp;lt;a&lt;/span&gt; &lt;span class='na'&gt;href=&lt;/span&gt;&lt;span class='s'&gt;&amp;quot;http://disqus.com&amp;quot;&lt;/span&gt; &lt;span class='na'&gt;class=&lt;/span&gt;&lt;span class='s'&gt;&amp;quot;dsq-brlink&amp;quot;&lt;/span&gt;&lt;span class='nt'&gt;&amp;gt;&lt;/span&gt;
 &lt;span class='lineno'&gt;12&lt;/span&gt;   blog comments powered by &lt;span class='nt'&gt;&amp;lt;span&lt;/span&gt; &lt;span class='na'&gt;class=&lt;/span&gt;&lt;span class='s'&gt;&amp;quot;logo-disqus&amp;quot;&lt;/span&gt;&lt;span class='nt'&gt;&amp;gt;&lt;/span&gt;Disqus&lt;span class='nt'&gt;&amp;lt;/span&amp;gt;&lt;/span&gt;
 &lt;span class='lineno'&gt;13&lt;/span&gt; &lt;span class='nt'&gt;&amp;lt;/a&amp;gt;&lt;/span&gt;
-&lt;/pre&gt;
+&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;&lt;div class='warning'&gt;
   &lt;p&gt;
     &lt;strong&gt;UPDATE&lt;/strong&gt;: Please do not copy-paste this JavaScript
@@ -784,7 +784,7 @@ $ sudo apt-get install `cat /tmp/tormod.packages`&lt;/code&gt;&lt;/pre&gt;</cont
 &lt;p&gt;in that page&amp;#8217;s YAML header.&lt;/p&gt;
 
 &lt;p&gt;Then, instead of including the Disqus snippet directly in the &lt;em&gt;post.html&lt;/em&gt; layout, I put it into the &lt;em&gt;default.html&lt;/em&gt; layout that every page eventually uses. I wrap the snippet in a Liquid &lt;code&gt;if&lt;/code&gt; statement to only include the Disqus comment section if the &lt;code&gt;comments&lt;/code&gt; YAML variable is &lt;code&gt;true&lt;/code&gt;:&lt;/p&gt;
-&lt;div class='highlight'&gt;&lt;pre&gt;&lt;span class='lineno'&gt; 1&lt;/span&gt; {% if page.comments %}
+&lt;div class='highlight'&gt;&lt;pre&gt;&lt;code class='html'&gt;&lt;span class='lineno'&gt; 1&lt;/span&gt; {% if page.comments %}
 &lt;span class='lineno'&gt; 2&lt;/span&gt; 
 &lt;span class='lineno'&gt; 3&lt;/span&gt; &lt;span class='nt'&gt;&amp;lt;div&lt;/span&gt; &lt;span class='na'&gt;id=&lt;/span&gt;&lt;span class='s'&gt;&amp;quot;disqus_thread&amp;quot;&lt;/span&gt;&lt;span class='nt'&gt;&amp;gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
 &lt;span class='lineno'&gt; 4&lt;/span&gt; 
@@ -801,7 +801,7 @@ $ sudo apt-get install `cat /tmp/tormod.packages`&lt;/code&gt;&lt;/pre&gt;</cont
 &lt;span class='lineno'&gt;15&lt;/span&gt; &lt;span class='nt'&gt;&amp;lt;/a&amp;gt;&lt;/span&gt;
 &lt;span class='lineno'&gt;16&lt;/span&gt; 
 &lt;span class='lineno'&gt;17&lt;/span&gt; {% endif %}
-&lt;/pre&gt;
+&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;p&gt;If the &lt;code&gt;comments&lt;/code&gt; YAML variable isn&amp;#8217;t defined for the current page, the &lt;code&gt;if&lt;/code&gt; statement treats it as false, giving us the behavior that we want — no comments section unless we ask for it.&lt;/p&gt;
 
@@ -846,7 +846,7 @@ $ sudo apt-get install `cat /tmp/tormod.packages`&lt;/code&gt;&lt;/pre&gt;</cont
 &lt;p&gt;The first item is a problem if your subprocess creates a lot of output — the worry is the output will be too large to fit into a Python string. If it is, then the parent process will (at best) start to thrash as it eats into virtual memory.&lt;/p&gt;
 
 &lt;p&gt;The second item is a problem if you have to spawn multiple subprocesses, and interact with them simultaneously. You could argue that there&amp;#8217;s no need to fix this problem if you haven&amp;#8217;t fixed the first: since the &lt;code&gt;communicate&lt;/code&gt; method is just going to collect the stdout and stderr into strings, then you could just loop through each of your subprocesses, calling &lt;code&gt;communicate&lt;/code&gt; on each in turn:&lt;/p&gt;
-&lt;div class='highlight'&gt;&lt;pre&gt;&lt;span class='kn'&gt;import&lt;/span&gt; &lt;span class='nn'&gt;subprocess&lt;/span&gt;
+&lt;div class='highlight'&gt;&lt;pre&gt;&lt;code class='python'&gt;&lt;span class='kn'&gt;import&lt;/span&gt; &lt;span class='nn'&gt;subprocess&lt;/span&gt;
 
 &lt;span class='n'&gt;sp1&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='n'&gt;subprocess&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;Popen&lt;/span&gt;&lt;span class='p'&gt;([&lt;/span&gt;&lt;span class='s'&gt;&amp;quot;ls&amp;quot;&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='s'&gt;&amp;quot;-l&amp;quot;&lt;/span&gt;&lt;span class='p'&gt;],&lt;/span&gt;
                        &lt;span class='n'&gt;stdin&lt;/span&gt;&lt;span class='o'&gt;=&lt;/span&gt;&lt;span class='n'&gt;subprocess&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;PIPE&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt;
@@ -859,7 +859,7 @@ $ sudo apt-get install `cat /tmp/tormod.packages`&lt;/code&gt;&lt;/pre&gt;</cont
 &lt;span class='k'&gt;for&lt;/span&gt; &lt;span class='n'&gt;sp&lt;/span&gt; &lt;span class='ow'&gt;in&lt;/span&gt; &lt;span class='p'&gt;[&lt;/span&gt;&lt;span class='n'&gt;sp1&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='n'&gt;sp2&lt;/span&gt;&lt;span class='p'&gt;]:&lt;/span&gt;
     &lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;stdout&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='n'&gt;stderr&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='n'&gt;sp&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;communicate&lt;/span&gt;&lt;span class='p'&gt;()&lt;/span&gt;
     &lt;span class='k'&gt;print&lt;/span&gt; &lt;span class='n'&gt;stdout&lt;/span&gt;
-&lt;/pre&gt;
+&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;p&gt;The end result would be what you want — all of the stdout and stderr strings for all of your subprocesses.&lt;/p&gt;
 

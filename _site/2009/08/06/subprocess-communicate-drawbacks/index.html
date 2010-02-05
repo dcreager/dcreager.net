@@ -50,8 +50,7 @@
         </div>
 
         <div class="body">
-          
-<h1>Problems with Python's subprocess.communicate method</h1>
+          <h1>Problems with Python's subprocess.communicate method</h1>
 
 <div class="postdate">
   Thursday, August 06, 2009
@@ -87,7 +86,7 @@
 <p>The first item is a problem if your subprocess creates a lot of output — the worry is the output will be too large to fit into a Python string. If it is, then the parent process will (at best) start to thrash as it eats into virtual memory.</p>
 
 <p>The second item is a problem if you have to spawn multiple subprocesses, and interact with them simultaneously. You could argue that there&#8217;s no need to fix this problem if you haven&#8217;t fixed the first: since the <code>communicate</code> method is just going to collect the stdout and stderr into strings, then you could just loop through each of your subprocesses, calling <code>communicate</code> on each in turn:</p>
-<div class='highlight'><pre><span class='kn'>import</span> <span class='nn'>subprocess</span>
+<div class='highlight'><pre><code class='python'><span class='kn'>import</span> <span class='nn'>subprocess</span>
 
 <span class='n'>sp1</span> <span class='o'>=</span> <span class='n'>subprocess</span><span class='o'>.</span><span class='n'>Popen</span><span class='p'>([</span><span class='s'>&quot;ls&quot;</span><span class='p'>,</span> <span class='s'>&quot;-l&quot;</span><span class='p'>],</span>
                        <span class='n'>stdin</span><span class='o'>=</span><span class='n'>subprocess</span><span class='o'>.</span><span class='n'>PIPE</span><span class='p'>,</span>
@@ -100,7 +99,7 @@
 <span class='k'>for</span> <span class='n'>sp</span> <span class='ow'>in</span> <span class='p'>[</span><span class='n'>sp1</span><span class='p'>,</span> <span class='n'>sp2</span><span class='p'>]:</span>
     <span class='p'>(</span><span class='n'>stdout</span><span class='p'>,</span> <span class='n'>stderr</span><span class='p'>)</span> <span class='o'>=</span> <span class='n'>sp</span><span class='o'>.</span><span class='n'>communicate</span><span class='p'>()</span>
     <span class='k'>print</span> <span class='n'>stdout</span>
-</pre>
+</code></pre>
 </div>
 <p>The end result would be what you want — all of the stdout and stderr strings for all of your subprocesses.</p>
 

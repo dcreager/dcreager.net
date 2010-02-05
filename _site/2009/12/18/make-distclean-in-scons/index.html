@@ -50,8 +50,7 @@
         </div>
 
         <div class="body">
-          
-<h1>Simulating “make distclean” in SCons</h1>
+          <h1>Simulating “make distclean” in SCons</h1>
 
 <div class="postdate">
   Friday, December 18, 2009
@@ -68,24 +67,24 @@ distclean</code> is supposed delete <em>everything</em>, returning the source tr
 <p>The <code>scons -c</code> command is analogous to <code>make clean</code>, and requires no setup. It will automatically delete any of the build products that are created by running <code>scons</code>. There are several cache files that SCons creates, however, and it would be nice to have an equivalent to <code>make distclean</code>. This is especially useful when developing a new <code>Configuration</code> check, for instance — if you make a change to the test, you want to be able to (easily) force SCons to ignore any cached results, and try all of the tests again.</p>
 
 <p>This is actually fairly easy to set up, assuming you know the list of temporary files that SCons will create. You can add the following rule to your top-level <em>SConstruct</em> file:</p>
-<div class='highlight'><pre><span class='lineno'>1</span> <span class='n'>env</span><span class='o'>.</span><span class='n'>Clean</span><span class='p'>(</span><span class='s'>&quot;distclean&quot;</span><span class='p'>,</span>
+<div class='highlight'><pre><code class='python'><span class='lineno'>1</span> <span class='n'>env</span><span class='o'>.</span><span class='n'>Clean</span><span class='p'>(</span><span class='s'>&quot;distclean&quot;</span><span class='p'>,</span>
 <span class='lineno'>2</span>           <span class='p'>[</span>
 <span class='lineno'>3</span>            <span class='s'>&quot;.sconsign.dblite&quot;</span><span class='p'>,</span>
 <span class='lineno'>4</span>            <span class='s'>&quot;.sconf_temp&quot;</span><span class='p'>,</span>
 <span class='lineno'>5</span>            <span class='s'>&quot;config.log&quot;</span><span class='p'>,</span>
 <span class='lineno'>6</span>           <span class='p'>])</span>
-</pre>
+</code></pre>
 </div>
 <p>As far as I can tell, these three files are always created by SCons. To delete these files, you simply run <code>scons -c distclean</code>. Because we&#8217;ve defined the target using <code>Clean</code>, it will only be run when you pass in the <code>-c</code> option to <code>scons</code>.</p>
 
 <p>Since we&#8217;re putting together the file list manually, you should make sure to add any additional cache files that your SCons scripts use. For instance, I&#8217;m using some <code>Variable</code> options, which I store into a file called <em>.scons.vars</em>. (This means that the user doesn&#8217;t have to type them in with every invocation of <code>scons</code>.) By using these variables, I have to add another entry to the <code>distclean</code> target:</p>
-<div class='highlight'><pre><span class='lineno'>1</span> <span class='nb'>vars</span> <span class='o'>=</span> <span class='n'>Variables</span><span class='p'>(</span><span class='s'>&#39;.scons.vars&#39;</span><span class='p'>,</span> <span class='n'>ARGUMENTS</span><span class='p'>)</span>
+<div class='highlight'><pre><code class='python'><span class='lineno'>1</span> <span class='nb'>vars</span> <span class='o'>=</span> <span class='n'>Variables</span><span class='p'>(</span><span class='s'>&#39;.scons.vars&#39;</span><span class='p'>,</span> <span class='n'>ARGUMENTS</span><span class='p'>)</span>
 <span class='lineno'>2</span> <span class='c'># ...define a bunch of variables</span>
 <span class='lineno'>3</span> <span class='nb'>vars</span><span class='o'>.</span><span class='n'>Update</span><span class='p'>(</span><span class='n'>env</span><span class='p'>)</span>
 <span class='lineno'>4</span> <span class='nb'>vars</span><span class='o'>.</span><span class='n'>Save</span><span class='p'>(</span><span class='s'>&quot;.scons.vars&quot;</span><span class='p'>,</span> <span class='n'>env</span><span class='p'>)</span>
 <span class='lineno'>5</span> 
 <span class='lineno'>6</span> <span class='n'>env</span><span class='o'>.</span><span class='n'>Clean</span><span class='p'>(</span><span class='s'>&quot;distclean&quot;</span><span class='p'>,</span> <span class='p'>[</span><span class='s'>&quot;.scons.vars&quot;</span><span class='p'>])</span>
-</pre>
+</code></pre>
 </div>
 <p>Note how, just like with any SCons target, I can define the <code>distclean</code> target multiple times. SCons will take care of merging them into a single action, deleting all of the specified files when you run <code>scons -c distclean</code>.</p>
 </div>

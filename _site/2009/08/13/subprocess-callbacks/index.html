@@ -50,8 +50,7 @@
         </div>
 
         <div class="body">
-          
-<h1>Using callbacks with the subprocess module</h1>
+          <h1>Using callbacks with the subprocess module</h1>
 
 <div class="postdate">
   Thursday, August 13, 2009
@@ -61,7 +60,7 @@
   <p>In a <a href='/2009/08/06/subprocess-communicate-drawbacks/'>previous post</a>, we pointed out two drawbacks of Python&#8217;s <code>subprocess.communicate</code> method. In this post, we look at the first problem in more detail. To reiterate, the problem is that we collect the subprocess&#8217;s output streams into strings. If the subprocess is going to generate a huge amount of output, it can be better to process the output data in a stream-oriented manner — that way we use a constant amount of memory regardless of how much output is produced.</p>
 
 <p>If we look at the <a href='http://svn.python.org/view/python/trunk/Lib/subprocess.py?revision=74029&amp;view=markup'>implementation</a> of the <code>communicate</code> method, we see this:</p>
-<div class='highlight'><pre><span class='lineno'> 1</span> <span class='k'>def</span> <span class='nf'>_communicate_with_select</span><span class='p'>(</span><span class='bp'>self</span><span class='p'>,</span> <span class='nb'>input</span><span class='p'>):</span>
+<div class='highlight'><pre><code class='python'><span class='lineno'> 1</span> <span class='k'>def</span> <span class='nf'>_communicate_with_select</span><span class='p'>(</span><span class='bp'>self</span><span class='p'>,</span> <span class='nb'>input</span><span class='p'>):</span>
 <span class='lineno'> 2</span>     <span class='n'>read_set</span> <span class='o'>=</span> <span class='p'>[]</span>
 <span class='lineno'> 3</span>     <span class='n'>write_set</span> <span class='o'>=</span> <span class='p'>[]</span>
 <span class='lineno'> 4</span>     <span class='n'>stdout</span> <span class='o'>=</span> <span class='bp'>None</span> <span class='c'># Return</span>
@@ -76,12 +75,12 @@
 <span class='lineno'>13</span>         <span class='n'>read_set</span><span class='o'>.</span><span class='n'>append</span><span class='p'>(</span><span class='bp'>self</span><span class='o'>.</span><span class='n'>stderr</span><span class='p'>)</span>
 <span class='lineno'>14</span>         <span class='n'>stderr</span> <span class='o'>=</span> <span class='p'>[]</span>
 <span class='lineno'>15</span> 
-<span class='lineno'>16</span>     <span class='n'>input_offset</span> <span class='o'>=</span> <span class='mi'>0</span>
+<span class='lineno'>16</span>     <span class='n'>input_offset</span> <span class='o'>=</span> <span class='mf'>0</span>
 <span class='lineno'>17</span>     <span class='k'>while</span> <span class='n'>read_set</span> <span class='ow'>or</span> <span class='n'>write_set</span><span class='p'>:</span>
 <span class='lineno'>18</span>         <span class='k'>try</span><span class='p'>:</span>
 <span class='lineno'>19</span>             <span class='n'>rlist</span><span class='p'>,</span> <span class='n'>wlist</span><span class='p'>,</span> <span class='n'>xlist</span> <span class='o'>=</span> <span class='n'>select</span><span class='o'>.</span><span class='n'>select</span><span class='p'>(</span><span class='n'>read_set</span><span class='p'>,</span> <span class='n'>write_set</span><span class='p'>,</span> <span class='p'>[])</span>
 <span class='lineno'>20</span>         <span class='k'>except</span> <span class='n'>select</span><span class='o'>.</span><span class='n'>error</span><span class='p'>,</span> <span class='n'>e</span><span class='p'>:</span>
-<span class='lineno'>21</span>             <span class='k'>if</span> <span class='n'>e</span><span class='o'>.</span><span class='n'>args</span><span class='p'>[</span><span class='mi'>0</span><span class='p'>]</span> <span class='o'>==</span> <span class='n'>errno</span><span class='o'>.</span><span class='n'>EINTR</span><span class='p'>:</span>
+<span class='lineno'>21</span>             <span class='k'>if</span> <span class='n'>e</span><span class='o'>.</span><span class='n'>args</span><span class='p'>[</span><span class='mf'>0</span><span class='p'>]</span> <span class='o'>==</span> <span class='n'>errno</span><span class='o'>.</span><span class='n'>EINTR</span><span class='p'>:</span>
 <span class='lineno'>22</span>                 <span class='k'>continue</span>
 <span class='lineno'>23</span>             <span class='k'>raise</span>
 <span class='lineno'>24</span> 
@@ -94,21 +93,21 @@
 <span class='lineno'>31</span>                 <span class='n'>write_set</span><span class='o'>.</span><span class='n'>remove</span><span class='p'>(</span><span class='bp'>self</span><span class='o'>.</span><span class='n'>stdin</span><span class='p'>)</span>
 <span class='lineno'>32</span> 
 <span class='lineno'>33</span>         <span class='k'>if</span> <span class='bp'>self</span><span class='o'>.</span><span class='n'>stdout</span> <span class='ow'>in</span> <span class='n'>rlist</span><span class='p'>:</span>
-<span class='lineno'>34</span>             <span class='n'>data</span> <span class='o'>=</span> <span class='n'>os</span><span class='o'>.</span><span class='n'>read</span><span class='p'>(</span><span class='bp'>self</span><span class='o'>.</span><span class='n'>stdout</span><span class='o'>.</span><span class='n'>fileno</span><span class='p'>(),</span> <span class='mi'>1024</span><span class='p'>)</span>
+<span class='lineno'>34</span>             <span class='n'>data</span> <span class='o'>=</span> <span class='n'>os</span><span class='o'>.</span><span class='n'>read</span><span class='p'>(</span><span class='bp'>self</span><span class='o'>.</span><span class='n'>stdout</span><span class='o'>.</span><span class='n'>fileno</span><span class='p'>(),</span> <span class='mf'>1024</span><span class='p'>)</span>
 <span class='lineno'>35</span>             <span class='k'>if</span> <span class='n'>data</span> <span class='o'>==</span> <span class='s'>&quot;&quot;</span><span class='p'>:</span>
 <span class='lineno'>36</span>                 <span class='bp'>self</span><span class='o'>.</span><span class='n'>stdout</span><span class='o'>.</span><span class='n'>close</span><span class='p'>()</span>
 <span class='lineno'>37</span>                 <span class='n'>read_set</span><span class='o'>.</span><span class='n'>remove</span><span class='p'>(</span><span class='bp'>self</span><span class='o'>.</span><span class='n'>stdout</span><span class='p'>)</span>
 <span class='lineno'>38</span>             <span class='n'>stdout</span><span class='o'>.</span><span class='n'>append</span><span class='p'>(</span><span class='n'>data</span><span class='p'>)</span>
 <span class='lineno'>39</span> 
 <span class='lineno'>40</span>         <span class='k'>if</span> <span class='bp'>self</span><span class='o'>.</span><span class='n'>stderr</span> <span class='ow'>in</span> <span class='n'>rlist</span><span class='p'>:</span>
-<span class='lineno'>41</span>             <span class='n'>data</span> <span class='o'>=</span> <span class='n'>os</span><span class='o'>.</span><span class='n'>read</span><span class='p'>(</span><span class='bp'>self</span><span class='o'>.</span><span class='n'>stderr</span><span class='o'>.</span><span class='n'>fileno</span><span class='p'>(),</span> <span class='mi'>1024</span><span class='p'>)</span>
+<span class='lineno'>41</span>             <span class='n'>data</span> <span class='o'>=</span> <span class='n'>os</span><span class='o'>.</span><span class='n'>read</span><span class='p'>(</span><span class='bp'>self</span><span class='o'>.</span><span class='n'>stderr</span><span class='o'>.</span><span class='n'>fileno</span><span class='p'>(),</span> <span class='mf'>1024</span><span class='p'>)</span>
 <span class='lineno'>42</span>             <span class='k'>if</span> <span class='n'>data</span> <span class='o'>==</span> <span class='s'>&quot;&quot;</span><span class='p'>:</span>
 <span class='lineno'>43</span>                 <span class='bp'>self</span><span class='o'>.</span><span class='n'>stderr</span><span class='o'>.</span><span class='n'>close</span><span class='p'>()</span>
 <span class='lineno'>44</span>                 <span class='n'>read_set</span><span class='o'>.</span><span class='n'>remove</span><span class='p'>(</span><span class='bp'>self</span><span class='o'>.</span><span class='n'>stderr</span><span class='p'>)</span>
 <span class='lineno'>45</span>             <span class='n'>stderr</span><span class='o'>.</span><span class='n'>append</span><span class='p'>(</span><span class='n'>data</span><span class='p'>)</span>
 <span class='lineno'>46</span> 
 <span class='lineno'>47</span>     <span class='k'>return</span> <span class='p'>(</span><span class='n'>stdout</span><span class='p'>,</span> <span class='n'>stderr</span><span class='p'>)</span>
-</pre>
+</code></pre>
 </div>
 <p>(There are actually several different <code>communicate</code> implementations in the module: a Windows-specific implementation, an implementation using the POSIX <code>poll</code> function, and one using POSIX <code>select</code>. We&#8217;re going to look at the <code>select</code> implementation; the modifications we make can be rolled into the other methods, too.)</p>
 
@@ -117,8 +116,8 @@
 <p>For collecting stdout, the important part is lines 33-38. If the <code>select</code> call tells us that the stdout stream is ready for reading, we try to read up to 1024 bytes from it. If we get the empty string, this means we&#8217;ve reached EOF, and can close down the stream. (We also no longer have to keep passing it in to further <code>select</code> calls, since we know we&#8217;re done with this stream.) If we get a non-empty string, then we append it into a list. The function that calls <code>_communicate_with_select</code> will eventually <code>join</code> this list of strings together, yielding a single string.</p>
 
 <p>It&#8217;s actually a very simple change to make this process the output using a stream-based callback. For now, we assume that we&#8217;ve been given the callback, in a <code>stdout_callback</code> variable. Then, we can change line 38 to</p>
-<div class='highlight'><pre>            <span class='n'>stdout_callback</span><span class='p'>(</span><span class='n'>data</span><span class='p'>)</span>
-</pre>
+<div class='highlight'><pre><code class='python'>            <span class='n'>stdout_callback</span><span class='p'>(</span><span class='n'>data</span><span class='p'>)</span>
+</code></pre>
 </div>
 <p>The callback can be any Python callable object; it should accept a single argument, which is the next chunk of data from stdout. We can make a similar change to line 45 to send the stderr data to its own <code>stderr_callback</code>.</p>
 
@@ -127,7 +126,7 @@
 <p>One possible issue with the output callbacks in the previous section is that the data is sent into the callback in arbitrary chunks. We might prefer to guarantee that the callback will be called exactly once for each <em>line</em> of output. This would allow us, for intsance, to easily interleave the output lines of a bunch of subprocesses into the output of the parent process, without having to worry about locking.</p>
 
 <p>To use a line-based callback, we have to wrap it, creating a arbitrary-chunk callback that buffers data as necessary. Once it receives a full line of data, it sends it to the wrapped line callback.</p>
-<div class='highlight'><pre><span class='lineno'> 1</span> <span class='k'>def</span> <span class='nf'>wrap_line_callback</span><span class='p'>(</span><span class='n'>line_callback</span><span class='p'>):</span>
+<div class='highlight'><pre><code class='python'><span class='lineno'> 1</span> <span class='k'>def</span> <span class='nf'>wrap_line_callback</span><span class='p'>(</span><span class='n'>line_callback</span><span class='p'>):</span>
 <span class='lineno'> 2</span>     <span class='k'>class</span> <span class='nc'>Callback</span><span class='p'>(</span><span class='nb'>object</span><span class='p'>):</span>
 <span class='lineno'> 3</span>         <span class='k'>def</span> <span class='nf'>__init__</span><span class='p'>(</span><span class='bp'>self</span><span class='p'>,</span> <span class='n'>line_callback</span><span class='p'>):</span>
 <span class='lineno'> 4</span>             <span class='bp'>self</span><span class='o'>.</span><span class='n'>line_buffer</span> <span class='o'>=</span> <span class='p'>[]</span>
@@ -145,7 +144,7 @@
 <span class='lineno'>16</span>             <span class='c'># callback.</span>
 <span class='lineno'>17</span> 
 <span class='lineno'>18</span>             <span class='k'>if</span> <span class='n'>data</span> <span class='o'>==</span> <span class='s'>&quot;&quot;</span><span class='p'>:</span>
-<span class='lineno'>19</span>                 <span class='k'>if</span> <span class='nb'>len</span><span class='p'>(</span><span class='bp'>self</span><span class='o'>.</span><span class='n'>line_buffer</span><span class='p'>)</span> <span class='o'>&gt;</span> <span class='mi'>0</span><span class='p'>:</span>
+<span class='lineno'>19</span>                 <span class='k'>if</span> <span class='nb'>len</span><span class='p'>(</span><span class='bp'>self</span><span class='o'>.</span><span class='n'>line_buffer</span><span class='p'>)</span> <span class='o'>&gt;</span> <span class='mf'>0</span><span class='p'>:</span>
 <span class='lineno'>20</span>                     <span class='bp'>self</span><span class='o'>.</span><span class='n'>output_buffer</span><span class='p'>()</span>
 <span class='lineno'>21</span> 
 <span class='lineno'>22</span>                 <span class='bp'>self</span><span class='o'>.</span><span class='n'>line_callback</span><span class='p'>(</span><span class='s'>&quot;&quot;</span><span class='p'>)</span>
@@ -165,7 +164,7 @@
 <span class='lineno'>36</span>             <span class='k'>return</span>
 <span class='lineno'>37</span> 
 <span class='lineno'>38</span>     <span class='k'>return</span> <span class='n'>Callback</span><span class='p'>(</span><span class='n'>line_callback</span><span class='p'>)</span><span class='o'>.</span><span class='n'>data_callback</span>
-</pre>
+</code></pre>
 </div>
 <ul>
 <li>

@@ -50,8 +50,7 @@
         </div>
 
         <div class="body">
-          
-<h1>Default “scons -c” targets</h1>
+          <h1>Default “scons -c” targets</h1>
 
 <div class="postdate">
   Friday, January 08, 2010
@@ -61,13 +60,13 @@
   <p>As I mentioned in a <a href='/2009/12/18/make-distclean-in-scons/'>previous post</a>, the automatic “clean” target provided by SCons (<code>scons -c</code>) is very useful for cleaning out build files, without requiring much in the way of configuration. Anything that SCons generates when you run <code>scons</code> will be automatically cleaned when you run <code>scons -c</code>.</p>
 
 <p>While useful, I&#8217;d like more control over the behavior of <code>scons -c</code>. Specifically, being a good TDD junkie, I have several test cases that I can run using <code>scons test</code>:</p>
-<div class='highlight'><pre><span class='lineno'>1</span> <span class='n'>build_test</span> <span class='o'>=</span> <span class='n'>env</span><span class='o'>.</span><span class='n'>Program</span><span class='p'>(</span> <span class='o'>...</span> <span class='p'>)</span>
+<div class='highlight'><pre><code class='python'><span class='lineno'>1</span> <span class='n'>build_test</span> <span class='o'>=</span> <span class='n'>env</span><span class='o'>.</span><span class='n'>Program</span><span class='p'>(</span> <span class='o'>...</span> <span class='p'>)</span>
 <span class='lineno'>2</span> <span class='n'>env</span><span class='o'>.</span><span class='n'>Alias</span><span class='p'>(</span><span class='s'>&quot;build-tests&quot;</span><span class='p'>,</span> <span class='n'>build_test</span><span class='p'>)</span>
 <span class='lineno'>3</span> 
 <span class='lineno'>4</span> <span class='n'>run_test</span> <span class='o'>=</span> <span class='n'>env</span><span class='o'>.</span><span class='n'>Alias</span><span class='p'>(</span><span class='s'>&quot;test&quot;</span><span class='p'>,</span> <span class='p'>[</span><span class='n'>build_test</span><span class='p'>],</span>
-<span class='lineno'>5</span>                      <span class='p'>[</span><span class='s'>&quot;@</span><span class='si'>%s</span><span class='s'>&quot;</span> <span class='o'>%</span> <span class='n'>build_test</span><span class='p'>[</span><span class='mi'>0</span><span class='p'>]</span><span class='o'>.</span><span class='n'>abspath</span><span class='p'>])</span>
+<span class='lineno'>5</span>                      <span class='p'>[</span><span class='s'>&quot;@</span><span class='si'>%s</span><span class='s'>&quot;</span> <span class='o'>%</span> <span class='n'>build_test</span><span class='p'>[</span><span class='mf'>0</span><span class='p'>]</span><span class='o'>.</span><span class='n'>abspath</span><span class='p'>])</span>
 <span class='lineno'>6</span> <span class='n'>env</span><span class='o'>.</span><span class='n'>AlwaysBuild</span><span class='p'>(</span><span class='n'>run_test</span><span class='p'>)</span>
-</pre>
+</code></pre>
 </div>
 <p>By setting it up this way, the test programs aren&#8217;t built by default: you have to explicitly run <code>scons build-tests</code> (if you want to build the tests but not run them) or <code>scons test</code> (if you want to build and run them). Moreover, because of SCons&#8217;s dependency tracking, I can just use <code>scons test</code> as my usual build command during my Edit-Test-Debug loop. SCons will automatically rebuild any changed source files before running the tests.</p>
 
@@ -83,15 +82,15 @@ $ scons -c build-tests</code></pre>
 <p>So how to fix this? First we need to understand how SCons decides what to clean when you run <code>scons -c</code>. The answer is “exactly what&#8217;s built by <code>scons</code>”. And how does SCons decide what to build when you run <code>scons</code>? That&#8217;s what the <code>Default</code> command is for.</p>
 
 <p>For instance, I could add</p>
-<div class='highlight'><pre><span class='lineno'>1</span> <span class='n'>env</span><span class='o'>.</span><span class='n'>Default</span><span class='p'>(</span><span class='s'>&quot;build-tests&quot;</span><span class='p'>)</span>
-</pre>
+<div class='highlight'><pre><code class='python'><span class='lineno'>1</span> <span class='n'>env</span><span class='o'>.</span><span class='n'>Default</span><span class='p'>(</span><span class='s'>&quot;build-tests&quot;</span><span class='p'>)</span>
+</code></pre>
 </div>
 <p>to my <em>SConstruct</em> file. This would cause all of my tests to be built by default, and by extension, to have them all cleaned by default, as well.</p>
 
 <p>This is close, since <code>scons -c</code> now does what we want, but this means that <code>scons</code> is now building more than we would like. What we need is a way to have a different list of default targets depending on whether we&#8217;re building or cleaning. Luckily, the <code>GetOption</code> function gives us exactly that:</p>
-<div class='highlight'><pre><span class='lineno'>1</span> <span class='k'>if</span> <span class='n'>GetOption</span><span class='p'>(</span><span class='s'>&quot;clean&quot;</span><span class='p'>):</span>
+<div class='highlight'><pre><code class='python'><span class='lineno'>1</span> <span class='k'>if</span> <span class='n'>GetOption</span><span class='p'>(</span><span class='s'>&quot;clean&quot;</span><span class='p'>):</span>
 <span class='lineno'>2</span>     <span class='n'>env</span><span class='o'>.</span><span class='n'>Default</span><span class='p'>(</span><span class='s'>&quot;build-tests&quot;</span><span class='p'>)</span>
-</pre>
+</code></pre>
 </div>
 <p>With this in our <em>SConstruct</em> file, the tests will be considered a default target when we&#8217;re cleaning, but not when we&#8217;re building. So now we have what we want: <code>scons</code> builds just the code, <code>scons test</code> builds and runs the tests, and <code>scons -c</code> cleans it all.</p>
 </div>
