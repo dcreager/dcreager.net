@@ -4,13 +4,64 @@
   <title>dcreager.net</title>
   <link href="http://dcreager.net/atom.xml" rel="self"/>
   <link href="http://dcreager.net/"/>
-  <updated>2010-02-05T14:57:50-05:00</updated>
+  <updated>2010-02-05T18:54:55-05:00</updated>
   <id>http://dcreager.net/</id>
   <author>
     <name>Douglas Creager</name>
     <email>dcreager@dcreager.net</email>
   </author>
 
+  
+  <entry>
+    <title>A combinator-based parsing library for C</title>
+    <link href="http://dcreager.net/2010/02/06/libpush/"/>
+    <updated>2010-02-06T00:00:00-05:00</updated>
+    <id>http://dcreager.net/2010/02/06/libpush</id>
+    <content type="html">&lt;p&gt;Recently I&amp;#8217;ve been working on &lt;a href='http://github.com/dcreager/libpush/'&gt;libpush&lt;/a&gt;, which a new parsing library for C. It has two main features that I think will be valuable: it&amp;#8217;s a &lt;em&gt;push parser&lt;/em&gt;, which means that instead of parsing a file, stream, or single memory buffer, you supply the data (or &amp;#8220;push&amp;#8221; it) to the parser in chunks, as it becomes available. I plan to discuss this aspect of the parser in more detail in a later post.&lt;/p&gt;
+
+&lt;p&gt;The other main feature is that you design your parsers using &lt;em&gt;combinators&lt;/em&gt;. Parser combinators are widely used in Haskell, with &lt;a href='http://legacy.cs.uu.nl/daan/parsec.html'&gt;Parsec&lt;/a&gt; being the most common example. Combinator-based parsing libraries are especially nice in Haskell, because Haskell&amp;#8217;s syntax makes them look very simple. For instance, a parser that parses matching nested parentheses is:&lt;/p&gt;
+&lt;div class='highlight'&gt;&lt;pre&gt;&lt;code class='haskell'&gt;&lt;span class='nf'&gt;parens&lt;/span&gt; &lt;span class='ow'&gt;::&lt;/span&gt; &lt;span class='kt'&gt;Parser&lt;/span&gt; &lt;span class='nb'&gt;()&lt;/span&gt;
+&lt;span class='nf'&gt;parens&lt;/span&gt; &lt;span class='ow'&gt;=&lt;/span&gt; &lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;char&lt;/span&gt; &lt;span class='sc'&gt;&amp;#39;(&amp;#39;&lt;/span&gt; &lt;span class='o'&gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class='n'&gt;parens&lt;/span&gt; &lt;span class='o'&gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class='n'&gt;char&lt;/span&gt; &lt;span class='sc'&gt;&amp;#39;)&amp;#39;&lt;/span&gt; &lt;span class='o'&gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class='n'&gt;parens&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt; &lt;span class='o'&gt;&amp;lt;|&amp;gt;&lt;/span&gt; &lt;span class='n'&gt;return&lt;/span&gt; &lt;span class='nb'&gt;()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;Here, the &lt;code&gt;&amp;lt;|&amp;gt;&lt;/code&gt; operator represents &lt;em&gt;choice&lt;/em&gt;: we try parsing the left operand, and if it fails, then we try the right operand. In our example, the right operand is the base case, which matches the empty string. The left operand parses an opening parenthesis; then recursively calls itself to match any parentheses that might be nested in the current set; then parses the closing parenthesis; and then finally tries to match a nested set that occurs after the current set.&lt;/p&gt;
+
+&lt;p&gt;When we say that this is a combinator-based parser, we mean that it&amp;#8217;s implemented by taking &lt;em&gt;primitive parsers&lt;/em&gt; — in this case &lt;code&gt;char &amp;#39;(&amp;#39;&lt;/code&gt; and &lt;code&gt;return ()&lt;/code&gt; — and combining them into more complex parsers using generic operators like &lt;code&gt;&amp;gt;&amp;gt;&lt;/code&gt; and &lt;code&gt;&amp;lt;|&amp;gt;&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Now, in order to be able to use combinators like this, parsers have to be first-class objects in your language. In the Haskell code, the parsers are represented by the &lt;code&gt;Parser ()&lt;/code&gt; type. In most Haskell parsing libraries (including Parsec), the parser type is implemented as a &lt;a href='http://en.wikipedia.org/wiki/Monad_%28functional_programming%29'&gt;&lt;em&gt;monad&lt;/em&gt;&lt;/a&gt;. Monads have a reputation for being a horribly complex topic, but in this case, we don&amp;#8217;t really need to learn about the underlying math. Instead, we can just view the monad as letting us do two things concisely:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;Parsers can return a value, which could (for instance) be the abstract syntax tree that you&amp;#8217;re building up while parsing your language. The monadic bind operator (&lt;code&gt;&amp;gt;&amp;gt;=&lt;/code&gt;) gives you a way to &amp;#8220;pass&amp;#8221; these values between parsers, if needed.&lt;/p&gt;
+&lt;/li&gt;
+
+&lt;li&gt;
+&lt;p&gt;Simultaneously, the parser monad maintains the state of the stream you&amp;#8217;re parsing from, keeping track of how many bytes remain, whether there&amp;#8217;s an error condition, and possibly a nice human-readable description (line and column) of the current location.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;This is admittedly a lot of setup; we&amp;#8217;ve been talking a lot about Haskell in a post that&amp;#8217;s ostensibly describing a C library. But hopefully, this gives you a taste for the kinds of features we want to support in libpush:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Parsers will be represented by a C type. In libpush this is the &lt;code&gt;push_callback_t&lt;/code&gt; type.&lt;/p&gt;
+&lt;/li&gt;
+
+&lt;li&gt;
+&lt;p&gt;There will be several primitive parsers; these will be functions that return a &lt;code&gt;push_callback_t&lt;/code&gt;. The functions take take in parameters, but none of the parameters can be a &lt;code&gt;push_callback_t&lt;/code&gt;. (See the &lt;code&gt;char&lt;/code&gt; primitive from above; it needed to take in the particular character that is expected.)&lt;/p&gt;
+&lt;/li&gt;
+
+&lt;li&gt;
+&lt;p&gt;There will be several combinators; these will be functions that return a &lt;code&gt;push_callback_t&lt;/code&gt;, and take in other &lt;code&gt;push_callback_t&lt;/code&gt;s as parameters.&lt;/p&gt;
+
+&lt;p&gt;You can see several of these primitives and combinators in action in the &lt;a href='http://github.com/dcreager/libpush/'&gt;libpush Github repository&lt;/a&gt;.&lt;/p&gt;
+&lt;/li&gt;
+
+&lt;li&gt;
+&lt;p&gt;We will use something like a monad to take care of passing values between our parsers, and for keeping track of the state of the underlying stream. I say &amp;#8220;something like a monad&amp;#8221;, because, unlike the Parsec library, the libpush parser type will &lt;em&gt;not&lt;/em&gt; be implemented as a monad; in turns out that C is more amenable to implementing them as &lt;a href='http://www.haskell.org/arrows/'&gt;&lt;em&gt;arrows&lt;/em&gt;&lt;/a&gt;. In a later post, I&amp;#8217;ll explain what this means in terms of writing your own parsers, or for building them up from combinators.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;</content>
+  </entry>
   
   <entry>
     <title>Updating graffle-export to work with OmniGraffle 5</title>

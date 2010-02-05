@@ -1,0 +1,159 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+ 
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>A combinator-based parsing library for C</title>
+    <meta name="author" content="Douglas Creager" />
+
+    <meta name="google-site-verification" content="7KIoYPNsfdDxIdX1QQ7SM2Nm_nyy13aRlDkzE3wzhhY" />
+
+    
+
+    <link rel="alternate" type="application/atom+xml"
+          title="dcreager.net" href="/atom.xml"/>
+ 
+    <!-- syntax highlighting CSS -->
+    <link rel="stylesheet" href="/css/syntax.css" type="text/css" />
+
+    <!-- main CSS -->
+    <link rel="stylesheet" href="/css/main.css" type="text/css" />
+  </head>
+
+  <body>
+
+    <!--
+       Preload some images.  The “preload” class is set to never
+       display.
+      -->
+    <div class="preload">
+      <img src="/images/icon-pdf.png"/>
+      <img src="/images/icon-pdf-shadow.png"/>
+      <img src="/images/mag.png"/>
+      <img src="/images/mag-shadow.png"/>
+    </div>
+
+    <div class="site">
+      <div class="site_content">
+        <div class="left">
+          <div class="leftnav">
+            <p><a href="/">Home</a></p>
+<p><a href="/about/">About</a></p>
+<p><a href="/archive/">Archive</a></p>
+<p><a href="/publications/">Publications</a></p>
+
+          </div>
+        </div>
+
+        <div class="site_header">
+          <p class="title">dcreager.net</p>
+          <p class="subtitle">A BLOG ABOUT HUGE DATA, CODING, AND MISCELLANEA</p>
+        </div>
+
+        <div class="body">
+          <h1>A combinator-based parsing library for C</h1>
+
+<div class="postdate">
+  Saturday, February 06, 2010
+</div>
+
+<div class="post">
+  <p>Recently I&#8217;ve been working on <a href='http://github.com/dcreager/libpush/'>libpush</a>, which a new parsing library for C. It has two main features that I think will be valuable: it&#8217;s a <em>push parser</em>, which means that instead of parsing a file, stream, or single memory buffer, you supply the data (or &#8220;push&#8221; it) to the parser in chunks, as it becomes available. I plan to discuss this aspect of the parser in more detail in a later post.</p>
+
+<p>The other main feature is that you design your parsers using <em>combinators</em>. Parser combinators are widely used in Haskell, with <a href='http://legacy.cs.uu.nl/daan/parsec.html'>Parsec</a> being the most common example. Combinator-based parsing libraries are especially nice in Haskell, because Haskell&#8217;s syntax makes them look very simple. For instance, a parser that parses matching nested parentheses is:</p>
+<div class='highlight'><pre><code class='haskell'><span class='nf'>parens</span> <span class='ow'>::</span> <span class='kt'>Parser</span> <span class='nb'>()</span>
+<span class='nf'>parens</span> <span class='ow'>=</span> <span class='p'>(</span><span class='n'>char</span> <span class='sc'>&#39;(&#39;</span> <span class='o'>&gt;&gt;</span> <span class='n'>parens</span> <span class='o'>&gt;&gt;</span> <span class='n'>char</span> <span class='sc'>&#39;)&#39;</span> <span class='o'>&gt;&gt;</span> <span class='n'>parens</span><span class='p'>)</span> <span class='o'>&lt;|&gt;</span> <span class='n'>return</span> <span class='nb'>()</span>
+</code></pre>
+</div>
+<p>Here, the <code>&lt;|&gt;</code> operator represents <em>choice</em>: we try parsing the left operand, and if it fails, then we try the right operand. In our example, the right operand is the base case, which matches the empty string. The left operand parses an opening parenthesis; then recursively calls itself to match any parentheses that might be nested in the current set; then parses the closing parenthesis; and then finally tries to match a nested set that occurs after the current set.</p>
+
+<p>When we say that this is a combinator-based parser, we mean that it&#8217;s implemented by taking <em>primitive parsers</em> — in this case <code>char &#39;(&#39;</code> and <code>return ()</code> — and combining them into more complex parsers using generic operators like <code>&gt;&gt;</code> and <code>&lt;|&gt;</code>.</p>
+
+<p>Now, in order to be able to use combinators like this, parsers have to be first-class objects in your language. In the Haskell code, the parsers are represented by the <code>Parser ()</code> type. In most Haskell parsing libraries (including Parsec), the parser type is implemented as a <a href='http://en.wikipedia.org/wiki/Monad_%28functional_programming%29'><em>monad</em></a>. Monads have a reputation for being a horribly complex topic, but in this case, we don&#8217;t really need to learn about the underlying math. Instead, we can just view the monad as letting us do two things concisely:</p>
+
+<ol>
+<li>
+<p>Parsers can return a value, which could (for instance) be the abstract syntax tree that you&#8217;re building up while parsing your language. The monadic bind operator (<code>&gt;&gt;=</code>) gives you a way to &#8220;pass&#8221; these values between parsers, if needed.</p>
+</li>
+
+<li>
+<p>Simultaneously, the parser monad maintains the state of the stream you&#8217;re parsing from, keeping track of how many bytes remain, whether there&#8217;s an error condition, and possibly a nice human-readable description (line and column) of the current location.</p>
+</li>
+</ol>
+
+<p>This is admittedly a lot of setup; we&#8217;ve been talking a lot about Haskell in a post that&#8217;s ostensibly describing a C library. But hopefully, this gives you a taste for the kinds of features we want to support in libpush:</p>
+
+<ul>
+<li>
+<p>Parsers will be represented by a C type. In libpush this is the <code>push_callback_t</code> type.</p>
+</li>
+
+<li>
+<p>There will be several primitive parsers; these will be functions that return a <code>push_callback_t</code>. The functions take take in parameters, but none of the parameters can be a <code>push_callback_t</code>. (See the <code>char</code> primitive from above; it needed to take in the particular character that is expected.)</p>
+</li>
+
+<li>
+<p>There will be several combinators; these will be functions that return a <code>push_callback_t</code>, and take in other <code>push_callback_t</code>s as parameters.</p>
+
+<p>You can see several of these primitives and combinators in action in the <a href='http://github.com/dcreager/libpush/'>libpush Github repository</a>.</p>
+</li>
+
+<li>
+<p>We will use something like a monad to take care of passing values between our parsers, and for keeping track of the state of the underlying stream. I say &#8220;something like a monad&#8221;, because, unlike the Parsec library, the libpush parser type will <em>not</em> be implemented as a monad; in turns out that C is more amenable to implementing them as <a href='http://www.haskell.org/arrows/'><em>arrows</em></a>. In a later post, I&#8217;ll explain what this means in terms of writing your own parsers, or for building them up from combinators.</p>
+</li>
+</ul>
+</div>
+
+
+<div class="posttags">
+  Tags:
+  <ul>
+    
+    <li><a href="/tags/libpush/">libpush</a></li>
+    
+    <li><a href="/tags/c/">c</a></li>
+    
+  </ul>
+</div>
+
+
+        </div>
+
+        
+
+        <div class="body_separator"></div>
+
+        <div class="body">
+          <div id="disqus_thread"></div>
+
+          <script type="text/javascript">
+            var disqus_title = "A combinator-based parsing library for C";
+            var disqus_url = "http://dcreager.net/2010/02/06/libpush/";
+          </script>
+
+          <script
+             type="text/javascript"
+             src="http://disqus.com/forums/dcreager/embed.js">
+          </script>
+          <noscript>
+            <a href="http://dcreager.disqus.com/?url=ref">View the discussion thread.</a>
+          </noscript>
+
+          <a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+        </div>
+
+        
+
+      </div>
+    </div>
+
+    <div class="footer">
+      <div class="copyright">
+        Copyright © 2009-2010, Douglas Creager.  All rights reserved.
+      </div>
+    </div>
+
+  </body>
+</html>
+
