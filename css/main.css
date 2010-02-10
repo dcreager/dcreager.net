@@ -55,6 +55,18 @@ body {
     text-align: left;
 }
 
+.body a {
+    color: #1A60B2;
+}
+
+.body a:visited {
+    color: #1A60B2;
+}
+
+.body a:hover {
+    color: #148AFF;
+}
+
 .body h1 {
     font-size: 150%;
     padding-top: 20px;
