@@ -4,13 +4,114 @@
   <title>dcreager.net</title>
   <link href="http://dcreager.net/atom.xml" rel="self"/>
   <link href="http://dcreager.net/"/>
-  <updated>2010-02-05T18:54:55-05:00</updated>
+  <updated>2010-02-10T16:23:39-05:00</updated>
   <id>http://dcreager.net/</id>
   <author>
     <name>Douglas Creager</name>
     <email>dcreager@dcreager.net</email>
   </author>
 
+  
+  <entry>
+    <title>Extracting setuptools version numbers from your git repository</title>
+    <link href="http://dcreager.net/2010/02/10/setuptools-git-version-numbers/"/>
+    <updated>2010-02-10T00:00:00-05:00</updated>
+    <id>http://dcreager.net/2010/02/10/setuptools-git-version-numbers</id>
+    <content type="html">&lt;p&gt;Just like everyone else, we&amp;#8217;re using &lt;a href='http://pypi.python.org/pypi/setuptools'&gt;setuptools&lt;/a&gt; as the core of the build system for our Python-based projects. For the most part, this has been a painless, straightforward process. However, one lingering annoyance is that we&amp;#8217;ve been specifying the version number directly in our &lt;em&gt;setup.py&lt;/em&gt; files:&lt;/p&gt;
+&lt;div class='highlight'&gt;&lt;pre&gt;&lt;code class='python'&gt;&lt;span class='kn'&gt;from&lt;/span&gt; &lt;span class='nn'&gt;setuptools&lt;/span&gt; &lt;span class='kn'&gt;import&lt;/span&gt; &lt;span class='n'&gt;setup&lt;/span&gt;
+
+&lt;span class='n'&gt;setup&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;
+    &lt;span class='n'&gt;name&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='s'&gt;&amp;quot;awesomelib&amp;quot;&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt;
+    &lt;span class='n'&gt;version&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='s'&gt;&amp;quot;1.2&amp;quot;&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt;
+    &lt;span class='c'&gt;# ...etc&lt;/span&gt;
+&lt;span class='p'&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;On our maintenance branches, we get a nice &lt;em&gt;awesomelib-1.2.tar.gz&lt;/em&gt; file when we run &lt;code&gt;python setup.py sdist&lt;/code&gt;. On our development branch, we&amp;#8217;ve also got the following &lt;em&gt;setup.cfg&lt;/em&gt; file:&lt;/p&gt;
+&lt;div class='highlight'&gt;&lt;pre&gt;&lt;code class='ini'&gt;&lt;span class='k'&gt;[egg_info]&lt;/span&gt;
+&lt;span class='na'&gt;tag_build&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='s'&gt;dev&lt;/span&gt;
+&lt;span class='na'&gt;tag_date&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='s'&gt;true&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;That gives us tarballs like &lt;em&gt;awesomelib-1.2dev-20100210.tar.gz&lt;/em&gt; on our development branch. Because we&amp;#8217;re using the &lt;code&gt;dev&lt;/code&gt; suffix, which setuptools considers to be a &amp;#8220;prerelease&amp;#8221;, we have to remember to increment the version number in development whenever we cut a new release. The end result is that we have a longish process for creating releases. If we want to create a new 1.3 release, we have to do the following:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;Create a new maintenance branch for 1.3:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ git checkout -b maint-1.3 master&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+
+&lt;li&gt;
+&lt;p&gt;Update the &lt;em&gt;setup.cfg&lt;/em&gt; file to remove the &lt;code&gt;tag_build&lt;/code&gt; and &lt;code&gt;tag_date&lt;/code&gt; entries. Commit this with a &amp;#8220;Tagging version 1.3&amp;#8221; commit message.&lt;/p&gt;
+&lt;/li&gt;
+
+&lt;li&gt;
+&lt;p&gt;Back on the development branch, update &lt;em&gt;setup.py&lt;/em&gt; to increment the &amp;#8220;development version&amp;#8221; to 1.4.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Granted, this isn&amp;#8217;t horribly difficult, but we can do better.&lt;/p&gt;
+
+&lt;h2 id='calculating_the_version_automatically'&gt;Calculating the version automatically&lt;/h2&gt;
+
+&lt;p&gt;Taking a page from the &lt;a href='http://git.kernel.org/?p=git/git.git;a=blob;f=GIT-VERSION-GEN'&gt;&lt;em&gt;GIT-VERSION-GEN&lt;/em&gt;&lt;/a&gt; script in git&amp;#8217;s source code, we&amp;#8217;re going to use the &lt;code&gt;git describe&lt;/code&gt; command to automatically generate the version number.&lt;/p&gt;
+
+&lt;p&gt;Our logic is implemented in a new &lt;code&gt;get_git_version()&lt;/code&gt; Python function, which you can call directly from your &lt;em&gt;setup.py&lt;/em&gt; scripts.. You can find the source code in a &lt;a href='http://gist.github.com/300803'&gt;Github gist&lt;/a&gt;. Our basic strategy is:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;First, try to use &lt;code&gt;git describe&lt;/code&gt; to create a version number.&lt;/p&gt;
+&lt;/li&gt;
+
+&lt;li&gt;
+&lt;p&gt;If this fails, then we&amp;#8217;re most likely not in a git working copy. Probably, someone downloaded a release tarball and unpacked it, and we&amp;#8217;re running inside of there. In this case, &lt;code&gt;git describe&lt;/code&gt; can&amp;#8217;t give us a version number. Instead, we&amp;#8217;re going to make sure we include a &lt;em&gt;RELEASE-VERSION&lt;/em&gt; file in every tarball that we create. So, if &lt;code&gt;git describe&lt;/code&gt; fails, we fall back on the contents of this file as our version number.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id='tag_names_as_version_numbers'&gt;Tag names as version numbers&lt;/h3&gt;
+
+&lt;p&gt;One thing to notice about this strategy is that we use the output of &lt;code&gt;git describe&lt;/code&gt; directly as our version number. This means that our tag names should be simple version numbers, without decoration. To create the awesomelib 1.3 release from our example, we&amp;#8217;d just do:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ git tag -s 1.3&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;(Note that the tag needs to be an annotated or signed tag in order to be picked up by &lt;code&gt;git describe&lt;/code&gt;.)&lt;/p&gt;
+
+&lt;p&gt;On our development branch, once we&amp;#8217;ve created new commits on top of the release point, we&amp;#8217;ll start getting output like this from &lt;code&gt;git
+describe&lt;/code&gt;:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;1.3-4-g6f32&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This is a valid setuptools &amp;#8220;postrelease&amp;#8221; — setuptools will consider this to be a more recent version than &lt;code&gt;1.3&lt;/code&gt;, which is exactly what we want. This eliminates the need to maintain different &lt;em&gt;setup.cfg&lt;/em&gt; files in our development and maintenance branches.&lt;/p&gt;
+
+&lt;h3 id='getting_the_version_number_of_a_distribution_tarball'&gt;Getting the version number of a distribution tarball&lt;/h3&gt;
+
+&lt;p&gt;Another thing to notice is that we need to maintain a &lt;em&gt;RELEASE-VERSION&lt;/em&gt; file, ensuring that it always contains the current version, and always including it when we create any source packages. That way, we can still get the current version number, even if we can&amp;#8217;t get it from &lt;code&gt;git describe&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;To keep the &lt;em&gt;RELEASE-VERSION&lt;/em&gt; file up-to-date, the &lt;code&gt;get_git_version()&lt;/code&gt; function always read in the current contents of the file as its first step. If the output of &lt;code&gt;git describe&lt;/code&gt; differs from what&amp;#8217;s in the file, we update the file with the new output before returning the version.&lt;/p&gt;
+
+&lt;p&gt;This ensures that the file has the right contents, but we also have to make sure we include it in our source packages. To do this, we simply add the following line to our &lt;em&gt;MANIFEST.in&lt;/em&gt; file (creating it if necessary):&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;include RELEASE-VERSION&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;(Note that we don&amp;#8217;t want the &lt;em&gt;RELEASE-VERSION&lt;/em&gt; file to be checked into the git repository, so we also add it to the top-level &lt;em&gt;.gitignore&lt;/em&gt; file.)&lt;/p&gt;
+
+&lt;h2 id='the_simpler_release_process'&gt;The simpler release process&lt;/h2&gt;
+
+&lt;p&gt;With this script, our release process is now much simpler:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;Create a maintenance branch if you want to.&lt;/p&gt;
+&lt;/li&gt;
+
+&lt;li&gt;
+&lt;p&gt;Create a signed or annotated tag, whose name is the new version number.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Most importantly, no extra commits are needed, since we don&amp;#8217;t have to edit any version numbers or maintain different &lt;em&gt;setup.cfg&lt;/em&gt; files.&lt;/p&gt;</content>
+  </entry>
   
   <entry>
     <title>A combinator-based parsing library for C</title>
