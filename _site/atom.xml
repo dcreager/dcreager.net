@@ -4,7 +4,7 @@
   <title>dcreager.net</title>
   <link href="http://dcreager.net/atom.xml" rel="self"/>
   <link href="http://dcreager.net/"/>
-  <updated>2010-02-10T16:33:41-05:00</updated>
+  <updated>2010-02-10T16:34:45-05:00</updated>
   <id>http://dcreager.net/</id>
   <author>
     <name>Douglas Creager</name>
@@ -57,7 +57,7 @@
 
 &lt;p&gt;Taking a page from the &lt;a href='http://git.kernel.org/?p=git/git.git;a=blob;f=GIT-VERSION-GEN'&gt;&lt;em&gt;GIT-VERSION-GEN&lt;/em&gt;&lt;/a&gt; script in git&amp;#8217;s source code, we&amp;#8217;re going to use the &lt;code&gt;git describe&lt;/code&gt; command to automatically generate the version number.&lt;/p&gt;
 
-&lt;p&gt;Our logic is implemented in a new &lt;code&gt;get_git_version()&lt;/code&gt; Python function, which you can call directly from your &lt;em&gt;setup.py&lt;/em&gt; scripts.. You can find the source code in a &lt;a href='http://gist.github.com/300803'&gt;Github gist&lt;/a&gt;. Our basic strategy is:&lt;/p&gt;
+&lt;p&gt;Our logic is implemented in a new &lt;code&gt;get_git_version()&lt;/code&gt; Python function, which you can call directly from your &lt;em&gt;setup.py&lt;/em&gt; scripts. You can find the source code in a &lt;a href='http://gist.github.com/300803'&gt;Github gist&lt;/a&gt;. Our basic strategy is:&lt;/p&gt;
 
 &lt;ol&gt;
 &lt;li&gt;

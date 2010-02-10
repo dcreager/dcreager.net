@@ -61,7 +61,7 @@ script in git's source code, we're going to use the `git describe`
 command to automatically generate the version number.
 
 Our logic is implemented in a new `get_git_version()` Python function,
-which you can call directly from your _setup.py_ scripts..  You can
+which you can call directly from your _setup.py_ scripts.  You can
 find the source code in a [Github
 gist](http://gist.github.com/300803).  Our basic strategy is:
 
