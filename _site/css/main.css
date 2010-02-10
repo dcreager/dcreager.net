@@ -108,6 +108,10 @@ body {
     overflow: auto;
 }
 
+.body ol pre {
+    margin-left: 0px;
+}
+
 .body pre code {
     font-size: 100%;
 }
