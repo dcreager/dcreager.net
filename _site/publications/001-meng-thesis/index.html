@@ -19,6 +19,22 @@
 
     <!-- main CSS -->
     <link rel="stylesheet" href="/css/main.css" type="text/css" />
+
+    <!-- Cufon -->
+    <script src="/js/jquery-1.4.1.min.js" type="text/javascript"></script>
+    <script src="/js/cufon-yui.js" type="text/javascript"></script>
+    <script src="/js/Delicious.js" type="text/javascript"></script>
+    <script src="/js/Junction.js" type="text/javascript"></script>
+    <script src="/js/Tagesschrift.js" type="text/javascript"></script>
+
+    <script type="text/javascript">
+      Cufon.replace('.body h1', { fontFamily: 'Delicious' });
+      Cufon.replace('.body h2', { fontFamily: 'Delicious' });
+      Cufon.replace('.body h3', { fontFamily: 'Delicious' });
+      Cufon.replace('.body .postdate', { fontFamily: 'Junction' });
+      Cufon.replace('.site_header .title', { fontFamily: 'Tagesschrift' });
+      Cufon.replace('.site_header .subtitle', { fontFamily: 'Junction' });
+    </script>
   </head>
 
   <body>
@@ -38,17 +54,17 @@
       <div class="site_content">
         <div class="left">
           <div class="leftnav">
-            <p><a href="/">Home</a></p>
-<p><a href="/about/">About</a></p>
-<p><a href="/archive/">Archive</a></p>
-<p><a href="/publications/">Publications</a></p>
+            <h3><a href="/">Home</a></h3>
+<h3><a href="/about/">About</a></h3>
+<h3><a href="/archive/">Archive</a></h3>
+<h3><a href="/publications/">Publications</a></h3>
 
           </div>
         </div>
 
         <div class="site_header">
-          <p class="title">dcreager.net</p>
-          <p class="subtitle">A BLOG ABOUT HUGE DATA, CODING, AND MISCELLANEA</p>
+          <h1 class="title">dcreager.net</p>
+          <h2 class="subtitle">a blog about huge data, coding, and miscellanea</p>
         </div>
 
         <div class="body">
@@ -89,6 +105,7 @@
       </div>
     </div>
 
+    <script type="text/javascript"> Cufon.now(); </script>
   </body>
 </html>
 

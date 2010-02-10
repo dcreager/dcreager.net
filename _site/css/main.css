@@ -29,7 +29,7 @@ body {
     background-color: #a0a0a0;
     background-image: url('/images/imperial-logo-396-306.png');
     background-repeat: no-repeat;
-    font: 15px Calibri, helvetica, arial, clean, sans-serif;
+    font: 15px helvetica, arial, clean, sans-serif;
     /**font-size: small;*/
     text-align: center;
 }
@@ -236,6 +236,7 @@ body {
 
 .site_header .subtitle {
     color: #444;
+    font-weight: normal;
     font-size: 80%;
 }
 
@@ -334,7 +335,7 @@ body {
     padding-top: 320px;         /* 300px for the logo, 20px for padding */
 }
 
-.leftnav p {
+.leftnav h3 {
     margin-top: 2px;
     margin-bottom: 2px;
 }
@@ -361,6 +362,6 @@ body {
 
 #posts ul span {
     color: #aaa;
-    font-family: Consolas, Monaco, "Courier New", monospace;
+    font-family: Monaco, "Courier New", monospace;
     font-size: 80%;
 }
