@@ -29,8 +29,7 @@ body {
     background-color: #a0a0a0;
     background-image: url('/images/imperial-logo-396-306.png');
     background-repeat: no-repeat;
-    font: 15px helvetica, arial, clean, sans-serif;
-    /**font-size: small;*/
+    font: 14px sans-serif;
     text-align: center;
 }
 
@@ -107,11 +106,11 @@ body {
 }
 
 .body code {
-    font-size: 80%;
+    font-size: 90%;
 }
 
 .body pre {
-    font-size: 80%;
+    font-size: 90%;
     margin-top: 8px;
     margin-left: 32px;
     padding: 8px;
