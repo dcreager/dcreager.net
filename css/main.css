@@ -26,10 +26,11 @@ body > .site { height: auto; min-height: 100%; }
 div.preload { display: none; }
 
 body {
-    background-color: #a0a0a0;
-    background-image: url('/images/imperial-logo-396-306.png');
+    background-color: #fff;
+    background-image: url('/images/imperial-logo-gradient.png');
     background-repeat: no-repeat;
-    font: 14px sans-serif;
+    font: 0.8125em Verdana, sans-serif;
+    line-height: 1;
     text-align: center;
 }
 
@@ -41,50 +42,59 @@ body {
 
 /* .site_content { padding-top: 20px; } */
 
+.content {
+    background-color: #fff;
+    background-image: url('/images/gradient-border.png');
+    background-repeat: no-repeat;
+    margin-left: 200px;
+    margin-right: 16px;
+}
+
 .body_separator { padding-top: 20px; }
 
 .body {
-    background: white;
-    border: 2px solid #222;
+    font-size: 0.88em;
+    line-height: 1.7em;
     padding-left: 20px;
     padding-right: 20px;
     padding-bottom: 20px;
-    margin-left: 200px;
-    margin-right: 16px;
     text-align: left;
+    width: 580px;
 }
 
 .body a {
-    color: #1A60B2;
+    text-decoration: none;
 }
 
-.body a:visited {
+.body a:link, .body a:visited {
     color: #1A60B2;
+    border-bottom: 1px solid #1A60B2;
 }
 
 .body a:hover {
-    color: #148AFF;
+    color: #232445;
+    background-color: #DEE9FF;
 }
 
 .body h1 {
-    font-size: 150%;
+    font-size: 1.75em;
     padding-top: 20px;
 }
 
 .body h2 {
-    font-size: 130%;
+    font-size: 1.5em;
     padding-top: 20px;
     margin-left: 16px;
 }
 
 .body h3 {
-    font-size: 110%;
+    font-size: 1.3em;
     padding-top: 20px;
     margin-left: 24px;
 }
 
 .body p {
-    padding-top: 8px;
+    padding-top: 12px;
     margin-left: 32px;
 }
 
@@ -94,9 +104,13 @@ body {
 
 .body .warning {
     margin-left: 64px;
+    margin-right: 48px;
     margin-top: 12px;
-    padding-left: 8px;
-    border-left: 3px solid #f00;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 8px;
+    background-color: #FFDEE9;
+    border: 3px solid #f00;
 }
 
 .body .warning p {
@@ -106,11 +120,15 @@ body {
 }
 
 .body code {
-    font-size: 90%;
+    font-family: Monaco, "DejaVu Sans Mono", "Bitstream Vera Sans Mono", monospace;
+    background-color: #f0f0f0;
+    padding: 2px;
+    border: 1px solid #c0c0c0;
 }
 
 .body pre {
-    font-size: 90%;
+    font-size: 12px;
+    line-height: 1.25em;
     margin-top: 8px;
     margin-left: 32px;
     padding: 8px;
@@ -124,7 +142,8 @@ body {
 }
 
 .body pre code {
-    font-size: 100%;
+    background-color: transparent;
+    border: 0px;
 }
 
 .body .figure {
@@ -132,7 +151,6 @@ body {
 }
 
 .body ul {
-    padding-top: 8px;
     margin-left: 64px;
 }
 
@@ -142,7 +160,6 @@ body {
 }
 
 .body ol {
-    padding-top: 8px;
     margin-left: 64px;
 }
 
@@ -220,7 +237,8 @@ body {
  */
 
 .site_header {
-    margin-left: 396px;
+    width: 300px;
+    margin-left: 410px;
     margin-right: 16px;
     padding-top: 8px;
     margin-bottom: 12px;
@@ -230,7 +248,7 @@ body {
     color: #282828;
     font-weight: bold;
     font-size: 140%;
-    margin-bottom: -3px;
+    margin-bottom: 2px;
 }
 
 .site_header .subtitle {
@@ -246,6 +264,8 @@ body {
 .reference {
     padding-top: 8px;
     margin-left: 0px;
+    line-height: 1.35em;
+    clear: right;
 }
 
 .reference .citation_number {
@@ -278,6 +298,8 @@ body {
     width: 52px;
     height: 52px;
     text-decoration: none;
+    border: 0px;
+    background-color: transparent;
     background-image: url(/images/mag.png);
 }
 
@@ -286,6 +308,8 @@ body {
     width: 52px;
     height: 52px;
     text-decoration: none;
+    border: 0px;
+    background-color: transparent;
     background-image: url(/images/mag-shadow.png);
 }
 
@@ -306,6 +330,8 @@ body {
     width: 70px;
     height: 77px;
     text-decoration: none;
+    border: 0px;
+    background-color: transparent;
     background-image: url(/images/icon-pdf.png);
 }
 
@@ -314,6 +340,8 @@ body {
     width: 70px;
     height: 77px;
     text-decoration: none;
+    border: 0px;
+    background-color: transparent;
     background-image: url(/images/icon-pdf-shadow.png);
 }
 
@@ -355,7 +383,9 @@ body {
  */
 
 #posts ul {
+    line-height: 1.35em;
     margin-left: 16px;
+    margin-top: 12px;
     list-style-type: none;
 }
 
