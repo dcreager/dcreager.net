@@ -120,7 +120,7 @@ body {
 }
 
 .body code {
-    font-family: Monaco, "DejaVu Sans Mono", "Bitstream Vera Sans Mono", monospace;
+    font-family: "DejaVu Sans Mono", "Bitstream Vera Sans Mono", monospace;
     background-color: #f0f0f0;
     padding: 2px;
     border: 1px solid #c0c0c0;
