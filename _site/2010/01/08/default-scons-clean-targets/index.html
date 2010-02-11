@@ -84,7 +84,7 @@
 <span class='lineno'>2</span> <span class='n'>env</span><span class='o'>.</span><span class='n'>Alias</span><span class='p'>(</span><span class='s'>&quot;build-tests&quot;</span><span class='p'>,</span> <span class='n'>build_test</span><span class='p'>)</span>
 <span class='lineno'>3</span> 
 <span class='lineno'>4</span> <span class='n'>run_test</span> <span class='o'>=</span> <span class='n'>env</span><span class='o'>.</span><span class='n'>Alias</span><span class='p'>(</span><span class='s'>&quot;test&quot;</span><span class='p'>,</span> <span class='p'>[</span><span class='n'>build_test</span><span class='p'>],</span>
-<span class='lineno'>5</span>                      <span class='p'>[</span><span class='s'>&quot;@</span><span class='si'>%s</span><span class='s'>&quot;</span> <span class='o'>%</span> <span class='n'>build_test</span><span class='p'>[</span><span class='mf'>0</span><span class='p'>]</span><span class='o'>.</span><span class='n'>abspath</span><span class='p'>])</span>
+<span class='lineno'>5</span>                      <span class='p'>[</span><span class='s'>&quot;@</span><span class='si'>%s</span><span class='s'>&quot;</span> <span class='o'>%</span> <span class='n'>build_test</span><span class='p'>[</span><span class='mi'>0</span><span class='p'>]</span><span class='o'>.</span><span class='n'>abspath</span><span class='p'>])</span>
 <span class='lineno'>6</span> <span class='n'>env</span><span class='o'>.</span><span class='n'>AlwaysBuild</span><span class='p'>(</span><span class='n'>run_test</span><span class='p'>)</span>
 </code></pre>
 </div>
