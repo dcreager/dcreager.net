@@ -4,13 +4,56 @@
   <title>dcreager.net</title>
   <link href="http://dcreager.net/atom.xml" rel="self"/>
   <link href="http://dcreager.net/"/>
-  <updated>2010-02-17T18:37:09-05:00</updated>
+  <updated>2010-02-26T08:50:59-05:00</updated>
   <id>http://dcreager.net/</id>
   <author>
     <name>Douglas Creager</name>
     <email>dcreager@dcreager.net</email>
   </author>
 
+  
+  <entry>
+    <title>Parser callbacks in libpush, Part 1 — Streams</title>
+    <link href="http://dcreager.net/2010/02/25/libpush-callbacks-part-1/"/>
+    <updated>2010-02-25T00:00:00-05:00</updated>
+    <id>http://dcreager.net/2010/02/25/libpush-callbacks-part-1</id>
+    <content type="html">&lt;p&gt;This post is the first in a series that describes the &lt;code&gt;push_callback_t&lt;/code&gt; type in the &lt;a href='http://github.com/dcreager/libpush/'&gt;libpush&lt;/a&gt; library. In these posts, we&amp;#8217;ll walk through a couple of possible ways to implement callbacks under the covers. At each stage, we&amp;#8217;ll encounter problems with the current design. Fixing these problems should lead closer us to the actual implementation in libpush, and along the way, we&amp;#8217;ll gain a good understanding of how our design decisions affect the performance and usability of the library.&lt;/p&gt;
+
+&lt;p&gt;The &lt;code&gt;push_callback_t&lt;/code&gt; type is used to define &lt;em&gt;parser callbacks&lt;/em&gt;, which are the basic unit of parsing in libpush. Callbacks are pretty simple: they take in an &lt;em&gt;input value&lt;/em&gt;, read some data from the &lt;em&gt;input stream&lt;/em&gt;, and produce an &lt;em&gt;output value&lt;/em&gt;. (The fact that callbacks take in an input value, in addition to reading from the input stream, is what makes them &lt;a href='http://www.haskell.org/arrows/'&gt;&lt;em&gt;arrows&lt;/em&gt;&lt;/a&gt; instead of &lt;a href='http://en.wikipedia.org/wiki/Monad_%28functional_programming%29'&gt;&lt;em&gt;monads&lt;/em&gt;&lt;/a&gt; — but that&amp;#8217;s a story for a later post).&lt;/p&gt;
+
+&lt;h2 id='first_attempt_callbacks_as_functions'&gt;First attempt: Callbacks as functions&lt;/h2&gt;
+
+&lt;p&gt;Now, with this simple structure, we might try to implement callbacks as regular C functions. For instance, we could use something like the following to read in a single 32-bit integer:&lt;/p&gt;
+&lt;div class='highlight'&gt;&lt;pre&gt;&lt;code class='c'&gt;&lt;span class='cp'&gt;#include &amp;lt;stdbool.h&amp;gt;&lt;/span&gt;
+&lt;span class='cp'&gt;#include &amp;lt;stdint.h&amp;gt;&lt;/span&gt;
+&lt;span class='cp'&gt;#include &amp;lt;stdio.h&amp;gt;&lt;/span&gt;
+
+&lt;span class='n'&gt;bool&lt;/span&gt;
+&lt;span class='nf'&gt;parse_uint32&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='kt'&gt;void&lt;/span&gt; &lt;span class='o'&gt;*&lt;/span&gt;&lt;span class='n'&gt;input&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='kt'&gt;uint32_t&lt;/span&gt; &lt;span class='o'&gt;*&lt;/span&gt;&lt;span class='n'&gt;output&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='kt'&gt;FILE&lt;/span&gt; &lt;span class='o'&gt;*&lt;/span&gt;&lt;span class='n'&gt;stream&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt;
+&lt;span class='p'&gt;{&lt;/span&gt;
+    &lt;span class='kt'&gt;size_t&lt;/span&gt;  &lt;span class='n'&gt;num_read&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
+
+    &lt;span class='n'&gt;num_read&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='n'&gt;fread&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;output&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='k'&gt;sizeof&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='kt'&gt;uint32_t&lt;/span&gt;&lt;span class='p'&gt;),&lt;/span&gt; &lt;span class='mi'&gt;1&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='n'&gt;stream&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
+    &lt;span class='k'&gt;return&lt;/span&gt; &lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;num_read&lt;/span&gt; &lt;span class='o'&gt;==&lt;/span&gt; &lt;span class='mi'&gt;1&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
+&lt;span class='p'&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;This callback ignores its input value, reads in four bytes from the input stream, and uses that to output a &lt;code&gt;uint32_t&lt;/code&gt; value. The return value of the function is a boolean, indicating whether the parse was successful or not. This lets us handle &lt;em&gt;parse errors&lt;/em&gt; — for instance, if there are only three bytes left in the stream, we can&amp;#8217;t read in a full integer. We return &lt;code&gt;false&lt;/code&gt; to indicate this error condition.&lt;/p&gt;
+
+&lt;p&gt;We&amp;#8217;ve ignored some details here that aren&amp;#8217;t important for this example — for instance, we don&amp;#8217;t worry about the endianness of the integer, nor do we worry about how the space for the output result is allocated. We just assume that someone will pass in a pointer to a &lt;code&gt;uint32_t&lt;/code&gt; variable, and our callback function will store its output value there.&lt;/p&gt;
+
+&lt;h2 id='drawbacks'&gt;Drawbacks&lt;/h2&gt;
+
+&lt;p&gt;This approach works fine for simple cases, but unfortunately has two drawbacks. First, we&amp;#8217;re limited to parsing from &lt;code&gt;FILE&lt;/code&gt; streams. Any real input source will probably be available as a stream, so this might not seem like a huge problem — though it does rule out parsing from a memory buffer, unless you use a non-portable function like &lt;code&gt;fmemopen&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;The second, more important, problem is that the parser callback has full control over when and how much to read from the stream. In this example, we try to read in the full four bytes for the &lt;code&gt;uint32_t&lt;/code&gt; output value. However, there might not be four bytes available in the stream. If this is because we&amp;#8217;re at the end of a file, then we should treat this as a parse error. If we&amp;#8217;re reading from a network socket, though, another chunk of data might arrive if we wait for a bit.&lt;/p&gt;
+
+&lt;p&gt;We could add logic to the callback to read from the stream repeatedly until we got enough data, but then we&amp;#8217;ll start &lt;em&gt;blocking&lt;/em&gt; — so that we can distinguish between &amp;#8220;there&amp;#8217;s no more data here &lt;em&gt;yet&lt;/em&gt;&amp;#8221; from &amp;#8220;there&amp;#8217;s no more data coming &lt;em&gt;at all&lt;/em&gt;&amp;#8221;.&lt;/p&gt;
+
+&lt;p&gt;All of this is bad news. First of all, this extra I/O logic is starting to get rather big, and we don&amp;#8217;t want each and every callback to have to include it. And second, we don&amp;#8217;t want the rest of our program to be held hostage by the callback — it should be up to our I/O code to decide whether it&amp;#8217;s okay to block waiting for more input, or whether to whip up a nice &lt;code&gt;select&lt;/code&gt; loop of some kind to read things more efficiently.&lt;/p&gt;
+
+&lt;p&gt;In the next post, we&amp;#8217;ll describe &lt;em&gt;iteratees&lt;/em&gt;, which give us this capability.&lt;/p&gt;</content>
+  </entry>
   
   <entry>
     <title>Using LLVM's link-time optimization on Ubuntu Karmic</title>
@@ -25,13 +68,13 @@
 
 &lt;h2 id='good_news_and_bad_news'&gt;Good news and bad news&lt;/h2&gt;
 
-&lt;p&gt;Intrigued by the results, I wanted to try the same thing on my Linux boxes, which are running Ubuntu Karmic. On the Mac, Apple has made sure to include support for LLVM in all of the standard Xcode build tools. On Linux, you don&amp;#8217;t get this by default right now — though GCC is implementing their own LTO project, which is starting to bear fruit. Part of GCC&amp;#8217;s project is a new “&lt;code&gt;gold&lt;/code&gt;” linker, which supports a plugin architecture. How is this useful to us? Well, LLVM already has a &lt;a href='http://llvm.org/docs/GoldPlugin.html'&gt;plugin&lt;/a&gt; for the new linker, so with everything installed correctly, getting LTO through LLVM on Linux can be just as simple as it was on the Mac.&lt;/p&gt;
+&lt;p&gt;Intrigued by the results, I wanted to try the same thing on my Linux boxes, which are running Ubuntu Karmic. On the Mac, Apple has made sure to include support for LLVM in all of the standard Xcode build tools. On Linux, you don&amp;#8217;t get this by default right now — though GCC is implementing their own LTO project, which is starting to bear fruit. Part of this is a new “&lt;code&gt;gold&lt;/code&gt;” linker, which supports a plugin architecture. How is this useful to us? Well, LLVM already has a &lt;a href='http://llvm.org/docs/GoldPlugin.html'&gt;plugin&lt;/a&gt; for the new linker, so with everything installed correctly, getting LTO through LLVM on Linux can be just as simple as it was on the Mac.&lt;/p&gt;
 
-&lt;p&gt;Unfortunately, these new tools have only partially made it into the Ubuntu package tree. You can get the new &lt;code&gt;gold&lt;/code&gt; linker by installing the &lt;code&gt;binutils-gold&lt;/code&gt; package, and you can get most of the LLVM pieces by installing the &lt;code&gt;llvm&lt;/code&gt; and &lt;code&gt;llvm-gcc-4.2&lt;/code&gt; packages. Unfortunately, this does not include the LLVM &lt;code&gt;gold&lt;/code&gt; plugin or the new &lt;code&gt;clang&lt;/code&gt; C/C++ compiler front-end. Things look promising for these features being in the new Lucid packages — which could even lead to a Karmic backport — but for now, if we want the &lt;code&gt;gold&lt;/code&gt; plugin, we have to compile ourselves.&lt;/p&gt;
+&lt;p&gt;Unfortunately, these new tools have only partially made it into the Ubuntu package tree. You can get the new &lt;code&gt;gold&lt;/code&gt; linker by installing the &lt;code&gt;binutils-gold&lt;/code&gt; package, and you can get most of the LLVM pieces by installing the &lt;code&gt;llvm&lt;/code&gt; and &lt;code&gt;llvm-gcc-4.2&lt;/code&gt; packages. Unfortunately, this doesn&amp;#8217;t include the LLVM &lt;code&gt;gold&lt;/code&gt; plugin or the new &lt;code&gt;clang&lt;/code&gt; C/C++ compiler front-end. Things look promising for these features being in the new Lucid packages — which could even lead to a Karmic backport — but for now, if we want the &lt;code&gt;gold&lt;/code&gt; plugin, we have to compile ourselves.&lt;/p&gt;
 
 &lt;h2 id='getting_the_prerequisites'&gt;Getting the prerequisites&lt;/h2&gt;
 
-&lt;p&gt;As mentioned on the LLVM &lt;a href='http://llvm.org/docs/GoldPlugin.html'&gt;linker plugin page&lt;/a&gt;, you need to have the &lt;code&gt;binutils&lt;/code&gt; source lying around somewhere if you want to compile the plugin, since the LLVM source needs to read in &lt;code&gt;binutils&lt;/code&gt;&amp;#8217;s &lt;em&gt;plugin-api.h&lt;/em&gt; file. The easiest way for us to get the &lt;code&gt;binutil&lt;/code&gt; source is using APT:&lt;/p&gt;
+&lt;p&gt;As mentioned on the LLVM &lt;a href='http://llvm.org/docs/GoldPlugin.html'&gt;linker plugin page&lt;/a&gt;, you need to have the &lt;code&gt;binutils&lt;/code&gt; source lying around somewhere if you want to compile the plugin, since the LLVM source needs to read in &lt;code&gt;binutils&lt;/code&gt;&amp;#8217;s &lt;em&gt;plugin-api.h&lt;/em&gt; file. The easiest way for us to get the &lt;code&gt;binutils&lt;/code&gt; source is using APT:&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;$ mkdir -p $HOME/deb
 $ cd $HOME/deb
@@ -43,7 +86,7 @@ $ apt-get source binutils&lt;/code&gt;&lt;/pre&gt;
 
 &lt;pre&gt;&lt;code&gt;$ sudo apt-get install binutils-gold&lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;You&amp;#8217;ll also need to make sure you&amp;#8217;ve got the basic compilation tools installed (though if you&amp;#8217;re trying to get LTO support, I&amp;#8217;ve got to assume you&amp;#8217;ve already taken care of this&amp;#8230;):&lt;/p&gt;
+&lt;p&gt;You&amp;#8217;ll also need to make sure you&amp;#8217;ve got the basic compilation tools installed (though if you&amp;#8217;re at the point where you&amp;#8217;re trying to play around with LTO, I&amp;#8217;ve got to assume you&amp;#8217;ve already taken care of this&amp;#8230;):&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;$ sudo apt-get install build-essential&lt;/code&gt;&lt;/pre&gt;
 
@@ -71,7 +114,7 @@ $ tar xzvf clang-2.6.tar.gz&lt;/code&gt;&lt;/pre&gt;
 
 &lt;pre&gt;&lt;code&gt;$ cd llvm-2.6
 $ ./configure \
-    --with-binutils=$HOME/deb/binutils-2.20/include \
+    --with-binutils-include=$HOME/deb/binutils-2.20/include \
     --enable-optimized \
     --prefix=/usr/local
 $ make
@@ -262,11 +305,11 @@ describe&lt;/code&gt;:&lt;/p&gt;
 
 &lt;ul&gt;
 &lt;li&gt;
-&lt;p&gt;Parsers will be represented by a C type. In libpush this is the &lt;code&gt;push_callback_t&lt;/code&gt; type.&lt;/p&gt;
+&lt;p&gt;Parsers will be represented by a C type. In libpush, this is the &lt;code&gt;push_callback_t&lt;/code&gt; type.&lt;/p&gt;
 &lt;/li&gt;
 
 &lt;li&gt;
-&lt;p&gt;There will be several primitive parsers; these will be functions that return a &lt;code&gt;push_callback_t&lt;/code&gt;. The functions take take in parameters, but none of the parameters can be a &lt;code&gt;push_callback_t&lt;/code&gt;. (See the &lt;code&gt;char&lt;/code&gt; primitive from above; it needed to take in the particular character that is expected.)&lt;/p&gt;
+&lt;p&gt;There will be several primitive parsers; these will be functions that return a &lt;code&gt;push_callback_t&lt;/code&gt;. The functions can take in parameters, but none of the parameters will be a &lt;code&gt;push_callback_t&lt;/code&gt;. (See the &lt;code&gt;char&lt;/code&gt; primitive from above; it needed to take in the particular character that is expected.)&lt;/p&gt;
 &lt;/li&gt;
 
 &lt;li&gt;

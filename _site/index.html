@@ -76,6 +76,75 @@
           
   
 
+  <h1>Parser callbacks in libpush, Part 1 — Streams</h1>
+
+  <div class="postdate">
+    Thursday, February 25, 2010
+  </div>
+
+  <p>This post is the first in a series that describes the <code>push_callback_t</code> type in the <a href='http://github.com/dcreager/libpush/'>libpush</a> library. In these posts, we&#8217;ll walk through a couple of possible ways to implement callbacks under the covers. At each stage, we&#8217;ll encounter problems with the current design. Fixing these problems should lead closer us to the actual implementation in libpush, and along the way, we&#8217;ll gain a good understanding of how our design decisions affect the performance and usability of the library.</p>
+
+<p>The <code>push_callback_t</code> type is used to define <em>parser callbacks</em>, which are the basic unit of parsing in libpush. Callbacks are pretty simple: they take in an <em>input value</em>, read some data from the <em>input stream</em>, and produce an <em>output value</em>. (The fact that callbacks take in an input value, in addition to reading from the input stream, is what makes them <a href='http://www.haskell.org/arrows/'><em>arrows</em></a> instead of <a href='http://en.wikipedia.org/wiki/Monad_%28functional_programming%29'><em>monads</em></a> — but that&#8217;s a story for a later post).</p>
+
+<h2 id='first_attempt_callbacks_as_functions'>First attempt: Callbacks as functions</h2>
+
+<p>Now, with this simple structure, we might try to implement callbacks as regular C functions. For instance, we could use something like the following to read in a single 32-bit integer:</p>
+<div class='highlight'><pre><code class='c'><span class='cp'>#include &lt;stdbool.h&gt;</span>
+<span class='cp'>#include &lt;stdint.h&gt;</span>
+<span class='cp'>#include &lt;stdio.h&gt;</span>
+
+<span class='n'>bool</span>
+<span class='nf'>parse_uint32</span><span class='p'>(</span><span class='kt'>void</span> <span class='o'>*</span><span class='n'>input</span><span class='p'>,</span> <span class='kt'>uint32_t</span> <span class='o'>*</span><span class='n'>output</span><span class='p'>,</span> <span class='kt'>FILE</span> <span class='o'>*</span><span class='n'>stream</span><span class='p'>)</span>
+<span class='p'>{</span>
+    <span class='kt'>size_t</span>  <span class='n'>num_read</span><span class='p'>;</span>
+
+    <span class='n'>num_read</span> <span class='o'>=</span> <span class='n'>fread</span><span class='p'>(</span><span class='n'>output</span><span class='p'>,</span> <span class='k'>sizeof</span><span class='p'>(</span><span class='kt'>uint32_t</span><span class='p'>),</span> <span class='mi'>1</span><span class='p'>,</span> <span class='n'>stream</span><span class='p'>);</span>
+    <span class='k'>return</span> <span class='p'>(</span><span class='n'>num_read</span> <span class='o'>==</span> <span class='mi'>1</span><span class='p'>);</span>
+<span class='p'>}</span>
+</code></pre>
+</div>
+<p>This callback ignores its input value, reads in four bytes from the input stream, and uses that to output a <code>uint32_t</code> value. The return value of the function is a boolean, indicating whether the parse was successful or not. This lets us handle <em>parse errors</em> — for instance, if there are only three bytes left in the stream, we can&#8217;t read in a full integer. We return <code>false</code> to indicate this error condition.</p>
+
+<p>We&#8217;ve ignored some details here that aren&#8217;t important for this example — for instance, we don&#8217;t worry about the endianness of the integer, nor do we worry about how the space for the output result is allocated. We just assume that someone will pass in a pointer to a <code>uint32_t</code> variable, and our callback function will store its output value there.</p>
+
+<h2 id='drawbacks'>Drawbacks</h2>
+
+<p>This approach works fine for simple cases, but unfortunately has two drawbacks. First, we&#8217;re limited to parsing from <code>FILE</code> streams. Any real input source will probably be available as a stream, so this might not seem like a huge problem — though it does rule out parsing from a memory buffer, unless you use a non-portable function like <code>fmemopen</code>.</p>
+
+<p>The second, more important, problem is that the parser callback has full control over when and how much to read from the stream. In this example, we try to read in the full four bytes for the <code>uint32_t</code> output value. However, there might not be four bytes available in the stream. If this is because we&#8217;re at the end of a file, then we should treat this as a parse error. If we&#8217;re reading from a network socket, though, another chunk of data might arrive if we wait for a bit.</p>
+
+<p>We could add logic to the callback to read from the stream repeatedly until we got enough data, but then we&#8217;ll start <em>blocking</em> — so that we can distinguish between &#8220;there&#8217;s no more data here <em>yet</em>&#8221; from &#8220;there&#8217;s no more data coming <em>at all</em>&#8221;.</p>
+
+<p>All of this is bad news. First of all, this extra I/O logic is starting to get rather big, and we don&#8217;t want each and every callback to have to include it. And second, we don&#8217;t want the rest of our program to be held hostage by the callback — it should be up to our I/O code to decide whether it&#8217;s okay to block waiting for more input, or whether to whip up a nice <code>select</code> loop of some kind to read things more efficiently.</p>
+
+<p>In the next post, we&#8217;ll describe <em>iteratees</em>, which give us this capability.</p>
+
+  
+  <div class="posttags">
+    Tags:
+    <ul>
+      
+      <li><a href="/tags/libpush/">libpush</a></li>
+      
+      <li><a href="/tags/c/">c</a></li>
+      
+    </ul>
+  </div>
+  
+
+  <div class="postlinks">
+    <a href="/2010/02/25/libpush-callbacks-part-1/">Permanent link</a>
+    |
+    <a href="/2010/02/25/libpush-callbacks-part-1/#disqus_thread">Comments</a>
+  </div>
+
+  
+  </div>
+<div class="body_separator"></div>
+<div class="body">
+
+  
+
   <h1>Using LLVM's link-time optimization on Ubuntu Karmic</h1>
 
   <div class="postdate">
@@ -90,13 +159,13 @@
 
 <h2 id='good_news_and_bad_news'>Good news and bad news</h2>
 
-<p>Intrigued by the results, I wanted to try the same thing on my Linux boxes, which are running Ubuntu Karmic. On the Mac, Apple has made sure to include support for LLVM in all of the standard Xcode build tools. On Linux, you don&#8217;t get this by default right now — though GCC is implementing their own LTO project, which is starting to bear fruit. Part of GCC&#8217;s project is a new “<code>gold</code>” linker, which supports a plugin architecture. How is this useful to us? Well, LLVM already has a <a href='http://llvm.org/docs/GoldPlugin.html'>plugin</a> for the new linker, so with everything installed correctly, getting LTO through LLVM on Linux can be just as simple as it was on the Mac.</p>
+<p>Intrigued by the results, I wanted to try the same thing on my Linux boxes, which are running Ubuntu Karmic. On the Mac, Apple has made sure to include support for LLVM in all of the standard Xcode build tools. On Linux, you don&#8217;t get this by default right now — though GCC is implementing their own LTO project, which is starting to bear fruit. Part of this is a new “<code>gold</code>” linker, which supports a plugin architecture. How is this useful to us? Well, LLVM already has a <a href='http://llvm.org/docs/GoldPlugin.html'>plugin</a> for the new linker, so with everything installed correctly, getting LTO through LLVM on Linux can be just as simple as it was on the Mac.</p>
 
-<p>Unfortunately, these new tools have only partially made it into the Ubuntu package tree. You can get the new <code>gold</code> linker by installing the <code>binutils-gold</code> package, and you can get most of the LLVM pieces by installing the <code>llvm</code> and <code>llvm-gcc-4.2</code> packages. Unfortunately, this does not include the LLVM <code>gold</code> plugin or the new <code>clang</code> C/C++ compiler front-end. Things look promising for these features being in the new Lucid packages — which could even lead to a Karmic backport — but for now, if we want the <code>gold</code> plugin, we have to compile ourselves.</p>
+<p>Unfortunately, these new tools have only partially made it into the Ubuntu package tree. You can get the new <code>gold</code> linker by installing the <code>binutils-gold</code> package, and you can get most of the LLVM pieces by installing the <code>llvm</code> and <code>llvm-gcc-4.2</code> packages. Unfortunately, this doesn&#8217;t include the LLVM <code>gold</code> plugin or the new <code>clang</code> C/C++ compiler front-end. Things look promising for these features being in the new Lucid packages — which could even lead to a Karmic backport — but for now, if we want the <code>gold</code> plugin, we have to compile ourselves.</p>
 
 <h2 id='getting_the_prerequisites'>Getting the prerequisites</h2>
 
-<p>As mentioned on the LLVM <a href='http://llvm.org/docs/GoldPlugin.html'>linker plugin page</a>, you need to have the <code>binutils</code> source lying around somewhere if you want to compile the plugin, since the LLVM source needs to read in <code>binutils</code>&#8217;s <em>plugin-api.h</em> file. The easiest way for us to get the <code>binutil</code> source is using APT:</p>
+<p>As mentioned on the LLVM <a href='http://llvm.org/docs/GoldPlugin.html'>linker plugin page</a>, you need to have the <code>binutils</code> source lying around somewhere if you want to compile the plugin, since the LLVM source needs to read in <code>binutils</code>&#8217;s <em>plugin-api.h</em> file. The easiest way for us to get the <code>binutils</code> source is using APT:</p>
 
 <pre><code>$ mkdir -p $HOME/deb
 $ cd $HOME/deb
@@ -108,7 +177,7 @@ $ apt-get source binutils</code></pre>
 
 <pre><code>$ sudo apt-get install binutils-gold</code></pre>
 
-<p>You&#8217;ll also need to make sure you&#8217;ve got the basic compilation tools installed (though if you&#8217;re trying to get LTO support, I&#8217;ve got to assume you&#8217;ve already taken care of this&#8230;):</p>
+<p>You&#8217;ll also need to make sure you&#8217;ve got the basic compilation tools installed (though if you&#8217;re at the point where you&#8217;re trying to play around with LTO, I&#8217;ve got to assume you&#8217;ve already taken care of this&#8230;):</p>
 
 <pre><code>$ sudo apt-get install build-essential</code></pre>
 
@@ -136,7 +205,7 @@ $ tar xzvf clang-2.6.tar.gz</code></pre>
 
 <pre><code>$ cd llvm-2.6
 $ ./configure \
-    --with-binutils=$HOME/deb/binutils-2.20/include \
+    --with-binutils-include=$HOME/deb/binutils-2.20/include \
     --enable-optimized \
     --prefix=/usr/local
 $ make
@@ -339,83 +408,6 @@ describe</code>:</p>
     <a href="/2010/02/10/setuptools-git-version-numbers/">Permanent link</a>
     |
     <a href="/2010/02/10/setuptools-git-version-numbers/#disqus_thread">Comments</a>
-  </div>
-
-  
-  </div>
-<div class="body_separator"></div>
-<div class="body">
-
-  
-
-  <h1>A combinator-based parsing library for C</h1>
-
-  <div class="postdate">
-    Saturday, February 06, 2010
-  </div>
-
-  <p>Recently I&#8217;ve been working on <a href='http://github.com/dcreager/libpush/'>libpush</a>, which a new parsing library for C. It has two main features that I think will be valuable: it&#8217;s a <em>push parser</em>, which means that instead of parsing a file, stream, or single memory buffer, you supply the data (or &#8220;push&#8221; it) to the parser in chunks, as it becomes available. I plan to discuss this aspect of the parser in more detail in a later post.</p>
-
-<p>The other main feature is that you design your parsers using <em>combinators</em>. Parser combinators are widely used in Haskell, with <a href='http://legacy.cs.uu.nl/daan/parsec.html'>Parsec</a> being the most common example. Combinator-based parsing libraries are especially nice in Haskell, because Haskell&#8217;s syntax makes them look very simple. For instance, a parser that parses matching nested parentheses is:</p>
-<div class='highlight'><pre><code class='haskell'><span class='nf'>parens</span> <span class='ow'>::</span> <span class='kt'>Parser</span> <span class='nb'>()</span>
-<span class='nf'>parens</span> <span class='ow'>=</span> <span class='p'>(</span><span class='n'>char</span> <span class='sc'>&#39;(&#39;</span> <span class='o'>&gt;&gt;</span> <span class='n'>parens</span> <span class='o'>&gt;&gt;</span> <span class='n'>char</span> <span class='sc'>&#39;)&#39;</span> <span class='o'>&gt;&gt;</span> <span class='n'>parens</span><span class='p'>)</span> <span class='o'>&lt;|&gt;</span> <span class='n'>return</span> <span class='nb'>()</span>
-</code></pre>
-</div>
-<p>Here, the <code>&lt;|&gt;</code> operator represents <em>choice</em>: we try parsing the left operand, and if it fails, then we try the right operand. In our example, the right operand is the base case, which matches the empty string. The left operand parses an opening parenthesis; then recursively calls itself to match any parentheses that might be nested in the current set; then parses the closing parenthesis; and then finally tries to match a nested set that occurs after the current set.</p>
-
-<p>When we say that this is a combinator-based parser, we mean that it&#8217;s implemented by taking <em>primitive parsers</em> — in this case <code>char &#39;(&#39;</code> and <code>return ()</code> — and combining them into more complex parsers using generic operators like <code>&gt;&gt;</code> and <code>&lt;|&gt;</code>.</p>
-
-<p>Now, in order to be able to use combinators like this, parsers have to be first-class objects in your language. In the Haskell code, the parsers are represented by the <code>Parser ()</code> type. In most Haskell parsing libraries (including Parsec), the parser type is implemented as a <a href='http://en.wikipedia.org/wiki/Monad_%28functional_programming%29'><em>monad</em></a>. Monads have a reputation for being a horribly complex topic, but in this case, we don&#8217;t really need to learn about the underlying math. Instead, we can just view the monad as letting us do two things concisely:</p>
-
-<ol>
-<li>
-<p>Parsers can return a value, which could (for instance) be the abstract syntax tree that you&#8217;re building up while parsing your language. The monadic bind operator (<code>&gt;&gt;=</code>) gives you a way to &#8220;pass&#8221; these values between parsers, if needed.</p>
-</li>
-
-<li>
-<p>Simultaneously, the parser monad maintains the state of the stream you&#8217;re parsing from, keeping track of how many bytes remain, whether there&#8217;s an error condition, and possibly a nice human-readable description (line and column) of the current location.</p>
-</li>
-</ol>
-
-<p>This is admittedly a lot of setup; we&#8217;ve been talking a lot about Haskell in a post that&#8217;s ostensibly describing a C library. But hopefully, this gives you a taste for the kinds of features we want to support in libpush:</p>
-
-<ul>
-<li>
-<p>Parsers will be represented by a C type. In libpush this is the <code>push_callback_t</code> type.</p>
-</li>
-
-<li>
-<p>There will be several primitive parsers; these will be functions that return a <code>push_callback_t</code>. The functions take take in parameters, but none of the parameters can be a <code>push_callback_t</code>. (See the <code>char</code> primitive from above; it needed to take in the particular character that is expected.)</p>
-</li>
-
-<li>
-<p>There will be several combinators; these will be functions that return a <code>push_callback_t</code>, and take in other <code>push_callback_t</code>s as parameters.</p>
-
-<p>You can see several of these primitives and combinators in action in the <a href='http://github.com/dcreager/libpush/'>libpush Github repository</a>.</p>
-</li>
-
-<li>
-<p>We will use something like a monad to take care of passing values between our parsers, and for keeping track of the state of the underlying stream. I say &#8220;something like a monad&#8221;, because, unlike the Parsec library, the libpush parser type will <em>not</em> be implemented as a monad; in turns out that C is more amenable to implementing them as <a href='http://www.haskell.org/arrows/'><em>arrows</em></a>. In a later post, I&#8217;ll explain what this means in terms of writing your own parsers, or for building them up from combinators.</p>
-</li>
-</ul>
-
-  
-  <div class="posttags">
-    Tags:
-    <ul>
-      
-      <li><a href="/tags/libpush/">libpush</a></li>
-      
-      <li><a href="/tags/c/">c</a></li>
-      
-    </ul>
-  </div>
-  
-
-  <div class="postlinks">
-    <a href="/2010/02/06/libpush/">Permanent link</a>
-    |
-    <a href="/2010/02/06/libpush/#disqus_thread">Comments</a>
   </div>
 
 
