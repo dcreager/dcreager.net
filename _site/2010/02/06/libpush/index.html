@@ -104,11 +104,11 @@
 
 <ul>
 <li>
-<p>Parsers will be represented by a C type. In libpush this is the <code>push_callback_t</code> type.</p>
+<p>Parsers will be represented by a C type. In libpush, this is the <code>push_callback_t</code> type.</p>
 </li>
 
 <li>
-<p>There will be several primitive parsers; these will be functions that return a <code>push_callback_t</code>. The functions take take in parameters, but none of the parameters can be a <code>push_callback_t</code>. (See the <code>char</code> primitive from above; it needed to take in the particular character that is expected.)</p>
+<p>There will be several primitive parsers; these will be functions that return a <code>push_callback_t</code>. The functions can take in parameters, but none of the parameters will be a <code>push_callback_t</code>. (See the <code>char</code> primitive from above; it needed to take in the particular character that is expected.)</p>
 </li>
 
 <li>

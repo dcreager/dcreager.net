@@ -64,12 +64,12 @@ Haskell in a post that's ostensibly describing a C library.  But
 hopefully, this gives you a taste for the kinds of features we want to
 support in libpush:
 
- * Parsers will be represented by a C type.  In libpush this is the
+ * Parsers will be represented by a C type.  In libpush, this is the
    `push_callback_t` type.
 
  * There will be several primitive parsers; these will be functions
-   that return a `push_callback_t`.  The functions take take in
-   parameters, but none of the parameters can be a `push_callback_t`.
+   that return a `push_callback_t`.  The functions can take in
+   parameters, but none of the parameters will be a `push_callback_t`.
    (See the `char` primitive from above; it needed to take in the
    particular character that is expected.)
 
