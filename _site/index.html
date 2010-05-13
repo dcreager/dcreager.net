@@ -76,6 +76,132 @@
           
   
 
+  <h1>Installing Ubuntu Lucid on a PowerPC QEMU virtual machine</h1>
+
+  <div class="postdate">
+    Thursday, May 13, 2010
+  </div>
+
+  <p>Part of the software I help develop at <a href='http://www.redjack.com/'>RedJack</a> needs to be tested on both little-endian and big-endian machines. Little-endian machines are easy, since everyone and their mother is running on a little-endian Intel or AMD x86 chip. It used to be that big-endian was pretty easy to test, too — just break out your trusty Apple Powerbook G4 and you&#8217;re good to go. Since Apple has shifted over to Intel chips, though, the situation has changed.</p>
+
+<p>Luckily, <a href='http://wiki.qemu.org/'>QEMU</a> has PowerPC as one of the targets that it can emulate, so in theory, I can still easily test my code on a big-endian machine by creating a QEMU PowerPC virtual machine. There&#8217;s already a writeup about trying to install Debian onto a QEMU VM <a href='http://machine-cycle.blogspot.com/2009/05/running-debian-on-qemu-powerpc.html'>here</a>. <a href='http://www.aurel32.net/'>Aurélien Jarno</a> has graciously put together downloadable disk images with Debian preinstalled. If that&#8217;s good enough for your purposes, just go download those! You won&#8217;t need any of the rest of the information on this page.</p>
+
+<p>Unfortunately, I didn&#8217;t want to run stock Debian; my little-endian build machine is running Ubuntu Lucid, and for consistency, I wanted my big-endian VM to be running the same. As it turns out, this also required a fair dose of masochism on my part. There are several issues that you&#8217;ll encounter if you try to do this by hand. Here is my cheat sheet for getting around these issues.</p>
+
+<p>Note that this isn&#8217;t a full step-by-step account of how to install Lucid onto a QEMU VM. For now, I&#8217;m just trying to get my notes down into a more permanent form.</p>
+
+<h2 id='getting_qemu'>Getting QEMU</h2>
+
+<p>Note that I&#8217;m using Ubuntu Lucid as both the host and the guest OS for this virtual machine; if you&#8217;re running QEMU on a non-Ubuntu host, then you can skip this section.</p>
+
+<p>It seems that there&#8217;s a bug with the current QEMU packages in Lucid. If you try to run <code>qemu-system-ppc</code>, you&#8217;ll get an error message about missing the PowerPC BIOS image. Joy.</p>
+
+<p>Easiest way to get around this is to install QEMU from source. Download the latest version from <a href='http://download.savannah.gnu.org/releases/qemu/'>here</a>. Once you&#8217;ve unpacked it, use the following to build:</p>
+
+<pre><code>$ sudo apt-get build-dep qemu
+$ ./configure --prefix=/usr/local \
+    --enable-sdl --enable-curses --enable-curl \
+    --enable-kvm --enable-nptl --enable-uuid \
+    --enable-linux-aio --enable-io-thread \
+    --audio-drv-list=alsa
+$ make
+$ sudo make install</code></pre>
+
+<p>The first command is just an easy way to ensure that all of the prerequisite libraries are installed.</p>
+
+<h2 id='booting_the_installation_cd'>Booting the installation CD</h2>
+
+<p>Once you&#8217;ve got a working QEMU installed, you can find the PowerPC Lucid installation CD <a href='http://cdimage.ubuntu.com/ports/releases/10.04/release/'>here</a>. I&#8217;ve decided to use the server installation CD; I don&#8217;t really need (or want) X windows running in the VM.</p>
+
+<p>To install this onto a new VM, it should be as simple as:</p>
+
+<pre><code>$ qemu-img create -f qcow2 ubuntu-ppc.qcow2 10G
+$ qemu-system-ppc -m 1024 -hda ubuntu-ppc.qcow2 \
+    -cdrom ubuntu-10.04-server-powerpc.iso -boot d</code></pre>
+
+<p>This links up the Ubuntu installation CD on the VM&#8217;s CD-ROM drive, and uses a new disk image for the primary hard disk. Oh, and we make sure to give the VM enough RAM to do its business — the default is a paltry 128MB.</p>
+
+<p>Of course, this doesn&#8217;t work — the Lucid installer suffers from the same problem described <a href='http://mac.linux.be/content/ubuntu-810-installer-fails-detect-cd-rom'>here</a> for the Intrepid installer. Once you get into the installer, the installation program can&#8217;t find the CD-ROM device, and so it can&#8217;t read the installation packages. Unfortunately, the workaround doesn&#8217;t work for Lucid, since it uses a newer Linux kernel that has <a href='http://www.linux.com/archive/feed/33164'>eliminated the <code>ide-scsi</code> module</a>.</p>
+
+<p>So, what do we do? Well, QEMU also allows us to mount a disk image as a USB removable disk, but it won&#8217;t let us boot from USB. We end up having to mount the disk image twice: Once as a virtual CD, so that we can boot into the installer, and once as a virtual USB disk, so that the installer can find the installation packages. The QEMU command line becomes:</p>
+
+<pre><code>$ qemu-system-ppc -m 1024 -hda ubuntu-ppc.qcow2 \
+    -cdrom ubuntu-10.04-server-powerpc.iso -boot d \
+    -usb -usbdevice disk:ubuntu-10.04-server-powerpc.iso</code></pre>
+
+<p>You won&#8217;t have to manually load the <code>usb-storage</code> module; it gets loaded automatically, and places the USB disk at <code>/dev/sda</code>.</p>
+
+<p>You&#8217;ll still get the error message about not finding the CD; when this happens say &#8220;no&#8221; when it asks whether you need to load a module from a removable disk. Say &#8220;yes&#8221; when it asks if you want to choose a module and device manually; choose &#8220;none&#8221; for the module; then type in <code>/dev/sda</code> as the device location.</p>
+
+<h2 id='corrupt_package_files_on_cd'>Corrupt package files on CD</h2>
+
+<p>Right, so now we have to be good, right? We can start QEMU, we can boot into the installer, and the installer can find all of the packages? Nope! There were several corrupted package files on the CD image I downloaded. If this happens to you, you should certainly try re-downloading the image, to take care of any spurious transmission errors. But if you still end up with some corrupted package files, there are ways around it.</p>
+
+<p>The installer will try to install its initial set of packages using <code>apt-get</code>. If you encounter problems with these stages, you&#8217;ll see some informative error messages on console 4, which is where the installer&#8217;s log output is sent. You can get there by pressing <em>Alt-F4</em> in the VM. (As a warning, don&#8217;t try to shift to console 4 without ensuring that QEMU is grabbing the input. In most window managers, <em>Alt-F4</em> will close the current window, which will just abruptly stop the VM!)</p>
+
+<p>By the time the installer tries to install packages, the VM&#8217;s hard disk will be partitioned and formatted, and so we can drop into a shell as necessary. To do so, shift over to console 2 using <em>Alt-F2</em> — again, make sure that QEMU is grabbing all keyboard and mouse input before switching consoles.</p>
+
+<p>Once you&#8217;re on console 2, you can <code>chroot</code> into the new system as follows:</p>
+
+<pre><code>~ $ mount -o /proc /target/proc
+~ $ mount -o /sys /target/sys
+~ $ mount -o /dev /target/dev
+~ $ chroot /target</code></pre>
+
+<p>At this point, you&#8217;ll be &#8220;inside&#8221; the new installation system, and can run whatever <code>apt-get</code> and <code>dpkg</code> commands are necessary to fix things up.</p>
+
+<p>Most likely, you&#8217;ll see &#8220;hash sum mismatch&#8221; errors, indicating that a package file is corrupt. You need to download the correct version from the archive at <em>ports.ubuntu.com</em>. To do this, you&#8217;ll need a copy of <em>wget</em> installed.</p>
+
+<pre><code>$ apt-get install wget
+$ wget -nv http://ports.ubuntu.com/pool/main/PATH_TO_DEB</code></pre>
+
+<p>You&#8217;ll see what to use for the <code>PATH_TO_DEB</code> part in the error message. Once you&#8217;ve downloaded all of the troublesome package files, install them using:</p>
+
+<pre><code>$ dpkg -i *.deb
+$ apt-get -f install</code></pre>
+
+<p>Then you can go back into the installer (on console 1) and try to repeat the current step.</p>
+
+<p>Note that things might be broken early enough that you can&#8217;t install <em>wget</em>. If this is the case, how do you download the non-corrupt package file? Luckily, Python was already installed at that point, so you can use the Python standard library to <a href='http://stackoverflow.com/questions/22676/how-do-i-download-a-file-over-http-using-python'>emulate <em>wget</em></a>:</p>
+
+<pre><code>$ python
+&gt;&gt;&gt; import urllib2
+&gt;&gt;&gt; pkg = urllib2.urlopen(&quot;http://ports.ubuntu.com/BLAH_BLAH&quot;)
+&gt;&gt;&gt; output = open(&quot;BLAH_BLAH.deb&quot;, &quot;wb&quot;)
+&gt;&gt;&gt; output.write(pkg.read())
+&gt;&gt;&gt; output.close()
+&gt;&gt;&gt; ^D</code></pre>
+
+<p>You can then install the package as above.</p>
+
+<h2 id='installing_a_bootloader'>Installing a bootloader</h2>
+
+<p>The installer claims that this architecture doesn&#8217;t support a bootloader, so we have to install one by hand. The usual bootloader for PowerPC machines is <code>yaboot</code>; it&#8217;s fair</p>
+
+  
+  <div class="posttags">
+    Tags:
+    <ul>
+      
+      <li><a href="/tags/ubuntu/">ubuntu</a></li>
+      
+    </ul>
+  </div>
+  
+
+  <div class="postlinks">
+    <a href="/2010/05/13/powerpc-qemu-lucid/">Permanent link</a>
+    |
+    <a href="/2010/05/13/powerpc-qemu-lucid/#disqus_thread">Comments</a>
+  </div>
+
+  
+  </div>
+<div class="body_separator"></div>
+<div class="body">
+
+  
+
   <h1>Parser callbacks in libpush, Part 1 — Streams</h1>
 
   <div class="postdate">
@@ -279,135 +405,6 @@ llvm-gcc: -use-gold-plugin, but libLLVMgold.so not found.</code></pre>
     <a href="/2010/02/17/llvm-lto-karmic/">Permanent link</a>
     |
     <a href="/2010/02/17/llvm-lto-karmic/#disqus_thread">Comments</a>
-  </div>
-
-  
-  </div>
-<div class="body_separator"></div>
-<div class="body">
-
-  
-
-  <h1>Extracting setuptools version numbers from your git repository</h1>
-
-  <div class="postdate">
-    Wednesday, February 10, 2010
-  </div>
-
-  <p>Just like everyone else, we&#8217;re using <a href='http://pypi.python.org/pypi/setuptools'>setuptools</a> as the core of the build system for our Python-based projects. For the most part, this has been a painless, straightforward process. However, one lingering annoyance is that we&#8217;ve been specifying the version number directly in our <em>setup.py</em> files:</p>
-<div class='highlight'><pre><code class='python'><span class='kn'>from</span> <span class='nn'>setuptools</span> <span class='kn'>import</span> <span class='n'>setup</span>
-
-<span class='n'>setup</span><span class='p'>(</span>
-    <span class='n'>name</span> <span class='o'>=</span> <span class='s'>&quot;awesomelib&quot;</span><span class='p'>,</span>
-    <span class='n'>version</span> <span class='o'>=</span> <span class='s'>&quot;1.2&quot;</span><span class='p'>,</span>
-    <span class='c'># ...etc</span>
-<span class='p'>)</span>
-</code></pre>
-</div>
-<p>On our maintenance branches, we get a nice <em>awesomelib-1.2.tar.gz</em> file when we run <code>python setup.py sdist</code>. On our development branch, we&#8217;ve also got the following <em>setup.cfg</em> file:</p>
-<div class='highlight'><pre><code class='ini'><span class='k'>[egg_info]</span>
-<span class='na'>tag_build</span> <span class='o'>=</span> <span class='s'>dev</span>
-<span class='na'>tag_date</span> <span class='o'>=</span> <span class='s'>true</span>
-</code></pre>
-</div>
-<p>That gives us tarballs like <em>awesomelib-1.2dev-20100210.tar.gz</em> on our development branch. Because we&#8217;re using the <code>dev</code> suffix, which setuptools considers to be a &#8220;prerelease&#8221;, we have to remember to increment the version number in development whenever we cut a new release. The end result is that we have a longish process for creating releases. If we want to create a new 1.3 release, we have to do the following:</p>
-
-<ol>
-<li>
-<p>Create a new maintenance branch for 1.3:</p>
-
-<pre><code>$ git checkout -b maint-1.3 master</code></pre>
-</li>
-
-<li>
-<p>Update the <em>setup.cfg</em> file to remove the <code>tag_build</code> and <code>tag_date</code> entries. Commit this with a &#8220;Tagging version 1.3&#8221; commit message.</p>
-</li>
-
-<li>
-<p>Back on the development branch, update <em>setup.py</em> to increment the &#8220;development version&#8221; to 1.4.</p>
-</li>
-</ol>
-
-<p>Granted, this isn&#8217;t horribly difficult, but we can do better.</p>
-
-<h2 id='calculating_the_version_automatically'>Calculating the version automatically</h2>
-
-<p>Taking a page from the <a href='http://git.kernel.org/?p=git/git.git;a=blob;f=GIT-VERSION-GEN'><em>GIT-VERSION-GEN</em></a> script in git&#8217;s source code, we&#8217;re going to use the <code>git describe</code> command to automatically generate the version number.</p>
-
-<p>Our logic is implemented in a new <code>get_git_version()</code> Python function, which you can call directly from your <em>setup.py</em> scripts. You can find the source code in a <a href='http://gist.github.com/300803'>Github gist</a>. Our basic strategy is:</p>
-
-<ol>
-<li>
-<p>First, try to use <code>git describe</code> to create a version number.</p>
-</li>
-
-<li>
-<p>If this fails, then we&#8217;re most likely not in a git working copy. Probably, someone downloaded a release tarball and unpacked it, and we&#8217;re running inside of there. In this case, <code>git describe</code> can&#8217;t give us a version number. Instead, we&#8217;re going to make sure we include a <em>RELEASE-VERSION</em> file in every tarball that we create. So, if <code>git describe</code> fails, we fall back on the contents of this file as our version number.</p>
-</li>
-</ol>
-
-<h3 id='tag_names_as_version_numbers'>Tag names as version numbers</h3>
-
-<p>One thing to notice about this strategy is that we use the output of <code>git describe</code> directly as our version number. This means that our tag names should be simple version numbers, without decoration. To create the awesomelib 1.3 release from our example, we&#8217;d just do:</p>
-
-<pre><code>$ git tag -s 1.3</code></pre>
-
-<p>(Note that the tag needs to be an annotated or signed tag in order to be picked up by <code>git describe</code>.)</p>
-
-<p>On our development branch, once we&#8217;ve created new commits on top of the release point, we&#8217;ll start getting output like this from <code>git
-describe</code>:</p>
-
-<pre><code>1.3-4-g6f32</code></pre>
-
-<p>This is a valid setuptools &#8220;postrelease&#8221; — setuptools will consider this to be a more recent version than <code>1.3</code>, which is exactly what we want. This eliminates the need to maintain different <em>setup.cfg</em> files in our development and maintenance branches.</p>
-
-<h3 id='getting_the_version_number_of_a_distribution_tarball'>Getting the version number of a distribution tarball</h3>
-
-<p>Another thing to notice is that we need to maintain a <em>RELEASE-VERSION</em> file, ensuring that it always contains the current version, and always including it when we create any source packages. That way, we can still get the current version number, even if we can&#8217;t get it from <code>git describe</code>.</p>
-
-<p>To keep the <em>RELEASE-VERSION</em> file up-to-date, the <code>get_git_version()</code> function always read in the current contents of the file as its first step. If the output of <code>git describe</code> differs from what&#8217;s in the file, we update the file with the new output before returning the version.</p>
-
-<p>This ensures that the file has the right contents, but we also have to make sure we include it in our source packages. To do this, we simply add the following line to our <em>MANIFEST.in</em> file (creating it if necessary):</p>
-
-<pre><code>include RELEASE-VERSION</code></pre>
-
-<p>(Note that we don&#8217;t want the <em>RELEASE-VERSION</em> file to be checked into the git repository, so we also add it to the top-level <em>.gitignore</em> file.)</p>
-
-<h2 id='the_simpler_release_process'>The simpler release process</h2>
-
-<p>With this script, our release process is now much simpler:</p>
-
-<ol>
-<li>
-<p>Create a maintenance branch if you want to.</p>
-</li>
-
-<li>
-<p>Create a signed or annotated tag, whose name is the new version number.</p>
-</li>
-</ol>
-
-<p>Most importantly, no extra commits are needed, since we don&#8217;t have to edit any version numbers or maintain different <em>setup.cfg</em> files.</p>
-
-  
-  <div class="posttags">
-    Tags:
-    <ul>
-      
-      <li><a href="/tags/setuptools/">setuptools</a></li>
-      
-      <li><a href="/tags/python/">python</a></li>
-      
-      <li><a href="/tags/git/">git</a></li>
-      
-    </ul>
-  </div>
-  
-
-  <div class="postlinks">
-    <a href="/2010/02/10/setuptools-git-version-numbers/">Permanent link</a>
-    |
-    <a href="/2010/02/10/setuptools-git-version-numbers/#disqus_thread">Comments</a>
   </div>
 
 
