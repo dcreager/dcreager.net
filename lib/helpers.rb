@@ -16,3 +16,16 @@ class Nanoc::Item
     content.split("\n\n").take(4).join "\n\n"
   end
 end
+
+def navbar_link(text, target, attributes={})
+  path = target.is_a?(String) ? target : target.path
+
+  if @item_rep && @item_rep.path == path
+    klass = " class=\"active\""
+  else
+    klass = ""
+  end
+
+  link = link_to(text, target, attributes)
+  "<li#{klass}>#{link}</li>"
+end
