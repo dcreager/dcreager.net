@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>
+    dcreager.net – Site layout
+  </title>
+  <meta name="author" content="Douglas Creager">
+
+    <meta charset="utf-8">
+
+  <meta name="google-site-verification" content="7KIoYPNsfdDxIdX1QQ7SM2Nm_nyy13aRlDkzE3wzhhY" />
+
+  <link rel="shortcut icon" href="/media/images/dcreager.ico">
+
+  <link rel="alternate" type="application/atom+xml"
+        title="dcreager.net" href="/atom.xml"/>
+
+  <!-- Bootstrap -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel=stylesheet type=text/css media=screen
+        href="/media/vendor/css/bootstrap.min.css">
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+  <![endif]-->
+
+  <!-- Customizations -->
+  <link rel=stylesheet type=text/css media=screen
+        href="/media/css/coderay.css">
+  <link rel=stylesheet type=text/css media=screen
+        href="/media/css/dcreager.css">
+  <link rel=stylesheet type=text/css media=screen
+        href="http://fonts.googleapis.com/css?family=Oxygen:400,700">
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+  <div class="col-md-10 col-md-offset-1">
+    <nav class="navbar navbar-default" role="navigation">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="/"><b>dcreager.net</b></a>
+      </div>
+
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="/about/">About</a></li>
+          <li><a href="/archive/">Archive</a></li>
+          <li><a href="/publications/">Publications</a></li>
+        </ul>
+      </div><!-- /.navbar-collapse -->
+    </nav>
+  </div>
+</div>
+
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        <div class="blog">
+          <div class="date">2009-08-05</div>
+          <h1>Site layout</h1>
+          <div class="alert alert-danger">
+  <b>NOTE</b>: This post is no longer up-to-date; I've switched to using <a
+  href="http://nanoc.ws">nanoc</a> instead of Jekyll to generate my website.  I
+  plan on adding a post describing the new system shortly.
+</div>
+
+<p>This post will probably end up being more useful to me than to anyone
+else who might stumble across the page.  Here I'm going to document
+how I've set up my homepage, from a technical standpoint.</p>
+
+<h2>Directory layout</h2>
+
+<p>The content of the website is stored in a Git repository (found
+<a href="http://github.com/dcreager/dcreager.net/">here</a>).  Most of the pages
+are originally written in Markdown.  I use
+<a href="http://github.com/mojombo/jekyll/">Jekyll</a> to process the Markdown
+pages into a static website.</p>
+
+<p>The Git repository contains a standard Jekyll layout:</p>
+
+<ul>
+<li><p>Dated “posts” (such as blog entries) are placed in the <em>_posts</em>
+directory.</p></li>
+<li><p>HTML layouts are placed in the <em>_layouts</em> directory.</p></li>
+<li><p>All other content (CSS, images, other pages) lives wherever I
+please; that directory structure is reproduced on the live site.</p></li>
+</ul>
+
+<p>One difference is that I include the <em>_site</em> directory in the Git
+repository; most people seem to include this directory in their
+<em>.gitignore</em> file so that it's not tracked by Git.  Doing so allows me
+to check out the repository and have a working copy of the site,
+without having to have Jekyll and its dependencies installed on that
+machine.</p>
+
+<h2>Editing and deploying changes</h2>
+
+<p>While I edit my pages, I keep a</p>
+
+<pre><code>jekyll --server --auto
+</code></pre>
+
+<p>instance running in the background, which allows me to view a local
+copy of the new website as I save changes.</p>
+
+<p>For deployment, I have a (non-bare) clone of the Git repository on the
+Dreamhost machine that hosts my website.  Once I have a change that
+I'm ready to deploy, I make a new Git commit and push it to the
+Dreamhost clone.  Since I include the <em>_site</em> directory in my
+commits, this places the latest copy of the website onto the Dreamhost
+filesystem, ready to go.</p>
+
+<p>Pushing doesn't automatically update the checked-out HEAD on the
+remote system, however, so there's an additional step needed.  Once
+I've pushed the changes to Dreamhost, I run the following from the
+Dreamhost clone:</p>
+
+<pre><code>git reset --hard master
+</code></pre>
+
+<p>which updates the working copy on disk to be the same as the latest
+commit that I just pushed.  At this point, the Dreamhost clone
+contains the latest copy of the site in its <em>_site</em> directory.</p>
+
+<p>Dreamhost is expecting to serve my website out of a particular
+directory within my home directory; the final step is having this
+served directory be a symlink to the <em>_site</em> directory of the
+Dreamhost clone.  Et voila!</p>
+
+        </div>
+      </div>
+    </div> <!-- /row -->
+  </div> <!-- /container -->
+
+    <footer class="copyright">
+    <div class="container">
+      <p>Copyright © 2009-2013, Douglas Creager.
+      All&nbsp;rights&nbsp;reserved.</p>
+    </div>
+  </footer>
+
+
+  <script src="https://code.jquery.com/jquery.js"></script>
+  <script src="/media/vendor/js/bootstrap.min.js"></script>
+
+</html>

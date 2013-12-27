@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>
+    dcreager.net – Decentralized datatypes
+  </title>
+  <meta name="author" content="Douglas Creager">
+
+    <meta charset="utf-8">
+
+  <meta name="google-site-verification" content="7KIoYPNsfdDxIdX1QQ7SM2Nm_nyy13aRlDkzE3wzhhY" />
+
+  <link rel="shortcut icon" href="/media/images/dcreager.ico">
+
+  <link rel="alternate" type="application/atom+xml"
+        title="dcreager.net" href="/atom.xml"/>
+
+  <!-- Bootstrap -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel=stylesheet type=text/css media=screen
+        href="/media/vendor/css/bootstrap.min.css">
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+  <![endif]-->
+
+  <!-- Customizations -->
+  <link rel=stylesheet type=text/css media=screen
+        href="/media/css/coderay.css">
+  <link rel=stylesheet type=text/css media=screen
+        href="/media/css/dcreager.css">
+  <link rel=stylesheet type=text/css media=screen
+        href="http://fonts.googleapis.com/css?family=Oxygen:400,700">
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+  <div class="col-md-10 col-md-offset-1">
+    <nav class="navbar navbar-default" role="navigation">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="/"><b>dcreager.net</b></a>
+      </div>
+
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="/about/">About</a></li>
+          <li><a href="/archive/">Archive</a></li>
+          <li><a href="/publications/">Publications</a></li>
+        </ul>
+      </div><!-- /.navbar-collapse -->
+    </nav>
+  </div>
+</div>
+
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        <div class="blog">
+          <div class="date">2009-12-21</div>
+          <h1>Decentralized datatypes</h1>
+          <p>Over the past year or so there have been quite a few blog postings in
+the REST world about MIME types, and their role in the REST
+architecture.  A lot of the discussion seems to be prompted by WADL,
+which is an attempt to define a WSDL-style interface description
+language for REST services.  <a href="http://bitworking.org/news/193/Do-we-need-WADL">Joe
+Gregorio</a> argues that
+MIME types are more useful for describing the semantics of a service
+than a WADL document, since there are parts of the service's semantics
+that just can't be encoded in a machine-readable format.  MIME types
+acknowledge this, providing a standard way of identifying a data
+format and pointing to the human- and machine-readable documents (such
+as RFCs and XSDs) that define the syntax and accompanying semantics.</p>
+
+<p>Following this idea, several people have begun debating whether or not
+the centralized assignment of MIME types is the right way to handle
+the variety of data formats that REST-based systems produce and
+consume.  <a href="http://www.markbaker.ca/blog/2008/02/media-type-centralization-is-a-feature-not-a-bug/">Mark
+Baker</a>
+comes in on the side of centralized assignment, whereas <a href="http://www.innoq.com/blog/st/2008/02/decentralizing_media_types.html">Stefan
+Tilkov</a>,
+<a href="http://netzooid.com/blog/2008/02/07/why-a-restful-idl-is-an-oxymoron-and-what-we-really-need-instead/">Dan
+Diephouse</a>,
+and <a href="http://macstrac.blogspot.com/2007/11/atompub-services-and-auto-detecting.html">James
+Strachan</a>
+argue in favor of decentralized types.  <a href="http://bill.burkecentral.com/2008/03/05/restful-xml-content-negotitation/">Bill
+Burke</a>
+and <a href="http://soundadvice.id.au/blog/2009/08/16/#mimeLimitation">Benjamin
+Carlyle</a>
+have good summaries of the different proposed technical solutions that
+would enable decentralized types.</p>
+
+<h2>“Extended” types</h2>
+
+<p>One of the arguments in favor of centralized assignment is that
+allowing everyone to invent their own MIME types would ruin
+interoperability.  And for certain cases, this seems pretty obviously
+true.  It's a good thing that we have a standardized <code>image/png</code> MIME
+type; this allows your browser to correctly display the website logo
+you see up in the upper left corner.  If I were daft, I could decide
+to serve that logo using a MIME type of <code>image/x-dcreager-png</code> (or
+similar) to indicate that I've included some particular set of
+metadata in an ancillary chunk of the PNG.</p>
+
+<p>Why would I want to do this?  Maybe I'm writing an application that
+knows how to process this metadata, and I'd like to easily determine
+whether a particular resource I'm accessing has this metadata or not.
+The <a href="http://www.openmicroscopy.org">Open Microscopy Environment</a> does
+exactly this; they've defined an XML schema that allows biology
+researchers to provide additional scientific metadata about an image
+or movie captured from a high-end microscope.  One way to encode an
+image and its metadata is as an “OME-TIFF”, a data format that
+includes the metadata in an optional TIFF section.  OME-TIFF files are
+also perfectly valid as regular TIFF files.  This has the benefit that
+an OME-aware application can access the scientific metadata, whereas a
+“regular” image processing application can read the image using its
+normal TIFF decoder.</p>
+
+<p>Of course, now we have competing goals that we have to reconcile.  On
+the one hand, we need to ensure that OME-aware applications can see
+that a particular image is an OME-TIFF.  On the other, we need
+non-OME-aware applications to see the image as a regular TIFF.  One of
+the decentralized proposals — MIME type parameters — tries to address
+this.  For instance, a MIME type for an OME-TIFF might be <code>image/tiff;
+ome=xml</code>.  By using the standard <code>image/tiff</code> as the base MIME type,
+non-OME-aware applications correctly treat it as a simple TIFF.
+OME-aware applications would know that the <code>ome=xml</code> parameter
+indicates that the OME-specific metadata is present.</p>
+
+<h2>The multitude of XML types</h2>
+
+<p>Another example given is that of an XML document.  Most applications
+will generate XML documents that conform to a particular schema (for
+instance, a company-specific purchase order), which they might encode
+as an XSD.  Now, the XSD on its own doesn't give you the full story on
+how to process that data, but it does provide some detail on how the
+data is structured.  If you're writing an application that consumes
+this data, having the XSD available would be helpful.  More
+interesting is an application that can consume <em>any</em> XML document —
+and which might use an XSD or RelaxNG schema to customize the UI used
+to display the document.</p>
+
+<p>In both cases, the schema is necessary to process the document, but
+for different reasons.  In the first case, the consuming application
+was built with advance knowledge of how the data should be handled,
+and the schema is used to direct a particular document to the code
+that implements this knowledge.  In the second case, the particular
+datatype is unimportant, and the application-specific semantics aren't
+used; the data is only consumed as a “generic XML document”, and the
+schema is used to describe the specific structure of the elements.</p>
+
+<h2>Data doesn't have a single type</h2>
+
+<p>The common theme in both of these examples is that a single datatype
+isn't enough to describe the data we're dealing with.  As Roy Fielding
+<a href="http://roy.gbiv.com/untangled/2009/wrangling-mimetypes">points out</a>,
+“all data formats correspond to multiple media types”.  It's tempting
+to think of a datatype as just “the syntax and structure of the data”.
+But it must also include some intuition about how the data will be
+used.</p>
+
+<p>From this point of view, the generic XML processing application does
+<em>not</em> handle a multitude of datatypes.  Instead, it handles exactly
+one: “generic XML document with associated schema”.  The application
+that knows how to process this particular schema will handle a
+different, completely distinct, datatype: “company-specific purchase
+order XML document”.  And the particular XML document in question — a
+single sequence of bytes that is a single representation of a single
+resource — is an instance of both types.</p>
+
+<p>Why shift things around like this?  Doesn't it just move the
+complexity from the consumer (who used to consume multiple types) to
+the producer (who must now publish the XML document under different
+types)?  Not necessarily.  The key idea is that we can use
+<em>transformation graphs</em> to encode the relationships between the
+datatypes:</p>
+
+<div class="figure">
+  <img src="/media/images/2009-12-21-decentralized-datatypes/xform-graph.png" alt="transformation graph"/>
+</div>
+
+<p>In this specific example, the transformation is simple — since the
+same sequence of bytes is a valid instance of both types, we don't
+have to modify the data itself.  The decentralized MIME types
+(especially the MIME parameter proposal) already support these kinds
+of “no-op” transformations: the more generic type is the “base” MIME
+type, and the more specific extensions are encoded as MIME parameters.
+However, by modeling the type relationships as an arbitrary graph, we
+open up the possibility of more complex sets of types, which might
+require actual code to transform between them, but which can be
+defined in a decentralized manner.</p>
+
+<p>Even though the model is more complex, we haven't required the
+producer or consumer to be more complex.  A transformation graph is
+necessary to translate between the two different (but compatible)
+types, but the graph doesn't have to specifically live at the producer
+or the consumer.  The producer can publish the data using the only
+type it knows about (the “company-specific” type), and a consumer can
+request the data using the only type it knows about (such as the
+“generic XML” type).  Anywhere along the path from the producer to the
+consumer, we can use the transformation graph to automatically
+transform the data from one type to the other.</p>
+
+<p>More details on transformation graphs, including more complex
+examples, can be found in my <a href="/publications/012-dphil-thesis">DPhil
+thesis</a>.</p>
+
+        </div>
+      </div>
+    </div> <!-- /row -->
+  </div> <!-- /container -->
+
+    <footer class="copyright">
+    <div class="container">
+      <p>Copyright © 2009-2013, Douglas Creager.
+      All&nbsp;rights&nbsp;reserved.</p>
+    </div>
+  </footer>
+
+
+  <script src="https://code.jquery.com/jquery.js"></script>
+  <script src="/media/vendor/js/bootstrap.min.js"></script>
+
+</html>

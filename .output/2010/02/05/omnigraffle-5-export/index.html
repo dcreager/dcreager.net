@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>
+    dcreager.net – Updating graffle-export to work with OmniGraffle 5
+  </title>
+  <meta name="author" content="Douglas Creager">
+
+    <meta charset="utf-8">
+
+  <meta name="google-site-verification" content="7KIoYPNsfdDxIdX1QQ7SM2Nm_nyy13aRlDkzE3wzhhY" />
+
+  <link rel="shortcut icon" href="/media/images/dcreager.ico">
+
+  <link rel="alternate" type="application/atom+xml"
+        title="dcreager.net" href="/atom.xml"/>
+
+  <!-- Bootstrap -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel=stylesheet type=text/css media=screen
+        href="/media/vendor/css/bootstrap.min.css">
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+  <![endif]-->
+
+  <!-- Customizations -->
+  <link rel=stylesheet type=text/css media=screen
+        href="/media/css/coderay.css">
+  <link rel=stylesheet type=text/css media=screen
+        href="/media/css/dcreager.css">
+  <link rel=stylesheet type=text/css media=screen
+        href="http://fonts.googleapis.com/css?family=Oxygen:400,700">
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+  <div class="col-md-10 col-md-offset-1">
+    <nav class="navbar navbar-default" role="navigation">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="/"><b>dcreager.net</b></a>
+      </div>
+
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="/about/">About</a></li>
+          <li><a href="/archive/">Archive</a></li>
+          <li><a href="/publications/">Publications</a></li>
+        </ul>
+      </div><!-- /.navbar-collapse -->
+    </nav>
+  </div>
+</div>
+
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        <div class="blog">
+          <div class="date">2010-02-05</div>
+          <h1>Updating graffle-export to work with OmniGraffle 5</h1>
+          <p>I recently upgraded to OmniGraffle 5, which caused my
+<a href="http://github.com/dcreager/graffle-export/">graffle-export</a> script to
+break:</p>
+
+<pre><code>$ graffle.sh ~/git/cwa/figures/analyst.graffle foo.pdf 
+OmniGraffle Professional 5
+/Users/dcreager/git/cwa/figures/analyst.graffle
+./graffle.scpt: execution error: OmniGraffle Professional 5 got an error: The document cannot be exported to the &quot;pdf&quot; format. (-50)
+</code></pre>
+
+<p>(This was first reported to me by Nima Talebi as <a href="http://github.com/dcreager/graffle-export/issues/issue/1">a
+ticket</a> on
+graffle-export's Github page.)</p>
+
+<p>Before we can understand what error we're seeing, a little explanation
+is in order.  The core logic of the OmniGraffle exporter is an
+AppleScript.  Unfortunately, AppleScripts are stored in a binary
+format, so if you go to the Github page, you can't easily view the
+contents of the file.  The important line of the script is:</p>
+
+<pre class="CodeRay"><code>save doc as format in file output
+</code></pre>
+
+<p>This saves an OmniGraffle document (which an earlier part of the
+script makes sure is open) into a new output file.  The <code>output</code>
+variable is the name of the desired output file, and is taken directly
+from the <em>graffle.sh</em> command line.</p>
+
+<p>The <code>format</code> variable is what's causing us problems.  This parameter
+to the <code>save</code> command tells OmniGraffle what format to use for the
+file it's about to save.  This is how we get our export functionality;
+we just give it the name of one of the export formats that it
+supports.  The value of our <code>format</code> variable comes from the optional
+first parameter to the <em>graffle.sh</em> script.  Previously, if no value
+was specified, I used &quot;<code>pdf</code>&quot; as a default.</p>
+
+<p>Now, there's no real documentation that I've been able to find out
+what values are allowed for this parameter.  I came across <code>pdf</code>
+simply by trial and error.  &quot;<code>PDF</code>&quot; also seems to work, as does &quot;<code>PDF
+vector image</code>&quot;, which is the text that appears in the Format entry of
+OmniGraffle's Export dialog box.</p>
+
+<p>Or, to be more accurate, I should say that these values all work <strong>in
+OmniGraffle 4</strong>.  Once you upgrade to version 5, these values no
+longer seem to be valid choices for that parameter of the <code>save</code>
+command — hence the error message.  A quick, non-exhaustive test shows
+that none of these variations work for EPS or SVG, either.  The only
+one that seems to still work is PNG.</p>
+
+<p>So, what are we to do?  After looking at several other related
+AppleScripts on the web, it seems that the <code>as</code> parameter of the
+<code>save</code> command is optional.  After some experimentation, it turns out
+that if you leave out this parameter, OmniGraffle tries to deduce the
+correct output format based on the extension of your output filename.
+So, we change our <code>save</code> command to the following:</p>
+
+<pre class="CodeRay"><code>if format = &quot;&quot; then
+  save doc in file output
+else
+  save doc as format in file output
+end if
+</code></pre>
+
+<p>(We also have to modify the <em>graffle.sh</em> wrapper script to not use
+<code>pdf</code> as a default, but you can see that change <a href="http://github.com/dcreager/graffle-export/commit/b605b461a29b73ab4c21bd42b48549bd8bad8fcc">on
+Github</a>.)
+This lets us export a PDF version of a <em>.graffle</em> file by giving an
+output filename ending in <em>.pdf</em>, and leaving out the format
+parameter.</p>
+
+<p>I still have my old copy of OmniGraffle 4, and it looks like this
+trick works with that version as well.  So, this is now the default
+behavior, regardless of which version you have installed.</p>
+
+<p>It would be nice if there was an accurate list of what values were
+allowed for the <code>as</code> parameter, but we do have a working solution, at
+least.  The only problem is if you want to export a PDF with a
+different extension; with this solution, you'd have to export to a
+<em>.pdf</em> file and then rename it to your new extension.  But then again,
+why would you want to do that?</p>
+
+        </div>
+      </div>
+    </div> <!-- /row -->
+  </div> <!-- /container -->
+
+    <footer class="copyright">
+    <div class="container">
+      <p>Copyright © 2009-2013, Douglas Creager.
+      All&nbsp;rights&nbsp;reserved.</p>
+    </div>
+  </footer>
+
+
+  <script src="https://code.jquery.com/jquery.js"></script>
+  <script src="/media/vendor/js/bootstrap.min.js"></script>
+
+</html>

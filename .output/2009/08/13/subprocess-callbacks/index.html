@@ -1,0 +1,375 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>
+    dcreager.net – Using callbacks with the subprocess module
+  </title>
+  <meta name="author" content="Douglas Creager">
+
+    <meta charset="utf-8">
+
+  <meta name="google-site-verification" content="7KIoYPNsfdDxIdX1QQ7SM2Nm_nyy13aRlDkzE3wzhhY" />
+
+  <link rel="shortcut icon" href="/media/images/dcreager.ico">
+
+  <link rel="alternate" type="application/atom+xml"
+        title="dcreager.net" href="/atom.xml"/>
+
+  <!-- Bootstrap -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel=stylesheet type=text/css media=screen
+        href="/media/vendor/css/bootstrap.min.css">
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+  <![endif]-->
+
+  <!-- Customizations -->
+  <link rel=stylesheet type=text/css media=screen
+        href="/media/css/coderay.css">
+  <link rel=stylesheet type=text/css media=screen
+        href="/media/css/dcreager.css">
+  <link rel=stylesheet type=text/css media=screen
+        href="http://fonts.googleapis.com/css?family=Oxygen:400,700">
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+  <div class="col-md-10 col-md-offset-1">
+    <nav class="navbar navbar-default" role="navigation">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="/"><b>dcreager.net</b></a>
+      </div>
+
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="/about/">About</a></li>
+          <li><a href="/archive/">Archive</a></li>
+          <li><a href="/publications/">Publications</a></li>
+        </ul>
+      </div><!-- /.navbar-collapse -->
+    </nav>
+  </div>
+</div>
+
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        <div class="blog">
+          <div class="date">2009-08-13</div>
+          <h1>Using callbacks with the subprocess module</h1>
+          <p>In a <a href="/2009/08/06/subprocess-communicate-drawbacks/">previous post</a>,
+we pointed out two drawbacks of Python's <code>subprocess.communicate</code>
+method.  In this post, we look at the first problem in more detail.
+To reiterate, the problem is that we collect the subprocess's output
+streams into strings.  If the subprocess is going to generate a huge
+amount of output, it can be better to process the output data in a
+stream-oriented manner — that way we use a constant amount of memory
+regardless of how much output is produced.</p>
+
+<p>If we look at the
+<a href="http://svn.python.org/view/python/trunk/Lib/subprocess.py?revision=74029&view=markup">implementation</a>
+of the <code>communicate</code> method, we see this:</p>
+
+<div class="CodeRay"><table class="CodeRay"><tr>
+  <td class="line-numbers"><pre><a href="#n1" name="n1">1</a>
+<a href="#n2" name="n2">2</a>
+<a href="#n3" name="n3">3</a>
+<a href="#n4" name="n4">4</a>
+<a href="#n5" name="n5">5</a>
+<a href="#n6" name="n6">6</a>
+<a href="#n7" name="n7">7</a>
+<a href="#n8" name="n8">8</a>
+<a href="#n9" name="n9">9</a>
+<strong><a href="#n10" name="n10">10</a></strong>
+<a href="#n11" name="n11">11</a>
+<a href="#n12" name="n12">12</a>
+<a href="#n13" name="n13">13</a>
+<a href="#n14" name="n14">14</a>
+<a href="#n15" name="n15">15</a>
+<a href="#n16" name="n16">16</a>
+<a href="#n17" name="n17">17</a>
+<a href="#n18" name="n18">18</a>
+<a href="#n19" name="n19">19</a>
+<strong><a href="#n20" name="n20">20</a></strong>
+<a href="#n21" name="n21">21</a>
+<a href="#n22" name="n22">22</a>
+<a href="#n23" name="n23">23</a>
+<a href="#n24" name="n24">24</a>
+<a href="#n25" name="n25">25</a>
+<a href="#n26" name="n26">26</a>
+<a href="#n27" name="n27">27</a>
+<a href="#n28" name="n28">28</a>
+<a href="#n29" name="n29">29</a>
+<strong><a href="#n30" name="n30">30</a></strong>
+<a href="#n31" name="n31">31</a>
+<a href="#n32" name="n32">32</a>
+<a href="#n33" name="n33">33</a>
+<a href="#n34" name="n34">34</a>
+<a href="#n35" name="n35">35</a>
+<a href="#n36" name="n36">36</a>
+<a href="#n37" name="n37">37</a>
+<a href="#n38" name="n38">38</a>
+<a href="#n39" name="n39">39</a>
+<strong><a href="#n40" name="n40">40</a></strong>
+<a href="#n41" name="n41">41</a>
+<a href="#n42" name="n42">42</a>
+<a href="#n43" name="n43">43</a>
+<a href="#n44" name="n44">44</a>
+<a href="#n45" name="n45">45</a>
+<a href="#n46" name="n46">46</a>
+<a href="#n47" name="n47">47</a>
+</pre></td>
+  <td class="code"><pre><span class="keyword">def</span> <span class="function">_communicate_with_select</span>(<span class="predefined-constant">self</span>, <span class="predefined">input</span>):
+    read_set = []
+    write_set = []
+    stdout = <span class="predefined-constant">None</span> <span class="comment"># Return</span>
+    stderr = <span class="predefined-constant">None</span> <span class="comment"># Return</span>
+
+    <span class="keyword">if</span> <span class="predefined-constant">self</span>.stdin <span class="keyword">and</span> <span class="predefined">input</span>:
+        write_set.append(<span class="predefined-constant">self</span>.stdin)
+    <span class="keyword">if</span> <span class="predefined-constant">self</span>.stdout:
+        read_set.append(<span class="predefined-constant">self</span>.stdout)
+        stdout = []
+    <span class="keyword">if</span> <span class="predefined-constant">self</span>.stderr:
+        read_set.append(<span class="predefined-constant">self</span>.stderr)
+        stderr = []
+
+    input_offset = <span class="integer">0</span>
+    <span class="keyword">while</span> read_set <span class="keyword">or</span> write_set:
+        <span class="keyword">try</span>:
+            rlist, wlist, xlist = select.select(read_set, write_set, [])
+        <span class="keyword">except</span> select.error, e:
+            <span class="keyword">if</span> e.args[<span class="integer">0</span>] == errno.EINTR:
+                <span class="keyword">continue</span>
+            <span class="keyword">raise</span>
+
+        <span class="keyword">if</span> <span class="predefined-constant">self</span>.stdin <span class="keyword">in</span> wlist:
+            chunk = <span class="predefined">input</span>[input_offset : input_offset + _PIPE_BUF]
+            bytes_written = os.write(<span class="predefined-constant">self</span>.stdin.fileno(), chunk)
+            input_offset += bytes_written
+            <span class="keyword">if</span> input_offset &gt;= <span class="predefined">len</span>(<span class="predefined">input</span>):
+                <span class="predefined-constant">self</span>.stdin.close()
+                write_set.remove(<span class="predefined-constant">self</span>.stdin)
+
+        <span class="keyword">if</span> <span class="predefined-constant">self</span>.stdout <span class="keyword">in</span> rlist:
+            data = os.read(<span class="predefined-constant">self</span>.stdout.fileno(), <span class="integer">1024</span>)
+            <span class="keyword">if</span> data == <span class="string"><span class="delimiter">&quot;</span><span class="delimiter">&quot;</span></span>:
+                <span class="predefined-constant">self</span>.stdout.close()
+                read_set.remove(<span class="predefined-constant">self</span>.stdout)
+            stdout.append(data)
+
+        <span class="keyword">if</span> <span class="predefined-constant">self</span>.stderr <span class="keyword">in</span> rlist:
+            data = os.read(<span class="predefined-constant">self</span>.stderr.fileno(), <span class="integer">1024</span>)
+            <span class="keyword">if</span> data == <span class="string"><span class="delimiter">&quot;</span><span class="delimiter">&quot;</span></span>:
+                <span class="predefined-constant">self</span>.stderr.close()
+                read_set.remove(<span class="predefined-constant">self</span>.stderr)
+            stderr.append(data)
+
+    <span class="keyword">return</span> (stdout, stderr)
+</pre></td>
+</tr></table>
+</div>
+
+<p>(There are actually several different <code>communicate</code> implementations in
+the module: a Windows-specific implementation, an implementation using
+the POSIX <code>poll</code> function, and one using POSIX <code>select</code>.  We're going
+to look at the <code>select</code> implementation; the modifications we make can
+be rolled into the other methods, too.)</p>
+
+<h2>Output callbacks</h2>
+
+<p>For collecting stdout, the important part is lines 33-38.  If the
+<code>select</code> call tells us that the stdout stream is ready for reading, we
+try to read up to 1024 bytes from it.  If we get the empty string,
+this means we've reached EOF, and can close down the stream.  (We also
+no longer have to keep passing it in to further <code>select</code> calls, since
+we know we're done with this stream.)  If we get a non-empty string,
+then we append it into a list.  The function that calls
+<code>_communicate_with_select</code> will eventually <code>join</code> this list of strings
+together, yielding a single string.</p>
+
+<p>It's actually a very simple change to make this process the output
+using a stream-based callback.  For now, we assume that we've been
+given the callback, in a <code>stdout_callback</code> variable.  Then, we can
+change line 38 to</p>
+
+<pre class="CodeRay"><code>            stdout_callback(data)
+</code></pre>
+
+<p>The callback can be any Python callable object; it should accept a
+single argument, which is the next chunk of data from stdout.  We can
+make a similar change to line 45 to send the stderr data to its own
+<code>stderr_callback</code>.</p>
+
+<h2>Line-oriented callbacks</h2>
+
+<p>One possible issue with the output callbacks in the previous section
+is that the data is sent into the callback in arbitrary chunks.  We
+might prefer to guarantee that the callback will be called exactly
+once for each <em>line</em> of output.  This would allow us, for intsance, to
+easily interleave the output lines of a bunch of subprocesses into the
+output of the parent process, without having to worry about locking.</p>
+
+<p>To use a line-based callback, we have to wrap it, creating a
+arbitrary-chunk callback that buffers data as necessary.  Once it
+receives a full line of data, it sends it to the wrapped line
+callback.</p>
+
+<div class="CodeRay"><table class="CodeRay"><tr>
+  <td class="line-numbers"><pre><a href="#n1" name="n1">1</a>
+<a href="#n2" name="n2">2</a>
+<a href="#n3" name="n3">3</a>
+<a href="#n4" name="n4">4</a>
+<a href="#n5" name="n5">5</a>
+<a href="#n6" name="n6">6</a>
+<a href="#n7" name="n7">7</a>
+<a href="#n8" name="n8">8</a>
+<a href="#n9" name="n9">9</a>
+<strong><a href="#n10" name="n10">10</a></strong>
+<a href="#n11" name="n11">11</a>
+<a href="#n12" name="n12">12</a>
+<a href="#n13" name="n13">13</a>
+<a href="#n14" name="n14">14</a>
+<a href="#n15" name="n15">15</a>
+<a href="#n16" name="n16">16</a>
+<a href="#n17" name="n17">17</a>
+<a href="#n18" name="n18">18</a>
+<a href="#n19" name="n19">19</a>
+<strong><a href="#n20" name="n20">20</a></strong>
+<a href="#n21" name="n21">21</a>
+<a href="#n22" name="n22">22</a>
+<a href="#n23" name="n23">23</a>
+<a href="#n24" name="n24">24</a>
+<a href="#n25" name="n25">25</a>
+<a href="#n26" name="n26">26</a>
+<a href="#n27" name="n27">27</a>
+<a href="#n28" name="n28">28</a>
+<a href="#n29" name="n29">29</a>
+<strong><a href="#n30" name="n30">30</a></strong>
+<a href="#n31" name="n31">31</a>
+<a href="#n32" name="n32">32</a>
+<a href="#n33" name="n33">33</a>
+<a href="#n34" name="n34">34</a>
+<a href="#n35" name="n35">35</a>
+<a href="#n36" name="n36">36</a>
+<a href="#n37" name="n37">37</a>
+<a href="#n38" name="n38">38</a>
+</pre></td>
+  <td class="code"><pre><span class="keyword">def</span> <span class="function">wrap_line_callback</span>(line_callback):
+    <span class="keyword">class</span> <span class="class">Callback</span>(<span class="predefined">object</span>):
+        <span class="keyword">def</span> <span class="function">__init__</span>(<span class="predefined-constant">self</span>, line_callback):
+            <span class="predefined-constant">self</span>.line_buffer = []
+            <span class="predefined-constant">self</span>.line_callback = line_callback
+
+        <span class="keyword">def</span> <span class="function">output_buffer</span>(<span class="predefined-constant">self</span>):
+            line = <span class="string"><span class="delimiter">&quot;</span><span class="delimiter">&quot;</span></span>.join(<span class="predefined-constant">self</span>.line_buffer)
+            <span class="predefined-constant">self</span>.line_callback(line)
+            <span class="predefined-constant">self</span>.line_buffer = []
+
+        <span class="keyword">def</span> <span class="function">data_callback</span>(<span class="predefined-constant">self</span>, data):
+            <span class="comment"># If we get an empty string, that represents the end of</span>
+            <span class="comment"># the input.  If there is anything in the buffer, send</span>
+            <span class="comment"># then out first, then send an empty string on the to line</span>
+            <span class="comment"># callback.</span>
+
+            <span class="keyword">if</span> data == <span class="string"><span class="delimiter">&quot;</span><span class="delimiter">&quot;</span></span>:
+                <span class="keyword">if</span> <span class="predefined">len</span>(<span class="predefined-constant">self</span>.line_buffer) &gt; <span class="integer">0</span>:
+                    <span class="predefined-constant">self</span>.output_buffer()
+
+                <span class="predefined-constant">self</span>.line_callback(<span class="string"><span class="delimiter">&quot;</span><span class="delimiter">&quot;</span></span>)
+                <span class="keyword">return</span>
+
+            <span class="comment"># Otherwise, we split the new data into separate lines,</span>
+            <span class="comment"># each of which we call an “entry”.  We add each entry to</span>
+            <span class="comment"># the buffer.  If the entry ends with a newline, we output</span>
+            <span class="comment"># the buffer and then clear it.</span>
+
+            lines = data.splitlines(<span class="predefined-constant">True</span>)
+            <span class="keyword">for</span> line <span class="keyword">in</span> lines:
+                <span class="predefined-constant">self</span>.line_buffer.append(line)
+                <span class="keyword">if</span> line.endswith((<span class="string"><span class="delimiter">&quot;</span><span class="char">\r</span><span class="char">\n</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="char">\n</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="char">\r</span><span class="delimiter">&quot;</span></span>)):
+                    <span class="predefined-constant">self</span>.output_buffer()
+
+            <span class="keyword">return</span>
+
+    <span class="keyword">return</span> Callback(line_callback).data_callback
+</pre></td>
+</tr></table>
+</div>
+
+<ul>
+<li><p><strong>line 1</strong> — We start by declaring the wrapping function.  It will
+take in a line-based callback, and return an arbitrary-chunk
+callback.</p></li>
+<li><p><strong>lines 2-5</strong> — We'll need to maintain some state in between
+invocations of the arbitrary-chunk callback — specifically, if a
+line of output data falls across a chunk boundary, we'll need to
+hold onto the part in the first chunk until we receive the part in
+the second chunk.  One relatively easy way to do this is to create a
+new class, and store the state in <code>self</code> properties.  Note that the
+<code>Callback</code> class is declared inside the <code>wrap_line_callback</code>
+function.</p>
+
+<p>The buffer is a list of strings.  This needs to be a list to support
+arbitrarily long lines, since we don't know how many chunks we'll
+need to store before outputting the line.</p></li>
+<li><p><strong>lines 7-10</strong> — We also declare a method in the class that can
+output the current contents of the saved buffer (if any).  Like the
+original <code>communicate</code> method, we join the buffer list together into
+a single string, then pass it onto the wrapped line callback.</p></li>
+<li><p><strong>lines 12-23</strong> — Next we can define the arbitrary-chunk callback.
+First, it checks to see if we've received an EOF indicator (the
+empty string).  If so, we first output whatever is currently in the
+buffer; then we pass on the EOF to the line callback.</p></li>
+<li><p><strong>lines 25-34</strong> — If we get some actual data, we first split the
+current chunk into separate lines.  We pass in a <code>True</code> parameter to
+the <code>splitlines</code> method so that we get the newlines in the split
+strings.  This will let us tell if the final string in the list
+represents a complete line, or if it's the first part of a line that
+falls across a chunk boundary.</p>
+
+<p>We then loop through the split strings, adding them to the buffer.
+If any of them end with one of the newline endings (Unix, Windows,
+or otherwise), we output the buffer.  Note that only the last string
+in the <code>lines</code> list can end with something other than a newline;
+anything at the beginning of the list is only a separate element
+because <code>splitlines</code> found a newline to split on!</p></li>
+<li><p><strong>line 38</strong> — Finally, we instantiate the new class and return its
+arbitrary-chunk callback.</p></li>
+</ul>
+
+<h2>More to come</h2>
+
+<p>This gives us a nice output callback mechanism, to prevent us from
+buffering the entire contents of the stdout and stderr streams in
+memory.  In later posts, we'll look at doing the same with the <em>input</em>
+data, and then we'll address the second problem, of dealing with more
+than one subprocess simultaneously.</p>
+
+        </div>
+      </div>
+    </div> <!-- /row -->
+  </div> <!-- /container -->
+
+    <footer class="copyright">
+    <div class="container">
+      <p>Copyright © 2009-2013, Douglas Creager.
+      All&nbsp;rights&nbsp;reserved.</p>
+    </div>
+  </footer>
+
+
+  <script src="https://code.jquery.com/jquery.js"></script>
+  <script src="/media/vendor/js/bootstrap.min.js"></script>
+
+</html>
