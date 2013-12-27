@@ -67,9 +67,30 @@ table.CodeRay pre {
  * Navbar
  */
 
-nav {
+nav.navbar-default {
     margin-top: 12px;
+    border-color: #ccc;
 }
+
+.logo {
+    padding-left: 100px;
+    background-image: url(/media/images/imperial-logo.png);
+    background-position: left 10px center;
+    background-repeat: no-repeat;
+    background-size: auto 80px;
+}
+
+/*
+.logo {
+    display: inline;
+    overflow: hidden;
+    height: 50px;
+}
+
+.logo img {
+    height: 80px;
+}
+*/
 
 
 /*----------------------------------------------------------------
