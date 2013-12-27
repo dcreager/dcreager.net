@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>
+    dcreager.net – A combinator-based parsing library for C
+  </title>
+  <meta name="author" content="Douglas Creager">
+
+    <meta charset="utf-8">
+
+  <meta name="google-site-verification" content="7KIoYPNsfdDxIdX1QQ7SM2Nm_nyy13aRlDkzE3wzhhY" />
+
+  <link rel="shortcut icon" href="/media/images/dcreager.ico">
+
+  <link rel="alternate" type="application/atom+xml"
+        title="dcreager.net" href="/atom.xml"/>
+
+  <!-- Bootstrap -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel=stylesheet type=text/css media=screen
+        href="/media/vendor/css/bootstrap.min.css">
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+  <![endif]-->
+
+  <!-- Customizations -->
+  <link rel=stylesheet type=text/css media=screen
+        href="/media/css/coderay.css">
+  <link rel=stylesheet type=text/css media=screen
+        href="/media/css/dcreager.css">
+  <link rel=stylesheet type=text/css media=screen
+        href="http://fonts.googleapis.com/css?family=Oxygen:400,700">
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+  <div class="col-md-10 col-md-offset-1">
+    <nav class="navbar navbar-default" role="navigation">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="/"><b>dcreager.net</b></a>
+      </div>
+
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="/about/">About</a></li>
+          <li><a href="/blog/all/">Archive</a></li>
+          <li><a href="/publications/">Publications</a></li>
+        </ul>
+      </div><!-- /.navbar-collapse -->
+    </nav>
+  </div>
+</div>
+
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        <div class="blog">
+          <div class="date">2010-02-06</div>
+          <h1>A combinator-based parsing library for C</h1>
+          <p>Recently I've been working on
+<a href="http://github.com/dcreager/libpush/">libpush</a>, which a new parsing
+library for C.  It has two main features that I think will be
+valuable: it's a <em>push parser</em>, which means that instead of parsing a
+file, stream, or single memory buffer, you supply the data (or &quot;push&quot;
+it) to the parser in chunks, as it becomes available.  I plan to
+discuss this aspect of the parser in more detail in a later post.</p>
+
+<p>The other main feature is that you design your parsers using
+<em>combinators</em>.  Parser combinators are widely used in Haskell, with
+<a href="http://legacy.cs.uu.nl/daan/parsec.html">Parsec</a> being the most
+common example.  Combinator-based parsing libraries are especially
+nice in Haskell, because Haskell's syntax makes them look very simple.
+For instance, a parser that parses matching nested parentheses is:</p>
+
+<pre class="CodeRay"><code>parens :: Parser ()
+parens = (char '(' &gt;&gt; parens &gt;&gt; char ')' &gt;&gt; parens) &lt;|&gt; return ()
+</code></pre>
+
+<p>Here, the <code>&lt;|&gt;</code> operator represents <em>choice</em>: we try parsing the left
+operand, and if it fails, then we try the right operand.  In our
+example, the right operand is the base case, which matches the empty
+string.  The left operand parses an opening parenthesis; then
+recursively calls itself to match any parentheses that might be nested
+in the current set; then parses the closing parenthesis; and then
+finally tries to match a nested set that occurs after the current set.</p>
+
+<p>When we say that this is a combinator-based parser, we mean that it's
+implemented by taking <em>primitive parsers</em> — in this case <code>char '('</code>
+and <code>return ()</code> — and combining them into more complex parsers using
+generic operators like <code>&gt;&gt;</code> and <code>&lt;|&gt;</code>.</p>
+
+<p>Now, in order to be able to use combinators like this, parsers have to
+be first-class objects in your language.  In the Haskell code, the
+parsers are represented by the <code>Parser ()</code> type.  In most Haskell
+parsing libraries (including Parsec), the parser type is implemented
+as a
+<a href="http://en.wikipedia.org/wiki/Monad_%28functional_programming%29"><em>monad</em></a>.
+Monads have a reputation for being a horribly complex topic, but in
+this case, we don't really need to learn about the underlying math.
+Instead, we can just view the monad as letting us do two things
+concisely:</p>
+
+<ol>
+<li><p>Parsers can return a value, which could (for instance) be the
+abstract syntax tree that you're building up while parsing your
+language.  The monadic bind operator (<code>&gt;&gt;=</code>) gives you a way to
+&quot;pass&quot; these values between parsers, if needed.</p></li>
+<li><p>Simultaneously, the parser monad maintains the state of the stream
+you're parsing from, keeping track of how many bytes remain,
+whether there's an error condition, and possibly a nice
+human-readable description (line and column) of the current
+location.</p></li>
+</ol>
+
+<p>This is admittedly a lot of setup; we've been talking a lot about
+Haskell in a post that's ostensibly describing a C library.  But
+hopefully, this gives you a taste for the kinds of features we want to
+support in libpush:</p>
+
+<ul>
+<li><p>Parsers will be represented by a C type.  In libpush, this is the
+<code>push_callback_t</code> type.</p></li>
+<li><p>There will be several primitive parsers; these will be functions
+that return a <code>push_callback_t</code>.  The functions can take in
+parameters, but none of the parameters will be a <code>push_callback_t</code>.
+(See the <code>char</code> primitive from above; it needed to take in the
+particular character that is expected.)</p></li>
+<li><p>There will be several combinators; these will be functions that
+return a <code>push_callback_t</code>, and take in other <code>push_callback_t</code>s as
+parameters.</p></li>
+</ul>
+
+<p>You can see several of these primitives and combinators in action
+   in the <a href="http://github.com/dcreager/libpush/">libpush Github
+   repository</a>.</p>
+
+<ul>
+<li>We will use something like a monad to take care of passing values
+between our parsers, and for keeping track of the state of the
+underlying stream.  I say &quot;something like a monad&quot;, because, unlike
+the Parsec library, the libpush parser type will <em>not</em> be
+implemented as a monad; in turns out that C is more amenable to
+implementing them as <a href="http://www.haskell.org/arrows/"><em>arrows</em></a>.
+In a later post, I'll explain what this means in terms of writing
+your own parsers, or for building them up from combinators.</li>
+</ul>
+
+        </div>
+      </div>
+    </div> <!-- /row -->
+  </div> <!-- /container -->
+
+    <footer class="copyright">
+    <div class="container">
+      <p>Copyright © 2009-2013, Douglas Creager.
+      All&nbsp;rights&nbsp;reserved.</p>
+    </div>
+  </footer>
+
+
+  <script src="https://code.jquery.com/jquery.js"></script>
+  <script src="/media/vendor/js/bootstrap.min.js"></script>
+
+</html>

@@ -1,0 +1,15 @@
+---
+layout: default
+title: All posts
+---
+
+<h1>All posts</h1>
+
+<ul class="archive">
+  <% sorted_articles.each do |article| %>
+    <li>
+      <span class="date"><%= article[:created_at] %></span>
+      <span class="title"><a href="<%= article.path %>"><%= article[:title] %></a></span>
+    </li>
+  <% end %>
+</ul>

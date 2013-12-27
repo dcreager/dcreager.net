@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>
+    dcreager.net – Publication details
+  </title>
+  <meta name="author" content="Douglas Creager">
+
+    <meta charset="utf-8">
+
+  <meta name="google-site-verification" content="7KIoYPNsfdDxIdX1QQ7SM2Nm_nyy13aRlDkzE3wzhhY" />
+
+  <link rel="shortcut icon" href="/media/images/dcreager.ico">
+
+  <link rel="alternate" type="application/atom+xml"
+        title="dcreager.net" href="/atom.xml"/>
+
+  <!-- Bootstrap -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel=stylesheet type=text/css media=screen
+        href="/media/vendor/css/bootstrap.min.css">
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+  <![endif]-->
+
+  <!-- Customizations -->
+  <link rel=stylesheet type=text/css media=screen
+        href="/media/css/coderay.css">
+  <link rel=stylesheet type=text/css media=screen
+        href="/media/css/dcreager.css">
+  <link rel=stylesheet type=text/css media=screen
+        href="http://fonts.googleapis.com/css?family=Oxygen:400,700">
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+  <div class="col-md-10 col-md-offset-1">
+    <nav class="navbar navbar-default" role="navigation">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="/"><b>dcreager.net</b></a>
+      </div>
+
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="/about/">About</a></li>
+          <li><a href="/blog/all/">Archive</a></li>
+          <li><a href="/publications/">Publications</a></li>
+        </ul>
+      </div><!-- /.navbar-collapse -->
+    </nav>
+  </div>
+</div>
+
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        <h1>Publication details</h1>
+
+<ol class="publications">
+<li class="reference">
+  <div class="citation_number">[12]</div>
+  <div class="citation">
+    DA Creager.
+
+    <em>A graph-based approach to the automated discovery of data
+    transformations</em>.
+
+    D.Phil. thesis, University of Oxford, August 2007.
+  </div>
+
+  <div class="downloads">
+    <a href="phd.pdf">
+    <button type="button" class="btn btn-primary">
+      <span class="glyphicon glyphicon-download"></span> PDF
+    </button>
+    </a>
+  </div>
+</li>
+</ol>
+
+<h2>Abstract</h2>
+
+<p>In recent years it has become much more common for software
+applications to communicate with each other directly.  Internet
+connections have become a standard part of both ofﬁce and home, and as
+more business processes and information move into the electronic
+realm, direct software communication will become even more prevalent.
+One of the largest deterrents to effective communication is the
+heterogeneous nature of the data and information involved.  We cannot
+guarantee that two software systems that need to communicate will be
+running the same software or modeling their data in the same way.
+Obviously, the data must be somehow logically similar — otherwise,
+there would not be any meaningful communication possible.  A key
+element of any modern communication protocol or framework must be a
+strategy for resolving any data mismatches that exist between the two
+sides.</p>
+
+<p>The data mismatch problem is not new; unsurprisingly, there are many
+existing solutions to it.  We would like to judge these solutions by
+two criteria: generality and automation.  A generic solution will not
+needlessly limit the kinds of applications and data models that are
+supported.  An automated solution will limit the amount of tedious,
+manual work needed to support a new application or data model.
+Unfortunately, none of the existing solutions are both sufficiently
+generic and sufficiently automated.</p>
+
+<p>This thesis presents an automated solution to the data mismatch
+problem that is also fully generic: it makes absolutely no assumptions
+about the underlying data whatsoever.  In order to achieve this
+generality, some automation must be sacriﬁced.  Our approach requires
+that some atomic transformations be written manually.  However, we can
+exploit the fact that transformations are composable — with a
+sufficient number of atomic transformations, a compound transformation
+can be automatically discovered between arbitrary datatypes.  This
+approach is fully generic, since the transformation discovery
+algorithms require no knowledge of the structure or semantics of the
+datatypes involved; instead, the knowledge of a particular datatype is
+encapsulated into the atomic transformations that directly operate on
+it.</p>
+
+<p>The contributions of this thesis are threefold.  First, we present a
+graph-based model for transformations that has an efficient
+polynomial-time discovery algorithm.  While efficient, this model is
+limited in that it can only represent unary transformations — those
+between one input and output datatype.  This model is still
+surprisingly powerful; we present two case studies that show how this
+simple model can be used in the context of a real-world application,
+and what limitations it has.</p>
+
+<p>Second, we present an extension to this graph-based model that
+supports polyadic transformations between multiple input and output
+datatypes, and show examples of how this increases the expressive
+power of the transformation graphs that we can create.  Unfortunately,
+this expressiveness comes at a price: the naïve discovery algorithm
+for the new model runs in exponential space and time.</p>
+
+<p>Finally, we show that polyadic transformation discovery is in fact
+worst-case <em>NP</em>-hard.  Hopefully, the problem is only truly
+intractable for pathological inputs, and for real-world transformation
+graphs, compound transformations can be discovered with reasonable
+time and space requirements.  We use a novel application of CSP to
+test this hypothesis, empirically exploring the complexity space of
+the problem and highlighting criteria for designing efficient
+transformation graphs.</p>
+
+      </div>
+    </div> <!-- /row -->
+  </div> <!-- /container -->
+
+    <footer class="copyright">
+    <div class="container">
+      <p>Copyright © 2009-2013, Douglas Creager.
+      All&nbsp;rights&nbsp;reserved.</p>
+    </div>
+  </footer>
+
+
+  <script src="https://code.jquery.com/jquery.js"></script>
+  <script src="/media/vendor/js/bootstrap.min.js"></script>
+
+</html>

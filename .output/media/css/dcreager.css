@@ -1,0 +1,251 @@
+/*----------------------------------------------------------------
+ * Typography
+ */
+
+body {
+    font-family: Oxygen, "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight: bold;
+}
+
+h1 { font-size: 32px; }
+h2 { font-size: 24px; }
+
+button span {
+    margin-right: 0.75ex;
+}
+
+.figure {
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+
+/*----------------------------------------------------------------
+ * Code snippets
+ */
+
+pre, pre code {
+    white-space: pre;
+}
+
+pre {
+    overflow-x: auto;
+}
+
+table.CodeRay {
+    display: block;
+    overflow-x: auto;
+    margin: 0 0 10px;
+    background-color: #f5f5f5;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+}
+
+table.CodeRay td.line-numbers {
+    padding: 9.5px;
+    width: 32px;
+}
+
+table.CodeRay td.code {
+    padding: 9.5px;
+}
+
+table.CodeRay pre {
+    margin: 0px;
+    padding: 0px;
+    background-color: transparent;
+    border: none;
+}
+
+
+/*----------------------------------------------------------------
+ * Navbar
+ */
+
+nav {
+    margin-top: 12px;
+}
+
+
+/*----------------------------------------------------------------
+ * Blog articles
+ */
+
+.blog .date {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 90%;
+    color: #888;
+}
+
+.blog h1 {
+    margin-top: 0px;
+}
+
+
+/*----------------------------------------------------------------
+ * Blog summary
+ */
+
+ul.summaries {
+    list-style-type: none;
+    padding-left: 0px;
+}
+
+li.summary {
+    padding: 16px 0px;
+    margin: 0px;
+    border-top: #ccc solid 1px;
+}
+
+li.summary:first-child {
+    padding-top: 0px;
+    border-top: none;
+}
+
+li.summary .date {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 90%;
+    color: #888;
+}
+
+li.summary h1 {
+    margin-top: 0px;
+}
+
+li.summary .link {
+    text-align: right;
+}
+
+
+/*----------------------------------------------------------------
+ * Blog archive
+ */
+
+ul.archive {
+    list-style-type: none;
+    padding-left: 0px;
+}
+
+ul.archive li .date {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 90%;
+    color: #888;
+    margin-right: 10px;
+}
+
+@media (max-width: 767px) {
+    ul.archive li .date {
+        display: block;
+        margin-top: 12px;
+    }
+}
+
+
+/*----------------------------------------------------------------
+ * Bibliography
+ */
+
+ol.publications {
+    list-style-type: none;
+    padding-left: 0px;
+}
+
+li.reference {
+    margin-left: 36px;
+    margin-top: 12px;
+    margin-bottom: 12px;
+    clear: both;
+}
+
+li.reference div.citation_number {
+    display: inline-block;
+    width: 30px;
+    text-align: center;
+    position: relative;
+    left: -36px;
+    margin-right: -35px;
+}
+
+li.reference div.citation {
+    display: inline;
+}
+
+li.reference div.note {
+    color: #888;
+}
+
+li.reference div.details {
+    font-size: 120%;
+}
+
+li.reference div.downloads {
+    margin-top: 8px;
+}
+
+@media (max-width: 767px) {
+    li.reference div.details {
+        display: inline-block;
+        width: 30px;
+        text-align: center;
+        position: relative;
+        left: -37px;
+        top: 1.5em;
+        margin-right: -35px;
+    }
+}
+
+@media (min-width: 768px) {
+    li.reference {
+        margin-right: 36px;
+    }
+
+    li.reference div.details {
+        float: right;
+        width: 30px;
+        text-align: center;
+        position: relative;
+        right: -36px;
+        margin-left: -35px;
+    }
+}
+
+
+/*----------------------------------------------------------------
+ * Footers
+ */
+
+footer {
+    border-top: 1px solid #e5e5e5;
+    background-color: #f5f5f5;
+}
+
+footer .container {
+    margin-top: 6px;
+    font-size: 80%;
+    text-align: right;
+}
+
+footer p {
+    margin-bottom: 0;
+    color: #777;
+}
+
+@media (min-width: 768px) {
+    body .container {
+        padding-bottom: 48px;
+    }
+
+    footer {
+        height: 32px;
+        position: fixed;
+        right: 0;
+        left: 0;
+        bottom: 0;
+        z-index: 1030;
+    }
+}

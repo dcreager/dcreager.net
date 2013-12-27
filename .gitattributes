@@ -1,0 +1,2 @@
+*.graffle     -diff -whitespace
+.output/**    -diff -whitespace

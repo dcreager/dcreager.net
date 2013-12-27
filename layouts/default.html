@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <%= render 'title' %>
+  <%= render 'links' %>
+</head>
+
+<body>
+  <div class="container">
+    <%= render 'topnav' %>
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        <%= yield %>
+      </div>
+    </div> <!-- /row -->
+  </div> <!-- /container -->
+
+  <%= render 'foot' %>
+
+  <script src="https://code.jquery.com/jquery.js"></script>
+  <script src="/media/vendor/js/bootstrap.min.js"></script>
+
+</html>

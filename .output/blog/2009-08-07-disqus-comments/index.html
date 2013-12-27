@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>
+    dcreager.net – Adding Disqus comments
+  </title>
+  <meta name="author" content="Douglas Creager">
+
+    <meta charset="utf-8">
+
+  <meta name="google-site-verification" content="7KIoYPNsfdDxIdX1QQ7SM2Nm_nyy13aRlDkzE3wzhhY" />
+
+  <link rel="shortcut icon" href="/media/images/dcreager.ico">
+
+  <link rel="alternate" type="application/atom+xml"
+        title="dcreager.net" href="/atom.xml"/>
+
+  <!-- Bootstrap -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel=stylesheet type=text/css media=screen
+        href="/media/vendor/css/bootstrap.min.css">
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+  <![endif]-->
+
+  <!-- Customizations -->
+  <link rel=stylesheet type=text/css media=screen
+        href="/media/css/coderay.css">
+  <link rel=stylesheet type=text/css media=screen
+        href="/media/css/dcreager.css">
+  <link rel=stylesheet type=text/css media=screen
+        href="http://fonts.googleapis.com/css?family=Oxygen:400,700">
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+  <div class="col-md-10 col-md-offset-1">
+    <nav class="navbar navbar-default" role="navigation">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="/"><b>dcreager.net</b></a>
+      </div>
+
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="/about/">About</a></li>
+          <li><a href="/blog/all/">Archive</a></li>
+          <li><a href="/publications/">Publications</a></li>
+        </ul>
+      </div><!-- /.navbar-collapse -->
+    </nav>
+  </div>
+</div>
+
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        <div class="blog">
+          <div class="date">2009-08-07</div>
+          <h1>Adding Disqus comments</h1>
+          <p>I've just enabled comments on the posts on my website.  On its own,
+that's not a particularly unique or exciting feature.  However, I'm
+using <a href="http://disqus.com">Disqus</a> as the comment engine, and the way
+in which I've integrated Disqus into my Jekyll-powered website might
+be of interest to others.  (Thanks to <a href="http://metajack.im/">Jack
+Moffitt</a> for the idea!)</p>
+
+<h2>The “generic code” installation target</h2>
+
+<p>At the core of Disqus is a snippet of HTML and JavaScript that's
+embedded into each of the webpages that you want to contain a comments
+section.  If you're using one of the standard blog engines for your
+website, Disqus can automatically “install” itself, adding the Disqus
+snippet to your pages for you.  If you're not using one of these blog
+engines, however, you have to install the Disqus snippet yourself.</p>
+
+<p>Luckily, this is very easy.  If you choose the “generic code”
+installation target when setting up the Disqus account for your
+website, you see the snippet of code to include.  For
+<a href="http://dcreager.net/">dcreager.net</a>, it looks like this:</p>
+
+<div class="CodeRay"><table class="CodeRay"><tr>
+  <td class="line-numbers"><pre><a href="#n1" name="n1">1</a>
+<a href="#n2" name="n2">2</a>
+<a href="#n3" name="n3">3</a>
+<a href="#n4" name="n4">4</a>
+<a href="#n5" name="n5">5</a>
+<a href="#n6" name="n6">6</a>
+<a href="#n7" name="n7">7</a>
+<a href="#n8" name="n8">8</a>
+<a href="#n9" name="n9">9</a>
+<strong><a href="#n10" name="n10">10</a></strong>
+<a href="#n11" name="n11">11</a>
+<a href="#n12" name="n12">12</a>
+<a href="#n13" name="n13">13</a>
+</pre></td>
+  <td class="code"><pre><span class="tag">&lt;div</span> <span class="attribute-name">id</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">disqus_thread</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span><span class="tag">&lt;/div&gt;</span>
+
+<span class="tag">&lt;script</span>
+   <span class="attribute-name">type</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">text/javascript</span><span class="delimiter">&quot;</span></span>
+   <span class="attribute-name">src</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">http://disqus.com/forums/«account»/embed.js</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
+<span class="tag">&lt;/script&gt;</span>
+<span class="tag">&lt;noscript&gt;</span>
+  <span class="tag">&lt;a</span> <span class="attribute-name">href</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">http://«account».disqus.com/?url=ref</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>View the discussion thread.<span class="tag">&lt;/a&gt;</span>
+<span class="tag">&lt;/noscript&gt;</span>
+
+<span class="tag">&lt;a</span> <span class="attribute-name">href</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">http://disqus.com</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">class</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">dsq-brlink</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
+  blog comments powered by <span class="tag">&lt;span</span> <span class="attribute-name">class</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">logo-disqus</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>Disqus<span class="tag">&lt;/span&gt;</span>
+<span class="tag">&lt;/a&gt;</span>
+</pre></td>
+</tr></table>
+</div>
+
+<div class="alert alert-warning">
+  <p>
+    <strong>UPDATE</strong>: Please do not copy-paste this JavaScript
+    snippet directly into your own website!  There are several
+    occurrences of the string “<code>«account»</code>” which should be
+    replaced with the name of your own Disqus account.  If you don't
+    do this, your comment threads won't be associated with your
+    account, and you therefore won't be able to moderate or export
+    those comments.
+  </p>
+
+  <p>
+    To see the specific JavaScript snippet for your own site, please
+    go to <a
+    href="http://www.disqus.com/comments/install/">http://www.disqus.com/comments/install/</a>.
+  </p>
+</div>
+
+<p>I have to wrap this in another <code>&lt;div&gt;</code> element, to fit into the CSS
+layout that I'm using, but otherwise it's a straightforward
+copy/paste.</p>
+
+<p>The <code>disqus_thread</code> element is a placeholder.  The <em>embed.js</em>
+JavaScript retrieves the comments that are linked to the current page,
+formats them according to the style that you've chosen, and injects
+the resulting HTML into the <code>disqus_thread</code> element.  The end result
+is something like the comment section that you see at the end of this
+page.</p>
+
+<h2>Jekyll layouts</h2>
+
+<p>At this point, we have the Disqus snippet that we need to include into
+each comment-enabled page on the site.  The naïve solution would be to
+manually add this snippet to each of the pages that we want to contain
+comments.  But of course, as good software engineers, we want to avoid
+that kind of repetition — and Jekyll layouts give us good way to do
+that.</p>
+
+<p>For my site, I've decided that I want to include a comment section on
+each dated “post” — the articles that you see under the “Recent Posts”
+on the front page.  I don't want to include comments, for instance, on
+my <a href="/publications/">publication list</a>.</p>
+
+<p>Luckily, I already have a system of Jekyll layouts that implements
+this distinction.  For instance, dated posts have a “Last updated”
+entry at the bottom, which the front page and publications list don't
+contain.  The site currently has two layouts defined:</p>
+
+<ul>
+<li><p><a href="http://github.com/dcreager/dcreager.net/blob/master/_layouts/default.html"><em>default.html</em></a> —
+defines the overall layout of the site: the background logo, the
+navigation bar, the box containing the text of each post, etc.  All
+of the pages on the site use this layout, even if they don't
+reference it directly in their YAML front-matter.</p></li>
+<li><p><a href="http://github.com/dcreager/dcreager.net/blob/master/_layouts/post.html"><em>post.html</em></a> —
+adds the “last updated” entry at the bottom of a dated post.</p></li>
+</ul>
+
+<p>So, if I want to include Disqus comments on all of my dated posts, I
+can just add the HTML/JavaScript snippet to the <em>post.html</em> file.</p>
+
+<h2>Using template variables</h2>
+
+<p>This solution is nice, in that we don't have to duplicate the Disqus
+snippet on each of the post pages, but we can take this one step
+further.  What if I decide that I want to include comments on one of
+the pages that isn't a dated blog post?  Now I have to duplicate that
+snippet again — maybe not in the page's source, but at least in the
+layout that that page uses.</p>
+
+<p>Instead, I'm going to use a new variable in the YAML front-matter to
+give me fine-grained control over which pages have comments.  If I
+want a page to have comments, I just make sure to include</p>
+
+<pre><code>comments: true
+</code></pre>
+
+<p>in that page's YAML header.</p>
+
+<p>Then, instead of including the Disqus snippet directly in the
+<em>post.html</em> layout, I put it into the <em>default.html</em> layout that every
+page eventually uses.  I wrap the snippet in a Liquid <code>if</code> statement
+to only include the Disqus comment section if the <code>comments</code> YAML
+variable is <code>true</code>:</p>
+
+<div class="CodeRay"><table class="CodeRay"><tr>
+  <td class="line-numbers"><pre><a href="#n1" name="n1">1</a>
+<a href="#n2" name="n2">2</a>
+<a href="#n3" name="n3">3</a>
+<a href="#n4" name="n4">4</a>
+<a href="#n5" name="n5">5</a>
+<a href="#n6" name="n6">6</a>
+<a href="#n7" name="n7">7</a>
+<a href="#n8" name="n8">8</a>
+<a href="#n9" name="n9">9</a>
+<strong><a href="#n10" name="n10">10</a></strong>
+<a href="#n11" name="n11">11</a>
+<a href="#n12" name="n12">12</a>
+<a href="#n13" name="n13">13</a>
+<a href="#n14" name="n14">14</a>
+<a href="#n15" name="n15">15</a>
+<a href="#n16" name="n16">16</a>
+<a href="#n17" name="n17">17</a>
+</pre></td>
+  <td class="code"><pre>{% if page.comments %}
+
+<span class="tag">&lt;div</span> <span class="attribute-name">id</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">disqus_thread</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span><span class="tag">&lt;/div&gt;</span>
+
+<span class="tag">&lt;script</span>
+   <span class="attribute-name">type</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">text/javascript</span><span class="delimiter">&quot;</span></span>
+   <span class="attribute-name">src</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">http://disqus.com/forums/«account»/embed.js</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
+<span class="tag">&lt;/script&gt;</span>
+<span class="tag">&lt;noscript&gt;</span>
+  <span class="tag">&lt;a</span> <span class="attribute-name">href</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">http://«account».disqus.com/?url=ref</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>View the discussion thread.<span class="tag">&lt;/a&gt;</span>
+<span class="tag">&lt;/noscript&gt;</span>
+
+<span class="tag">&lt;a</span> <span class="attribute-name">href</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">http://disqus.com</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">class</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">dsq-brlink</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
+  blog comments powered by <span class="tag">&lt;span</span> <span class="attribute-name">class</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">logo-disqus</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>Disqus<span class="tag">&lt;/span&gt;</span>
+<span class="tag">&lt;/a&gt;</span>
+
+{% endif %}
+</pre></td>
+</tr></table>
+</div>
+
+<p>If the <code>comments</code> YAML variable isn't defined for the current page,
+the <code>if</code> statement treats it as false, giving us the behavior that we
+want — no comments section unless we ask for it.</p>
+
+<p>Finally, to ensure that all dated posts get a comments section,
+without me having to explicitly ask for it, I add</p>
+
+<pre><code>comments: true
+</code></pre>
+
+<p>to the YAML front-matter of the <em>post.html</em> layout.</p>
+
+        </div>
+      </div>
+    </div> <!-- /row -->
+  </div> <!-- /container -->
+
+    <footer class="copyright">
+    <div class="container">
+      <p>Copyright © 2009-2013, Douglas Creager.
+      All&nbsp;rights&nbsp;reserved.</p>
+    </div>
+  </footer>
+
+
+  <script src="https://code.jquery.com/jquery.js"></script>
+  <script src="/media/vendor/js/bootstrap.min.js"></script>
+
+</html>

@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>
+    dcreager.net – iPhone tethering
+  </title>
+  <meta name="author" content="Douglas Creager">
+
+    <meta charset="utf-8">
+
+  <meta name="google-site-verification" content="7KIoYPNsfdDxIdX1QQ7SM2Nm_nyy13aRlDkzE3wzhhY" />
+
+  <link rel="shortcut icon" href="/media/images/dcreager.ico">
+
+  <link rel="alternate" type="application/atom+xml"
+        title="dcreager.net" href="/atom.xml"/>
+
+  <!-- Bootstrap -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel=stylesheet type=text/css media=screen
+        href="/media/vendor/css/bootstrap.min.css">
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+  <![endif]-->
+
+  <!-- Customizations -->
+  <link rel=stylesheet type=text/css media=screen
+        href="/media/css/coderay.css">
+  <link rel=stylesheet type=text/css media=screen
+        href="/media/css/dcreager.css">
+  <link rel=stylesheet type=text/css media=screen
+        href="http://fonts.googleapis.com/css?family=Oxygen:400,700">
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+  <div class="col-md-10 col-md-offset-1">
+    <nav class="navbar navbar-default" role="navigation">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="/"><b>dcreager.net</b></a>
+      </div>
+
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="/about/">About</a></li>
+          <li><a href="/blog/all/">Archive</a></li>
+          <li><a href="/publications/">Publications</a></li>
+        </ul>
+      </div><!-- /.navbar-collapse -->
+    </nav>
+  </div>
+</div>
+
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        <div class="blog">
+          <div class="date">2009-08-13</div>
+          <h1>iPhone tethering</h1>
+          <p>While attending the <a href="http://mil-oss.org/">Mil-OSS conference</a> this
+week, I had the opportunity to use one of the coolest features of my
+new iPhone 3GS — Bluetooth Internet tethering.  Assuming that your
+mobile carrier allows the feature on their network, it provides a very
+easy way to have a persistent Internet connection, for those
+situations where a free Ethernet drop or WiFi access point aren't
+readily available.</p>
+
+<p>I happened to have my Dell Mini 9 (running Ubuntu Jaunty) with me for
+the conference, rather than my MacBook, so I thought that it might be
+difficult to get the Bluetooth connection working between the phone
+and laptop.  This <a href="http://xn--9bi.net/2009/06/17/tethering-iphone-3-0-to-ubuntu-9-04/">blog
+posting</a>,
+however, provided exactly what I needed.</p>
+
+<p>Following this process, the connection worked without a hitch.  One
+caveat is that I didn't need to explicitly pair my phone with my
+laptop; the first time I ran the <code>pand --connect</code> command, my phone
+prompted me with the pairing confirmation dialog.  Later connections
+didn't require re-pairing.</p>
+
+<p>As for bandwidth, the connection was perfectly reasonable for email
+and basic Web surfing as long as I had decent 3G coverage — 3 of 5
+bars or higher and I was good to go.  I also did an <code>apt-get</code> package
+update as a “beefier” test; I was usually seeing around 20-30 Kb/sec
+of download speed, which would be fine for small daily updates, but
+would probably be unworkable for something large like a GNOME,
+texlive, or GHC update.  All in all, not bad for some surreptitious
+email checking during the talks.</p>
+
+<h2>Command-line scripts</h2>
+
+<p>One thing that can be cumbersome about the instructions on the blog
+post is that you have to run the <code>pand</code> and <code>ifup</code>/<code>ifdown</code> commands
+separately each time you want to start or stop the Bluetooth
+connection.  Not a huge waste of effort, to be sure, but we can do
+better.  So I wrote a quick little Bash script that will start and
+stop the connection with a single command.  You can find the script in
+<a href="http://github.com/dcreager/home/commit/f5c0db363049f7433494924c63d4a2a19e325b6c">this
+commit</a>
+on my Github page.</p>
+
+<p>The script is fairly straightforward; you start your Bluetooth tether
+by running</p>
+
+<pre><code>tether up
+</code></pre>
+
+<p>and you stop it by running</p>
+
+<pre><code>tether down
+</code></pre>
+
+<p>Instead of hard-coding your phone's Bluetooth MAC address into the
+script itself, you place it into the <em>$HOME/etc/bluetooth.conf</em> file.
+This file isn't checked into Git, so that I'm not putting my personal
+MAC addresses into the public repository.  Instead, the commit
+contains a <em>$HOME/etc/bluetooth.conf.sample</em> file, which you copy over
+to <em>bluetooth.conf</em>, and then edit appropriately.</p>
+
+<h2>Issues</h2>
+
+<p>While this script worked great for during the conference, there are
+two main issues with it as it stands.</p>
+
+<ul>
+<li><strong>dbus integration</strong> — Many applications now listen to the system's
+dbus message bus to determine different facts about the current
+state of the system, including whether there's an active Internet
+connection.  The NetworkManager application knows to publish the
+correct dbus messages when it starts and stops a network connection.
+The <code>tether</code> script does not.  This means that each time I open up
+Firefox after turning on the tether, I have to manually uncheck the
+<em>File › Work Offline</em> menu option to be able to access any web
+pages.</li>
+</ul>
+
+<p>Fixing this issue should only require finding the appropriate dbus
+  messages to send, and adding them to the <code>up</code> and <code>down</code> cases in
+  the script.</p>
+
+<ul>
+<li><strong>GUI access</strong> — While I don't mind running a simple command to
+activate and deactivate the network connection, I realize that a GUI
+control within the NetworkManager applet would be more ideal.  (This
+would also eliminate the first issue, since NetworkManager would
+then send the appropriate dbus messages when the connection is
+started or stopped.)  Luckily, Dan Williams has recently <a href="http://blogs.gnome.org/dcbw/2009/07/10/unwire-with-networkmanager/">added
+Bluetooth PAN
+support</a>
+to <code>nm-applet</code>.  The new code is in the bleeding edge tree, so
+hopefully it will make it into a release in time to be picked up for
+October's Karmic release.</li>
+</ul>
+
+        </div>
+      </div>
+    </div> <!-- /row -->
+  </div> <!-- /container -->
+
+    <footer class="copyright">
+    <div class="container">
+      <p>Copyright © 2009-2013, Douglas Creager.
+      All&nbsp;rights&nbsp;reserved.</p>
+    </div>
+  </footer>
+
+
+  <script src="https://code.jquery.com/jquery.js"></script>
+  <script src="/media/vendor/js/bootstrap.min.js"></script>
+
+</html>

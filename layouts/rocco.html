@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>
+    Fathom — <%= @item[:title] || File.basename(@item.identifier) %>
+  </title>
+  <%= render 'links' %>
+  <link rel=stylesheet type=text/css media=screen
+        href="/media/css/rocco.css">
+  <link rel=stylesheet type=text/css media=screen
+        href="/media/css/pygments.css">
+</head>
+
+<body>
+  <%= render 'navbar' %>
+
+  <div class="container">
+    <div class="row">
+      <div class="span3">
+
+        <!-- automatically find all of the man pages in the same URL path -->
+        <%= render 'sidebar-nav/start' %>
+          <%= nav_header "Developer’s guide" %>
+          <%= nav_link "About", "/dev/" %>
+          <%= nav_group_link "Tutorials", "/dev/tutorials/" %>
+          <%= nav_link "Plugins", "/dev/plugins/" %>
+          <%= nav_link "Workflows and properties", "/dev/properties/" %>
+          <%= nav_link "Process model", "/dev/process-model/" %>
+        <%= render 'sidebar-nav/end' %>
+
+      </div>
+      <div class="span9">
+        <div class="main-content">
+          <%= yield %>
+        </div>
+      </div>
+    </div> <!-- /row -->
+  </div> <!-- /container -->
+
+<%= render 'foot' %>
+
+</html>

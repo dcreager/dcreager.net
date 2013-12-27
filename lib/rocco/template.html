@@ -1,0 +1,14 @@
+<div class="rocco">
+  {{#sections}}
+  <div class="section" id='section-{{ section_id }}'>
+    <div class="docs">
+      {{{ docs }}}
+    </div>
+    {{#code}}
+    <div class="code">
+      <pre class="pygments">{{{ code }}}</pre>
+    </div>
+    {{/code}}
+  </div>
+  {{/sections}}
+</div>
