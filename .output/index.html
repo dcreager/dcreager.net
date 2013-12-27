@@ -307,12 +307,11 @@ automatically cleaned when you run <code>scons -c</code>.</p>
 Specifically, being a good TDD junkie, I have several test cases that
 I can run using <code>scons test</code>:</p>
 
-<pre class="highlight"><code class="language-python">
-build_test = env.Program( ... )
-env.Alias("build-tests", build_test)
+<pre class="CodeRay"><code>build_test = env.Program( ... )
+env.Alias(<span class="string"><span class="delimiter">&quot;</span><span class="content">build-tests</span><span class="delimiter">&quot;</span></span>, build_test)
 
-run_test = env.Alias("test", [build_test],
-                     ["@%s" % build_test[0].abspath])
+run_test = env.Alias(<span class="string"><span class="delimiter">&quot;</span><span class="content">test</span><span class="delimiter">&quot;</span></span>, [build_test],
+                     [<span class="string"><span class="delimiter">&quot;</span><span class="content">@%s</span><span class="delimiter">&quot;</span></span> % build_test[<span class="integer">0</span>].abspath])
 env.AlwaysBuild(run_test)
 </code></pre>
 

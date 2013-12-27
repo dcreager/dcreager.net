@@ -78,12 +78,11 @@ automatically cleaned when you run <code>scons -c</code>.</p>
 Specifically, being a good TDD junkie, I have several test cases that
 I can run using <code>scons test</code>:</p>
 
-<pre class="highlight"><code class="language-python">
-build_test = env.Program( ... )
-env.Alias("build-tests", build_test)
+<pre class="CodeRay"><code>build_test = env.Program( ... )
+env.Alias(<span class="string"><span class="delimiter">&quot;</span><span class="content">build-tests</span><span class="delimiter">&quot;</span></span>, build_test)
 
-run_test = env.Alias("test", [build_test],
-                     ["@%s" % build_test[0].abspath])
+run_test = env.Alias(<span class="string"><span class="delimiter">&quot;</span><span class="content">test</span><span class="delimiter">&quot;</span></span>, [build_test],
+                     [<span class="string"><span class="delimiter">&quot;</span><span class="content">@%s</span><span class="delimiter">&quot;</span></span> % build_test[<span class="integer">0</span>].abspath])
 env.AlwaysBuild(run_test)
 </code></pre>
 
@@ -117,8 +116,7 @@ run <code>scons</code>?  That's what the <code>Default</code> command is for.</p
 
 <p>For instance, I could add</p>
 
-<pre class="highlight"><code class="language-python">
-env.Default("build-tests")
+<pre class="CodeRay"><code>env.Default(<span class="string"><span class="delimiter">&quot;</span><span class="content">build-tests</span><span class="delimiter">&quot;</span></span>)
 </code></pre>
 
 <p>to my <em>SConstruct</em> file.  This would cause all of my tests to be built
@@ -131,10 +129,9 @@ a way to have a different list of default targets depending on whether
 we're building or cleaning.  Luckily, the <code>GetOption</code> function gives
 us exactly that:</p>
 
-<p></code></pre>
-if GetOption(&quot;clean&quot;):
-    env.Default(&quot;build-tests&quot;)
-</code></pre></p>
+<pre class="CodeRay"><code><span class="keyword">if</span> GetOption(<span class="string"><span class="delimiter">&quot;</span><span class="content">clean</span><span class="delimiter">&quot;</span></span>):
+    env.Default(<span class="string"><span class="delimiter">&quot;</span><span class="content">build-tests</span><span class="delimiter">&quot;</span></span>)
+</code></pre>
 
 <p>With this in our <em>SConstruct</em> file, the tests will be considered a
 default target when we're cleaning, but not when we're building.  So
