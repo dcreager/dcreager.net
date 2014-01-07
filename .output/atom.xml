@@ -2,13 +2,64 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
   <id>http://dcreager.net/</id>
   <title>dcreager.net</title>
-  <updated>2010-05-13T04:00:00Z</updated>
+  <updated>2013-01-07T05:00:00Z</updated>
   <link rel="alternate" href="http://dcreager.net/"/>
   <link rel="self" href="http://dcreager.net/atom.xml"/>
   <author>
     <name>Douglas Creager</name>
     <uri>http://dcreager.net/</uri>
   </author>
+  <entry>
+    <id>tag:dcreager.net,2013-01-07:/2013/01/07/intro-to-csp/</id>
+    <title type="html">CSP: An introduction</title>
+    <published>2013-01-07T05:00:00Z</published>
+    <updated>2013-01-07T05:00:00Z</updated>
+    <link rel="alternate" href="http://dcreager.net/2013/01/07/intro-to-csp/"/>
+    <content type="html">&lt;p&gt;Communicating Sequential Processes (CSP) has been around for almost four decades
+at this point, but for much of its life, it was only well-known among
+theoretical computer scientists and formal methods advocates.  More recently,
+many more people have at least &lt;em&gt;heard&lt;/em&gt; of CSP, largely because it inspired the
+&lt;a href="http://golang.org/doc/effective_go.html#concurrency"&gt;concurrency support&lt;/a&gt; in
+&lt;a href="http://golang.org/"&gt;Go&lt;/a&gt;, a popular mainstream programming language.  However,
+if you ask most people what it &lt;em&gt;means&lt;/em&gt; to be inspired by CSP, the most common
+response would probably be &amp;ldquo;erm, something about message passing&amp;rdquo;?&lt;/p&gt;
+
+&lt;p&gt;That said, CSP isn&amp;rsquo;t just some dusty theory that inspired part of Go; it can
+also help us understand the distributed systems that we create.  We&amp;rsquo;ve developed
+a &lt;a href="http://zookeeper.apache.org/"&gt;plethora&lt;/a&gt; &lt;a href="http://www.mongodb.org/"&gt;of&lt;/a&gt;
+&lt;a href="http://couchdb.apache.org/"&gt;tools&lt;/a&gt; &lt;a href="http://redis.io/"&gt;that&lt;/a&gt;
+&lt;a href="http://basho.com/riak/"&gt;help&lt;/a&gt; &lt;a href="http://cassandra.apache.org/"&gt;us&lt;/a&gt;
+&lt;a href="http://hbase.apache.org/"&gt;build&lt;/a&gt; &lt;a href="http://hadoop.apache.org/"&gt;distributed&lt;/a&gt;
+&lt;a href="http://storm-project.net/"&gt;systems&lt;/a&gt;.  But unfortunately, we don&amp;rsquo;t always
+understand of how those tools work, how they fail, and how they interact when we
+piece them together into a larger system.  We can all name-drop the &lt;a href="http://dl.acm.org/citation.cfm?id=564601"&gt;CAP
+theorem&lt;/a&gt;, but do you &lt;em&gt;really&lt;/em&gt; know
+what your system is going to do when the network partitions, or when a host
+dies?  How do you convince someone that you&amp;rsquo;re right?&lt;/p&gt;
+
+&lt;p&gt;We can&amp;rsquo;t just rely on intuition and hand-wavy arguments; our systems are too
+large, and too important, for that.  So how do you address these concerns with
+rigor?  There are two main approaches: you can either &lt;em&gt;test&lt;/em&gt; your assumptions
+empirically on a running system, or you can describe your system in detail and
+&lt;em&gt;prove&lt;/em&gt; that your assumptions are correct.  Kyle Kingsbury has great examples of
+both: &lt;a href="http://aphyr.com/tags/jepsen"&gt;Jepsen&lt;/a&gt; on the testing side,
+&lt;a href="http://aphyr.com/posts/309-knossos-redis-and-linearizability"&gt;Knossos&lt;/a&gt; on the
+proof side.  Both approaches are important; if you want to be convincing, you
+have to choose at least one of them.  If you prefer the proof-based approach,
+CSP is another option.  If you only think of CSP in terms of Go&amp;rsquo;s concurrency
+primitives, or if you haven&amp;rsquo;t thought of it at all, then you overlook the fact
+that CSP was &lt;em&gt;specifically designed&lt;/em&gt; to help answer these kinds of questions.&lt;/p&gt;
+
+&lt;p&gt;In this series of articles, I want to describe how CSP fits into this landscape,
+for developers with a range of expertise.  For the every-day programmer, I want
+to give a basic, high-level introduction to CSP, and to explain what it means
+for Go to be inspired by CSP.  For the distributed systems engineer, I want to
+add weight to the argument that formal methods are a useful tool for studying
+and designing the systems that we create and use.  And for the formal methodist,
+I want to show how to use CSP in particular to specify and reason about those
+systems.&lt;/p&gt;
+</content>
+  </entry>
   <entry>
     <id>tag:dcreager.net,2010-05-13:/2010/05/13/powerpc-qemu-lucid/</id>
     <title type="html">Installing Ubuntu Lucid on a PowerPC QEMU virtual machine</title>
