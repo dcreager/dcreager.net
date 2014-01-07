@@ -68,14 +68,14 @@
           <div class="date">2009-08-05</div>
           <h1>Site layout</h1>
           <div class="alert alert-danger">
-  <b>NOTE</b>: This post is no longer up-to-date; I've switched to using <a
+  <b>NOTE</b>: This post is no longer up-to-date; I&rsquo;ve switched to using <a
   href="http://nanoc.ws">nanoc</a> instead of Jekyll to generate my website.  I
   plan on adding a post describing the new system shortly.
 </div>
 
 <p>This post will probably end up being more useful to me than to anyone
-else who might stumble across the page.  Here I'm going to document
-how I've set up my homepage, from a technical standpoint.</p>
+else who might stumble across the page.  Here I&rsquo;m going to document
+how I&rsquo;ve set up my homepage, from a technical standpoint.</p>
 
 <h2>Directory layout</h2>
 
@@ -97,7 +97,7 @@ please; that directory structure is reproduced on the live site.</p></li>
 
 <p>One difference is that I include the <em>_site</em> directory in the Git
 repository; most people seem to include this directory in their
-<em>.gitignore</em> file so that it's not tracked by Git.  Doing so allows me
+<em>.gitignore</em> file so that it&rsquo;s not tracked by Git.  Doing so allows me
 to check out the repository and have a working copy of the site,
 without having to have Jekyll and its dependencies installed on that
 machine.</p>
@@ -106,7 +106,7 @@ machine.</p>
 
 <p>While I edit my pages, I keep a</p>
 
-<pre><code>jekyll --server --auto
+<pre><code>jekyll &mdash;server &mdash;auto
 </code></pre>
 
 <p>instance running in the background, which allows me to view a local
@@ -114,17 +114,17 @@ copy of the new website as I save changes.</p>
 
 <p>For deployment, I have a (non-bare) clone of the Git repository on the
 Dreamhost machine that hosts my website.  Once I have a change that
-I'm ready to deploy, I make a new Git commit and push it to the
+I&rsquo;m ready to deploy, I make a new Git commit and push it to the
 Dreamhost clone.  Since I include the <em>_site</em> directory in my
 commits, this places the latest copy of the website onto the Dreamhost
 filesystem, ready to go.</p>
 
-<p>Pushing doesn't automatically update the checked-out HEAD on the
-remote system, however, so there's an additional step needed.  Once
-I've pushed the changes to Dreamhost, I run the following from the
+<p>Pushing doesn&rsquo;t automatically update the checked-out HEAD on the
+remote system, however, so there&rsquo;s an additional step needed.  Once
+I&rsquo;ve pushed the changes to Dreamhost, I run the following from the
 Dreamhost clone:</p>
 
-<pre><code>git reset --hard master
+<pre><code>git reset &mdash;hard master
 </code></pre>
 
 <p>which updates the working copy on disk to be the same as the latest

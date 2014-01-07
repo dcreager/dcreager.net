@@ -71,10 +71,10 @@
 <a href="http://github.com/dcreager/libpush">libpush</a> on my MacBook, I was
 pleasantly surprised to see a huge performance increase when I used
 the link-time optimization (LTO) feature of the LLVM GCC front end.
-(It's really quite nifty; the new <a href="http://github.com/mxcl/homebrew">Homebrew package
+(It&rsquo;s really quite nifty; the new <a href="http://github.com/mxcl/homebrew">Homebrew package
 manager</a> uses it by default when
 compiling packages.)  On MacOS, using LTO is as simple as using
-<code>llvm-gcc</code> as your C compiler (or <code>llvm-g++</code> if you're compiling C++),
+<code>llvm-gcc</code> as your C compiler (or <code>llvm-g++</code> if you&rsquo;re compiling C++),
 and passing in <code>-O4</code> as your optimization flag.  I use SCons as my
 builder, so this turns into:</p>
 
@@ -92,7 +92,7 @@ compilation units.</p>
 <p>Intrigued by the results, I wanted to try the same thing on my Linux
 boxes, which are running Ubuntu Karmic.  On the Mac, Apple has made
 sure to include support for LLVM in all of the standard Xcode build
-tools.  On Linux, you don't get this by default right now — though GCC
+tools.  On Linux, you don&rsquo;t get this by default right now — though GCC
 is implementing their own LTO project, which is starting to bear
 fruit.  Part of this is a new “<code>gold</code>” linker, which supports a plugin
 architecture.  How is this useful to us?  Well, LLVM already has a
@@ -104,7 +104,7 @@ can be just as simple as it was on the Mac.</p>
 Ubuntu package tree.  You can get the new <code>gold</code> linker by installing
 the <code>binutils-gold</code> package, and you can get most of the LLVM pieces
 by installing the <code>llvm</code> and <code>llvm-gcc-4.2</code> packages.  Unfortunately,
-this doesn't include the LLVM <code>gold</code> plugin or the new <code>clang</code> C/C++
+this doesn&rsquo;t include the LLVM <code>gold</code> plugin or the new <code>clang</code> C/C++
 compiler front-end.  Things look promising for these features being in
 the new Lucid packages — which could even lead to a Karmic backport —
 but for now, if we want the <code>gold</code> plugin, we have to compile
@@ -115,7 +115,7 @@ ourselves.</p>
 <p>As mentioned on the LLVM <a href="http://llvm.org/docs/GoldPlugin.html">linker plugin
 page</a>, you need to have the
 <code>binutils</code> source lying around somewhere if you want to compile the
-plugin, since the LLVM source needs to read in <code>binutils</code>'s
+plugin, since the LLVM source needs to read in <code>binutils</code>&rsquo;s
 <em>plugin-api.h</em> file.  The easiest way for us to get the <code>binutils</code>
 source is using APT:</p>
 
@@ -132,10 +132,10 @@ $ apt-get source binutils
 <pre><code>$ sudo apt-get install binutils-gold
 </code></pre>
 
-<p>You'll also need to make sure you've got the basic compilation tools
-installed (though if you're at the point where you're trying to play
-around with LTO, I've got to assume you've already taken care of
-this...):</p>
+<p>You&rsquo;ll also need to make sure you&rsquo;ve got the basic compilation tools
+installed (though if you&rsquo;re at the point where you&rsquo;re trying to play
+around with LTO, I&rsquo;ve got to assume you&rsquo;ve already taken care of
+this&hellip;):</p>
 
 <pre><code>$ sudo apt-get install build-essential
 </code></pre>
@@ -171,15 +171,15 @@ find it and build it automatically:</p>
 
 <pre><code>$ cd llvm-2.6
 $ ./configure \
-    --with-binutils-include=$HOME/deb/binutils-2.20/include \
-    --enable-optimized \
-    --prefix=/usr/local
+    &mdash;with-binutils-include=$HOME/deb/binutils-2.20/include \
+    &mdash;enable-optimized \
+    &mdash;prefix=/usr/local
 $ make
 $ sudo make install
 $ sudo ldconfig
 </code></pre>
 
-<p>Notice how we're going to install everything into <em>/usr/local</em>, so as
+<p>Notice how we&rsquo;re going to install everything into <em>/usr/local</em>, so as
 not to step on the toes of the package manager.  This means we have to
 run <code>ldconfig</code> so that the system linker knows about the new libraries
 we just put in <em>/usr/local/lib</em>.</p>
@@ -188,8 +188,8 @@ we just put in <em>/usr/local/lib</em>.</p>
 
 <p>At this point, we have the <code>gold</code> linker installed, and have a copy of
 LLVM that includes its <code>gold</code> plugin.  Ideally, we could start
-compiling with <code>clang</code> and get LTO, but it doesn't seem like there's
-currently a way to have <code>clang</code> pass in the necessary <code>--plugin</code>
+compiling with <code>clang</code> and get LTO, but it doesn&rsquo;t seem like there&rsquo;s
+currently a way to have <code>clang</code> pass in the necessary <code>&mdash;plugin</code>
 option to the linker.  So, all we need now is the GCC front end.</p>
 
 <p>As before, we start by downloading and unpacking:</p>
@@ -205,10 +205,10 @@ options you have available; for me, the following worked:</p>
 <pre><code>$ mkdir -p $HOME/tmp/obj
 $ cd $HOME/tmp/obj
 $ ../llvm-gcc-4.2-2.6.source/configure \
-    --prefix=/usr/local \
-    --program-prefix=llvm- \
-    --enable-llvm=$HOME/tmp/llvm-2.6 \
-    --enable-languages=c,c++
+    &mdash;prefix=/usr/local \
+    &mdash;program-prefix=llvm- \
+    &mdash;enable-llvm=$HOME/tmp/llvm-2.6 \
+    &mdash;enable-languages=c,c++
 $ make
 $ sudo make install
 $ sudo ldconfig
@@ -218,16 +218,16 @@ $ sudo ldconfig
 build — the object files will end up in the <em>$HOME/tmp/obj</em> directory,
 rather than being created directly in the unpacked source directory.</p>
 
-<p>As this point we're nearly there; we have <code>llvm-gcc</code> installed, but
-its <code>-use-gold-plugin</code> option won't work just yet.  If you look
+<p>As this point we&rsquo;re nearly there; we have <code>llvm-gcc</code> installed, but
+its <code>-use-gold-plugin</code> option won&rsquo;t work just yet.  If you look
 closely at one sentence on the <a href="http://llvm.org/docs/GoldPlugin.html">LLVM plugin
-page</a>, you'll see that the
+page</a>, you&rsquo;ll see that the
 option “looks for the <code>gold</code> plugin in the same directories as it
 looks for <code>cc1</code>”.  The LLVM GCC package installed the <code>cc1</code> program
 into the <em>/usr/local/libexec/gcc/x86_64-unknown-linux-gnu/4.2.1</em>
-directory.  (The <em>x86_64</em> will be different if you're on a different
+directory.  (The <em>x86_64</em> will be different if you&rsquo;re on a different
 architecture.)  However, the LLVM plugin is in <em>/usr/local/lib</em>.  If
-you try to use the <code>-use-gold-plugin</code> parameter, you'll get the
+you try to use the <code>-use-gold-plugin</code> parameter, you&rsquo;ll get the
 following error message:</p>
 
 <pre><code>$ llvm-gcc -use-gold-plugin \
@@ -245,20 +245,20 @@ in:</p>
 
 <h2>Using your new toy</h2>
 
-<p>Now that we've got all of the pieces installed, you can create
+<p>Now that we&rsquo;ve got all of the pieces installed, you can create
 libraries and executables that are optimized at link time.  The
 “Quickstart” section at the end of the <a href="http://llvm.org/docs/GoldPlugin.html">LLVM plugin
 page</a> gives you the outline.  I
 use SCons as my build tool, so I have to run the following:</p>
 
 <pre><code>$ scons \
-    CC=&quot;llvm-gcc -use-gold-plugin&quot; \
-    AR=&quot;ar --plugin libLLVMgold.so&quot; \
+    CC=&ldquo;llvm-gcc -use-gold-plugin&rdquo; \
+    AR=&ldquo;ar &mdash;plugin libLLVMgold.so&rdquo; \
     RANLIB=/bin/true \
     CCFLAGS=-O4
 </code></pre>
 
-<p>This is slightly more than what's needed on the Mac, but all in all,
+<p>This is slightly more than what&rsquo;s needed on the Mac, but all in all,
 not bad.  Enjoy!</p>
 
         </div>

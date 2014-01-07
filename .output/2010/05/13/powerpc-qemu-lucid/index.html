@@ -73,52 +73,52 @@ little-endian and big-endian machines.  Little-endian machines are
 easy, since everyone and their mother is running on a little-endian
 Intel or AMD x86 chip.  It used to be that big-endian was pretty easy
 to test, too — just break out your trusty Apple Powerbook G4 and
-you're good to go.  Since Apple has shifted over to Intel chips,
+you&rsquo;re good to go.  Since Apple has shifted over to Intel chips,
 though, the situation has changed.</p>
 
 <p>Luckily, <a href="http://wiki.qemu.org/">QEMU</a> has PowerPC as one of the
 targets that it can emulate, so in theory, I can still easily test my
 code on a big-endian machine by creating a QEMU PowerPC virtual
-machine.  There's already a writeup about trying to install Debian
+machine.  There&rsquo;s already a writeup about trying to install Debian
 onto a QEMU VM
 <a href="http://machine-cycle.blogspot.com/2009/05/running-debian-on-qemu-powerpc.html">here</a>.
 <a href="http://www.aurel32.net/">Aurélien Jarno</a> has graciously put together
-downloadable disk images with Debian preinstalled.  If that's good
-enough for your purposes, just go download those!  You won't need any
+downloadable disk images with Debian preinstalled.  If that&rsquo;s good
+enough for your purposes, just go download those!  You won&rsquo;t need any
 of the rest of the information on this page.</p>
 
-<p>Unfortunately, I didn't want to run stock Debian; my little-endian
+<p>Unfortunately, I didn&rsquo;t want to run stock Debian; my little-endian
 build machine is running Ubuntu Lucid, and for consistency, I wanted
 my big-endian VM to be running the same.  As it turns out, this also
 required a fair dose of masochism on my part.  There are several
-issues that you'll encounter if you try to do this by hand.  Here is
+issues that you&rsquo;ll encounter if you try to do this by hand.  Here is
 my cheat sheet for getting around these issues.</p>
 
-<p>Note that this isn't a full step-by-step account of how to install
-Lucid onto a QEMU VM.  For now, I'm just trying to get my notes down
+<p>Note that this isn&rsquo;t a full step-by-step account of how to install
+Lucid onto a QEMU VM.  For now, I&rsquo;m just trying to get my notes down
 into a more permanent form.</p>
 
 <h2>Getting QEMU</h2>
 
-<p>Note that I'm using Ubuntu Lucid as both the host and the guest OS for
-this virtual machine; if you're running QEMU on a non-Ubuntu host,
+<p>Note that I&rsquo;m using Ubuntu Lucid as both the host and the guest OS for
+this virtual machine; if you&rsquo;re running QEMU on a non-Ubuntu host,
 then you can skip this section.</p>
 
-<p>It seems that there's a bug with the current QEMU packages in Lucid.
-If you try to run <code>qemu-system-ppc</code>, you'll get an error message about
+<p>It seems that there&rsquo;s a bug with the current QEMU packages in Lucid.
+If you try to run <code>qemu-system-ppc</code>, you&rsquo;ll get an error message about
 missing the PowerPC BIOS image.  Joy.</p>
 
 <p>Easiest way to get around this is to install QEMU from source.
 Download the latest version from
-<a href="http://download.savannah.gnu.org/releases/qemu/">here</a>.  Once you've
+<a href="http://download.savannah.gnu.org/releases/qemu/">here</a>.  Once you&rsquo;ve
 unpacked it, use the following to build:</p>
 
 <pre><code>$ sudo apt-get build-dep qemu
-$ ./configure --prefix=/usr/local \
-    --enable-sdl --enable-curses --enable-curl \
-    --enable-kvm --enable-nptl --enable-uuid \
-    --enable-linux-aio --enable-io-thread \
-    --audio-drv-list=alsa
+$ ./configure &mdash;prefix=/usr/local \
+    &mdash;enable-sdl &mdash;enable-curses &mdash;enable-curl \
+    &mdash;enable-kvm &mdash;enable-nptl &mdash;enable-uuid \
+    &mdash;enable-linux-aio &mdash;enable-io-thread \
+    &mdash;audio-drv-list=alsa
 $ make
 $ sudo make install
 </code></pre>
@@ -128,10 +128,10 @@ prerequisite libraries are installed.</p>
 
 <h2>Booting the installation CD</h2>
 
-<p>Once you've got a working QEMU installed, you can find the PowerPC
+<p>Once you&rsquo;ve got a working QEMU installed, you can find the PowerPC
 Lucid installation CD
-<a href="http://cdimage.ubuntu.com/ports/releases/10.04/release/">here</a>.  I've
-decided to use the server installation CD; I don't really need (or
+<a href="http://cdimage.ubuntu.com/ports/releases/10.04/release/">here</a>.  I&rsquo;ve
+decided to use the server installation CD; I don&rsquo;t really need (or
 want) X windows running in the VM.</p>
 
 <p>To install this onto a new VM, it should be as simple as:</p>
@@ -141,23 +141,23 @@ $ qemu-system-ppc -m 1024 -hda ubuntu-ppc.qcow2 \
     -cdrom ubuntu-10.04-server-powerpc.iso -boot d
 </code></pre>
 
-<p>This links up the Ubuntu installation CD on the VM's CD-ROM drive, and
+<p>This links up the Ubuntu installation CD on the VM&rsquo;s CD-ROM drive, and
 uses a new disk image for the primary hard disk.  Oh, and we make sure
 to give the VM enough RAM to do its business — the default is a paltry
 128MB.</p>
 
-<p>Of course, this doesn't work — the Lucid installer suffers from the
+<p>Of course, this doesn&rsquo;t work — the Lucid installer suffers from the
 same problem described
 <a href="http://mac.linux.be/content/ubuntu-810-installer-fails-detect-cd-rom">here</a>
 for the Intrepid installer.  Once you get into the installer, the
-installation program can't find the CD-ROM device, and so it can't
-read the installation packages.  Unfortunately, the workaround doesn't
+installation program can&rsquo;t find the CD-ROM device, and so it can&rsquo;t
+read the installation packages.  Unfortunately, the workaround doesn&rsquo;t
 work for Lucid, since it uses a newer Linux kernel that has
 <a href="http://www.linux.com/archive/feed/33164">eliminated the <code>ide-scsi</code>
 module</a>.</p>
 
 <p>So, what do we do?  Well, QEMU also allows us to mount a disk image as
-a USB removable disk, but it won't let us boot from USB.  We end up
+a USB removable disk, but it won&rsquo;t let us boot from USB.  We end up
 having to mount the disk image twice: Once as a virtual CD, so that we
 can boot into the installer, and once as a virtual USB disk, so that
 the installer can find the installation packages.  The QEMU command
@@ -168,13 +168,13 @@ line becomes:</p>
     -usb -usbdevice disk:ubuntu-10.04-server-powerpc.iso
 </code></pre>
 
-<p>You won't have to manually load the <code>usb-storage</code> module; it gets
+<p>You won&rsquo;t have to manually load the <code>usb-storage</code> module; it gets
 loaded automatically, and places the USB disk at <code>/dev/sda</code>.</p>
 
-<p>You'll still get the error message about not finding the CD; when this
-happens say &quot;no&quot; when it asks whether you need to load a module from a
-removable disk.  Say &quot;yes&quot; when it asks if you want to choose a module
-and device manually; choose &quot;none&quot; for the module; then type in
+<p>You&rsquo;ll still get the error message about not finding the CD; when this
+happens say &ldquo;no&rdquo; when it asks whether you need to load a module from a
+removable disk.  Say &ldquo;yes&rdquo; when it asks if you want to choose a module
+and device manually; choose &ldquo;none&rdquo; for the module; then type in
 <code>/dev/sda</code> as the device location.</p>
 
 <h2>Corrupt package files on CD</h2>
@@ -188,21 +188,21 @@ errors.  But if you still end up with some corrupted package files,
 there are ways around it.</p>
 
 <p>The installer will try to install its initial set of packages using
-<code>apt-get</code>.  If you encounter problems with these stages, you'll see
+<code>apt-get</code>.  If you encounter problems with these stages, you&rsquo;ll see
 some informative error messages on console 4, which is where the
-installer's log output is sent.  You can get there by pressing
-<em>Alt-F4</em> in the VM.  (As a warning, don't try to shift to console 4
+installer&rsquo;s log output is sent.  You can get there by pressing
+<em>Alt-F4</em> in the VM.  (As a warning, don&rsquo;t try to shift to console 4
 without ensuring that QEMU is grabbing the input.  In most window
 managers, <em>Alt-F4</em> will close the current window, which will just
 abruptly stop the VM!)</p>
 
-<p>By the time the installer tries to install packages, the VM's hard
+<p>By the time the installer tries to install packages, the VM&rsquo;s hard
 disk will be partitioned and formatted, and so we can drop into a
 shell as necessary.  To do so, shift over to console 2 using <em>Alt-F2</em>
 — again, make sure that QEMU is grabbing all keyboard and mouse input
 before switching consoles.</p>
 
-<p>Once you're on console 2, you can <code>chroot</code> into the new system as
+<p>Once you&rsquo;re on console 2, you can <code>chroot</code> into the new system as
 follows:</p>
 
 <pre><code>~ $ mount -o /proc /target/proc
@@ -211,21 +211,21 @@ follows:</p>
 ~ $ chroot /target
 </code></pre>
 
-<p>At this point, you'll be &quot;inside&quot; the new installation system, and can
+<p>At this point, you&rsquo;ll be &ldquo;inside&rdquo; the new installation system, and can
 run whatever <code>apt-get</code> and <code>dpkg</code> commands are necessary to fix things
 up.</p>
 
-<p>Most likely, you'll see &quot;hash sum mismatch&quot; errors, indicating that a
+<p>Most likely, you&rsquo;ll see &ldquo;hash sum mismatch&rdquo; errors, indicating that a
 package file is corrupt.  You need to download the correct version
-from the archive at <em>ports.ubuntu.com</em>.  To do this, you'll need a
+from the archive at <em>ports.ubuntu.com</em>.  To do this, you&rsquo;ll need a
 copy of <em>wget</em> installed.</p>
 
 <pre><code>$ apt-get install wget
 $ wget -nv http://ports.ubuntu.com/pool/main/PATH_TO_DEB
 </code></pre>
 
-<p>You'll see what to use for the <code>PATH_TO_DEB</code> part in the error
-message.  Once you've downloaded all of the troublesome package files,
+<p>You&rsquo;ll see what to use for the <code>PATH_TO_DEB</code> part in the error
+message.  Once you&rsquo;ve downloaded all of the troublesome package files,
 install them using:</p>
 
 <pre><code>$ dpkg -i *.deb
@@ -235,7 +235,7 @@ $ apt-get -f install
 <p>Then you can go back into the installer (on console 1) and try to
 repeat the current step.</p>
 
-<p>Note that things might be broken early enough that you can't install
+<p>Note that things might be broken early enough that you can&rsquo;t install
 <em>wget</em>.  If this is the case, how do you download the non-corrupt
 package file?  Luckily, Python was already installed at that point, so
 you can use the Python standard library to <a href="http://stackoverflow.com/questions/22676/how-do-i-download-a-file-over-http-using-python">emulate
@@ -243,8 +243,8 @@ you can use the Python standard library to <a href="http://stackoverflow.com/que
 
 <pre><code>$ python
 &gt;&gt;&gt; import urllib2
-&gt;&gt;&gt; pkg = urllib2.urlopen(&quot;http://ports.ubuntu.com/BLAH_BLAH&quot;)
-&gt;&gt;&gt; output = open(&quot;BLAH_BLAH.deb&quot;, &quot;wb&quot;)
+&gt;&gt;&gt; pkg = urllib2.urlopen(&ldquo;http://ports.ubuntu.com/BLAH_BLAH&rdquo;)
+&gt;&gt;&gt; output = open(&ldquo;BLAH_BLAH.deb&rdquo;, &ldquo;wb&rdquo;)
 &gt;&gt;&gt; output.write(pkg.read())
 &gt;&gt;&gt; output.close()
 &gt;&gt;&gt; ^D
@@ -254,9 +254,9 @@ you can use the Python standard library to <a href="http://stackoverflow.com/que
 
 <h2>Installing a bootloader</h2>
 
-<p>The installer claims that this architecture doesn't support a
+<p>The installer claims that this architecture doesn&rsquo;t support a
 bootloader, so we have to install one by hand.  The usual bootloader
-for PowerPC machines is <code>yaboot</code>; it's fair</p>
+for PowerPC machines is <code>yaboot</code>; it&rsquo;s fair</p>
 
         </div>
       </div>

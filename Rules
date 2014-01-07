@@ -30,7 +30,7 @@ compile '*' do
 
       when 'markdown'
         filter :erb
-        filter :redcarpet
+        filter :redcarpet, :options => [:smart]
         layout (item[:layout] or 'default')
 
       else

@@ -74,8 +74,8 @@ which is an attempt to define a WSDL-style interface description
 language for REST services.  <a href="http://bitworking.org/news/193/Do-we-need-WADL">Joe
 Gregorio</a> argues that
 MIME types are more useful for describing the semantics of a service
-than a WADL document, since there are parts of the service's semantics
-that just can't be encoded in a machine-readable format.  MIME types
+than a WADL document, since there are parts of the service&rsquo;s semantics
+that just can&rsquo;t be encoded in a machine-readable format.  MIME types
 acknowledge this, providing a standard way of identifying a data
 format and pointing to the human- and machine-readable documents (such
 as RFCs and XSDs) that define the syntax and accompanying semantics.</p>
@@ -103,18 +103,18 @@ would enable decentralized types.</p>
 <p>One of the arguments in favor of centralized assignment is that
 allowing everyone to invent their own MIME types would ruin
 interoperability.  And for certain cases, this seems pretty obviously
-true.  It's a good thing that we have a standardized <code>image/png</code> MIME
+true.  It&rsquo;s a good thing that we have a standardized <code>image/png</code> MIME
 type; this allows your browser to correctly display the website logo
 you see up in the upper left corner.  If I were daft, I could decide
 to serve that logo using a MIME type of <code>image/x-dcreager-png</code> (or
-similar) to indicate that I've included some particular set of
+similar) to indicate that I&rsquo;ve included some particular set of
 metadata in an ancillary chunk of the PNG.</p>
 
-<p>Why would I want to do this?  Maybe I'm writing an application that
-knows how to process this metadata, and I'd like to easily determine
-whether a particular resource I'm accessing has this metadata or not.
+<p>Why would I want to do this?  Maybe I&rsquo;m writing an application that
+knows how to process this metadata, and I&rsquo;d like to easily determine
+whether a particular resource I&rsquo;m accessing has this metadata or not.
 The <a href="http://www.openmicroscopy.org">Open Microscopy Environment</a> does
-exactly this; they've defined an XML schema that allows biology
+exactly this; they&rsquo;ve defined an XML schema that allows biology
 researchers to provide additional scientific metadata about an image
 or movie captured from a high-end microscope.  One way to encode an
 image and its metadata is as an “OME-TIFF”, a data format that
@@ -140,9 +140,9 @@ indicates that the OME-specific metadata is present.</p>
 <p>Another example given is that of an XML document.  Most applications
 will generate XML documents that conform to a particular schema (for
 instance, a company-specific purchase order), which they might encode
-as an XSD.  Now, the XSD on its own doesn't give you the full story on
+as an XSD.  Now, the XSD on its own doesn&rsquo;t give you the full story on
 how to process that data, but it does provide some detail on how the
-data is structured.  If you're writing an application that consumes
+data is structured.  If you&rsquo;re writing an application that consumes
 this data, having the XSD available would be helpful.  More
 interesting is an application that can consume <em>any</em> XML document —
 and which might use an XSD or RelaxNG schema to customize the UI used
@@ -153,16 +153,16 @@ for different reasons.  In the first case, the consuming application
 was built with advance knowledge of how the data should be handled,
 and the schema is used to direct a particular document to the code
 that implements this knowledge.  In the second case, the particular
-datatype is unimportant, and the application-specific semantics aren't
+datatype is unimportant, and the application-specific semantics aren&rsquo;t
 used; the data is only consumed as a “generic XML document”, and the
 schema is used to describe the specific structure of the elements.</p>
 
-<h2>Data doesn't have a single type</h2>
+<h2>Data doesn&rsquo;t have a single type</h2>
 
 <p>The common theme in both of these examples is that a single datatype
-isn't enough to describe the data we're dealing with.  As Roy Fielding
+isn&rsquo;t enough to describe the data we&rsquo;re dealing with.  As Roy Fielding
 <a href="http://roy.gbiv.com/untangled/2009/wrangling-mimetypes">points out</a>,
-“all data formats correspond to multiple media types”.  It's tempting
+“all data formats correspond to multiple media types”.  It&rsquo;s tempting
 to think of a datatype as just “the syntax and structure of the data”.
 But it must also include some intuition about how the data will be
 used.</p>
@@ -176,7 +176,7 @@ order XML document”.  And the particular XML document in question — a
 single sequence of bytes that is a single representation of a single
 resource — is an instance of both types.</p>
 
-<p>Why shift things around like this?  Doesn't it just move the
+<p>Why shift things around like this?  Doesn&rsquo;t it just move the
 complexity from the consumer (who used to consume multiple types) to
 the producer (who must now publish the XML document under different
 types)?  Not necessarily.  The key idea is that we can use
@@ -188,7 +188,7 @@ datatypes:</p>
 </div>
 
 <p>In this specific example, the transformation is simple — since the
-same sequence of bytes is a valid instance of both types, we don't
+same sequence of bytes is a valid instance of both types, we don&rsquo;t
 have to modify the data itself.  The decentralized MIME types
 (especially the MIME parameter proposal) already support these kinds
 of “no-op” transformations: the more generic type is the “base” MIME
@@ -198,10 +198,10 @@ open up the possibility of more complex sets of types, which might
 require actual code to transform between them, but which can be
 defined in a decentralized manner.</p>
 
-<p>Even though the model is more complex, we haven't required the
+<p>Even though the model is more complex, we haven&rsquo;t required the
 producer or consumer to be more complex.  A transformation graph is
 necessary to translate between the two different (but compatible)
-types, but the graph doesn't have to specifically live at the producer
+types, but the graph doesn&rsquo;t have to specifically live at the producer
 or the consumer.  The producer can publish the data using the only
 type it knows about (the “company-specific” type), and a consumer can
 request the data using the only type it knows about (such as the

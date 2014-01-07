@@ -68,9 +68,9 @@
           <div class="date">2009-08-13</div>
           <h1>Using callbacks with the subprocess module</h1>
           <p>In a <a href="/2009/08/06/subprocess-communicate-drawbacks/">previous post</a>,
-we pointed out two drawbacks of Python's <code>subprocess.communicate</code>
+we pointed out two drawbacks of Python&rsquo;s <code>subprocess.communicate</code>
 method.  In this post, we look at the first problem in more detail.
-To reiterate, the problem is that we collect the subprocess's output
+To reiterate, the problem is that we collect the subprocess&rsquo;s output
 streams into strings.  If the subprocess is going to generate a huge
 amount of output, it can be better to process the output data in a
 stream-oriented manner — that way we use a constant amount of memory
@@ -163,14 +163,14 @@ of the <code>communicate</code> method, we see this:</p>
 
         <span class="keyword">if</span> <span class="predefined-constant">self</span>.stdout <span class="keyword">in</span> rlist:
             data = os.read(<span class="predefined-constant">self</span>.stdout.fileno(), <span class="integer">1024</span>)
-            <span class="keyword">if</span> data == <span class="string"><span class="delimiter">&quot;</span><span class="delimiter">&quot;</span></span>:
+            <span class="keyword">if</span> data == <span class="string"><span class="delimiter">&ldquo;</span><span class="delimiter">&rdquo;</span></span>:
                 <span class="predefined-constant">self</span>.stdout.close()
                 read_set.remove(<span class="predefined-constant">self</span>.stdout)
             stdout.append(data)
 
         <span class="keyword">if</span> <span class="predefined-constant">self</span>.stderr <span class="keyword">in</span> rlist:
             data = os.read(<span class="predefined-constant">self</span>.stderr.fileno(), <span class="integer">1024</span>)
-            <span class="keyword">if</span> data == <span class="string"><span class="delimiter">&quot;</span><span class="delimiter">&quot;</span></span>:
+            <span class="keyword">if</span> data == <span class="string"><span class="delimiter">&ldquo;</span><span class="delimiter">&rdquo;</span></span>:
                 <span class="predefined-constant">self</span>.stderr.close()
                 read_set.remove(<span class="predefined-constant">self</span>.stderr)
             stderr.append(data)
@@ -182,7 +182,7 @@ of the <code>communicate</code> method, we see this:</p>
 
 <p>(There are actually several different <code>communicate</code> implementations in
 the module: a Windows-specific implementation, an implementation using
-the POSIX <code>poll</code> function, and one using POSIX <code>select</code>.  We're going
+the POSIX <code>poll</code> function, and one using POSIX <code>select</code>.  We&rsquo;re going
 to look at the <code>select</code> implementation; the modifications we make can
 be rolled into the other methods, too.)</p>
 
@@ -191,15 +191,15 @@ be rolled into the other methods, too.)</p>
 <p>For collecting stdout, the important part is lines 33-38.  If the
 <code>select</code> call tells us that the stdout stream is ready for reading, we
 try to read up to 1024 bytes from it.  If we get the empty string,
-this means we've reached EOF, and can close down the stream.  (We also
+this means we&rsquo;ve reached EOF, and can close down the stream.  (We also
 no longer have to keep passing it in to further <code>select</code> calls, since
-we know we're done with this stream.)  If we get a non-empty string,
+we know we&rsquo;re done with this stream.)  If we get a non-empty string,
 then we append it into a list.  The function that calls
 <code>_communicate_with_select</code> will eventually <code>join</code> this list of strings
 together, yielding a single string.</p>
 
-<p>It's actually a very simple change to make this process the output
-using a stream-based callback.  For now, we assume that we've been
+<p>It&rsquo;s actually a very simple change to make this process the output
+using a stream-based callback.  For now, we assume that we&rsquo;ve been
 given the callback, in a <code>stdout_callback</code> variable.  Then, we can
 change line 38 to</p>
 
@@ -272,7 +272,7 @@ callback.</p>
             <span class="predefined-constant">self</span>.line_callback = line_callback
 
         <span class="keyword">def</span> <span class="function">output_buffer</span>(<span class="predefined-constant">self</span>):
-            line = <span class="string"><span class="delimiter">&quot;</span><span class="delimiter">&quot;</span></span>.join(<span class="predefined-constant">self</span>.line_buffer)
+            line = <span class="string"><span class="delimiter">&ldquo;</span><span class="delimiter">&rdquo;</span></span>.join(<span class="predefined-constant">self</span>.line_buffer)
             <span class="predefined-constant">self</span>.line_callback(line)
             <span class="predefined-constant">self</span>.line_buffer = []
 
@@ -282,11 +282,11 @@ callback.</p>
             <span class="comment"># then out first, then send an empty string on the to line</span>
             <span class="comment"># callback.</span>
 
-            <span class="keyword">if</span> data == <span class="string"><span class="delimiter">&quot;</span><span class="delimiter">&quot;</span></span>:
+            <span class="keyword">if</span> data == <span class="string"><span class="delimiter">&ldquo;</span><span class="delimiter">&rdquo;</span></span>:
                 <span class="keyword">if</span> <span class="predefined">len</span>(<span class="predefined-constant">self</span>.line_buffer) &gt; <span class="integer">0</span>:
                     <span class="predefined-constant">self</span>.output_buffer()
 
-                <span class="predefined-constant">self</span>.line_callback(<span class="string"><span class="delimiter">&quot;</span><span class="delimiter">&quot;</span></span>)
+                <span class="predefined-constant">self</span>.line_callback(<span class="string"><span class="delimiter">&ldquo;</span><span class="delimiter">&rdquo;</span></span>)
                 <span class="keyword">return</span>
 
             <span class="comment"># Otherwise, we split the new data into separate lines,</span>
@@ -297,7 +297,7 @@ callback.</p>
             lines = data.splitlines(<span class="predefined-constant">True</span>)
             <span class="keyword">for</span> line <span class="keyword">in</span> lines:
                 <span class="predefined-constant">self</span>.line_buffer.append(line)
-                <span class="keyword">if</span> line.endswith((<span class="string"><span class="delimiter">&quot;</span><span class="char">\r</span><span class="char">\n</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="char">\n</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="char">\r</span><span class="delimiter">&quot;</span></span>)):
+                <span class="keyword">if</span> line.endswith((<span class="string"><span class="delimiter">&ldquo;</span><span class="char">\r</span><span class="char">\n</span><span class="delimiter">&rdquo;</span></span>, <span class="string"><span class="delimiter">&ldquo;</span><span class="char">\n</span><span class="delimiter">&rdquo;</span></span>, <span class="string"><span class="delimiter">&ldquo;</span><span class="char">\r</span><span class="delimiter">&rdquo;</span></span>)):
                     <span class="predefined-constant">self</span>.output_buffer()
 
             <span class="keyword">return</span>
@@ -311,9 +311,9 @@ callback.</p>
 <li><p><strong>line 1</strong> — We start by declaring the wrapping function.  It will
 take in a line-based callback, and return an arbitrary-chunk
 callback.</p></li>
-<li><p><strong>lines 2-5</strong> — We'll need to maintain some state in between
+<li><p><strong>lines 2-5</strong> — We&rsquo;ll need to maintain some state in between
 invocations of the arbitrary-chunk callback — specifically, if a
-line of output data falls across a chunk boundary, we'll need to
+line of output data falls across a chunk boundary, we&rsquo;ll need to
 hold onto the part in the first chunk until we receive the part in
 the second chunk.  One relatively easy way to do this is to create a
 new class, and store the state in <code>self</code> properties.  Note that the
@@ -321,21 +321,21 @@ new class, and store the state in <code>self</code> properties.  Note that the
 function.</p>
 
 <p>The buffer is a list of strings.  This needs to be a list to support
-arbitrarily long lines, since we don't know how many chunks we'll
+arbitrarily long lines, since we don&rsquo;t know how many chunks we&rsquo;ll
 need to store before outputting the line.</p></li>
 <li><p><strong>lines 7-10</strong> — We also declare a method in the class that can
 output the current contents of the saved buffer (if any).  Like the
 original <code>communicate</code> method, we join the buffer list together into
 a single string, then pass it onto the wrapped line callback.</p></li>
 <li><p><strong>lines 12-23</strong> — Next we can define the arbitrary-chunk callback.
-First, it checks to see if we've received an EOF indicator (the
+First, it checks to see if we&rsquo;ve received an EOF indicator (the
 empty string).  If so, we first output whatever is currently in the
 buffer; then we pass on the EOF to the line callback.</p></li>
 <li><p><strong>lines 25-34</strong> — If we get some actual data, we first split the
 current chunk into separate lines.  We pass in a <code>True</code> parameter to
 the <code>splitlines</code> method so that we get the newlines in the split
 strings.  This will let us tell if the final string in the list
-represents a complete line, or if it's the first part of a line that
+represents a complete line, or if it&rsquo;s the first part of a line that
 falls across a chunk boundary.</p>
 
 <p>We then loop through the split strings, adding them to the buffer.
@@ -352,8 +352,8 @@ arbitrary-chunk callback.</p></li>
 
 <p>This gives us a nice output callback mechanism, to prevent us from
 buffering the entire contents of the stdout and stderr streams in
-memory.  In later posts, we'll look at doing the same with the <em>input</em>
-data, and then we'll address the second problem, of dealing with more
+memory.  In later posts, we&rsquo;ll look at doing the same with the <em>input</em>
+data, and then we&rsquo;ll address the second problem, of dealing with more
 than one subprocess simultaneously.</p>
 
         </div>

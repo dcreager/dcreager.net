@@ -73,20 +73,20 @@ to build.  This is a very useful feature; however, there are two main
 missing features that I want to add to my build scripts.  First, I
 want to be able to delete all of the temporary files SCons uses, such
 as its configuration cache and any files I use to store variable
-values.  These aren't included in the default list of the files to
+values.  These aren&rsquo;t included in the default list of the files to
 clean up.  Second, I want more control over which items are deleted by
-default, when you specify <code>scons -c</code> without any targets.  I'll
-describe my solution to the first problem in this post.  I'll write up
+default, when you specify <code>scons -c</code> without any targets.  I&rsquo;ll
+describe my solution to the first problem in this post.  I&rsquo;ll write up
 the second problem in another post.</p>
 
-<h2>Deleting SCons's temporary files</h2>
+<h2>Deleting SCons&rsquo;s temporary files</h2>
 
 <p>This feature is akin to the <code>make distclean</code> target that Automake puts
 into the Makefiles that it generates.  This differs from <code>make clean</code>;
 <code>make clean</code> is intended to delete all of the build products, but
 leave behind the results of the <code>configure</code> step, whereas <code>make
 distclean</code> is supposed delete <em>everything</em>, returning the source tree
-to the same state as when you'd just unpacked the tarball.</p>
+to the same state as when you&rsquo;d just unpacked the tarball.</p>
 
 <p>The <code>scons -c</code> command is analogous to <code>make clean</code>, and requires no
 setup.  It will automatically delete any of the build products that
@@ -101,32 +101,32 @@ results, and try all of the tests again.</p>
 temporary files that SCons will create.  You can add the following
 rule to your top-level <em>SConstruct</em> file:</p>
 
-<pre class="CodeRay"><code>env.Clean(<span class="string"><span class="delimiter">&quot;</span><span class="content">distclean</span><span class="delimiter">&quot;</span></span>,
+<pre class="CodeRay"><code>env.Clean(<span class="string"><span class="delimiter">&ldquo;</span><span class="content">distclean</span><span class="delimiter">&rdquo;</span></span>,
           [
-           <span class="string"><span class="delimiter">&quot;</span><span class="content">.sconsign.dblite</span><span class="delimiter">&quot;</span></span>,
-           <span class="string"><span class="delimiter">&quot;</span><span class="content">.sconf_temp</span><span class="delimiter">&quot;</span></span>,
-           <span class="string"><span class="delimiter">&quot;</span><span class="content">config.log</span><span class="delimiter">&quot;</span></span>,
+           <span class="string"><span class="delimiter">&ldquo;</span><span class="content">.sconsign.dblite</span><span class="delimiter">&rdquo;</span></span>,
+           <span class="string"><span class="delimiter">&ldquo;</span><span class="content">.sconf_temp</span><span class="delimiter">&rdquo;</span></span>,
+           <span class="string"><span class="delimiter">&ldquo;</span><span class="content">config.log</span><span class="delimiter">&rdquo;</span></span>,
           ])
 </code></pre>
 
 <p>As far as I can tell, these three files are always created by SCons.
 To delete these files, you simply run <code>scons -c distclean</code>.  Because
-we've defined the target using <code>Clean</code>, it will only be run when you
+we&rsquo;ve defined the target using <code>Clean</code>, it will only be run when you
 pass in the <code>-c</code> option to <code>scons</code>.</p>
 
-<p>Since we're putting together the file list manually, you should make
+<p>Since we&rsquo;re putting together the file list manually, you should make
 sure to add any additional cache files that your SCons scripts use.
-For instance, I'm using some <code>Variable</code> options, which I store into a
-file called <em>.scons.vars</em>.  (This means that the user doesn't have to
+For instance, I&rsquo;m using some <code>Variable</code> options, which I store into a
+file called <em>.scons.vars</em>.  (This means that the user doesn&rsquo;t have to
 type them in with every invocation of <code>scons</code>.)  By using these
 variables, I have to add another entry to the <code>distclean</code> target:</p>
 
-<pre class="CodeRay"><code>vars = Variables(<span class="string"><span class="delimiter">'</span><span class="content">.scons.vars</span><span class="delimiter">'</span></span>, ARGUMENTS)
-<span class="comment"># ...define a bunch of variables</span>
+<pre class="CodeRay"><code>vars = Variables(<span class="string"><span class="delimiter">&lsquo;</span><span class="content">.scons.vars</span><span class="delimiter">&rsquo;</span></span>, ARGUMENTS)
+<span class="comment"># &hellip;define a bunch of variables</span>
 <span class="predefined">vars</span>.Update(env)
-<span class="predefined">vars</span>.Save(<span class="string"><span class="delimiter">&quot;</span><span class="content">.scons.vars</span><span class="delimiter">&quot;</span></span>, env)
+<span class="predefined">vars</span>.Save(<span class="string"><span class="delimiter">&ldquo;</span><span class="content">.scons.vars</span><span class="delimiter">&rdquo;</span></span>, env)
 
-env.Clean(<span class="string"><span class="delimiter">&quot;</span><span class="content">distclean</span><span class="delimiter">&quot;</span></span>, [<span class="string"><span class="delimiter">&quot;</span><span class="content">.scons.vars</span><span class="delimiter">&quot;</span></span>])
+env.Clean(<span class="string"><span class="delimiter">&ldquo;</span><span class="content">distclean</span><span class="delimiter">&rdquo;</span></span>, [<span class="string"><span class="delimiter">&ldquo;</span><span class="content">.scons.vars</span><span class="delimiter">&rdquo;</span></span>])
 </code></pre>
 
 <p>Note how, just like with any SCons target, I can define the
