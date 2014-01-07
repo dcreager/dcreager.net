@@ -1,6 +1,6 @@
 ---
 kind: article
-created_at: 2009-08-13
+created_at: 2009-08-13 13:00
 layout: post
 title: iPhone tethering
 tags: [iphone, ubuntu]

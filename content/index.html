@@ -7,7 +7,7 @@ layout: default
 
   <% sorted_articles.first(10).each do |article| %>
     <li class="summary">
-      <div class="date"><%= article[:created_at] %></div>
+      <div class="date"><%= date_ymd(article[:created_at]) %></div>
       <h1><%= article[:title] %></h1>
       <%= article.summarize %>
       <div class="link">

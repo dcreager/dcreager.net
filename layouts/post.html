@@ -11,7 +11,7 @@
     <div class="row">
       <div class="col-md-8 col-md-offset-2">
         <div class="blog">
-          <div class="date"><%= @item[:created_at] %></div>
+          <div class="date"><%= date_ymd(@item[:created_at]) %></div>
           <h1><%= @item[:title] %></h1>
           <%= yield %>
         </div>

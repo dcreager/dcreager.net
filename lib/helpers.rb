@@ -3,6 +3,15 @@ include Nanoc::Helpers::LinkTo
 include Nanoc::Helpers::Rendering
 include Nanoc::Helpers::Tagging
 
+def date_ymd(time)
+  case time
+  when String
+    return Time.parse(time).strftime("%Y-%m-%d")
+  else
+    return time
+  end
+end
+
 class Nanoc::Item
   def summarize
     content = rep_named(:default).compiled_content

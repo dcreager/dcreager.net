@@ -1,6 +1,6 @@
 ---
 kind: article
-created_at: 2009-08-13
+created_at: 2009-08-13 12:00
 layout: post
 title: Using callbacks with the subprocess module
 tags: [python, subprocess]

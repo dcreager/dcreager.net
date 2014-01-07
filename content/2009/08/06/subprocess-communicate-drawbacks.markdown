@@ -1,6 +1,6 @@
 ---
 kind: article
-created_at: 2009-08-06
+created_at: 2009-08-06 13:00
 layout: post
 title: Problems with Python's subprocess.communicate method
 tags: [python, subprocess]

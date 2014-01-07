@@ -8,7 +8,7 @@ title: All posts
 <ul class="archive">
   <% sorted_articles.each do |article| %>
     <li>
-      <span class="date"><%= article[:created_at] %></span>
+      <span class="date"><%= date_ymd(article[:created_at]) %></span>
       <span class="title"><a href="<%= article.path %>"><%= article[:title] %></a></span>
     </li>
   <% end %>

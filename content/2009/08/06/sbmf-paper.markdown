@@ -1,6 +1,6 @@
 ---
 kind: article
-created_at: 2009-08-06
+created_at: 2009-08-06 12:00
 layout: post
 title: SBMF07 paper chosen for extended proceedings
 tags: [papers]
