@@ -1,0 +1,624 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <id>http://dcreager.net//</id>
+  <title>dcreager.net</title>
+  <updated>2010-05-13T04:00:00Z</updated>
+  <link rel="alternate" href="http://dcreager.net//"/>
+  <link rel="self" href="http://dcreager.net//atom.xml"/>
+  <author>
+    <name>Douglas Creager</name>
+    <uri>http://dcreager.net/</uri>
+  </author>
+  <entry>
+    <id>tag:dcreager.net,2010-05-13://2010/05/13/powerpc-qemu-lucid/</id>
+    <title type="html">Installing Ubuntu Lucid on a PowerPC QEMU virtual machine</title>
+    <published>2010-05-13T04:00:00Z</published>
+    <updated>2010-05-13T04:00:00Z</updated>
+    <link rel="alternate" href="http://dcreager.net//2010/05/13/powerpc-qemu-lucid/"/>
+    <content type="html">&lt;p&gt;Part of the software I help develop at
+&lt;a href="http://www.redjack.com/"&gt;RedJack&lt;/a&gt; needs to be tested on both
+little-endian and big-endian machines.  Little-endian machines are
+easy, since everyone and their mother is running on a little-endian
+Intel or AMD x86 chip.  It used to be that big-endian was pretty easy
+to test, too — just break out your trusty Apple Powerbook G4 and
+you&amp;rsquo;re good to go.  Since Apple has shifted over to Intel chips,
+though, the situation has changed.&lt;/p&gt;
+
+&lt;p&gt;Luckily, &lt;a href="http://wiki.qemu.org/"&gt;QEMU&lt;/a&gt; has PowerPC as one of the
+targets that it can emulate, so in theory, I can still easily test my
+code on a big-endian machine by creating a QEMU PowerPC virtual
+machine.  There&amp;rsquo;s already a writeup about trying to install Debian
+onto a QEMU VM
+&lt;a href="http://machine-cycle.blogspot.com/2009/05/running-debian-on-qemu-powerpc.html"&gt;here&lt;/a&gt;.
+&lt;a href="http://www.aurel32.net/"&gt;Aurélien Jarno&lt;/a&gt; has graciously put together
+downloadable disk images with Debian preinstalled.  If that&amp;rsquo;s good
+enough for your purposes, just go download those!  You won&amp;rsquo;t need any
+of the rest of the information on this page.&lt;/p&gt;
+
+&lt;p&gt;Unfortunately, I didn&amp;rsquo;t want to run stock Debian; my little-endian
+build machine is running Ubuntu Lucid, and for consistency, I wanted
+my big-endian VM to be running the same.  As it turns out, this also
+required a fair dose of masochism on my part.  There are several
+issues that you&amp;rsquo;ll encounter if you try to do this by hand.  Here is
+my cheat sheet for getting around these issues.&lt;/p&gt;
+
+&lt;p&gt;Note that this isn&amp;rsquo;t a full step-by-step account of how to install
+Lucid onto a QEMU VM.  For now, I&amp;rsquo;m just trying to get my notes down
+into a more permanent form.&lt;/p&gt;
+
+</content>
+  </entry>
+  <entry>
+    <id>tag:dcreager.net,2010-02-25://2010/02/25/libpush-callbacks-part-1/</id>
+    <title type="html">Parser callbacks in libpush, Part 1 — Streams</title>
+    <published>2010-02-25T05:00:00Z</published>
+    <updated>2010-02-25T05:00:00Z</updated>
+    <link rel="alternate" href="http://dcreager.net//2010/02/25/libpush-callbacks-part-1/"/>
+    <content type="html">&lt;p&gt;This post is the first in a series that describes the
+&lt;code&gt;push_callback_t&lt;/code&gt; type in the
+&lt;a href="http://github.com/dcreager/libpush/"&gt;libpush&lt;/a&gt; library.  In these
+posts, we&amp;rsquo;ll walk through a couple of possible ways to implement
+callbacks under the covers.  At each stage, we&amp;rsquo;ll encounter problems
+with the current design.  Fixing these problems should lead closer us
+to the actual implementation in libpush, and along the way, we&amp;rsquo;ll gain
+a good understanding of how our design decisions affect the
+performance and usability of the library.&lt;/p&gt;
+
+&lt;p&gt;The &lt;code&gt;push_callback_t&lt;/code&gt; type is used to define &lt;em&gt;parser callbacks&lt;/em&gt;, which
+are the basic unit of parsing in libpush.  Callbacks are pretty
+simple: they take in an &lt;em&gt;input value&lt;/em&gt;, read some data from the &lt;em&gt;input
+stream&lt;/em&gt;, and produce an &lt;em&gt;output value&lt;/em&gt;.  (The fact that callbacks take
+in an input value, in addition to reading from the input stream, is
+what makes them &lt;a href="http://www.haskell.org/arrows/"&gt;&lt;em&gt;arrows&lt;/em&gt;&lt;/a&gt; instead of
+&lt;a href="http://en.wikipedia.org/wiki/Monad_%28functional_programming%29"&gt;&lt;em&gt;monads&lt;/em&gt;&lt;/a&gt;
+— but that&amp;rsquo;s a story for a later post).&lt;/p&gt;
+
+</content>
+  </entry>
+  <entry>
+    <id>tag:dcreager.net,2010-02-17://2010/02/17/llvm-lto-karmic/</id>
+    <title type="html">Using LLVM's link-time optimization on Ubuntu Karmic</title>
+    <published>2010-02-17T05:00:00Z</published>
+    <updated>2010-02-17T05:00:00Z</updated>
+    <link rel="alternate" href="http://dcreager.net//2010/02/17/llvm-lto-karmic/"/>
+    <content type="html">&lt;p&gt;While playing around with
+&lt;a href="http://github.com/dcreager/libpush"&gt;libpush&lt;/a&gt; on my MacBook, I was
+pleasantly surprised to see a huge performance increase when I used
+the link-time optimization (LTO) feature of the LLVM GCC front end.
+(It&amp;rsquo;s really quite nifty; the new &lt;a href="http://github.com/mxcl/homebrew"&gt;Homebrew package
+manager&lt;/a&gt; uses it by default when
+compiling packages.)  On MacOS, using LTO is as simple as using
+&lt;code&gt;llvm-gcc&lt;/code&gt; as your C compiler (or &lt;code&gt;llvm-g++&lt;/code&gt; if you&amp;rsquo;re compiling C++),
+and passing in &lt;code&gt;-O4&lt;/code&gt; as your optimization flag.  I use SCons as my
+builder, so this turns into:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ scons CC=llvm-gcc CCFLAGS=-O4
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This will cause GCC to output LLVM bytecode into the &lt;em&gt;.o&lt;/em&gt; output
+files, and to perform whole-program optimizations during each linking
+phase.  I was able to see a big performance win simply from the linker
+being able to inline in copies of small functions that live in “other”
+compilation units.&lt;/p&gt;
+
+</content>
+  </entry>
+  <entry>
+    <id>tag:dcreager.net,2010-02-10://2010/02/10/setuptools-git-version-numbers/</id>
+    <title type="html">Extracting setuptools version numbers from your git repository</title>
+    <published>2010-02-10T05:00:00Z</published>
+    <updated>2010-02-10T05:00:00Z</updated>
+    <link rel="alternate" href="http://dcreager.net//2010/02/10/setuptools-git-version-numbers/"/>
+    <content type="html">&lt;p&gt;Just like everyone else, we&amp;rsquo;re using
+&lt;a href="http://pypi.python.org/pypi/setuptools"&gt;setuptools&lt;/a&gt; as the core of
+the build system for our Python-based projects.  For the most part,
+this has been a painless, straightforward process.  However, one
+lingering annoyance is that we&amp;rsquo;ve been specifying the version number
+directly in our &lt;em&gt;setup.py&lt;/em&gt; files:&lt;/p&gt;
+
+&lt;pre class="CodeRay"&gt;&lt;code&gt;&lt;span class="keyword"&gt;from&lt;/span&gt; &lt;span class="include"&gt;setuptools&lt;/span&gt; &lt;span class="keyword"&gt;import&lt;/span&gt; &lt;span class="include"&gt;setup&lt;/span&gt;
+
+setup(
+    name = &lt;span class="string"&gt;&lt;span class="delimiter"&gt;&amp;ldquo;&lt;/span&gt;&lt;span class="content"&gt;awesomelib&lt;/span&gt;&lt;span class="delimiter"&gt;&amp;rdquo;&lt;/span&gt;&lt;/span&gt;,
+    version = &lt;span class="string"&gt;&lt;span class="delimiter"&gt;&amp;ldquo;&lt;/span&gt;&lt;span class="content"&gt;1.2&lt;/span&gt;&lt;span class="delimiter"&gt;&amp;rdquo;&lt;/span&gt;&lt;/span&gt;,
+    &lt;span class="comment"&gt;# &amp;hellip;etc&lt;/span&gt;
+)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;On our maintenance branches, we get a nice &lt;em&gt;awesomelib-1.2.tar.gz&lt;/em&gt;
+file when we run &lt;code&gt;python setup.py sdist&lt;/code&gt;.  On our development branch,
+we&amp;rsquo;ve also got the following &lt;em&gt;setup.cfg&lt;/em&gt; file:&lt;/p&gt;
+
+&lt;pre class="CodeRay"&gt;&lt;code&gt;[egg_info]
+tag_build = dev
+tag_date = true
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;That gives us tarballs like &lt;em&gt;awesomelib-1.2dev-20100210.tar.gz&lt;/em&gt; on our
+development branch.  Because we&amp;rsquo;re using the &lt;code&gt;dev&lt;/code&gt; suffix, which
+setuptools considers to be a &amp;ldquo;prerelease&amp;rdquo;, we have to remember to
+increment the version number in development whenever we cut a new
+release.  The end result is that we have a longish process for
+creating releases.  If we want to create a new 1.3 release, we have to
+do the following:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;Create a new maintenance branch for 1.3:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ git checkout -b maint-1.3 master
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Update the &lt;em&gt;setup.cfg&lt;/em&gt; file to remove the &lt;code&gt;tag_build&lt;/code&gt; and
+&lt;code&gt;tag_date&lt;/code&gt; entries.  Commit this with a &amp;ldquo;Tagging version 1.3&amp;rdquo;
+commit message.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Back on the development branch, update &lt;em&gt;setup.py&lt;/em&gt; to increment the
+&amp;ldquo;development version&amp;rdquo; to 1.4.&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Granted, this isn&amp;rsquo;t horribly difficult, but we can do better.&lt;/p&gt;
+
+</content>
+  </entry>
+  <entry>
+    <id>tag:dcreager.net,2010-02-06://2010/02/06/libpush/</id>
+    <title type="html">A combinator-based parsing library for C</title>
+    <published>2010-02-06T05:00:00Z</published>
+    <updated>2010-02-06T05:00:00Z</updated>
+    <link rel="alternate" href="http://dcreager.net//2010/02/06/libpush/"/>
+    <content type="html">&lt;p&gt;Recently I&amp;rsquo;ve been working on
+&lt;a href="http://github.com/dcreager/libpush/"&gt;libpush&lt;/a&gt;, which a new parsing
+library for C.  It has two main features that I think will be
+valuable: it&amp;rsquo;s a &lt;em&gt;push parser&lt;/em&gt;, which means that instead of parsing a
+file, stream, or single memory buffer, you supply the data (or &amp;ldquo;push&amp;rdquo;
+it) to the parser in chunks, as it becomes available.  I plan to
+discuss this aspect of the parser in more detail in a later post.&lt;/p&gt;
+
+&lt;p&gt;The other main feature is that you design your parsers using
+&lt;em&gt;combinators&lt;/em&gt;.  Parser combinators are widely used in Haskell, with
+&lt;a href="http://legacy.cs.uu.nl/daan/parsec.html"&gt;Parsec&lt;/a&gt; being the most
+common example.  Combinator-based parsing libraries are especially
+nice in Haskell, because Haskell&amp;rsquo;s syntax makes them look very simple.
+For instance, a parser that parses matching nested parentheses is:&lt;/p&gt;
+
+&lt;pre class="CodeRay"&gt;&lt;code&gt;parens :: Parser ()
+parens = (char &amp;lsquo;(&amp;rsquo; &amp;gt;&amp;gt; parens &amp;gt;&amp;gt; char &amp;lsquo;)&amp;rsquo; &amp;gt;&amp;gt; parens) &amp;lt;|&amp;gt; return ()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Here, the &lt;code&gt;&amp;lt;|&amp;gt;&lt;/code&gt; operator represents &lt;em&gt;choice&lt;/em&gt;: we try parsing the left
+operand, and if it fails, then we try the right operand.  In our
+example, the right operand is the base case, which matches the empty
+string.  The left operand parses an opening parenthesis; then
+recursively calls itself to match any parentheses that might be nested
+in the current set; then parses the closing parenthesis; and then
+finally tries to match a nested set that occurs after the current set.&lt;/p&gt;</content>
+  </entry>
+  <entry>
+    <id>tag:dcreager.net,2010-02-05://2010/02/05/omnigraffle-5-export/</id>
+    <title type="html">Updating graffle-export to work with OmniGraffle 5</title>
+    <published>2010-02-05T05:00:00Z</published>
+    <updated>2010-02-05T05:00:00Z</updated>
+    <link rel="alternate" href="http://dcreager.net//2010/02/05/omnigraffle-5-export/"/>
+    <content type="html">&lt;p&gt;I recently upgraded to OmniGraffle 5, which caused my
+&lt;a href="http://github.com/dcreager/graffle-export/"&gt;graffle-export&lt;/a&gt; script to
+break:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ graffle.sh ~/git/cwa/figures/analyst.graffle foo.pdf 
+OmniGraffle Professional 5
+/Users/dcreager/git/cwa/figures/analyst.graffle
+./graffle.scpt: execution error: OmniGraffle Professional 5 got an error: The document cannot be exported to the &amp;ldquo;pdf&amp;rdquo; format. (-50)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;(This was first reported to me by Nima Talebi as &lt;a href="http://github.com/dcreager/graffle-export/issues/issue/1"&gt;a
+ticket&lt;/a&gt; on
+graffle-export&amp;rsquo;s Github page.)&lt;/p&gt;
+
+&lt;p&gt;Before we can understand what error we&amp;rsquo;re seeing, a little explanation
+is in order.  The core logic of the OmniGraffle exporter is an
+AppleScript.  Unfortunately, AppleScripts are stored in a binary
+format, so if you go to the Github page, you can&amp;rsquo;t easily view the
+contents of the file.  The important line of the script is:&lt;/p&gt;</content>
+  </entry>
+  <entry>
+    <id>tag:dcreager.net,2010-01-08://2010/01/08/default-scons-clean-targets/</id>
+    <title type="html">Default “scons -c” targets</title>
+    <published>2010-01-08T05:00:00Z</published>
+    <updated>2010-01-08T05:00:00Z</updated>
+    <link rel="alternate" href="http://dcreager.net//2010/01/08/default-scons-clean-targets/"/>
+    <content type="html">&lt;p&gt;As I mentioned in a &lt;a href="/2009/12/18/make-distclean-in-scons/"&gt;previous
+post&lt;/a&gt;, the automatic “clean”
+target provided by SCons (&lt;code&gt;scons -c&lt;/code&gt;) is very useful for cleaning out
+build files, without requiring much in the way of configuration.
+Anything that SCons generates when you run &lt;code&gt;scons&lt;/code&gt; will be
+automatically cleaned when you run &lt;code&gt;scons -c&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;While useful, I&amp;rsquo;d like more control over the behavior of &lt;code&gt;scons -c&lt;/code&gt;.
+Specifically, being a good TDD junkie, I have several test cases that
+I can run using &lt;code&gt;scons test&lt;/code&gt;:&lt;/p&gt;
+
+&lt;pre class="CodeRay"&gt;&lt;code&gt;build_test = env.Program( &amp;hellip; )
+env.Alias(&lt;span class="string"&gt;&lt;span class="delimiter"&gt;&amp;ldquo;&lt;/span&gt;&lt;span class="content"&gt;build-tests&lt;/span&gt;&lt;span class="delimiter"&gt;&amp;rdquo;&lt;/span&gt;&lt;/span&gt;, build_test)
+
+run_test = env.Alias(&lt;span class="string"&gt;&lt;span class="delimiter"&gt;&amp;ldquo;&lt;/span&gt;&lt;span class="content"&gt;test&lt;/span&gt;&lt;span class="delimiter"&gt;&amp;rdquo;&lt;/span&gt;&lt;/span&gt;, [build_test],
+                     [&lt;span class="string"&gt;&lt;span class="delimiter"&gt;&amp;ldquo;&lt;/span&gt;&lt;span class="content"&gt;@%s&lt;/span&gt;&lt;span class="delimiter"&gt;&amp;rdquo;&lt;/span&gt;&lt;/span&gt; % build_test[&lt;span class="integer"&gt;0&lt;/span&gt;].abspath])
+env.AlwaysBuild(run_test)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;By setting it up this way, the test programs aren&amp;rsquo;t built by default:
+you have to explicitly run &lt;code&gt;scons build-tests&lt;/code&gt; (if you want to build
+the tests but not run them) or &lt;code&gt;scons test&lt;/code&gt; (if you want to build and
+run them).  Moreover, because of SCons&amp;rsquo;s dependency tracking, I can
+just use &lt;code&gt;scons test&lt;/code&gt; as my usual build command during my
+Edit-Test-Debug loop.  SCons will automatically rebuild any changed
+source files before running the tests.&lt;/p&gt;
+
+&lt;p&gt;All of this is great.  So what&amp;rsquo;s the problem?  As I mentioned above,
+&lt;code&gt;scons -c&lt;/code&gt; only cleans the build files that are created by &lt;code&gt;scons&lt;/code&gt; —
+and since I&amp;rsquo;ve explicitly set things up so that tests aren&amp;rsquo;t &lt;em&gt;built&lt;/em&gt;
+by default, they&amp;rsquo;ll also not be &lt;em&gt;cleaned&lt;/em&gt; by default.  This means that
+to fully clean out my build targets, I have to run two commands:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ scons -c
+$ scons -c build-tests
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Not ideal!  I&amp;rsquo;d prefer if &lt;code&gt;scons -c&lt;/code&gt; cleaned everything, just like
+&lt;code&gt;make clean&lt;/code&gt; would in the Automake world.&lt;/p&gt;
+
+</content>
+  </entry>
+  <entry>
+    <id>tag:dcreager.net,2010-01-05://2010/01/05/omnigraffle-export/</id>
+    <title type="html">Exporting OmniGraffle documents from the command line</title>
+    <published>2010-01-05T05:00:00Z</published>
+    <updated>2010-01-05T05:00:00Z</updated>
+    <link rel="alternate" href="http://dcreager.net//2010/01/05/omnigraffle-export/"/>
+    <content type="html">&lt;p&gt;&lt;a href="http://www.omnigroup.com/applications/OmniGraffle/"&gt;OmniGraffle&lt;/a&gt; is
+my tool of choice for creating figures for my papers.  It&amp;rsquo;s biggest
+drawback is that it&amp;rsquo;s only available for Mac OS, which can make it
+cumbersome if I&amp;rsquo;m working on one of my Linux machines and need to
+create or modify a figure.  But it&amp;rsquo;s ease-of-use and the quality of
+the figures it creates are hard to beat.&lt;/p&gt;
+
+&lt;p&gt;Of course, creating the figure isn&amp;rsquo;t enough — since I write my papers
+in LaTeX, I have to export my figures into EPS or PDF (depending on
+whether I&amp;rsquo;m creating a PostScript or PDF version of the paper) before
+I can use them in my documents.  It&amp;rsquo;s easy enough to use the Export
+dialog to do this (keyboard shortcut: ⌥⌘E), but ideally I&amp;rsquo;d like the
+ability to export figures from the command line.  Coupled with a good
+Makefile, this would let me run a simple &lt;code&gt;make paper&lt;/code&gt; command, and
+automatically re-export any necessary figures before rebuilding the
+paper itself.&lt;/p&gt;
+
+&lt;p&gt;Luckily, OmniGraffle has always had rather good support for being
+controlled via AppleScript.  The commands can be somewhat
+undocumented, requiring a bit of trial and error, but while entrenched
+in our PhD studies at Oxford, my colleague David Faitelson and I were
+able to whip together a script that suited our needs.  I&amp;rsquo;ve recently
+extracted the code from our Oxford SVN repository and uploaded it to
+&lt;a href="http://github.com/dcreager/graffle-export"&gt;Github&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;To install the script, just place the &lt;em&gt;graffle.sh&lt;/em&gt; and &lt;em&gt;graffle.scpt&lt;/em&gt;
+files into some directory that&amp;rsquo;s on your &lt;code&gt;$PATH&lt;/code&gt;, such as
+&lt;em&gt;/usr/local/bin&lt;/em&gt; or &lt;em&gt;$HOME/bin&lt;/em&gt;.  Then just run&lt;/p&gt;</content>
+  </entry>
+  <entry>
+    <id>tag:dcreager.net,2009-12-23://2009/12/23/high-water-mark-buffers/</id>
+    <title type="html">“High-water mark” buffers</title>
+    <published>2009-12-23T05:00:00Z</published>
+    <updated>2009-12-23T05:00:00Z</updated>
+    <link rel="alternate" href="http://dcreager.net//2009/12/23/high-water-mark-buffers/"/>
+    <content type="html">&lt;p&gt;My coding project for today was to extract out some code for dealing
+with “high-water mark buffers”, putting it in a separate library call
+&lt;code&gt;libhwm&lt;/code&gt;.  In this post, I&amp;rsquo;m going to describe the rationale for using
+them, and a brief overview of how to use the library.  (The library is
+hosted on &lt;a href="http://github.com/dcreager/libhwm/"&gt;Github&lt;/a&gt;).&lt;/p&gt;
+
+&lt;p&gt;By the way, this post (and the library) is all in C.&lt;/p&gt;
+
+</content>
+  </entry>
+  <entry>
+    <id>tag:dcreager.net,2009-12-21://2009/12/21/decentralized-datatypes/</id>
+    <title type="html">Decentralized datatypes</title>
+    <published>2009-12-21T05:00:00Z</published>
+    <updated>2009-12-21T05:00:00Z</updated>
+    <link rel="alternate" href="http://dcreager.net//2009/12/21/decentralized-datatypes/"/>
+    <content type="html">&lt;p&gt;Over the past year or so there have been quite a few blog postings in
+the REST world about MIME types, and their role in the REST
+architecture.  A lot of the discussion seems to be prompted by WADL,
+which is an attempt to define a WSDL-style interface description
+language for REST services.  &lt;a href="http://bitworking.org/news/193/Do-we-need-WADL"&gt;Joe
+Gregorio&lt;/a&gt; argues that
+MIME types are more useful for describing the semantics of a service
+than a WADL document, since there are parts of the service&amp;rsquo;s semantics
+that just can&amp;rsquo;t be encoded in a machine-readable format.  MIME types
+acknowledge this, providing a standard way of identifying a data
+format and pointing to the human- and machine-readable documents (such
+as RFCs and XSDs) that define the syntax and accompanying semantics.&lt;/p&gt;
+
+&lt;p&gt;Following this idea, several people have begun debating whether or not
+the centralized assignment of MIME types is the right way to handle
+the variety of data formats that REST-based systems produce and
+consume.  &lt;a href="http://www.markbaker.ca/blog/2008/02/media-type-centralization-is-a-feature-not-a-bug/"&gt;Mark
+Baker&lt;/a&gt;
+comes in on the side of centralized assignment, whereas &lt;a href="http://www.innoq.com/blog/st/2008/02/decentralizing_media_types.html"&gt;Stefan
+Tilkov&lt;/a&gt;,
+&lt;a href="http://netzooid.com/blog/2008/02/07/why-a-restful-idl-is-an-oxymoron-and-what-we-really-need-instead/"&gt;Dan
+Diephouse&lt;/a&gt;,
+and &lt;a href="http://macstrac.blogspot.com/2007/11/atompub-services-and-auto-detecting.html"&gt;James
+Strachan&lt;/a&gt;
+argue in favor of decentralized types.  &lt;a href="http://bill.burkecentral.com/2008/03/05/restful-xml-content-negotitation/"&gt;Bill
+Burke&lt;/a&gt;
+and &lt;a href="http://soundadvice.id.au/blog/2009/08/16/#mimeLimitation"&gt;Benjamin
+Carlyle&lt;/a&gt;
+have good summaries of the different proposed technical solutions that
+would enable decentralized types.&lt;/p&gt;
+
+</content>
+  </entry>
+  <entry>
+    <id>tag:dcreager.net,2009-12-18://2009/12/18/make-distclean-in-scons/</id>
+    <title type="html">Simulating “make distclean” in SCons</title>
+    <published>2009-12-18T05:00:00Z</published>
+    <updated>2009-12-18T05:00:00Z</updated>
+    <link rel="alternate" href="http://dcreager.net//2009/12/18/make-distclean-in-scons/"/>
+    <content type="html">&lt;p&gt;SCons provides an automatic “clean” target out of the box — just run
+&lt;code&gt;scons -c&lt;/code&gt;, and SCons will delete all of the objects that it knows how
+to build.  This is a very useful feature; however, there are two main
+missing features that I want to add to my build scripts.  First, I
+want to be able to delete all of the temporary files SCons uses, such
+as its configuration cache and any files I use to store variable
+values.  These aren&amp;rsquo;t included in the default list of the files to
+clean up.  Second, I want more control over which items are deleted by
+default, when you specify &lt;code&gt;scons -c&lt;/code&gt; without any targets.  I&amp;rsquo;ll
+describe my solution to the first problem in this post.  I&amp;rsquo;ll write up
+the second problem in another post.&lt;/p&gt;
+
+</content>
+  </entry>
+  <entry>
+    <id>tag:dcreager.net,2009-09-08://2009/09/08/ubuntu-downgrading/</id>
+    <title type="html">Downgrading packages in Ubuntu</title>
+    <published>2009-09-08T04:00:00Z</published>
+    <updated>2009-09-08T04:00:00Z</updated>
+    <link rel="alternate" href="http://dcreager.net//2009/09/08/ubuntu-downgrading/"/>
+    <content type="html"></content>
+  </entry>
+  <entry>
+    <id>tag:dcreager.net,2009-08-13://2009/08/13/iphone-tethering/</id>
+    <title type="html">iPhone tethering</title>
+    <published>2009-08-13T17:00:00Z</published>
+    <updated>2009-08-13T17:00:00Z</updated>
+    <link rel="alternate" href="http://dcreager.net//2009/08/13/iphone-tethering/"/>
+    <content type="html">&lt;p&gt;While attending the &lt;a href="http://mil-oss.org/"&gt;Mil-OSS conference&lt;/a&gt; this
+week, I had the opportunity to use one of the coolest features of my
+new iPhone 3GS — Bluetooth Internet tethering.  Assuming that your
+mobile carrier allows the feature on their network, it provides a very
+easy way to have a persistent Internet connection, for those
+situations where a free Ethernet drop or WiFi access point aren&amp;rsquo;t
+readily available.&lt;/p&gt;
+
+&lt;p&gt;I happened to have my Dell Mini 9 (running Ubuntu Jaunty) with me for
+the conference, rather than my MacBook, so I thought that it might be
+difficult to get the Bluetooth connection working between the phone
+and laptop.  This &lt;a href="http://xn--9bi.net/2009/06/17/tethering-iphone-3-0-to-ubuntu-9-04/"&gt;blog
+posting&lt;/a&gt;,
+however, provided exactly what I needed.&lt;/p&gt;
+
+&lt;p&gt;Following this process, the connection worked without a hitch.  One
+caveat is that I didn&amp;rsquo;t need to explicitly pair my phone with my
+laptop; the first time I ran the &lt;code&gt;pand &amp;mdash;connect&lt;/code&gt; command, my phone
+prompted me with the pairing confirmation dialog.  Later connections
+didn&amp;rsquo;t require re-pairing.&lt;/p&gt;
+
+&lt;p&gt;As for bandwidth, the connection was perfectly reasonable for email
+and basic Web surfing as long as I had decent 3G coverage — 3 of 5
+bars or higher and I was good to go.  I also did an &lt;code&gt;apt-get&lt;/code&gt; package
+update as a “beefier” test; I was usually seeing around 20-30 Kb/sec
+of download speed, which would be fine for small daily updates, but
+would probably be unworkable for something large like a GNOME,
+texlive, or GHC update.  All in all, not bad for some surreptitious
+email checking during the talks.&lt;/p&gt;
+
+</content>
+  </entry>
+  <entry>
+    <id>tag:dcreager.net,2009-08-13://2009/08/13/subprocess-callbacks/</id>
+    <title type="html">Using callbacks with the subprocess module</title>
+    <published>2009-08-13T16:00:00Z</published>
+    <updated>2009-08-13T16:00:00Z</updated>
+    <link rel="alternate" href="http://dcreager.net//2009/08/13/subprocess-callbacks/"/>
+    <content type="html">&lt;p&gt;In a &lt;a href="/2009/08/06/subprocess-communicate-drawbacks/"&gt;previous post&lt;/a&gt;,
+we pointed out two drawbacks of Python&amp;rsquo;s &lt;code&gt;subprocess.communicate&lt;/code&gt;
+method.  In this post, we look at the first problem in more detail.
+To reiterate, the problem is that we collect the subprocess&amp;rsquo;s output
+streams into strings.  If the subprocess is going to generate a huge
+amount of output, it can be better to process the output data in a
+stream-oriented manner — that way we use a constant amount of memory
+regardless of how much output is produced.&lt;/p&gt;
+
+&lt;p&gt;If we look at the
+&lt;a href="http://svn.python.org/view/python/trunk/Lib/subprocess.py?revision=74029&amp;view=markup"&gt;implementation&lt;/a&gt;
+of the &lt;code&gt;communicate&lt;/code&gt; method, we see this:&lt;/p&gt;
+
+&lt;div class="CodeRay"&gt;&lt;table class="CodeRay"&gt;&lt;tr&gt;
+  &lt;td class="line-numbers"&gt;&lt;pre&gt;&lt;a href="#n1" name="n1"&gt;1&lt;/a&gt;
+&lt;a href="#n2" name="n2"&gt;2&lt;/a&gt;
+&lt;a href="#n3" name="n3"&gt;3&lt;/a&gt;
+&lt;a href="#n4" name="n4"&gt;4&lt;/a&gt;
+&lt;a href="#n5" name="n5"&gt;5&lt;/a&gt;
+&lt;a href="#n6" name="n6"&gt;6&lt;/a&gt;
+&lt;a href="#n7" name="n7"&gt;7&lt;/a&gt;
+&lt;a href="#n8" name="n8"&gt;8&lt;/a&gt;
+&lt;a href="#n9" name="n9"&gt;9&lt;/a&gt;
+&lt;strong&gt;&lt;a href="#n10" name="n10"&gt;10&lt;/a&gt;&lt;/strong&gt;
+&lt;a href="#n11" name="n11"&gt;11&lt;/a&gt;
+&lt;a href="#n12" name="n12"&gt;12&lt;/a&gt;
+&lt;a href="#n13" name="n13"&gt;13&lt;/a&gt;
+&lt;a href="#n14" name="n14"&gt;14&lt;/a&gt;
+&lt;a href="#n15" name="n15"&gt;15&lt;/a&gt;
+&lt;a href="#n16" name="n16"&gt;16&lt;/a&gt;
+&lt;a href="#n17" name="n17"&gt;17&lt;/a&gt;
+&lt;a href="#n18" name="n18"&gt;18&lt;/a&gt;
+&lt;a href="#n19" name="n19"&gt;19&lt;/a&gt;
+&lt;strong&gt;&lt;a href="#n20" name="n20"&gt;20&lt;/a&gt;&lt;/strong&gt;
+&lt;a href="#n21" name="n21"&gt;21&lt;/a&gt;
+&lt;a href="#n22" name="n22"&gt;22&lt;/a&gt;
+&lt;a href="#n23" name="n23"&gt;23&lt;/a&gt;
+&lt;a href="#n24" name="n24"&gt;24&lt;/a&gt;
+&lt;a href="#n25" name="n25"&gt;25&lt;/a&gt;
+&lt;a href="#n26" name="n26"&gt;26&lt;/a&gt;
+&lt;a href="#n27" name="n27"&gt;27&lt;/a&gt;
+&lt;a href="#n28" name="n28"&gt;28&lt;/a&gt;
+&lt;a href="#n29" name="n29"&gt;29&lt;/a&gt;
+&lt;strong&gt;&lt;a href="#n30" name="n30"&gt;30&lt;/a&gt;&lt;/strong&gt;
+&lt;a href="#n31" name="n31"&gt;31&lt;/a&gt;
+&lt;a href="#n32" name="n32"&gt;32&lt;/a&gt;
+&lt;a href="#n33" name="n33"&gt;33&lt;/a&gt;
+&lt;a href="#n34" name="n34"&gt;34&lt;/a&gt;
+&lt;a href="#n35" name="n35"&gt;35&lt;/a&gt;
+&lt;a href="#n36" name="n36"&gt;36&lt;/a&gt;
+&lt;a href="#n37" name="n37"&gt;37&lt;/a&gt;
+&lt;a href="#n38" name="n38"&gt;38&lt;/a&gt;
+&lt;a href="#n39" name="n39"&gt;39&lt;/a&gt;
+&lt;strong&gt;&lt;a href="#n40" name="n40"&gt;40&lt;/a&gt;&lt;/strong&gt;
+&lt;a href="#n41" name="n41"&gt;41&lt;/a&gt;
+&lt;a href="#n42" name="n42"&gt;42&lt;/a&gt;
+&lt;a href="#n43" name="n43"&gt;43&lt;/a&gt;
+&lt;a href="#n44" name="n44"&gt;44&lt;/a&gt;
+&lt;a href="#n45" name="n45"&gt;45&lt;/a&gt;
+&lt;a href="#n46" name="n46"&gt;46&lt;/a&gt;
+&lt;a href="#n47" name="n47"&gt;47&lt;/a&gt;
+&lt;/pre&gt;&lt;/td&gt;
+  &lt;td class="code"&gt;&lt;pre&gt;&lt;span class="keyword"&gt;def&lt;/span&gt; &lt;span class="function"&gt;_communicate_with_select&lt;/span&gt;(&lt;span class="predefined-constant"&gt;self&lt;/span&gt;, &lt;span class="predefined"&gt;input&lt;/span&gt;):
+    read_set = []
+    write_set = []
+    stdout = &lt;span class="predefined-constant"&gt;None&lt;/span&gt; &lt;span class="comment"&gt;# Return&lt;/span&gt;
+    stderr = &lt;span class="predefined-constant"&gt;None&lt;/span&gt; &lt;span class="comment"&gt;# Return&lt;/span&gt;
+
+    &lt;span class="keyword"&gt;if&lt;/span&gt; &lt;span class="predefined-constant"&gt;self&lt;/span&gt;.stdin &lt;span class="keyword"&gt;and&lt;/span&gt; &lt;span class="predefined"&gt;input&lt;/span&gt;:
+        write_set.append(&lt;span class="predefined-constant"&gt;self&lt;/span&gt;.stdin)
+    &lt;span class="keyword"&gt;if&lt;/span&gt; &lt;span class="predefined-constant"&gt;self&lt;/span&gt;.stdout:
+        read_set.append(&lt;span class="predefined-constant"&gt;self&lt;/span&gt;.stdout)
+        stdout = []
+    &lt;span class="keyword"&gt;if&lt;/span&gt; &lt;span class="predefined-constant"&gt;self&lt;/span&gt;.stderr:
+        read_set.append(&lt;span class="predefined-constant"&gt;self&lt;/span&gt;.stderr)
+        stderr = []
+
+    input_offset = &lt;span class="integer"&gt;0&lt;/span&gt;
+    &lt;span class="keyword"&gt;while&lt;/span&gt; read_set &lt;span class="keyword"&gt;or&lt;/span&gt; write_set:
+        &lt;span class="keyword"&gt;try&lt;/span&gt;:
+            rlist, wlist, xlist = select.select(read_set, write_set, [])
+        &lt;span class="keyword"&gt;except&lt;/span&gt; select.error, e:
+            &lt;span class="keyword"&gt;if&lt;/span&gt; e.args[&lt;span class="integer"&gt;0&lt;/span&gt;] == errno.EINTR:
+                &lt;span class="keyword"&gt;continue&lt;/span&gt;
+            &lt;span class="keyword"&gt;raise&lt;/span&gt;
+
+        &lt;span class="keyword"&gt;if&lt;/span&gt; &lt;span class="predefined-constant"&gt;self&lt;/span&gt;.stdin &lt;span class="keyword"&gt;in&lt;/span&gt; wlist:
+            chunk = &lt;span class="predefined"&gt;input&lt;/span&gt;[input_offset : input_offset + _PIPE_BUF]
+            bytes_written = os.write(&lt;span class="predefined-constant"&gt;self&lt;/span&gt;.stdin.fileno(), chunk)
+            input_offset += bytes_written
+            &lt;span class="keyword"&gt;if&lt;/span&gt; input_offset &amp;gt;= &lt;span class="predefined"&gt;len&lt;/span&gt;(&lt;span class="predefined"&gt;input&lt;/span&gt;):
+                &lt;span class="predefined-constant"&gt;self&lt;/span&gt;.stdin.close()
+                write_set.remove(&lt;span class="predefined-constant"&gt;self&lt;/span&gt;.stdin)
+
+        &lt;span class="keyword"&gt;if&lt;/span&gt; &lt;span class="predefined-constant"&gt;self&lt;/span&gt;.stdout &lt;span class="keyword"&gt;in&lt;/span&gt; rlist:
+            data = os.read(&lt;span class="predefined-constant"&gt;self&lt;/span&gt;.stdout.fileno(), &lt;span class="integer"&gt;1024&lt;/span&gt;)
+            &lt;span class="keyword"&gt;if&lt;/span&gt; data == &lt;span class="string"&gt;&lt;span class="delimiter"&gt;&amp;ldquo;&lt;/span&gt;&lt;span class="delimiter"&gt;&amp;rdquo;&lt;/span&gt;&lt;/span&gt;:
+                &lt;span class="predefined-constant"&gt;self&lt;/span&gt;.stdout.close()
+                read_set.remove(&lt;span class="predefined-constant"&gt;self&lt;/span&gt;.stdout)
+            stdout.append(data)
+
+        &lt;span class="keyword"&gt;if&lt;/span&gt; &lt;span class="predefined-constant"&gt;self&lt;/span&gt;.stderr &lt;span class="keyword"&gt;in&lt;/span&gt; rlist:
+            data = os.read(&lt;span class="predefined-constant"&gt;self&lt;/span&gt;.stderr.fileno(), &lt;span class="integer"&gt;1024&lt;/span&gt;)
+            &lt;span class="keyword"&gt;if&lt;/span&gt; data == &lt;span class="string"&gt;&lt;span class="delimiter"&gt;&amp;ldquo;&lt;/span&gt;&lt;span class="delimiter"&gt;&amp;rdquo;&lt;/span&gt;&lt;/span&gt;:
+                &lt;span class="predefined-constant"&gt;self&lt;/span&gt;.stderr.close()
+                read_set.remove(&lt;span class="predefined-constant"&gt;self&lt;/span&gt;.stderr)
+            stderr.append(data)
+
+    &lt;span class="keyword"&gt;return&lt;/span&gt; (stdout, stderr)
+&lt;/pre&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;p&gt;(There are actually several different &lt;code&gt;communicate&lt;/code&gt; implementations in
+the module: a Windows-specific implementation, an implementation using
+the POSIX &lt;code&gt;poll&lt;/code&gt; function, and one using POSIX &lt;code&gt;select&lt;/code&gt;.  We&amp;rsquo;re going
+to look at the &lt;code&gt;select&lt;/code&gt; implementation; the modifications we make can
+be rolled into the other methods, too.)&lt;/p&gt;
+
+</content>
+  </entry>
+  <entry>
+    <id>tag:dcreager.net,2009-08-07://2009/08/07/disqus-comments/</id>
+    <title type="html">Adding Disqus comments</title>
+    <published>2009-08-07T04:00:00Z</published>
+    <updated>2009-08-07T04:00:00Z</updated>
+    <link rel="alternate" href="http://dcreager.net//2009/08/07/disqus-comments/"/>
+    <content type="html">&lt;p&gt;I&amp;rsquo;ve just enabled comments on the posts on my website.  On its own,
+that&amp;rsquo;s not a particularly unique or exciting feature.  However, I&amp;rsquo;m
+using &lt;a href="http://disqus.com"&gt;Disqus&lt;/a&gt; as the comment engine, and the way
+in which I&amp;rsquo;ve integrated Disqus into my Jekyll-powered website might
+be of interest to others.  (Thanks to &lt;a href="http://metajack.im/"&gt;Jack
+Moffitt&lt;/a&gt; for the idea!)&lt;/p&gt;
+
+</content>
+  </entry>
+  <entry>
+    <id>tag:dcreager.net,2009-08-06://2009/08/06/subprocess-communicate-drawbacks/</id>
+    <title type="html">Problems with Python's subprocess.communicate method</title>
+    <published>2009-08-06T17:00:00Z</published>
+    <updated>2009-08-06T17:00:00Z</updated>
+    <link rel="alternate" href="http://dcreager.net//2009/08/06/subprocess-communicate-drawbacks/"/>
+    <content type="html">&lt;p&gt;The &lt;a href="http://docs.python.org/library/subprocess.html"&gt;&lt;code&gt;subprocess&lt;/code&gt;&lt;/a&gt;
+module, which was introduced in Python 2.4, provides you with a
+convenient interface for spawning &lt;em&gt;subprocesses&lt;/em&gt;, and for interacting
+with these subprocesses in your parent process.  The module was
+introduced in &lt;a href="http://www.python.org/dev/peps/pep-0324/"&gt;PEP 324&lt;/a&gt;, and
+is a replacement for the proliferation of other functions and modules
+that were used previously for spawning and interacting with processes.
+The &lt;code&gt;subprocess&lt;/code&gt; module aims to provide a more consistent interface,
+regardless of the particulars of how you need to interact with the
+subprocesses.&lt;/p&gt;
+
+</content>
+  </entry>
+  <entry>
+    <id>tag:dcreager.net,2009-08-06://2009/08/06/sbmf-paper/</id>
+    <title type="html">SBMF07 paper chosen for extended proceedings</title>
+    <published>2009-08-06T16:00:00Z</published>
+    <updated>2009-08-06T16:00:00Z</updated>
+    <link rel="alternate" href="http://dcreager.net//2009/08/06/sbmf-paper/"/>
+    <content type="html">&lt;p&gt;My SBMF07 &lt;a href="/publications/014-csp-algorithm-study/"&gt;paper&lt;/a&gt;, “Empirical
+analysis and optimization of an NP-hard algorithm using CSP and FDR,”
+was chosen to appear in the conference&amp;rsquo;s extended proceedings.  The
+extended proceedings will be published in a forthcoming issue of
+ENTCS.  Huzzah!&lt;/p&gt;
+
+&lt;p&gt;The paper originally was extracted from Chapter 8 of my &lt;a href="/publications/012-dphil-thesis/"&gt;D.Phil
+thesis&lt;/a&gt;, and I had to cut out a bit
+of detail in order to make the space requirements for the conference
+paper.  Luckily, the extended proceedings allow for a longer paper, so
+I was able to add most of the cut parts back in.  So the version that
+will appear in ENTCS is, for the most part, identical to the
+corresponding chapter from my thesis.&lt;/p&gt;
+</content>
+  </entry>
+  <entry>
+    <id>tag:dcreager.net,2009-08-05://2009/08/05/site-setup/</id>
+    <title type="html">Site layout</title>
+    <published>2009-08-05T04:00:00Z</published>
+    <updated>2009-08-05T04:00:00Z</updated>
+    <link rel="alternate" href="http://dcreager.net//2009/08/05/site-setup/"/>
+    <content type="html">&lt;div class="alert alert-danger"&gt;
+  &lt;b&gt;NOTE&lt;/b&gt;: This post is no longer up-to-date; I&amp;rsquo;ve switched to using &lt;a
+  href="http://nanoc.ws"&gt;nanoc&lt;/a&gt; instead of Jekyll to generate my website.  I
+  plan on adding a post describing the new system shortly.
+&lt;/div&gt;
+
+&lt;p&gt;This post will probably end up being more useful to me than to anyone
+else who might stumble across the page.  Here I&amp;rsquo;m going to document
+how I&amp;rsquo;ve set up my homepage, from a technical standpoint.&lt;/p&gt;
+
+</content>
+  </entry>
+</feed>

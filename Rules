@@ -17,6 +17,14 @@ compile '/media/*' do
   # don’t filter or layout
 end
 
+compile '/atom/' do
+  filter :erb
+end
+
+route '/atom/' do
+  '/atom.xml'
+end
+
 compile '*' do
   if item.binary?
     # don’t filter binary items
