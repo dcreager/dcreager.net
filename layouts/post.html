@@ -14,14 +14,12 @@
           <div class="date"><%= date_ymd(@item[:created_at]) %></div>
           <h1><%= @item[:title] %></h1>
           <%= yield %>
+          <%= render 'moot' %>
         </div>
       </div>
     </div> <!-- /row -->
   </div> <!-- /container -->
 
   <%= render 'foot' %>
-
-  <script src="https://code.jquery.com/jquery.js"></script>
-  <script src="/media/vendor/js/bootstrap.min.js"></script>
-
+  <%= render 'js' %>
 </html>

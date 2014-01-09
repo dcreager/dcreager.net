@@ -13,6 +13,12 @@ def date_ymd(time)
 end
 
 class Nanoc::Item
+  def moot_path
+    path = File.dirname(identifier)
+    slug = File.basename(identifier)
+    "#{path}:#{slug}"
+  end
+
   def summarize
     content = rep_named(:default).compiled_content
 
