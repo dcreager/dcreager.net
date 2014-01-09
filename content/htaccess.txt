@@ -1,0 +1,1 @@
+Redirect 301 /2013/01/07/intro-to-csp/ /2014/01/07/intro-to-csp/
