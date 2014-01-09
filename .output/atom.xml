@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
   <id>http://dcreager.net/</id>
   <title>dcreager.net</title>
-  <updated>2013-01-07T05:00:00Z</updated>
+  <updated>2014-01-07T05:00:00Z</updated>
   <link rel="alternate" href="http://dcreager.net/"/>
   <link rel="self" href="http://dcreager.net/atom.xml"/>
   <author>
@@ -10,11 +10,11 @@
     <uri>http://dcreager.net/</uri>
   </author>
   <entry>
-    <id>tag:dcreager.net,2013-01-07:/2013/01/07/intro-to-csp/</id>
+    <id>tag:dcreager.net,2014-01-07:/2014/01/07/intro-to-csp/</id>
     <title type="html">CSP: An introduction</title>
-    <published>2013-01-07T05:00:00Z</published>
-    <updated>2013-01-07T05:00:00Z</updated>
-    <link rel="alternate" href="http://dcreager.net/2013/01/07/intro-to-csp/"/>
+    <published>2014-01-07T05:00:00Z</published>
+    <updated>2014-01-07T05:00:00Z</updated>
+    <link rel="alternate" href="http://dcreager.net/2014/01/07/intro-to-csp/"/>
     <content type="html">&lt;p&gt;Communicating Sequential Processes (CSP) has been around for almost four decades
 at this point, but for much of its life, it was only well-known among
 theoretical computer scientists and formal methods advocates.  More recently,
