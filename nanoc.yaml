@@ -7,7 +7,7 @@ prune:
   auto_prune: true
   exclude: [ '.git', '.hg', '.svn', 'CVS' ]
 
-base_url: http://dcreager.net/
+base_url: http://dcreager.net
 author_name: Douglas Creager
 author_uri: http://dcreager.net/
 

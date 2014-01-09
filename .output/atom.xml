@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-  <id>http://dcreager.net//</id>
+  <id>http://dcreager.net/</id>
   <title>dcreager.net</title>
   <updated>2010-05-13T04:00:00Z</updated>
-  <link rel="alternate" href="http://dcreager.net//"/>
-  <link rel="self" href="http://dcreager.net//atom.xml"/>
+  <link rel="alternate" href="http://dcreager.net/"/>
+  <link rel="self" href="http://dcreager.net/atom.xml"/>
   <author>
     <name>Douglas Creager</name>
     <uri>http://dcreager.net/</uri>
   </author>
   <entry>
-    <id>tag:dcreager.net,2010-05-13://2010/05/13/powerpc-qemu-lucid/</id>
+    <id>tag:dcreager.net,2010-05-13:/2010/05/13/powerpc-qemu-lucid/</id>
     <title type="html">Installing Ubuntu Lucid on a PowerPC QEMU virtual machine</title>
     <published>2010-05-13T04:00:00Z</published>
     <updated>2010-05-13T04:00:00Z</updated>
-    <link rel="alternate" href="http://dcreager.net//2010/05/13/powerpc-qemu-lucid/"/>
+    <link rel="alternate" href="http://dcreager.net/2010/05/13/powerpc-qemu-lucid/"/>
     <content type="html">&lt;p&gt;Part of the software I help develop at
 &lt;a href="http://www.redjack.com/"&gt;RedJack&lt;/a&gt; needs to be tested on both
 little-endian and big-endian machines.  Little-endian machines are
@@ -49,11 +49,11 @@ into a more permanent form.&lt;/p&gt;
 </content>
   </entry>
   <entry>
-    <id>tag:dcreager.net,2010-02-25://2010/02/25/libpush-callbacks-part-1/</id>
+    <id>tag:dcreager.net,2010-02-25:/2010/02/25/libpush-callbacks-part-1/</id>
     <title type="html">Parser callbacks in libpush, Part 1 — Streams</title>
     <published>2010-02-25T05:00:00Z</published>
     <updated>2010-02-25T05:00:00Z</updated>
-    <link rel="alternate" href="http://dcreager.net//2010/02/25/libpush-callbacks-part-1/"/>
+    <link rel="alternate" href="http://dcreager.net/2010/02/25/libpush-callbacks-part-1/"/>
     <content type="html">&lt;p&gt;This post is the first in a series that describes the
 &lt;code&gt;push_callback_t&lt;/code&gt; type in the
 &lt;a href="http://github.com/dcreager/libpush/"&gt;libpush&lt;/a&gt; library.  In these
@@ -76,11 +76,11 @@ what makes them &lt;a href="http://www.haskell.org/arrows/"&gt;&lt;em&gt;arrows&
 </content>
   </entry>
   <entry>
-    <id>tag:dcreager.net,2010-02-17://2010/02/17/llvm-lto-karmic/</id>
+    <id>tag:dcreager.net,2010-02-17:/2010/02/17/llvm-lto-karmic/</id>
     <title type="html">Using LLVM's link-time optimization on Ubuntu Karmic</title>
     <published>2010-02-17T05:00:00Z</published>
     <updated>2010-02-17T05:00:00Z</updated>
-    <link rel="alternate" href="http://dcreager.net//2010/02/17/llvm-lto-karmic/"/>
+    <link rel="alternate" href="http://dcreager.net/2010/02/17/llvm-lto-karmic/"/>
     <content type="html">&lt;p&gt;While playing around with
 &lt;a href="http://github.com/dcreager/libpush"&gt;libpush&lt;/a&gt; on my MacBook, I was
 pleasantly surprised to see a huge performance increase when I used
@@ -104,11 +104,11 @@ compilation units.&lt;/p&gt;
 </content>
   </entry>
   <entry>
-    <id>tag:dcreager.net,2010-02-10://2010/02/10/setuptools-git-version-numbers/</id>
+    <id>tag:dcreager.net,2010-02-10:/2010/02/10/setuptools-git-version-numbers/</id>
     <title type="html">Extracting setuptools version numbers from your git repository</title>
     <published>2010-02-10T05:00:00Z</published>
     <updated>2010-02-10T05:00:00Z</updated>
-    <link rel="alternate" href="http://dcreager.net//2010/02/10/setuptools-git-version-numbers/"/>
+    <link rel="alternate" href="http://dcreager.net/2010/02/10/setuptools-git-version-numbers/"/>
     <content type="html">&lt;p&gt;Just like everyone else, we&amp;rsquo;re using
 &lt;a href="http://pypi.python.org/pypi/setuptools"&gt;setuptools&lt;/a&gt; as the core of
 the build system for our Python-based projects.  For the most part,
@@ -159,11 +159,11 @@ commit message.&lt;/p&gt;&lt;/li&gt;
 </content>
   </entry>
   <entry>
-    <id>tag:dcreager.net,2010-02-06://2010/02/06/libpush/</id>
+    <id>tag:dcreager.net,2010-02-06:/2010/02/06/libpush/</id>
     <title type="html">A combinator-based parsing library for C</title>
     <published>2010-02-06T05:00:00Z</published>
     <updated>2010-02-06T05:00:00Z</updated>
-    <link rel="alternate" href="http://dcreager.net//2010/02/06/libpush/"/>
+    <link rel="alternate" href="http://dcreager.net/2010/02/06/libpush/"/>
     <content type="html">&lt;p&gt;Recently I&amp;rsquo;ve been working on
 &lt;a href="http://github.com/dcreager/libpush/"&gt;libpush&lt;/a&gt;, which a new parsing
 library for C.  It has two main features that I think will be
@@ -192,11 +192,11 @@ in the current set; then parses the closing parenthesis; and then
 finally tries to match a nested set that occurs after the current set.&lt;/p&gt;</content>
   </entry>
   <entry>
-    <id>tag:dcreager.net,2010-02-05://2010/02/05/omnigraffle-5-export/</id>
+    <id>tag:dcreager.net,2010-02-05:/2010/02/05/omnigraffle-5-export/</id>
     <title type="html">Updating graffle-export to work with OmniGraffle 5</title>
     <published>2010-02-05T05:00:00Z</published>
     <updated>2010-02-05T05:00:00Z</updated>
-    <link rel="alternate" href="http://dcreager.net//2010/02/05/omnigraffle-5-export/"/>
+    <link rel="alternate" href="http://dcreager.net/2010/02/05/omnigraffle-5-export/"/>
     <content type="html">&lt;p&gt;I recently upgraded to OmniGraffle 5, which caused my
 &lt;a href="http://github.com/dcreager/graffle-export/"&gt;graffle-export&lt;/a&gt; script to
 break:&lt;/p&gt;
@@ -218,11 +218,11 @@ format, so if you go to the Github page, you can&amp;rsquo;t easily view the
 contents of the file.  The important line of the script is:&lt;/p&gt;</content>
   </entry>
   <entry>
-    <id>tag:dcreager.net,2010-01-08://2010/01/08/default-scons-clean-targets/</id>
+    <id>tag:dcreager.net,2010-01-08:/2010/01/08/default-scons-clean-targets/</id>
     <title type="html">Default “scons -c” targets</title>
     <published>2010-01-08T05:00:00Z</published>
     <updated>2010-01-08T05:00:00Z</updated>
-    <link rel="alternate" href="http://dcreager.net//2010/01/08/default-scons-clean-targets/"/>
+    <link rel="alternate" href="http://dcreager.net/2010/01/08/default-scons-clean-targets/"/>
     <content type="html">&lt;p&gt;As I mentioned in a &lt;a href="/2009/12/18/make-distclean-in-scons/"&gt;previous
 post&lt;/a&gt;, the automatic “clean”
 target provided by SCons (&lt;code&gt;scons -c&lt;/code&gt;) is very useful for cleaning out
@@ -266,11 +266,11 @@ $ scons -c build-tests
 </content>
   </entry>
   <entry>
-    <id>tag:dcreager.net,2010-01-05://2010/01/05/omnigraffle-export/</id>
+    <id>tag:dcreager.net,2010-01-05:/2010/01/05/omnigraffle-export/</id>
     <title type="html">Exporting OmniGraffle documents from the command line</title>
     <published>2010-01-05T05:00:00Z</published>
     <updated>2010-01-05T05:00:00Z</updated>
-    <link rel="alternate" href="http://dcreager.net//2010/01/05/omnigraffle-export/"/>
+    <link rel="alternate" href="http://dcreager.net/2010/01/05/omnigraffle-export/"/>
     <content type="html">&lt;p&gt;&lt;a href="http://www.omnigroup.com/applications/OmniGraffle/"&gt;OmniGraffle&lt;/a&gt; is
 my tool of choice for creating figures for my papers.  It&amp;rsquo;s biggest
 drawback is that it&amp;rsquo;s only available for Mac OS, which can make it
@@ -301,11 +301,11 @@ files into some directory that&amp;rsquo;s on your &lt;code&gt;$PATH&lt;/code&gt
 &lt;em&gt;/usr/local/bin&lt;/em&gt; or &lt;em&gt;$HOME/bin&lt;/em&gt;.  Then just run&lt;/p&gt;</content>
   </entry>
   <entry>
-    <id>tag:dcreager.net,2009-12-23://2009/12/23/high-water-mark-buffers/</id>
+    <id>tag:dcreager.net,2009-12-23:/2009/12/23/high-water-mark-buffers/</id>
     <title type="html">“High-water mark” buffers</title>
     <published>2009-12-23T05:00:00Z</published>
     <updated>2009-12-23T05:00:00Z</updated>
-    <link rel="alternate" href="http://dcreager.net//2009/12/23/high-water-mark-buffers/"/>
+    <link rel="alternate" href="http://dcreager.net/2009/12/23/high-water-mark-buffers/"/>
     <content type="html">&lt;p&gt;My coding project for today was to extract out some code for dealing
 with “high-water mark buffers”, putting it in a separate library call
 &lt;code&gt;libhwm&lt;/code&gt;.  In this post, I&amp;rsquo;m going to describe the rationale for using
@@ -317,11 +317,11 @@ hosted on &lt;a href="http://github.com/dcreager/libhwm/"&gt;Github&lt;/a&gt;).&
 </content>
   </entry>
   <entry>
-    <id>tag:dcreager.net,2009-12-21://2009/12/21/decentralized-datatypes/</id>
+    <id>tag:dcreager.net,2009-12-21:/2009/12/21/decentralized-datatypes/</id>
     <title type="html">Decentralized datatypes</title>
     <published>2009-12-21T05:00:00Z</published>
     <updated>2009-12-21T05:00:00Z</updated>
-    <link rel="alternate" href="http://dcreager.net//2009/12/21/decentralized-datatypes/"/>
+    <link rel="alternate" href="http://dcreager.net/2009/12/21/decentralized-datatypes/"/>
     <content type="html">&lt;p&gt;Over the past year or so there have been quite a few blog postings in
 the REST world about MIME types, and their role in the REST
 architecture.  A lot of the discussion seems to be prompted by WADL,
@@ -356,11 +356,11 @@ would enable decentralized types.&lt;/p&gt;
 </content>
   </entry>
   <entry>
-    <id>tag:dcreager.net,2009-12-18://2009/12/18/make-distclean-in-scons/</id>
+    <id>tag:dcreager.net,2009-12-18:/2009/12/18/make-distclean-in-scons/</id>
     <title type="html">Simulating “make distclean” in SCons</title>
     <published>2009-12-18T05:00:00Z</published>
     <updated>2009-12-18T05:00:00Z</updated>
-    <link rel="alternate" href="http://dcreager.net//2009/12/18/make-distclean-in-scons/"/>
+    <link rel="alternate" href="http://dcreager.net/2009/12/18/make-distclean-in-scons/"/>
     <content type="html">&lt;p&gt;SCons provides an automatic “clean” target out of the box — just run
 &lt;code&gt;scons -c&lt;/code&gt;, and SCons will delete all of the objects that it knows how
 to build.  This is a very useful feature; however, there are two main
@@ -376,19 +376,19 @@ the second problem in another post.&lt;/p&gt;
 </content>
   </entry>
   <entry>
-    <id>tag:dcreager.net,2009-09-08://2009/09/08/ubuntu-downgrading/</id>
+    <id>tag:dcreager.net,2009-09-08:/2009/09/08/ubuntu-downgrading/</id>
     <title type="html">Downgrading packages in Ubuntu</title>
     <published>2009-09-08T04:00:00Z</published>
     <updated>2009-09-08T04:00:00Z</updated>
-    <link rel="alternate" href="http://dcreager.net//2009/09/08/ubuntu-downgrading/"/>
+    <link rel="alternate" href="http://dcreager.net/2009/09/08/ubuntu-downgrading/"/>
     <content type="html"></content>
   </entry>
   <entry>
-    <id>tag:dcreager.net,2009-08-13://2009/08/13/iphone-tethering/</id>
+    <id>tag:dcreager.net,2009-08-13:/2009/08/13/iphone-tethering/</id>
     <title type="html">iPhone tethering</title>
     <published>2009-08-13T17:00:00Z</published>
     <updated>2009-08-13T17:00:00Z</updated>
-    <link rel="alternate" href="http://dcreager.net//2009/08/13/iphone-tethering/"/>
+    <link rel="alternate" href="http://dcreager.net/2009/08/13/iphone-tethering/"/>
     <content type="html">&lt;p&gt;While attending the &lt;a href="http://mil-oss.org/"&gt;Mil-OSS conference&lt;/a&gt; this
 week, I had the opportunity to use one of the coolest features of my
 new iPhone 3GS — Bluetooth Internet tethering.  Assuming that your
@@ -422,11 +422,11 @@ email checking during the talks.&lt;/p&gt;
 </content>
   </entry>
   <entry>
-    <id>tag:dcreager.net,2009-08-13://2009/08/13/subprocess-callbacks/</id>
+    <id>tag:dcreager.net,2009-08-13:/2009/08/13/subprocess-callbacks/</id>
     <title type="html">Using callbacks with the subprocess module</title>
     <published>2009-08-13T16:00:00Z</published>
     <updated>2009-08-13T16:00:00Z</updated>
-    <link rel="alternate" href="http://dcreager.net//2009/08/13/subprocess-callbacks/"/>
+    <link rel="alternate" href="http://dcreager.net/2009/08/13/subprocess-callbacks/"/>
     <content type="html">&lt;p&gt;In a &lt;a href="/2009/08/06/subprocess-communicate-drawbacks/"&gt;previous post&lt;/a&gt;,
 we pointed out two drawbacks of Python&amp;rsquo;s &lt;code&gt;subprocess.communicate&lt;/code&gt;
 method.  In this post, we look at the first problem in more detail.
@@ -549,11 +549,11 @@ be rolled into the other methods, too.)&lt;/p&gt;
 </content>
   </entry>
   <entry>
-    <id>tag:dcreager.net,2009-08-07://2009/08/07/disqus-comments/</id>
+    <id>tag:dcreager.net,2009-08-07:/2009/08/07/disqus-comments/</id>
     <title type="html">Adding Disqus comments</title>
     <published>2009-08-07T04:00:00Z</published>
     <updated>2009-08-07T04:00:00Z</updated>
-    <link rel="alternate" href="http://dcreager.net//2009/08/07/disqus-comments/"/>
+    <link rel="alternate" href="http://dcreager.net/2009/08/07/disqus-comments/"/>
     <content type="html">&lt;p&gt;I&amp;rsquo;ve just enabled comments on the posts on my website.  On its own,
 that&amp;rsquo;s not a particularly unique or exciting feature.  However, I&amp;rsquo;m
 using &lt;a href="http://disqus.com"&gt;Disqus&lt;/a&gt; as the comment engine, and the way
@@ -564,11 +564,11 @@ Moffitt&lt;/a&gt; for the idea!)&lt;/p&gt;
 </content>
   </entry>
   <entry>
-    <id>tag:dcreager.net,2009-08-06://2009/08/06/subprocess-communicate-drawbacks/</id>
+    <id>tag:dcreager.net,2009-08-06:/2009/08/06/subprocess-communicate-drawbacks/</id>
     <title type="html">Problems with Python's subprocess.communicate method</title>
     <published>2009-08-06T17:00:00Z</published>
     <updated>2009-08-06T17:00:00Z</updated>
-    <link rel="alternate" href="http://dcreager.net//2009/08/06/subprocess-communicate-drawbacks/"/>
+    <link rel="alternate" href="http://dcreager.net/2009/08/06/subprocess-communicate-drawbacks/"/>
     <content type="html">&lt;p&gt;The &lt;a href="http://docs.python.org/library/subprocess.html"&gt;&lt;code&gt;subprocess&lt;/code&gt;&lt;/a&gt;
 module, which was introduced in Python 2.4, provides you with a
 convenient interface for spawning &lt;em&gt;subprocesses&lt;/em&gt;, and for interacting
@@ -583,11 +583,11 @@ subprocesses.&lt;/p&gt;
 </content>
   </entry>
   <entry>
-    <id>tag:dcreager.net,2009-08-06://2009/08/06/sbmf-paper/</id>
+    <id>tag:dcreager.net,2009-08-06:/2009/08/06/sbmf-paper/</id>
     <title type="html">SBMF07 paper chosen for extended proceedings</title>
     <published>2009-08-06T16:00:00Z</published>
     <updated>2009-08-06T16:00:00Z</updated>
-    <link rel="alternate" href="http://dcreager.net//2009/08/06/sbmf-paper/"/>
+    <link rel="alternate" href="http://dcreager.net/2009/08/06/sbmf-paper/"/>
     <content type="html">&lt;p&gt;My SBMF07 &lt;a href="/publications/014-csp-algorithm-study/"&gt;paper&lt;/a&gt;, “Empirical
 analysis and optimization of an NP-hard algorithm using CSP and FDR,”
 was chosen to appear in the conference&amp;rsquo;s extended proceedings.  The
@@ -604,11 +604,11 @@ corresponding chapter from my thesis.&lt;/p&gt;
 </content>
   </entry>
   <entry>
-    <id>tag:dcreager.net,2009-08-05://2009/08/05/site-setup/</id>
+    <id>tag:dcreager.net,2009-08-05:/2009/08/05/site-setup/</id>
     <title type="html">Site layout</title>
     <published>2009-08-05T04:00:00Z</published>
     <updated>2009-08-05T04:00:00Z</updated>
-    <link rel="alternate" href="http://dcreager.net//2009/08/05/site-setup/"/>
+    <link rel="alternate" href="http://dcreager.net/2009/08/05/site-setup/"/>
     <content type="html">&lt;div class="alert alert-danger"&gt;
   &lt;b&gt;NOTE&lt;/b&gt;: This post is no longer up-to-date; I&amp;rsquo;ve switched to using &lt;a
   href="http://nanoc.ws"&gt;nanoc&lt;/a&gt; instead of Jekyll to generate my website.  I
