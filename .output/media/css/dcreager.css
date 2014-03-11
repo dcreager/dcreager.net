@@ -14,6 +14,10 @@ h1, h2, h3, h4, h5, h6 {
 h1 { font-size: 32px; }
 h2 { font-size: 24px; }
 
+h3 { margin-top: 16px; }
+h4 { margin-top: 16px; }
+h5 { margin-top: 16px; }
+
 h1 a {
     color: #333333;
 }
@@ -35,7 +39,34 @@ button span {
 
 
 /*----------------------------------------------------------------
- * Typography
+ * Important definitions
+ */
+
+.big-def {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    padding: 10px 15px;
+    border: 0;
+    border-top: 1px solid #eeeeee;
+    border-bottom: 1px solid #eeeeee;
+    background-color: #f7f7f9;
+    color: #31708f;
+}
+
+.big-def em {
+    font-style: italic;
+    font-weight: bold;
+}
+
+.big-def .tldr {
+    color: #245269;
+    padding-right: 10px;
+    font-weight: bold;
+}
+
+
+/*----------------------------------------------------------------
+ * Footnotes
  */
 
 .footnote {

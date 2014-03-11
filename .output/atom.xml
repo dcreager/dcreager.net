@@ -2,13 +2,38 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
   <id>http://dcreager.net/</id>
   <title>dcreager.net</title>
-  <updated>2014-01-07T05:00:00Z</updated>
+  <updated>2014-02-28T05:00:00Z</updated>
   <link rel="alternate" href="http://dcreager.net/"/>
   <link rel="self" href="http://dcreager.net/atom.xml"/>
   <author>
     <name>Douglas Creager</name>
     <uri>http://dcreager.net/</uri>
   </author>
+  <entry>
+    <id>tag:dcreager.net,2014-02-28:/2014/02/csp-basics/</id>
+    <title type="html">CSP: The basics</title>
+    <published>2014-02-28T05:00:00Z</published>
+    <updated>2014-02-28T05:00:00Z</updated>
+    <link rel="alternate" href="http://dcreager.net/2014/02/csp-basics/"/>
+    <content type="html">&lt;p class="big-def"&gt;
+  &lt;span class="tldr"&gt;tl;dr&lt;/span&gt; CSP is a &lt;em&gt;formal method&lt;/em&gt; that lets you
+  describe and reason about the behavior of &lt;em&gt;concurrent systems&lt;/em&gt;.  CSP is
+  &lt;em&gt;composable&lt;/em&gt;; you write simple &lt;em&gt;processes&lt;/em&gt;, and then use special
+  &lt;em&gt;operators&lt;/em&gt; to combine them together into larger, more complex
+  processes.  A process is a summary of some system; it uses &lt;em&gt;events&lt;/em&gt; to
+  describe how that system works, and to &lt;em&gt;synchronously communicate&lt;/em&gt; with
+  other processes.  You can compare two processes using a &lt;em&gt;refinement
+  check&lt;/em&gt;; this lets us check, for instance, whether a real-world system
+  satisfies some important safety or liveness property.  CSP has good &lt;em&gt;tool
+  support&lt;/em&gt;, which lets us perform these refinement checks quickly and
+  automatically.
+&lt;/p&gt;
+
+&lt;p&gt;Well that was easy, wasn&amp;rsquo;t it?  You can boil just about anything down to a
+single paragraph.  Let&amp;rsquo;s look at each of those key points in more detail.&lt;/p&gt;
+
+</content>
+  </entry>
   <entry>
     <id>tag:dcreager.net,2014-01-07:/2014/01/07/intro-to-csp/</id>
     <title type="html">CSP: An introduction</title>
