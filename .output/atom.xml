@@ -2,13 +2,47 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
   <id>http://dcreager.net/</id>
   <title>dcreager.net</title>
-  <updated>2014-02-28T05:00:00Z</updated>
+  <updated>2014-05-14T04:00:00Z</updated>
   <link rel="alternate" href="http://dcreager.net/"/>
   <link rel="self" href="http://dcreager.net/atom.xml"/>
   <author>
     <name>Douglas Creager</name>
     <uri>http://dcreager.net/</uri>
   </author>
+  <entry>
+    <id>tag:dcreager.net,2014-05-14:/2014/05/git-flow/</id>
+    <title type="html">Tagged releases using git flow</title>
+    <published>2014-05-14T04:00:00Z</published>
+    <updated>2014-05-14T04:00:00Z</updated>
+    <link rel="alternate" href="http://dcreager.net/2014/05/git-flow/"/>
+    <content type="html">&lt;p&gt;I&amp;rsquo;ve used &lt;code&gt;git flow&lt;/code&gt; for most of my software projects — specifically for those
+that have versioned releases.  The &lt;a href="http://nvie.com/posts/a-successful-git-branching-model/"&gt;original
+post&lt;/a&gt; describing &lt;code&gt;git
+flow&lt;/code&gt; is still the best overview of how it works.  In short, you have a &lt;code&gt;master&lt;/code&gt;
+branch where &lt;strong&gt;every&lt;/strong&gt; commit is a merge commit.  Each of these merge commits
+represents a new release, and is tagged with the version number of that release.
+The merge brings in all of the subsidiary commits and feature branches that make
+up that release.  Ongoing work happens on a separate &lt;code&gt;develop&lt;/code&gt; branch.  This is
+where you merge in completed new features and bug fixes on a day-to-day basis.
+&lt;code&gt;develop&lt;/code&gt; should always be a stable version of the software — you don&amp;rsquo;t merge a
+feature branch into &lt;code&gt;develop&lt;/code&gt; until it passes all of your tests and is
+&amp;ldquo;complete&amp;rdquo; with regards to the feature you&amp;rsquo;re trying to implement.&lt;/p&gt;
+
+&lt;p&gt;My favorite part of this model is how each release is just some tagged commit on
+the &lt;code&gt;master&lt;/code&gt; branch.  You want to see the code for the latest released version?
+That&amp;rsquo;s easy — &lt;code&gt;git checkout master&lt;/code&gt;.  You want version 1.2.5 specifically?  Use
+&lt;code&gt;git checkout 1.2.5&lt;/code&gt; instead.&lt;/p&gt;
+
+&lt;p&gt;Unfortunately, the &lt;a href="https://github.com/nvie/gitflow"&gt;&lt;code&gt;git flow&lt;/code&gt; tool&lt;/a&gt; has
+implemented a &lt;a href="https://github.com/nvie/gitflow/issues/206"&gt;slightly different
+behavior&lt;/a&gt; for awhile now.  That
+patch makes &lt;code&gt;git flow&lt;/code&gt; tag the last commit on the release branch, instead of the
+merge commit on the &lt;code&gt;master&lt;/code&gt; branch.  The reasons for this might be perfectly
+valid, but it&amp;rsquo;s not what I want, and it&amp;rsquo;s not what the original &lt;code&gt;git flow&lt;/code&gt; post
+described.  That means that I can&amp;rsquo;t use &lt;code&gt;git flow release finish&lt;/code&gt; as-is.&lt;/p&gt;
+
+</content>
+  </entry>
   <entry>
     <id>tag:dcreager.net,2014-02-28:/2014/02/csp-basics/</id>
     <title type="html">CSP: The basics</title>
@@ -677,24 +711,6 @@ paper.  Luckily, the extended proceedings allow for a longer paper, so
 I was able to add most of the cut parts back in.  So the version that
 will appear in ENTCS is, for the most part, identical to the
 corresponding chapter from my thesis.&lt;/p&gt;
-</content>
-  </entry>
-  <entry>
-    <id>tag:dcreager.net,2009-08-05:/2009/08/05/site-setup/</id>
-    <title type="html">Site layout</title>
-    <published>2009-08-05T04:00:00Z</published>
-    <updated>2009-08-05T04:00:00Z</updated>
-    <link rel="alternate" href="http://dcreager.net/2009/08/05/site-setup/"/>
-    <content type="html">&lt;div class="alert alert-danger"&gt;
-  &lt;b&gt;NOTE&lt;/b&gt;: This post is no longer up-to-date; I&amp;rsquo;ve switched to using &lt;a
-  href="http://nanoc.ws"&gt;nanoc&lt;/a&gt; instead of Jekyll to generate my website.  I
-  plan on adding a post describing the new system shortly.
-&lt;/div&gt;
-
-&lt;p&gt;This post will probably end up being more useful to me than to anyone
-else who might stumble across the page.  Here I&amp;rsquo;m going to document
-how I&amp;rsquo;ve set up my homepage, from a technical standpoint.&lt;/p&gt;
-
 </content>
   </entry>
 </feed>

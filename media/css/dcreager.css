@@ -37,6 +37,10 @@ button span {
     margin-bottom: 20px;
 }
 
+hr.jump {
+    display: none;
+}
+
 
 /*----------------------------------------------------------------
  * Important definitions

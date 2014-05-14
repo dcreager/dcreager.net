@@ -22,10 +22,10 @@ class Nanoc::Item
   def summarize
     content = rep_named(:default).compiled_content
 
-    # If there's an <hX> anywhere in the content, assume that everything before
-    # it is an introduction, and use that as the summary.
-    if content =~ /<h[1-6]/ then
-      return content.split(/<h[1-6]/).first
+    # If there's an <hX> or <hr> anywhere in the content, assume that everything
+    # before it is an introduction, and use that as the summary.
+    if content =~ /<h[1-6r]/ then
+      return content.split(/<h[1-6r]/).first
     end
 
     # Otherwise, use the article's first four paragraphs as the summary.

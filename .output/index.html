@@ -74,6 +74,43 @@
 
   
     <li class="summary">
+      <div class="date">2014-05-14</div>
+      <h1><a href="/2014/05/git-flow/">Tagged releases using git flow</a></h1>
+      <p>I&rsquo;ve used <code>git flow</code> for most of my software projects — specifically for those
+that have versioned releases.  The <a href="http://nvie.com/posts/a-successful-git-branching-model/">original
+post</a> describing <code>git
+flow</code> is still the best overview of how it works.  In short, you have a <code>master</code>
+branch where <strong>every</strong> commit is a merge commit.  Each of these merge commits
+represents a new release, and is tagged with the version number of that release.
+The merge brings in all of the subsidiary commits and feature branches that make
+up that release.  Ongoing work happens on a separate <code>develop</code> branch.  This is
+where you merge in completed new features and bug fixes on a day-to-day basis.
+<code>develop</code> should always be a stable version of the software — you don&rsquo;t merge a
+feature branch into <code>develop</code> until it passes all of your tests and is
+&ldquo;complete&rdquo; with regards to the feature you&rsquo;re trying to implement.</p>
+
+<p>My favorite part of this model is how each release is just some tagged commit on
+the <code>master</code> branch.  You want to see the code for the latest released version?
+That&rsquo;s easy — <code>git checkout master</code>.  You want version 1.2.5 specifically?  Use
+<code>git checkout 1.2.5</code> instead.</p>
+
+<p>Unfortunately, the <a href="https://github.com/nvie/gitflow"><code>git flow</code> tool</a> has
+implemented a <a href="https://github.com/nvie/gitflow/issues/206">slightly different
+behavior</a> for awhile now.  That
+patch makes <code>git flow</code> tag the last commit on the release branch, instead of the
+merge commit on the <code>master</code> branch.  The reasons for this might be perfectly
+valid, but it&rsquo;s not what I want, and it&rsquo;s not what the original <code>git flow</code> post
+described.  That means that I can&rsquo;t use <code>git flow release finish</code> as-is.</p>
+
+
+      <div class="link">
+        <a href="/2014/05/git-flow/">
+          Continue reading <span class="glyphicon glyphicon-share-alt"></span>
+        </a>
+      </div>
+    </li>
+  
+    <li class="summary">
       <div class="date">2014-02-28</div>
       <h1><a href="/2014/02/csp-basics/">CSP: The basics</a></h1>
       <p class="big-def">
@@ -427,44 +464,6 @@ $ scons -c build-tests
 
       <div class="link">
         <a href="/2010/01/08/default-scons-clean-targets/">
-          Continue reading <span class="glyphicon glyphicon-share-alt"></span>
-        </a>
-      </div>
-    </li>
-  
-    <li class="summary">
-      <div class="date">2010-01-05</div>
-      <h1><a href="/2010/01/05/omnigraffle-export/">Exporting OmniGraffle documents from the command line</a></h1>
-      <p><a href="http://www.omnigroup.com/applications/OmniGraffle/">OmniGraffle</a> is
-my tool of choice for creating figures for my papers.  It&rsquo;s biggest
-drawback is that it&rsquo;s only available for Mac OS, which can make it
-cumbersome if I&rsquo;m working on one of my Linux machines and need to
-create or modify a figure.  But it&rsquo;s ease-of-use and the quality of
-the figures it creates are hard to beat.</p>
-
-<p>Of course, creating the figure isn&rsquo;t enough — since I write my papers
-in LaTeX, I have to export my figures into EPS or PDF (depending on
-whether I&rsquo;m creating a PostScript or PDF version of the paper) before
-I can use them in my documents.  It&rsquo;s easy enough to use the Export
-dialog to do this (keyboard shortcut: ⌥⌘E), but ideally I&rsquo;d like the
-ability to export figures from the command line.  Coupled with a good
-Makefile, this would let me run a simple <code>make paper</code> command, and
-automatically re-export any necessary figures before rebuilding the
-paper itself.</p>
-
-<p>Luckily, OmniGraffle has always had rather good support for being
-controlled via AppleScript.  The commands can be somewhat
-undocumented, requiring a bit of trial and error, but while entrenched
-in our PhD studies at Oxford, my colleague David Faitelson and I were
-able to whip together a script that suited our needs.  I&rsquo;ve recently
-extracted the code from our Oxford SVN repository and uploaded it to
-<a href="http://github.com/dcreager/graffle-export">Github</a>.</p>
-
-<p>To install the script, just place the <em>graffle.sh</em> and <em>graffle.scpt</em>
-files into some directory that&rsquo;s on your <code>$PATH</code>, such as
-<em>/usr/local/bin</em> or <em>$HOME/bin</em>.  Then just run</p>
-      <div class="link">
-        <a href="/2010/01/05/omnigraffle-export/">
           Continue reading <span class="glyphicon glyphicon-share-alt"></span>
         </a>
       </div>

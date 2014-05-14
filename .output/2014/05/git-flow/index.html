@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>
+    dcreager.net – Tagged releases using git flow
+  </title>
+  <meta name="author" content="Douglas Creager">
+
+    <meta charset="utf-8">
+
+  <meta name="google-site-verification"
+        content="7KIoYPNsfdDxIdX1QQ7SM2Nm_nyy13aRlDkzE3wzhhY" />
+
+  <link rel="shortcut icon" href="/media/images/dcreager.ico">
+
+  <link rel="alternate" type="application/atom+xml"
+        title="dcreager.net" href="/atom.xml"/>
+
+  <!-- Bootstrap -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel=stylesheet type=text/css media=screen
+        href="/media/vendor/css/bootstrap.min.css">
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+  <![endif]-->
+
+  <!-- Moot commenting -->
+  <link rel=stylesheet type=text/css
+        href="//cdn.moot.it/1/moot.css">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <!-- Customizations -->
+  <link rel=stylesheet type=text/css media=screen
+        href="/media/css/coderay.css">
+  <link rel=stylesheet type=text/css media=screen
+        href="/media/css/dcreager.css">
+  <link rel=stylesheet type=text/css media=screen
+        href="http://fonts.googleapis.com/css?family=Oxygen:400,700">
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+  <div class="col-md-10 col-md-offset-1">
+    <nav class="navbar navbar-default" role="navigation">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand logo" href="/"><b>dcreager.net</b></a>
+      </div>
+
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="/about/">About</a></li></li>
+          <li><a href="/archive/">Archive</a></li></li>
+          <li><a href="/publications/">Publications</a></li></li>
+        </ul>
+      </div><!-- /.navbar-collapse -->
+    </nav>
+  </div>
+</div>
+
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        <div class="blog">
+          <div class="date">2014-05-14</div>
+          <h1>Tagged releases using git flow</h1>
+          <p>I&rsquo;ve used <code>git flow</code> for most of my software projects — specifically for those
+that have versioned releases.  The <a href="http://nvie.com/posts/a-successful-git-branching-model/">original
+post</a> describing <code>git
+flow</code> is still the best overview of how it works.  In short, you have a <code>master</code>
+branch where <strong>every</strong> commit is a merge commit.  Each of these merge commits
+represents a new release, and is tagged with the version number of that release.
+The merge brings in all of the subsidiary commits and feature branches that make
+up that release.  Ongoing work happens on a separate <code>develop</code> branch.  This is
+where you merge in completed new features and bug fixes on a day-to-day basis.
+<code>develop</code> should always be a stable version of the software — you don&rsquo;t merge a
+feature branch into <code>develop</code> until it passes all of your tests and is
+&ldquo;complete&rdquo; with regards to the feature you&rsquo;re trying to implement.</p>
+
+<p>My favorite part of this model is how each release is just some tagged commit on
+the <code>master</code> branch.  You want to see the code for the latest released version?
+That&rsquo;s easy — <code>git checkout master</code>.  You want version 1.2.5 specifically?  Use
+<code>git checkout 1.2.5</code> instead.</p>
+
+<p>Unfortunately, the <a href="https://github.com/nvie/gitflow"><code>git flow</code> tool</a> has
+implemented a <a href="https://github.com/nvie/gitflow/issues/206">slightly different
+behavior</a> for awhile now.  That
+patch makes <code>git flow</code> tag the last commit on the release branch, instead of the
+merge commit on the <code>master</code> branch.  The reasons for this might be perfectly
+valid, but it&rsquo;s not what I want, and it&rsquo;s not what the original <code>git flow</code> post
+described.  That means that I can&rsquo;t use <code>git flow release finish</code> as-is.</p>
+
+<hr class="jump">
+
+<p>To recap the usual process:</p>
+
+<pre><code>$ git flow release start ${VERSION}
+[ bump version numbers and release dates if needed ]
+$ git flow release finish -s -m ${PROJECT}&ndash;${VERSION} ${VERSION}
+</code></pre>
+
+<p>The first command creates a new release branch called <code>release/${VERSION}</code>.  If
+you need to make any changes that bump version numbers or release dates in the
+actual files in your repository, you do that on this new release branch.  You
+then finalize the release, which merges the release branch (along with any new
+commits on <code>develop</code>) into the <code>master</code> branch.  It also creates a tag named
+<code>${VERSION}</code>, and because of the <code>-s</code> option, signs it with my GPG key.</p>
+
+<p>The problem is that this tag is placed on the wrong commit.  That&rsquo;s easy to fix,
+though:</p>
+
+<pre><code>$ git tag -sf -m ${PROJECT}&ndash;${VERSION} ${VERSION} master
+</code></pre>
+
+<p>I also like to create a <code>-dev</code> version tag on the latest <code>develop</code> branch, so
+that <code>git describe</code> always gives me a nice looking version number, regardless of
+which branch I&rsquo;m on:</p>
+
+<pre><code>$ git tag -s -m ${PROJECT}&ndash;${VERSION}-dev ${VERSION}-dev develop
+</code></pre>
+
+<p>And that&rsquo;s it!</p>
+
+          <a class="moot"
+   title="Tagged releases using git flow"
+   href="https://moot.it/i/dcreager//2014/05:git-flow">
+</a>
+
+        </div>
+      </div>
+    </div> <!-- /row -->
+  </div> <!-- /container -->
+
+    <footer class="copyright">
+    <div class="container">
+      <p>Copyright © 2009-2014, Douglas Creager.
+      All&nbsp;rights&nbsp;reserved.</p>
+    </div>
+  </footer>
+
+    <script src="//code.jquery.com/jquery.min.js"></script>
+  <script src="/media/vendor/js/bootstrap.min.js"></script>
+  <script src="//cdn.moot.it/1/moot.min.js"></script>
+
+</html>
