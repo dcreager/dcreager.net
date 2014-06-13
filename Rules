@@ -21,6 +21,13 @@ route '/htaccess/' do
   '/.htaccess'
 end
 
+compile '/keybase/' do
+end
+
+route '/keybase/' do
+  '/.well-known/keybase.txt'
+end
+
 compile '/media/*' do
   # don’t filter or layout
 end

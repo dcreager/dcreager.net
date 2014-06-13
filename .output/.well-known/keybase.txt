@@ -1,0 +1,82 @@
+==================================================================
+https://keybase.io/dcreager
+--------------------------------------------------------------------
+
+I hereby claim:
+
+  * I am an admin of http://dcreager.net
+  * I am dcreager (https://keybase.io/dcreager) on keybase.
+  * I have a public key with fingerprint 4264 88AF 0C16 318A 3728  CC7C 45D2 1F1C 6453 AD83
+
+To claim this, I am signing this object:
+
+{
+    "body": {
+        "client": {
+            "name": "keybase.io node.js client",
+            "version": "0.4.7"
+        },
+        "key": {
+            "fingerprint": "426488af0c16318a3728cc7c45d21f1c6453ad83",
+            "host": "keybase.io",
+            "key_id": "45D21F1C6453AD83",
+            "uid": "982871fddb43537300b958389e549600",
+            "username": "dcreager"
+        },
+        "merkle_root": {
+            "ctime": 1402659347,
+            "hash": "b66b4f9653c6ba370a73468e4ff7ad7407f43110358fa386191a9c88842a608721671fbad954e5a7a0f5de9901a2599109740eca5af3c6f2d8d164bce8a44b74",
+            "seqno": 17199
+        },
+        "service": {
+            "hostname": "dcreager.net",
+            "protocol": "http:"
+        },
+        "type": "web_service_binding",
+        "version": 1
+    },
+    "ctime": 1402659402,
+    "expire_in": 157680000,
+    "prev": "55742efa1e37be51aa4e89b03436469defff64dd79605567e1d7082284c5b0ce",
+    "seqno": 8,
+    "tag": "signature"
+}
+
+with the aforementioned key, yielding the PGP signature:
+
+-----BEGIN PGP MESSAGE-----
+Version: GnuPG v2
+
+owFdkn1MVWUcxy/gTWW4UZhtYoHHJePtcl6ec85zEEmEXsQElEabXbg+55zncM8F
+7r3ce0EuxBiSkcmYIhWQBKMMWwpmQkvW2kpKocBABuVYQlS8VkPbACk6h6xlzx/P
+nmfP5/n+vt/n95zY4Gfw93lyIGSLnH6+wqd3SjSkN4wnlxCiQ/YSsSWElKtiu0df
+2VEeJmKJHOwVkRubVEeo3SFjk80deo+JIgqxy6067BpFmoCJJ0qjdFy/rKj2bOxy
+ulRdiwA0ByBECilRHENBxPA0lCReAqxMUwolcYBlkAwZTdLqcHvuq0qsalpUWddh
+k2jqKSpR5xOSVvmC1QMB0pCnFFkWAcMyPEOSosBCBgqYBQJHkjroxq57kWTJhZFm
+T/ebh105udjicjhWQ0seVUcoQNIcKzCA1xwht1W7JHKcCBSBYxmJE7UEJOIZwEEM
+FIVHMg9IXgEMRZEMCxXEQI4SKCRIEEJAI46EPE1xmkMRyQILMIt4RCqsjAWBpBDN
+CgJFCpoGlhCLFK2CQstQpjggShgiAEQeaBHcON/u0MzxlCCU6ltXoSph3bb+av8L
+Z7JjvUVOl8PjkBy52onV43HG6pk9XqdOHsaixX3ubxGLqNplrWf/bSqlofe/hzZH
+EbjIqbqwRdUJlucgqQ29Di7UNFmWBzRWEIUZXsQshRDAUBBJBjAc4AQZK4rCAVnm
+ta6wLMdjSuZJSNMQSKxIamH+TQk1nyhbk3Sr2XbkKXBhovSY75Y1Bh9/wwNGX/3X
+GvzXB/7zlc1zgYY26VGy9rlUy/HBi9fajRPDUw3vgbr66suWHSjW5nzB6BaPnKkd
+ScmNb52tNzX7HaCqXyNBABroODzf/X1Oy1DwUkt1Vtut989+OL0xNau/YjMwxlVl
+nnPb1IixJaWcrFE+qJrYxLQNFkyuHQuPWdhLglfO8+++/njqdGVqnCUsgbi1/WD5
+d/DuxZbufT9nNLeuu9CTlzCf+OeM+dsj5mPmkNHyWEu7Z9Aa2Tp3tFztsMaEh0fV
+j18bWb5yIyIj+EJhl20gM2gg84eehNq373QVXd51s8nZEb3QMxDcW7fNtv7Qyp6C
+uttpqeHMq0rYSEl6NV9R2HQmdCI/+gnLQyim/8HliJXEvqDM4drYXzsav37xJNrk
+e/IZmDJ7iY1ZWgkN3prYkuF4o+N0ZqIzsjL+j9/C746GPfJlZMmPrLP3ugrwswFc
+5XzaXEZxmV/o2uaupN2LgS/9lDBxp8E1bgpw7vxiTU1Zyp6q5Y89Q2/eLJ4xDmO7
+hX1rcjLEsH/RGEecNu9L/Cxtxtc71Nfe1F5cVv7LVeKE9HknDjTY0rO+WUy/WmTN
+PxtYuO3loq+6nw9+zDzfOLt3fN3m5JSuA0GnakYXvCYfJ9noe4nu3/9w/PbfO5I3
+HOoM3HX0ujds687b05/ubiX6ProydjB8OHJj5/I74w1lRcVHPkk6FXkjeiqoZkV9
+esdf
+=HDJj
+-----END PGP MESSAGE-----
+
+And finally, I am proving ownership of this host by posting or
+appending to this document.
+
+View my publicly-auditable identity here: https://keybase.io/dcreager
+
+==================================================================
