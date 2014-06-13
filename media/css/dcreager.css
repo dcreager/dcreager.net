@@ -18,6 +18,13 @@ h3 { margin-top: 16px; }
 h4 { margin-top: 16px; }
 h5 { margin-top: 16px; }
 
+div.alert h3 {
+    font-size: 14px;
+    margin-top: 0px;
+    margin-right: 12px;
+    display: inline;
+}
+
 h1 a {
     color: #333333;
 }
@@ -66,6 +73,25 @@ hr.jump {
     color: #245269;
     padding-right: 10px;
     font-weight: bold;
+}
+
+
+.defn {
+    background: #d9edf7;
+    border-top: 1px solid #bce8f1;
+    border-bottom: 1px solid #bce8f1;
+    color: #31708f;
+    padding: 4px 12px;
+    font-size: 13px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+@media (min-width: 768px) {
+    .defn {
+        margin-left: 32px;
+        margin-right: 32px;
+    }
 }
 
 
