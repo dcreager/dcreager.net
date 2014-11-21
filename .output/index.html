@@ -74,6 +74,36 @@
 
   
     <li class="summary">
+      <div class="date">2014-11-21</div>
+      <h1><a href="/2014/11/dependency-management-in-c/">Dependency management in C</a></h1>
+      <p>At <a href="http://www.redjack.com/">RedJack</a>, all of our <a href="http://www.redjack.com/solutions/">core
+products</a> depend on a network sensor that
+collects various bits of information about the raw traffic that we see on the
+network.  We&rsquo;re doing some non-trivial analysis on fairly large network links
+using commodity hardware, so we&rsquo;ve implemented this sensor in C.  At its core is
+an extremely fast custom <a href="http://en.wikipedia.org/wiki/Flow-based_programming">flow-based
+programming</a> framework.
+It&rsquo;s a damn cool piece of code, but this post isn&rsquo;t about the code itself; it&rsquo;s
+about how we deliver that code to our customers.</p>
+
+<p>Just because we&rsquo;ve written this component in C, that doesn&rsquo;t mean we want to
+turn our back on the kinds of tooling you get to use when working in other, more
+modern languages.  In particular, once you&rsquo;ve gotten used to modern package
+managers like <a href="https://www.npmjs.org/">npm</a>, <a href="http://leiningen.org/">leiningen</a>,
+<a href="http://golang.org/doc/articles/go_command.html">go</a>, and
+<a href="http://doc.crates.io/guide.html">Cargo</a>, it&rsquo;s hard to go back to things like
+<a href="http://www.cmake.org/">CMake</a> and <em>[shudder]</em> the
+<a href="http://en.wikipedia.org/wiki/GNU_build_system">autotools</a>.</p>
+
+
+      <div class="link">
+        <a href="/2014/11/dependency-management-in-c/">
+          Continue reading <span class="glyphicon glyphicon-share-alt"></span>
+        </a>
+      </div>
+    </li>
+  
+    <li class="summary">
       <div class="date">2014-05-14</div>
       <h1><a href="/2014/05/git-flow/">Tagged releases using git flow</a></h1>
       <p>I&rsquo;ve used <code>git flow</code> for most of my software projects — specifically for those
@@ -413,57 +443,6 @@ format, so if you go to the Github page, you can&rsquo;t easily view the
 contents of the file.  The important line of the script is:</p>
       <div class="link">
         <a href="/2010/02/05/omnigraffle-5-export/">
-          Continue reading <span class="glyphicon glyphicon-share-alt"></span>
-        </a>
-      </div>
-    </li>
-  
-    <li class="summary">
-      <div class="date">2010-01-08</div>
-      <h1><a href="/2010/01/08/default-scons-clean-targets/">Default “scons -c” targets</a></h1>
-      <p>As I mentioned in a <a href="/2009/12/18/make-distclean-in-scons/">previous
-post</a>, the automatic “clean”
-target provided by SCons (<code>scons -c</code>) is very useful for cleaning out
-build files, without requiring much in the way of configuration.
-Anything that SCons generates when you run <code>scons</code> will be
-automatically cleaned when you run <code>scons -c</code>.</p>
-
-<p>While useful, I&rsquo;d like more control over the behavior of <code>scons -c</code>.
-Specifically, being a good TDD junkie, I have several test cases that
-I can run using <code>scons test</code>:</p>
-
-<pre class="CodeRay"><code>build_test = env.Program( &hellip; )
-env.Alias(<span class="string"><span class="delimiter">&ldquo;</span><span class="content">build-tests</span><span class="delimiter">&rdquo;</span></span>, build_test)
-
-run_test = env.Alias(<span class="string"><span class="delimiter">&ldquo;</span><span class="content">test</span><span class="delimiter">&rdquo;</span></span>, [build_test],
-                     [<span class="string"><span class="delimiter">&ldquo;</span><span class="content">@%s</span><span class="delimiter">&rdquo;</span></span> % build_test[<span class="integer">0</span>].abspath])
-env.AlwaysBuild(run_test)
-</code></pre>
-
-<p>By setting it up this way, the test programs aren&rsquo;t built by default:
-you have to explicitly run <code>scons build-tests</code> (if you want to build
-the tests but not run them) or <code>scons test</code> (if you want to build and
-run them).  Moreover, because of SCons&rsquo;s dependency tracking, I can
-just use <code>scons test</code> as my usual build command during my
-Edit-Test-Debug loop.  SCons will automatically rebuild any changed
-source files before running the tests.</p>
-
-<p>All of this is great.  So what&rsquo;s the problem?  As I mentioned above,
-<code>scons -c</code> only cleans the build files that are created by <code>scons</code> —
-and since I&rsquo;ve explicitly set things up so that tests aren&rsquo;t <em>built</em>
-by default, they&rsquo;ll also not be <em>cleaned</em> by default.  This means that
-to fully clean out my build targets, I have to run two commands:</p>
-
-<pre><code>$ scons -c
-$ scons -c build-tests
-</code></pre>
-
-<p>Not ideal!  I&rsquo;d prefer if <code>scons -c</code> cleaned everything, just like
-<code>make clean</code> would in the Automake world.</p>
-
-
-      <div class="link">
-        <a href="/2010/01/08/default-scons-clean-targets/">
           Continue reading <span class="glyphicon glyphicon-share-alt"></span>
         </a>
       </div>
