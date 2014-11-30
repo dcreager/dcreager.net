@@ -90,6 +90,10 @@ pre {
     overflow-x: auto;
 }
 
+pre code {
+    display: inline-block;
+}
+
 table.CodeRay {
     display: block;
     overflow-x: auto;
