@@ -9,7 +9,14 @@ title: All posts
   <% sorted_articles.reject { |a| a[:draft] }.each do |article| %>
     <li>
       <span class="date"><%= date_ymd(article[:created_at]) %></span>
-      <span class="title"><a href="<%= article.path %>"><%= article[:title] %></a></span>
+      <span class="title">
+        <a href="<%= article.path %>">
+          <%- if article[:series] -%>
+          <%= article[:series] %>:
+          <%- end -%>
+          <%= article[:title] %>
+        </a>
+      </span>
     </li>
   <% end %>
 </ul>

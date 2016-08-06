@@ -11,6 +11,7 @@ h1, h2, h3, h4, h5, h6 {
     font-weight: bold;
 }
 
+h2.series { font-size: 18px; }
 h1 { font-size: 32px; }
 h2 { font-size: 24px; }
 
@@ -18,11 +19,12 @@ h3 { margin-top: 16px; }
 h4 { margin-top: 16px; }
 h5 { margin-top: 16px; }
 
-h1 a {
+h1 a, h2 a {
     color: #333333;
 }
 
-h1 a:active, h1 a:hover, h1 a:focus {
+h1 a:active, h1 a:hover, h1 a:focus,
+h2 a:active, h2 a:hover, h2 a:focus {
     color: #333333;
     text-decoration: none;
 }
@@ -164,6 +166,11 @@ nav.navbar-default {
     margin-top: 0px;
 }
 
+.blog h2.series {
+    margin-top: 2px;
+    margin-bottom: -2px;
+}
+
 
 /*----------------------------------------------------------------
  * Blog summary
@@ -193,6 +200,11 @@ li.summary .date {
 
 li.summary h1 {
     margin-top: 0px;
+}
+
+li.summary h2.series {
+    margin-top: 2px;
+    margin-bottom: -2px;
 }
 
 li.summary .link {
