@@ -69,19 +69,6 @@
 
   
     <li class="summary">
-      <div class="date">2016-06-28</div>
-      <h2 class="series"><a href="/2016/07/csp-concurrency-info/">Concurrency models in CSP</a></h2>
-      <h1><a href="/2016/07/csp-concurrency-info/">Introduction</a></h1>
-      <p>Hi</p>
-
-      <div class="link">
-        <a href="/2016/07/csp-concurrency-info/">
-          Continue reading <span class="glyphicon glyphicon-share-alt"></span>
-        </a>
-      </div>
-    </li>
-  
-    <li class="summary">
       <div class="date">2014-11-21</div>
       <h1><a href="/2014/11/dependency-management-in-c/">Dependency management in C</a></h1>
       <p>At <a href="http://www.redjack.com/">RedJack</a>, all of our <a href="http://www.redjack.com/solutions/">core
@@ -422,6 +409,35 @@ in the current set; then parses the closing parenthesis; and then
 finally tries to match a nested set that occurs after the current set.</p>
       <div class="link">
         <a href="/2010/02/06/libpush/">
+          Continue reading <span class="glyphicon glyphicon-share-alt"></span>
+        </a>
+      </div>
+    </li>
+  
+    <li class="summary">
+      <div class="date">2010-02-05</div>
+      <h1><a href="/2010/02/05/omnigraffle-5-export/">Updating graffle-export to work with OmniGraffle 5</a></h1>
+      <p>I recently upgraded to OmniGraffle 5, which caused my
+<a href="http://github.com/dcreager/graffle-export/">graffle-export</a> script to
+break:</p>
+
+<pre><code>$ graffle.sh ~/git/cwa/figures/analyst.graffle foo.pdf 
+OmniGraffle Professional 5
+/Users/dcreager/git/cwa/figures/analyst.graffle
+./graffle.scpt: execution error: OmniGraffle Professional 5 got an error: The document cannot be exported to the &ldquo;pdf&rdquo; format. (-50)
+</code></pre>
+
+<p>(This was first reported to me by Nima Talebi as <a href="http://github.com/dcreager/graffle-export/issues/issue/1">a
+ticket</a> on
+graffle-export&rsquo;s Github page.)</p>
+
+<p>Before we can understand what error we&rsquo;re seeing, a little explanation
+is in order.  The core logic of the OmniGraffle exporter is an
+AppleScript.  Unfortunately, AppleScripts are stored in a binary
+format, so if you go to the Github page, you can&rsquo;t easily view the
+contents of the file.  The important line of the script is:</p>
+      <div class="link">
+        <a href="/2010/02/05/omnigraffle-5-export/">
           Continue reading <span class="glyphicon glyphicon-share-alt"></span>
         </a>
       </div>
