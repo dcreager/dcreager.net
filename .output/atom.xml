@@ -2,13 +2,54 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
   <id>http://dcreager.net/</id>
   <title>dcreager.net</title>
-  <updated>2014-11-21T05:00:00Z</updated>
+  <updated>2016-06-28T04:00:00Z</updated>
   <link rel="alternate" href="http://dcreager.net/"/>
   <link rel="self" href="http://dcreager.net/atom.xml"/>
   <author>
     <name>Douglas Creager</name>
     <uri>http://dcreager.net/</uri>
   </author>
+  <entry>
+    <id>tag:dcreager.net,2016-06-28:/2016/07/csp-concurrency-intro/</id>
+    <title type="html">Introduction</title>
+    <published>2016-06-28T04:00:00Z</published>
+    <updated>2016-06-28T04:00:00Z</updated>
+    <link rel="alternate" href="http://dcreager.net/2016/07/csp-concurrency-intro/"/>
+    <content type="html">&lt;p&gt;Two years ago, I started writing a series of &lt;a href="/2014/01/07/intro-to-csp/"&gt;blog&lt;/a&gt;
+&lt;a href="/2014/02/csp-basics/"&gt;posts&lt;/a&gt; about CSP — Communicating Sequential Processes.
+That series has&amp;hellip;let&amp;rsquo;s say &amp;ldquo;stalled&amp;rdquo;.  Part of the reason is that I didn&amp;rsquo;t have
+a good non-trivial example to work with.  The &lt;a href="https://en.wikipedia.org/wiki/Communicating_sequential_processes#Examples"&gt;stereotypical running
+example&lt;/a&gt;
+is the vending machine: start with a simple one, which accepts a single coin and
+spits out a tea; add more detail as you introduce more of the language.  I
+always had a hunch that I needed an example with more meat on it, but could
+never find one.&lt;/p&gt;
+
+&lt;p&gt;Fast-forward to today.  I was reading through some of
+&lt;a href="https://christophermeiklejohn.com/"&gt;Meiklejohn&amp;rsquo;s&lt;/a&gt; work on
+&lt;a href="http://lasp-lang.org/"&gt;LASP&lt;/a&gt;, I came across a citation to a &lt;a href="http://drops.dagstuhl.de/opus/volltexte/2015/5375/"&gt;really nice
+paper&lt;/a&gt;, which adds some
+formal rigor to the consistency models that we use to describe modern
+distributed systems.  Their formalism is a great combination of simple and
+expressive.  The core of the paper is about processes accessing a transactional
+data store, and when it&amp;rsquo;s time to break out the proofs, one of their main tools
+is &amp;ldquo;observational refinement&amp;rdquo;.  This naturally led me to think about describing
+these same consistency models using CSP processes.&lt;/p&gt;
+
+&lt;p&gt;And so I finally found my meaty running example!  I&amp;rsquo;m resurrecting this blog
+series, and plan to work through each of the consistency models and proofs
+descirbed in the paper, translating them into CSP processes and refinements.
+This isn&amp;rsquo;t an attempt to replace or outdo anything in the paper!  Far from it —
+it&amp;rsquo;s my attempt to use something more familiar to work through the details of
+something less familiar.&lt;/p&gt;
+
+&lt;p&gt;I&amp;rsquo;m not going to assume a working knowledge of CSP — or of the consistency
+models described in the paper!  If you&amp;rsquo;re familiar with one, my hope is that
+you&amp;rsquo;ll be able to follow along and pick up the other.  And if you&amp;rsquo;re not
+familiar with either&amp;hellip;well, I guess we&amp;rsquo;ll see how good I am at writing an intro
+to a difficult topic!&lt;/p&gt;
+</content>
+  </entry>
   <entry>
     <id>tag:dcreager.net,2014-11-21:/2014/11/dependency-management-in-c/</id>
     <title type="html">Dependency management in C</title>
@@ -697,25 +738,6 @@ using &lt;a href="http://disqus.com"&gt;Disqus&lt;/a&gt; as the comment engine, 
 in which I&amp;rsquo;ve integrated Disqus into my Jekyll-powered website might
 be of interest to others.  (Thanks to &lt;a href="http://metajack.im/"&gt;Jack
 Moffitt&lt;/a&gt; for the idea!)&lt;/p&gt;
-
-</content>
-  </entry>
-  <entry>
-    <id>tag:dcreager.net,2009-08-06:/2009/08/06/subprocess-communicate-drawbacks/</id>
-    <title type="html">Problems with Python's subprocess.communicate method</title>
-    <published>2009-08-06T17:00:00Z</published>
-    <updated>2009-08-06T17:00:00Z</updated>
-    <link rel="alternate" href="http://dcreager.net/2009/08/06/subprocess-communicate-drawbacks/"/>
-    <content type="html">&lt;p&gt;The &lt;a href="http://docs.python.org/library/subprocess.html"&gt;&lt;code&gt;subprocess&lt;/code&gt;&lt;/a&gt;
-module, which was introduced in Python 2.4, provides you with a
-convenient interface for spawning &lt;em&gt;subprocesses&lt;/em&gt;, and for interacting
-with these subprocesses in your parent process.  The module was
-introduced in &lt;a href="http://www.python.org/dev/peps/pep-0324/"&gt;PEP 324&lt;/a&gt;, and
-is a replacement for the proliferation of other functions and modules
-that were used previously for spawning and interacting with processes.
-The &lt;code&gt;subprocess&lt;/code&gt; module aims to provide a more consistent interface,
-regardless of the particulars of how you need to interact with the
-subprocesses.&lt;/p&gt;
 
 </content>
   </entry>

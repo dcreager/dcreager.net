@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>
+    dcreager.net – Introduction
+  </title>
+  <meta name="author" content="Douglas Creager">
+
+    <meta charset="utf-8">
+
+  <meta name="google-site-verification"
+        content="7KIoYPNsfdDxIdX1QQ7SM2Nm_nyy13aRlDkzE3wzhhY" />
+
+  <link rel="shortcut icon" href="/media/images/dcreager.ico">
+
+  <link rel="alternate" type="application/atom+xml"
+        title="dcreager.net" href="/atom.xml"/>
+
+  <!-- Bootstrap -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel=stylesheet type=text/css media=screen
+        href="/media/vendor/css/bootstrap.min.css">
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+  <![endif]-->
+
+  <!-- Customizations -->
+  <link rel=stylesheet type=text/css media=screen
+        href="/media/css/coderay.css">
+  <link rel=stylesheet type=text/css media=screen
+        href="/media/css/dcreager.css">
+  <link rel=stylesheet type=text/css media=screen
+        href="http://fonts.googleapis.com/css?family=Oxygen:400,700">
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+  <div class="col-md-10 col-md-offset-1">
+    <nav class="navbar navbar-default" role="navigation">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand logo" href="/"><b>dcreager.net</b></a>
+      </div>
+
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="/about/">About</a></li></li>
+          <li><a href="/archive/">Archive</a></li></li>
+          <li><a href="/publications/">Publications</a></li></li>
+        </ul>
+      </div><!-- /.navbar-collapse -->
+    </nav>
+  </div>
+</div>
+
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        <div class="blog">
+          <div class="date">2016-06-28</div>
+          <h2 class="series">Concurrency models in CSP</h2>
+          <h1>Introduction</h1>
+          <p>Two years ago, I started writing a series of <a href="/2014/01/07/intro-to-csp/">blog</a>
+<a href="/2014/02/csp-basics/">posts</a> about CSP — Communicating Sequential Processes.
+That series has&hellip;let&rsquo;s say &ldquo;stalled&rdquo;.  Part of the reason is that I didn&rsquo;t have
+a good non-trivial example to work with.  The <a href="https://en.wikipedia.org/wiki/Communicating_sequential_processes#Examples">stereotypical running
+example</a>
+is the vending machine: start with a simple one, which accepts a single coin and
+spits out a tea; add more detail as you introduce more of the language.  I
+always had a hunch that I needed an example with more meat on it, but could
+never find one.</p>
+
+<p>Fast-forward to today.  I was reading through some of
+<a href="https://christophermeiklejohn.com/">Meiklejohn&rsquo;s</a> work on
+<a href="http://lasp-lang.org/">LASP</a>, I came across a citation to a <a href="http://drops.dagstuhl.de/opus/volltexte/2015/5375/">really nice
+paper</a>, which adds some
+formal rigor to the consistency models that we use to describe modern
+distributed systems.  Their formalism is a great combination of simple and
+expressive.  The core of the paper is about processes accessing a transactional
+data store, and when it&rsquo;s time to break out the proofs, one of their main tools
+is &ldquo;observational refinement&rdquo;.  This naturally led me to think about describing
+these same consistency models using CSP processes.</p>
+
+<p>And so I finally found my meaty running example!  I&rsquo;m resurrecting this blog
+series, and plan to work through each of the consistency models and proofs
+descirbed in the paper, translating them into CSP processes and refinements.
+This isn&rsquo;t an attempt to replace or outdo anything in the paper!  Far from it —
+it&rsquo;s my attempt to use something more familiar to work through the details of
+something less familiar.</p>
+
+<p>I&rsquo;m not going to assume a working knowledge of CSP — or of the consistency
+models described in the paper!  If you&rsquo;re familiar with one, my hope is that
+you&rsquo;ll be able to follow along and pick up the other.  And if you&rsquo;re not
+familiar with either&hellip;well, I guess we&rsquo;ll see how good I am at writing an intro
+to a difficult topic!</p>
+
+        </div>
+      </div>
+    </div> <!-- /row -->
+  </div> <!-- /container -->
+
+    <footer class="copyright">
+    <div class="container">
+      <p>Copyright © 2009-2015, Douglas Creager.
+      All&nbsp;rights&nbsp;reserved.</p>
+    </div>
+  </footer>
+
+    <script src="//code.jquery.com/jquery.min.js"></script>
+  <script src="/media/vendor/js/bootstrap.min.js"></script>
+
+</html>

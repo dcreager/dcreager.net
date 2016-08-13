@@ -52,12 +52,12 @@ compile '*' do
         layout 'rocco'
 
       when 'markdown'
-        filter :erb
+        filter :erb, :trim_mode => '-'
         filter :redcarpet, :options => [:smart]
         layout (item[:layout] or 'default')
 
       else
-        filter :erb
+        filter :erb, :trim_mode => '-'
         layout (item[:layout] or 'default')
     end
   end
@@ -81,4 +81,4 @@ route '*' do
   end
 end
 
-layout '*', :erb
+layout '*', :erb, :trim_mode => '-'
