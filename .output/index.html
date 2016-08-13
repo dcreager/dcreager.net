@@ -69,6 +69,51 @@
 
   
     <li class="summary">
+      <div class="date">2016-06-28</div>
+      <h2 class="series"><a href="/2016/07/csp-concurrency-intro/">Concurrency models in CSP</a></h2>
+      <h1><a href="/2016/07/csp-concurrency-intro/">Introduction</a></h1>
+      <p>Two years ago, I started writing a series of <a href="/2014/01/07/intro-to-csp/">blog</a>
+<a href="/2014/02/csp-basics/">posts</a> about CSP — Communicating Sequential Processes.
+That series has&hellip;let&rsquo;s say &ldquo;stalled&rdquo;.  Part of the reason is that I didn&rsquo;t have
+a good non-trivial example to work with.  The <a href="https://en.wikipedia.org/wiki/Communicating_sequential_processes#Examples">stereotypical running
+example</a>
+is the vending machine: start with a simple one, which accepts a single coin and
+spits out a tea; add more detail as you introduce more of the language.  I
+always had a hunch that I needed an example with more meat on it, but could
+never find one.</p>
+
+<p>Fast-forward to today.  I was reading through some of
+<a href="https://christophermeiklejohn.com/">Meiklejohn&rsquo;s</a> work on
+<a href="http://lasp-lang.org/">LASP</a>, I came across a citation to a <a href="http://drops.dagstuhl.de/opus/volltexte/2015/5375/">really nice
+paper</a>, which adds some
+formal rigor to the consistency models that we use to describe modern
+distributed systems.  Their formalism is a great combination of simple and
+expressive.  The core of the paper is about processes accessing a transactional
+data store, and when it&rsquo;s time to break out the proofs, one of their main tools
+is &ldquo;observational refinement&rdquo;.  This naturally led me to think about describing
+these same consistency models using CSP processes.</p>
+
+<p>And so I finally found my meaty running example!  I&rsquo;m resurrecting this blog
+series, and plan to work through each of the consistency models and proofs
+descirbed in the paper, translating them into CSP processes and refinements.
+This isn&rsquo;t an attempt to replace or outdo anything in the paper!  Far from it —
+it&rsquo;s my attempt to use something more familiar to work through the details of
+something less familiar.</p>
+
+<p>I&rsquo;m not going to assume a working knowledge of CSP — or of the consistency
+models described in the paper!  If you&rsquo;re familiar with one, my hope is that
+you&rsquo;ll be able to follow along and pick up the other.  And if you&rsquo;re not
+familiar with either&hellip;well, I guess we&rsquo;ll see how good I am at writing an intro
+to a difficult topic!</p>
+
+      <div class="link">
+        <a href="/2016/07/csp-concurrency-intro/">
+          Continue reading <span class="glyphicon glyphicon-share-alt"></span>
+        </a>
+      </div>
+    </li>
+  
+    <li class="summary">
       <div class="date">2014-11-21</div>
       <h1><a href="/2014/11/dependency-management-in-c/">Dependency management in C</a></h1>
       <p>At <a href="http://www.redjack.com/">RedJack</a>, all of our <a href="http://www.redjack.com/solutions/">core
@@ -409,35 +454,6 @@ in the current set; then parses the closing parenthesis; and then
 finally tries to match a nested set that occurs after the current set.</p>
       <div class="link">
         <a href="/2010/02/06/libpush/">
-          Continue reading <span class="glyphicon glyphicon-share-alt"></span>
-        </a>
-      </div>
-    </li>
-  
-    <li class="summary">
-      <div class="date">2010-02-05</div>
-      <h1><a href="/2010/02/05/omnigraffle-5-export/">Updating graffle-export to work with OmniGraffle 5</a></h1>
-      <p>I recently upgraded to OmniGraffle 5, which caused my
-<a href="http://github.com/dcreager/graffle-export/">graffle-export</a> script to
-break:</p>
-
-<pre><code>$ graffle.sh ~/git/cwa/figures/analyst.graffle foo.pdf 
-OmniGraffle Professional 5
-/Users/dcreager/git/cwa/figures/analyst.graffle
-./graffle.scpt: execution error: OmniGraffle Professional 5 got an error: The document cannot be exported to the &ldquo;pdf&rdquo; format. (-50)
-</code></pre>
-
-<p>(This was first reported to me by Nima Talebi as <a href="http://github.com/dcreager/graffle-export/issues/issue/1">a
-ticket</a> on
-graffle-export&rsquo;s Github page.)</p>
-
-<p>Before we can understand what error we&rsquo;re seeing, a little explanation
-is in order.  The core logic of the OmniGraffle exporter is an
-AppleScript.  Unfortunately, AppleScripts are stored in a binary
-format, so if you go to the Github page, you can&rsquo;t easily view the
-contents of the file.  The important line of the script is:</p>
-      <div class="link">
-        <a href="/2010/02/05/omnigraffle-5-export/">
           Continue reading <span class="glyphicon glyphicon-share-alt"></span>
         </a>
       </div>

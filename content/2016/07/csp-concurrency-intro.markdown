@@ -5,7 +5,6 @@ layout: post
 series: "Concurrency models in CSP"
 title: "Introduction"
 tags: [csp]
-draft: true
 ---
 
 Two years ago, I started writing a series of [blog](/2014/01/07/intro-to-csp/)
