@@ -2,13 +2,34 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
   <id>http://dcreager.net/</id>
   <title>dcreager.net</title>
-  <updated>2016-07-28T04:00:00Z</updated>
+  <updated>2016-08-03T04:00:00Z</updated>
   <link rel="alternate" href="http://dcreager.net/"/>
   <link rel="self" href="http://dcreager.net/atom.xml"/>
   <author>
     <name>Douglas Creager</name>
     <uri>http://dcreager.net/</uri>
   </author>
+  <entry>
+    <id>tag:dcreager.net,2016-08-03:/2016/08/csp-concurrency-prelims/</id>
+    <title type="html">Preliminaries</title>
+    <published>2016-08-03T04:00:00Z</published>
+    <updated>2016-08-03T04:00:00Z</updated>
+    <link rel="alternate" href="http://dcreager.net/2016/08/csp-concurrency-prelims/"/>
+    <content type="html">&lt;p&gt;Before diving into the details of our first concurrency model, it will be
+helpful to give an overview of how we&amp;rsquo;re going to use CSP in these posts.&lt;/p&gt;
+
+&lt;p&gt;At the highest level, a CSP specification consists of a set of &lt;em&gt;processes&lt;/em&gt;,
+which use &lt;em&gt;events&lt;/em&gt; to describe their behavior.  We use a process to represent
+any vantage point that lets us talk about which events occur and in which order.
+Each entity in our system is a process (which might be defined using
+subprocesses to describe each of its components or parts).  We also use
+processes to describe how two or more entities interact with each other, and to
+describe any global properties of the entire system.  And lastly, because CSP
+verification is based on &amp;ldquo;refinement&amp;rdquo;, we also use processes to define the
+properties that we hope our system exhibits.&lt;/p&gt;
+
+</content>
+  </entry>
   <entry>
     <id>tag:dcreager.net,2016-07-28:/2016/07/csp-concurrency-intro/</id>
     <title type="html">Introduction</title>
@@ -723,21 +744,6 @@ the module: a Windows-specific implementation, an implementation using
 the POSIX &lt;code&gt;poll&lt;/code&gt; function, and one using POSIX &lt;code&gt;select&lt;/code&gt;.  We&amp;rsquo;re going
 to look at the &lt;code&gt;select&lt;/code&gt; implementation; the modifications we make can
 be rolled into the other methods, too.)&lt;/p&gt;
-
-</content>
-  </entry>
-  <entry>
-    <id>tag:dcreager.net,2009-08-07:/2009/08/07/disqus-comments/</id>
-    <title type="html">Adding Disqus comments</title>
-    <published>2009-08-07T04:00:00Z</published>
-    <updated>2009-08-07T04:00:00Z</updated>
-    <link rel="alternate" href="http://dcreager.net/2009/08/07/disqus-comments/"/>
-    <content type="html">&lt;p&gt;I&amp;rsquo;ve just enabled comments on the posts on my website.  On its own,
-that&amp;rsquo;s not a particularly unique or exciting feature.  However, I&amp;rsquo;m
-using &lt;a href="http://disqus.com"&gt;Disqus&lt;/a&gt; as the comment engine, and the way
-in which I&amp;rsquo;ve integrated Disqus into my Jekyll-powered website might
-be of interest to others.  (Thanks to &lt;a href="http://metajack.im/"&gt;Jack
-Moffitt&lt;/a&gt; for the idea!)&lt;/p&gt;
 
 </content>
   </entry>
