@@ -69,6 +69,31 @@
 
   
     <li class="summary">
+      <div class="date">2016-08-03</div>
+      <h2 class="series"><a href="/2016/08/csp-concurrency-prelims/">Concurrency models in CSP</a></h2>
+      <h1><a href="/2016/08/csp-concurrency-prelims/">Preliminaries</a></h1>
+      <p>Before diving into the details of our first concurrency model, it will be
+helpful to give an overview of how we&rsquo;re going to use CSP in these posts.</p>
+
+<p>At the highest level, a CSP specification consists of a set of <em>processes</em>,
+which use <em>events</em> to describe their behavior.  We use a process to represent
+any vantage point that lets us talk about which events occur and in which order.
+Each entity in our system is a process (which might be defined using
+subprocesses to describe each of its components or parts).  We also use
+processes to describe how two or more entities interact with each other, and to
+describe any global properties of the entire system.  And lastly, because CSP
+verification is based on &ldquo;refinement&rdquo;, we also use processes to define the
+properties that we hope our system exhibits.</p>
+
+
+      <div class="link">
+        <a href="/2016/08/csp-concurrency-prelims/">
+          Continue reading <span class="glyphicon glyphicon-share-alt"></span>
+        </a>
+      </div>
+    </li>
+  
+    <li class="summary">
       <div class="date">2016-07-28</div>
       <h2 class="series"><a href="/2016/07/csp-concurrency-intro/">Concurrency models in CSP</a></h2>
       <h1><a href="/2016/07/csp-concurrency-intro/">Introduction</a></h1>
@@ -418,42 +443,6 @@ commit message.</p></li>
 
       <div class="link">
         <a href="/2010/02/10/setuptools-git-version-numbers/">
-          Continue reading <span class="glyphicon glyphicon-share-alt"></span>
-        </a>
-      </div>
-    </li>
-  
-    <li class="summary">
-      <div class="date">2010-02-06</div>
-      <h1><a href="/2010/02/06/libpush/">A combinator-based parsing library for C</a></h1>
-      <p>Recently I&rsquo;ve been working on
-<a href="http://github.com/dcreager/libpush/">libpush</a>, which a new parsing
-library for C.  It has two main features that I think will be
-valuable: it&rsquo;s a <em>push parser</em>, which means that instead of parsing a
-file, stream, or single memory buffer, you supply the data (or &ldquo;push&rdquo;
-it) to the parser in chunks, as it becomes available.  I plan to
-discuss this aspect of the parser in more detail in a later post.</p>
-
-<p>The other main feature is that you design your parsers using
-<em>combinators</em>.  Parser combinators are widely used in Haskell, with
-<a href="http://legacy.cs.uu.nl/daan/parsec.html">Parsec</a> being the most
-common example.  Combinator-based parsing libraries are especially
-nice in Haskell, because Haskell&rsquo;s syntax makes them look very simple.
-For instance, a parser that parses matching nested parentheses is:</p>
-
-<pre class="CodeRay"><code>parens :: Parser ()
-parens = (char &lsquo;(&rsquo; &gt;&gt; parens &gt;&gt; char &lsquo;)&rsquo; &gt;&gt; parens) &lt;|&gt; return ()
-</code></pre>
-
-<p>Here, the <code>&lt;|&gt;</code> operator represents <em>choice</em>: we try parsing the left
-operand, and if it fails, then we try the right operand.  In our
-example, the right operand is the base case, which matches the empty
-string.  The left operand parses an opening parenthesis; then
-recursively calls itself to match any parentheses that might be nested
-in the current set; then parses the closing parenthesis; and then
-finally tries to match a nested set that occurs after the current set.</p>
-      <div class="link">
-        <a href="/2010/02/06/libpush/">
           Continue reading <span class="glyphicon glyphicon-share-alt"></span>
         </a>
       </div>
