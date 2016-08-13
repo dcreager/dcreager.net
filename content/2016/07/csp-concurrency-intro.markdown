@@ -1,6 +1,6 @@
 ---
 kind: article
-created_at: 2016-06-28
+created_at: 2016-07-28
 layout: post
 series: "Concurrency models in CSP"
 title: "Introduction"
