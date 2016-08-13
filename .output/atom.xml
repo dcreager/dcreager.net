@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
   <id>http://dcreager.net/</id>
   <title>dcreager.net</title>
-  <updated>2016-06-28T04:00:00Z</updated>
+  <updated>2016-07-28T04:00:00Z</updated>
   <link rel="alternate" href="http://dcreager.net/"/>
   <link rel="self" href="http://dcreager.net/atom.xml"/>
   <author>
@@ -10,10 +10,10 @@
     <uri>http://dcreager.net/</uri>
   </author>
   <entry>
-    <id>tag:dcreager.net,2016-06-28:/2016/07/csp-concurrency-intro/</id>
+    <id>tag:dcreager.net,2016-07-28:/2016/07/csp-concurrency-intro/</id>
     <title type="html">Introduction</title>
-    <published>2016-06-28T04:00:00Z</published>
-    <updated>2016-06-28T04:00:00Z</updated>
+    <published>2016-07-28T04:00:00Z</published>
+    <updated>2016-07-28T04:00:00Z</updated>
     <link rel="alternate" href="http://dcreager.net/2016/07/csp-concurrency-intro/"/>
     <content type="html">&lt;p&gt;Two years ago, I started writing a series of &lt;a href="/2014/01/07/intro-to-csp/"&gt;blog&lt;/a&gt;
 &lt;a href="/2014/02/csp-basics/"&gt;posts&lt;/a&gt; about CSP — Communicating Sequential Processes.
