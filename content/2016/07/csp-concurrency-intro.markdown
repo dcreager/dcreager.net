@@ -21,14 +21,12 @@ never find one.
 Fast-forward to today.  I was reading through some of
 [Meiklejohn's](https://christophermeiklejohn.com/) work on
 [LASP](http://lasp-lang.org/), I came across a citation to a [really nice
-paper](http://drops.dagstuhl.de/opus/volltexte/2015/5375/).  It's a great
-attempt to add some formal rigor to the consistency models that we use to
-describe modern distributed systems.  Their formalism is a great combination of
-simple and expressive.
-
-The core of the paper is about processes accessing a transactional data store,
-and when it's time to break out the proofs, one of their main tools is
-"observational refinement".  This naturally led me to think about describing
+paper](http://drops.dagstuhl.de/opus/volltexte/2015/5375/), which adds some
+formal rigor to the consistency models that we use to describe modern
+distributed systems.  Their formalism is a great combination of simple and
+expressive.  The core of the paper is about processes accessing a transactional
+data store, and when it's time to break out the proofs, one of their main tools
+is "observational refinement".  This naturally led me to think about describing
 these same consistency models using CSP processes.
 
 And so I finally found my meaty running example!  I'm resurrecting this blog
