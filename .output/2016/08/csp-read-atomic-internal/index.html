@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>
+    dcreager.net – Read Atomic: Internal consistency
+  </title>
+  <meta name="author" content="Douglas Creager">
+
+    <meta charset="utf-8">
+
+  <meta name="google-site-verification"
+        content="7KIoYPNsfdDxIdX1QQ7SM2Nm_nyy13aRlDkzE3wzhhY" />
+
+  <link rel="shortcut icon" href="/media/images/dcreager.ico">
+
+  <link rel="alternate" type="application/atom+xml"
+        title="dcreager.net" href="/atom.xml"/>
+
+  <!-- Bootstrap -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel=stylesheet type=text/css media=screen
+        href="/media/vendor/css/bootstrap.min.css">
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+  <![endif]-->
+
+  <!-- MathJax -->
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      jax: ["input/TeX","output/HTML-CSS"],
+      displayAlign: "left",
+      displayIndent: "2em"
+    });
+  </script>
+  <script type="text/javascript" async
+          src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+  </script>
+
+  <!-- Customizations -->
+  <link rel=stylesheet type=text/css media=screen
+        href="/media/css/coderay.css">
+  <link rel=stylesheet type=text/css media=screen
+        href="/media/css/dcreager.css">
+  <link rel=stylesheet type=text/css media=screen
+        href="http://fonts.googleapis.com/css?family=Oxygen:400,700">
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+  <div class="col-md-10 col-md-offset-1">
+    <nav class="navbar navbar-default" role="navigation">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand logo" href="/"><b>dcreager.net</b></a>
+      </div>
+
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="/about/">About</a></li></li>
+          <li><a href="/archive/">Archive</a></li></li>
+          <li><a href="/publications/">Publications</a></li></li>
+        </ul>
+      </div><!-- /.navbar-collapse -->
+    </nav>
+  </div>
+</div>
+
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        <div class="blog">
+          <div class="date">2016-08-19</div>
+          <h2 class="series">Concurrency models in CSP</h2>
+          <h1>Read Atomic: Internal consistency</h1>
+          <p>We’ll start by looking at the weakest concurrency model covered in the paper,
+Read Atomic.  All of the concurrency models are defined as a combination of
+several axioms.  Read Atomic consists of only two: internal consistency and
+external consistency.  In this post, we’ll construct a CSP process that
+describes the first of the two.</p>
+
+<!--
+ Read Atomic...can be implemented without requiring any coordination among
+ replicas...a replica can decide to commit a transaction without consulting
+ other replicas.
+-->
+
+<p>A transaction is <em>internally consistent</em> if it “reads its own writes”.  This is
+the simplest axiom covered in the paper, since it expresses a property that’s
+strictly local to each transaction; we don’t have to consider the behavior of
+any other transaction when defining what it means for a transaction to be
+internally consistent.</p>
+
+<p>We start by defining some data types and channels:</p>
+
+<pre class="CodeRay"><code>datatype Object = {1..2}
+datatype Value = {1..5}
+</code></pre>
+
+<p>An <code>Object</code> is the <em>name</em> of one of the objects that can be read or written; it
+corresponds to the \(Obj\) set in the original paper.  The <code>Value</code> type is the
+set of values that can be stored in each object.  In the original paper, they
+use \(\mathbb{Z}\) (the set of integers); in our CSP spec, we’ll also use
+simple integers, but we’ll limit ourselves to a finite set.</p>
+
+<p>We can then use \(\mathbf{channel}\) statements to define some events:</p>
+
+<pre class="CodeRay"><code>channel read : Object x Value
+channel write : Object x Value
+</code></pre>
+
+<p>A <code>read</code> event signifies that a particular value was read for a particular
+object; similarly, a <code>write</code> event signifies that a particular value was written
+to a particular object.</p>
+
+<p>Based on the structure of these two CSP channels, you might expect that they
+correspond to the \(Op\) set from the original paper; however, they actually
+correspond to the \(REvent_x\) and \(WEvent_x\) family of sets.  In the
+original paper’s formalism, the authors needed to include an \(EventId\) in
+each event to describe the ordering between events.  In CSP, on the other hand,
+the prefix operator (\(\rightarrow\)) lets us define how the events in a
+process are ordered without having to add extra fields to the events.</p>
+
+<p>With our datatypes and events defined, we can now create a process that
+specifies what “internal consistency” means.  For each transaction, each object
+can be in one of two states; we’ll use subprocesses to define what internal
+consistency means in each of these two states.</p>
+
+<p>Each object starts <em>undefined</em>, meaning that <em>this transaction</em> has not yet
+written a value to the object:</p>
+
+<pre class="CodeRay"><code>Undefined(obj) =
+  read!obj?value -&gt; Undefined(obj)
+    []
+  write!obj?value -&gt; Defined(obj, value)
+</code></pre>
+
+<p>(Remember that internal consistency does not take into account what values other
+transactions write into an object.)</p>
+
+<p>Note that we have to include a <code>read</code> clause, even though internal consistency
+doesn’t say anything about which value is returned when we read from an object
+that we didn’t already write to.  This <code>read</code> clause tells us that we have no
+idea which value will be returned.  We can’t leave this clause out; that would
+say that internal consistency <em>actively prevents</em> transactions from performing
+these kinds of reads.  Instead, we’ll leave these reads unconstrained here, and
+use other CSP processes to define how each consistency model determines which
+values are returned based on which other transactions have completed and become
+visible.</p>
+
+<p>The <code>write</code> clause means that you can write (whatever value you want) to an
+undefined object; doing so means us into the “defined” state.</p>
+
+<p>When an object is <em>defined</em>, we also need to keep track of the current value:</p>
+
+<pre class="CodeRay"><code>Defined(obj, currentValue) =
+  read!obj!currentValue -&gt; Defined(obj, currentValue)
+    []
+  write!obj?newValue -&gt; Defined(obj, newValue)
+</code></pre>
+
+<p>When you <code>read</code> a defined value, we enforce that the value that’s returned is
+the current value of the object — that’s the entire point of internal
+consistency!  You can also <code>write</code> a <em>new</em> value to the object; doing means that
+the object is still “defined”, but overwrites the current value with the new
+one.</p>
+
+        </div>
+      </div>
+    </div> <!-- /row -->
+  </div> <!-- /container -->
+
+    <footer class="copyright">
+    <div class="container">
+      <p>Copyright © 2009-2016, Douglas Creager.
+      All&nbsp;rights&nbsp;reserved.</p>
+    </div>
+  </footer>
+
+    <script src="//code.jquery.com/jquery.min.js"></script>
+  <script src="/media/vendor/js/bootstrap.min.js"></script>
+
+</html>
