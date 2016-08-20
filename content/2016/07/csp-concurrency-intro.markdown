@@ -17,10 +17,11 @@ spits out a tea; add more detail as you introduce more of the language.  I
 always had a hunch that I needed an example with more meat on it, but could
 never find one.
 
-Fast-forward to today.  I was reading through some of
-[Meiklejohn's](https://christophermeiklejohn.com/) work on
-[LASP](http://lasp-lang.org/), I came across a citation to a [really nice
-paper](http://drops.dagstuhl.de/opus/volltexte/2015/5375/), which adds some
+Fast-forward to today.  I was reading through some of [Christopher
+Meiklejohn's](https://christophermeiklejohn.com/) work on
+[LASP](http://lasp-lang.org/), I came across a citation to a really nice paper
+by [Cerone, Bernardi, and
+Gotsman](http://drops.dagstuhl.de/opus/volltexte/2015/5375/), which adds some
 formal rigor to the consistency models that we use to describe modern
 distributed systems.  Their formalism is a great combination of simple and
 expressive.  The core of the paper is about processes accessing a transactional
