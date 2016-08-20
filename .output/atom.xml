@@ -46,10 +46,11 @@ spits out a tea; add more detail as you introduce more of the language.  I
 always had a hunch that I needed an example with more meat on it, but could
 never find one.&lt;/p&gt;
 
-&lt;p&gt;Fast-forward to today.  I was reading through some of
-&lt;a href="https://christophermeiklejohn.com/"&gt;Meiklejohn&amp;rsquo;s&lt;/a&gt; work on
-&lt;a href="http://lasp-lang.org/"&gt;LASP&lt;/a&gt;, I came across a citation to a &lt;a href="http://drops.dagstuhl.de/opus/volltexte/2015/5375/"&gt;really nice
-paper&lt;/a&gt;, which adds some
+&lt;p&gt;Fast-forward to today.  I was reading through some of &lt;a href="https://christophermeiklejohn.com/"&gt;Christopher
+Meiklejohn&amp;rsquo;s&lt;/a&gt; work on
+&lt;a href="http://lasp-lang.org/"&gt;LASP&lt;/a&gt;, I came across a citation to a really nice paper
+by &lt;a href="http://drops.dagstuhl.de/opus/volltexte/2015/5375/"&gt;Cerone, Bernardi, and
+Gotsman&lt;/a&gt;, which adds some
 formal rigor to the consistency models that we use to describe modern
 distributed systems.  Their formalism is a great combination of simple and
 expressive.  The core of the paper is about processes accessing a transactional

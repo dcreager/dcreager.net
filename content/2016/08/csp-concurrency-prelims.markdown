@@ -32,7 +32,7 @@ events are allowed in that state (and which state you move to if the event
 occurs).  This kind of process description is useful because you can use
 automated tools (like [FDR][]) to analyze them — for instance, proving that a
 particular system (described by one CSP process) satisfies a particular property
-(satisfied by another).
+(described by another).
 
 <!--
 It doesn't technically have to be a *finite* state machine, but if you want to
@@ -41,17 +41,17 @@ use a tool like FDR to analyze your specification, it will be.
 
 [FDR]: https://www.cs.ox.ac.uk/projects/fdr/
 
-For humans, we define processes using *CSP operators*.  These operators are more
-high-level, and more intuitive, than the lower-level LTS representation, and
-they line up with common patterns that we use when describing or implementing a
-complex system.  In particular, there are several operators for combining
-subprocesses into larger processes, giving you full control over how the events
-in each subprocess interact with each other.  There is a well-defined way to
-translate each operator into an LTS, which is what allows tools like FDR to
-analyze our human-readable process specifications.
+For humans, on the other hand, we define processes using *CSP operators*.  These
+operators are more high-level, and more intuitive, than the lower-level LTS
+representation, and they line up with common patterns that we use when
+describing or implementing a complex system.  In particular, there are several
+operators for combining subprocesses into larger processes, giving you full
+control over how the events in each subprocess interact with each other.  There
+is a well-defined way to translate each operator into an LTS, which is what
+allows tools like FDR to analyze our human-readable process specifications.
 
 [Just like the real world][cmeik], CSP does not impose any global ordering on
-any of the events in our system.  We can only talk about evenet ordering in the
+any of the events in our system.  We can only talk about event ordering in the
 context of a single process.  If we want to talk about global event orderings,
 we have to construct a process that includes information about how *all* of the
 entities in our system participate in those events.
