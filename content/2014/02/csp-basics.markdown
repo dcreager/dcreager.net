@@ -6,19 +6,17 @@ title: "CSP: The basics"
 tags: [csp]
 ---
 
-<p class="big-def">
-  <span class="tldr">tl;dr</span> CSP is a <em>formal method</em> that lets you
-  describe and reason about the behavior of <em>concurrent systems</em>.  CSP is
-  <em>composable</em>; you write simple <em>processes</em>, and then use special
-  <em>operators</em> to combine them together into larger, more complex
-  processes.  A process is a summary of some system; it uses <em>events</em> to
-  describe how that system works, and to <em>synchronously communicate</em> with
-  other processes.  You can compare two processes using a <em>refinement
-  check</em>; this lets us check, for instance, whether a real-world system
-  satisfies some important safety or liveness property.  CSP has good <em>tool
-  support</em>, which lets us perform these refinement checks quickly and
-  automatically.
-</p>
+{: .big-def}
+*tl;dr*{: .tldr} CSP is a *formal method* that lets you describe and reason
+about the behavior of *concurrent systems*.  CSP is *composable*; you write
+simple *processes*, and then use special *operators* to combine them together
+into larger, more complex processes.  A process is a summary of some system; it
+uses *events* to describe how that system works, and to *synchronously
+communicate* with other processes.  You can compare two processes using a
+*refinement check*; this lets us check, for instance, whether a real-world
+system satisfies some important safety or liveness property.  CSP has good *tool
+support*, which lets us perform these refinement checks quickly and
+automatically.
 
 Well that was easy, wasn't it?  You can boil just about anything down to a
 single paragraph.  Let's look at each of those key points in more detail.

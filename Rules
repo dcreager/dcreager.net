@@ -53,7 +53,7 @@ compile '*' do
 
       when 'markdown'
         filter :erb, :trim_mode => '-'
-        filter :redcarpet, :options => [:smart]
+        filter :kramdown
         layout (item[:layout] or 'default')
 
       else

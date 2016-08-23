@@ -70,22 +70,22 @@
           <h1>“High-water mark” buffers</h1>
           <p>My coding project for today was to extract out some code for dealing
 with “high-water mark buffers”, putting it in a separate library call
-<code>libhwm</code>.  In this post, I&rsquo;m going to describe the rationale for using
+<code>libhwm</code>.  In this post, I’m going to describe the rationale for using
 them, and a brief overview of how to use the library.  (The library is
 hosted on <a href="http://github.com/dcreager/libhwm/">Github</a>).</p>
 
 <p>By the way, this post (and the library) is all in C.</p>
 
-<h2>What&rsquo;s all this then?</h2>
+<h2 id="whats-all-this-then">What’s all this then?</h2>
 
-<p>A common idiom I&rsquo;m having to deal with these days is reading a really
-large number of records from a data file.  We&rsquo;re talking well into the
+<p>A common idiom I’m having to deal with these days is reading a really
+large number of records from a data file.  We’re talking well into the
 millions of records, but we want the code to scale well past that.</p>
 
-<h3>Step 1: Fixed-length records</h3>
+<h3 id="step-1-fixed-length-records">Step 1: Fixed-length records</h3>
 
-<p>Let&rsquo;s say that we need to read each record into a simple <code>struct</code>.
-For now, we&rsquo;re going to use nice, fixed-length fields:</p>
+<p>Let’s say that we need to read each record into a simple <code>struct</code>.
+For now, we’re going to use nice, fixed-length fields:</p>
 
 <pre class="CodeRay"><code><span class="keyword">typedef</span> <span class="keyword">struct</span>
 {
@@ -95,8 +95,8 @@ For now, we&rsquo;re going to use nice, fixed-length fields:</p>
 </code></pre>
 
 <p>With this datatype, we can actually read data from a file very
-quickly; we&rsquo;ll just store each record directly in the file, in binary,
-using 8 bytes.  (To simplify things, I&rsquo;m not worrying about the
+quickly; we’ll just store each record directly in the file, in binary,
+using 8 bytes.  (To simplify things, I’m not worrying about the
 endianness of the integers, or whether the <code>struct</code> is packed; both
 are easily handled with some pretty simple macro-fu.)</p>
 
@@ -109,10 +109,10 @@ rec1_t  record;
 }
 </code></pre>
 
-<p>The C library&rsquo;s stream API (<code>fread</code> and friends) will buffer the data
+<p>The C library’s stream API (<code>fread</code> and friends) will buffer the data
 from the actual file, so this gives us pretty good performance.</p>
 
-<h3>Step 2: Variable-length records</h3>
+<h3 id="step-2-variable-length-records">Step 2: Variable-length records</h3>
 
 <p>What if we have a variable-length field in our <code>struct</code>, though?</p>
 
@@ -126,13 +126,13 @@ from the actual file, so this gives us pretty good performance.</p>
 
 <p>Often in these cases, you can simplify the problem by deciding not to
 let <code>name</code> be a variable-length field.  Instead, you decide that
-you&rsquo;ll use (say) exactly 20 bytes for the name, padding out short
-names and truncating long names as necessary.  We don&rsquo;t want to do
+you’ll use (say) exactly 20 bytes for the name, padding out short
+names and truncating long names as necessary.  We don’t want to do
 that, however — we want to have a truly variable-length field.</p>
 
 <p>To store this variable-length field in the file, we need some way of
-encoding the length of a particular record&rsquo;s <code>name</code> field.  If we can
-assume that none of the records has a name that&rsquo;s longer than 4
+encoding the length of a particular record’s <code>name</code> field.  If we can
+assume that none of the records has a name that’s longer than 4
 billion characters, we can use a 32-bit length prefix:</p>
 
 <pre class="CodeRay"><code>FILE  *file = <span class="comment">/* whatever */</span>;
@@ -154,13 +154,13 @@ rec2_t  record;
     <span class="keyword">if</span> (fread(record.name,
               <span class="keyword">sizeof</span>(<span class="predefined-type">char</span>), name_length, file) &lt; name_length)
         <span class="keyword">break</span>;
-    record.name[name_length] = <span class="char">&lsquo;\0&rsquo;</span>;
+    record.name[name_length] = <span class="char">'\0'</span>;
 
     <span class="comment">/* process the record */</span>
 } <span class="keyword">while</span> (<span class="predefined-constant">true</span>);
 </code></pre>
 
-<p>That&rsquo;s pretty ugly and repetitive, so let&rsquo;s play some macro games:</p>
+<p>That’s pretty ugly and repetitive, so let’s play some macro games:</p>
 
 <pre class="CodeRay"><code>FILE  *file = <span class="comment">/* whatever */</span>;
 rec2_t  record;
@@ -177,24 +177,24 @@ rec2_t  record;
     READ_FIELD(&amp;record.num_bananas, uint32_t, <span class="integer">1</span>);
     READ_FIELD(&amp;name_length, uint32_t, <span class="integer">1</span>);
     READ_FIELD(record.name, <span class="predefined-type">char</span>, name_length);
-    record.name[name_length] = <span class="char">&lsquo;\0&rsquo;</span>;
+    record.name[name_length] = <span class="char">'\0'</span>;
 
     <span class="comment">/* process the record */</span>
 } <span class="keyword">while</span> (<span class="predefined-constant">true</span>);
 </code></pre>
 
 <p>So the basic idea here is pretty sound — we can store a name of any
-length without wasted space.  And the code is still rather fast; we&rsquo;ll
+length without wasted space.  And the code is still rather fast; we’ll
 have a larger overhead from calling <code>fread</code> multiple times, but the
 number of low-level I/O reads will still be roughly the same.</p>
 
-<p>But unfortunately, there&rsquo;s a glaring error here.  This code will
-segfault, since we haven&rsquo;t actually allocated any memory for the
+<p>But unfortunately, there’s a glaring error here.  This code will
+segfault, since we haven’t actually allocated any memory for the
 <code>record.name</code> field.</p>
 
-<h3>Step 3: Allocate some memory</h3>
+<h3 id="step-3-allocate-some-memory">Step 3: Allocate some memory</h3>
 
-<p>So what&rsquo;s the simplest way we can allocate memory for the
+<p>So what’s the simplest way we can allocate memory for the
 <code>record.name</code> field?  The naïve approach would be to <code>malloc</code> a new
 string for every record:</p>
 
@@ -219,7 +219,7 @@ rec2_t  record;
     <span class="keyword">if</span> (record.name == <span class="predefined-constant">NULL</span>) <span class="keyword">break</span>;
 
     READ_FIELD(record.name, <span class="predefined-type">char</span>, name_length);
-    record.name[name_length] = <span class="char">&lsquo;\0&rsquo;</span>;
+    record.name[name_length] = <span class="char">'\0'</span>;
 
     <span class="comment">/* process the record */</span>
 
@@ -228,16 +228,16 @@ rec2_t  record;
 </code></pre>
 
 <p>This will avoid the segfault, and let you process your data, but it
-will perform <em>horribly</em>, since we&rsquo;re calling down into the heap
-management code for <strong>every single record</strong>!  And remember, we&rsquo;re
+will perform <em>horribly</em>, since we’re calling down into the heap
+management code for <strong>every single record</strong>!  And remember, we’re
 talking about millions of records here.</p>
 
-<h2>Step 4: High-water mark buffers</h2>
+<h2 id="step-4-high-water-mark-buffers">Step 4: High-water mark buffers</h2>
 
-<p>So what&rsquo;s the solution?  A high-water mark buffer.  The idea is that
+<p>So what’s the solution?  A high-water mark buffer.  The idea is that
 instead of allocating a new string each time through the loop, you
 remember how large your current string is.  As long as the next
-record&rsquo;s <code>name</code> isn&rsquo;t longer than your buffer, you can reuse it,
+record’s <code>name</code> isn’t longer than your buffer, you can reuse it,
 saving you a call to <code>malloc</code>.  If it is longer, you <code>realloc</code> it to
 be large enough for the new string.  If you think of the lengths of
 the <code>name</code> strings as a rising tide of water, you see where the name
@@ -268,7 +268,7 @@ record.name = <span class="predefined-constant">NULL</span>;
 
     name_size = <span class="keyword">sizeof</span>(<span class="predefined-type">char</span>) * (name_length+<span class="integer">1</span>);
 
-    <span class="comment">/* Reallocate the buffer if it&rsquo;s not big enough */</span>
+    <span class="comment">/* Reallocate the buffer if it's not big enough */</span>
     <span class="keyword">if</span> (name_size &gt; allocated_name_size)
     {
         record.name = (<span class="predefined-type">char</span> *) realloc(record.name, name_size);
@@ -277,7 +277,7 @@ record.name = <span class="predefined-constant">NULL</span>;
     }
 
     READ_FIELD(record.name, <span class="predefined-type">char</span>, name_length);
-    record.name[name_length] = <span class="char">&lsquo;\0&rsquo;</span>;
+    record.name[name_length] = <span class="char">'\0'</span>;
 
     <span class="comment">/* process the record */</span>
 } <span class="keyword">while</span> (<span class="predefined-constant">true</span>);
@@ -287,15 +287,15 @@ record.name = <span class="predefined-constant">NULL</span>;
 </code></pre>
 
 <p>Note that <code>realloc</code> does the “right thing” if <code>record.name</code> is <code>NULL</code>;
-this indicates that we haven&rsquo;t allocated a buffer yet, and so
+this indicates that we haven’t allocated a buffer yet, and so
 <code>realloc</code> acts like <code>malloc</code> in this case.</p>
 
-<h2>High-water mark library</h2>
+<h2 id="high-water-mark-library">High-water mark library</h2>
 
-<p>So, we&rsquo;ve described why you&rsquo;d want a high-water mark buffer, and how
+<p>So, we’ve described why you’d want a high-water mark buffer, and how
 to implement one.  But once you write that same code three or four
 times, you decide to factor it out into a library.  Hence
-<a href="http://github.com/dcreager/libhwm/">libhwm</a>.  Here&rsquo;s the same file
+<a href="http://github.com/dcreager/libhwm/">libhwm</a>.  Here’s the same file
 reading code using the library:</p>
 
 <pre class="CodeRay"><code><span class="keyword">typedef</span> <span class="keyword">struct</span>
@@ -334,7 +334,7 @@ hwm_buffer_init(&amp;record.name);
 
     name_ptr = hwm_buffer_writable_mem(&amp;record.name, <span class="predefined-type">char</span>);
     READ_FIELD(name_ptr, <span class="predefined-type">char</span>, name_length);
-    name_ptr[name_length] = <span class="char">&lsquo;\0&rsquo;</span>;
+    name_ptr[name_length] = <span class="char">'\0'</span>;
 
     <span class="comment">/* process the record */</span>
 } <span class="keyword">while</span> (<span class="predefined-constant">true</span>);
@@ -344,7 +344,7 @@ hwm_buffer_done(&amp;record.name);
 
 <p>Et voila.  Of course, this last code snippet makes me realize that we
 could make things even simpler with an <code>hwm_buffer_fread</code> function!
-The story never ends&hellip;</p>
+The story never ends…</p>
 
         </div>
       </div>

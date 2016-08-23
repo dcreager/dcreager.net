@@ -68,7 +68,7 @@
         <div class="blog">
           <div class="date">2014-05-14</div>
           <h1>Tagged releases using git flow</h1>
-          <p>I&rsquo;ve used <code>git flow</code> for most of my software projects — specifically for those
+          <p>I’ve used <code>git flow</code> for most of my software projects — specifically for those
 that have versioned releases.  The <a href="http://nvie.com/posts/a-successful-git-branching-model/">original
 post</a> describing <code>git
 flow</code> is still the best overview of how it works.  In short, you have a <code>master</code>
@@ -77,13 +77,13 @@ represents a new release, and is tagged with the version number of that release.
 The merge brings in all of the subsidiary commits and feature branches that make
 up that release.  Ongoing work happens on a separate <code>develop</code> branch.  This is
 where you merge in completed new features and bug fixes on a day-to-day basis.
-<code>develop</code> should always be a stable version of the software — you don&rsquo;t merge a
+<code>develop</code> should always be a stable version of the software — you don’t merge a
 feature branch into <code>develop</code> until it passes all of your tests and is
-&ldquo;complete&rdquo; with regards to the feature you&rsquo;re trying to implement.</p>
+“complete” with regards to the feature you’re trying to implement.</p>
 
 <p>My favorite part of this model is how each release is just some tagged commit on
 the <code>master</code> branch.  You want to see the code for the latest released version?
-That&rsquo;s easy — <code>git checkout master</code>.  You want version 1.2.5 specifically?  Use
+That’s easy — <code>git checkout master</code>.  You want version 1.2.5 specifically?  Use
 <code>git checkout 1.2.5</code> instead.</p>
 
 <p>Unfortunately, the <a href="https://github.com/nvie/gitflow"><code>git flow</code> tool</a> has
@@ -91,16 +91,16 @@ implemented a <a href="https://github.com/nvie/gitflow/issues/206">slightly diff
 behavior</a> for awhile now.  That
 patch makes <code>git flow</code> tag the last commit on the release branch, instead of the
 merge commit on the <code>master</code> branch.  The reasons for this might be perfectly
-valid, but it&rsquo;s not what I want, and it&rsquo;s not what the original <code>git flow</code> post
-described.  That means that I can&rsquo;t use <code>git flow release finish</code> as-is.</p>
+valid, but it’s not what I want, and it’s not what the original <code>git flow</code> post
+described.  That means that I can’t use <code>git flow release finish</code> as-is.</p>
 
-<hr class="jump">
+<hr class="jump" />
 
 <p>To recap the usual process:</p>
 
 <pre><code>$ git flow release start ${VERSION}
 [ bump version numbers and release dates if needed ]
-$ git flow release finish -s -m ${PROJECT}&ndash;${VERSION} ${VERSION}
+$ git flow release finish -s -m ${PROJECT}-${VERSION} ${VERSION}
 </code></pre>
 
 <p>The first command creates a new release branch called <code>release/${VERSION}</code>.  If
@@ -110,20 +110,20 @@ then finalize the release, which merges the release branch (along with any new
 commits on <code>develop</code>) into the <code>master</code> branch.  It also creates a tag named
 <code>${VERSION}</code>, and because of the <code>-s</code> option, signs it with my GPG key.</p>
 
-<p>The problem is that this tag is placed on the wrong commit.  That&rsquo;s easy to fix,
+<p>The problem is that this tag is placed on the wrong commit.  That’s easy to fix,
 though:</p>
 
-<pre><code>$ git tag -sf -m ${PROJECT}&ndash;${VERSION} ${VERSION} master
+<pre><code>$ git tag -sf -m ${PROJECT}-${VERSION} ${VERSION} master
 </code></pre>
 
 <p>I also like to create a <code>-dev</code> version tag on the latest <code>develop</code> branch, so
 that <code>git describe</code> always gives me a nice looking version number, regardless of
-which branch I&rsquo;m on:</p>
+which branch I’m on:</p>
 
-<pre><code>$ git tag -s -m ${PROJECT}&ndash;${VERSION}-dev ${VERSION}-dev develop
+<pre><code>$ git tag -s -m ${PROJECT}-${VERSION}-dev ${VERSION}-dev develop
 </code></pre>
 
-<p>And that&rsquo;s it!</p>
+<p>And that’s it!</p>
 
         </div>
       </div>

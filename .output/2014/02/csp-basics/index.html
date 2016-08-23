@@ -68,22 +68,19 @@
         <div class="blog">
           <div class="date">2014-02-28</div>
           <h1>CSP: The basics</h1>
-          <p class="big-def">
-  <span class="tldr">tl;dr</span> CSP is a <em>formal method</em> that lets you
-  describe and reason about the behavior of <em>concurrent systems</em>.  CSP is
-  <em>composable</em>; you write simple <em>processes</em>, and then use special
-  <em>operators</em> to combine them together into larger, more complex
-  processes.  A process is a summary of some system; it uses <em>events</em> to
-  describe how that system works, and to <em>synchronously communicate</em> with
-  other processes.  You can compare two processes using a <em>refinement
-  check</em>; this lets us check, for instance, whether a real-world system
-  satisfies some important safety or liveness property.  CSP has good <em>tool
-  support</em>, which lets us perform these refinement checks quickly and
-  automatically.
-</p>
+          <p class="big-def"><em class="tldr">tl;dr</em> CSP is a <em>formal method</em> that lets you describe and reason
+about the behavior of <em>concurrent systems</em>.  CSP is <em>composable</em>; you write
+simple <em>processes</em>, and then use special <em>operators</em> to combine them together
+into larger, more complex processes.  A process is a summary of some system; it
+uses <em>events</em> to describe how that system works, and to <em>synchronously
+communicate</em> with other processes.  You can compare two processes using a
+<em>refinement check</em>; this lets us check, for instance, whether a real-world
+system satisfies some important safety or liveness property.  CSP has good <em>tool
+support</em>, which lets us perform these refinement checks quickly and
+automatically.</p>
 
-<p>Well that was easy, wasn&rsquo;t it?  You can boil just about anything down to a
-single paragraph.  Let&rsquo;s look at each of those key points in more detail.</p>
+<p>Well that was easy, wasn’t it?  You can boil just about anything down to a
+single paragraph.  Let’s look at each of those key points in more detail.</p>
 
 <h5>Formal method</h5>
 
@@ -95,11 +92,11 @@ let us verify whether the model satisfies some property that you care about.  If
 your model accurately describes your real-world system, then any conclusions
 that we can draw about your model also apply to your system.</p>
 
-<p>Of course, it&rsquo;s up to you to create a CSP model that accurately describes your
+<p>Of course, it’s up to you to create a CSP model that accurately describes your
 real-world system.  For a large and complex system, it might not be immediately
-obvious how to describe the system in CSP.  That said, the language&rsquo;s operators
+obvious how to describe the system in CSP.  That said, the language’s operators
 line up pretty well with the techniques we use to implement real-world systems,
-so once you&rsquo;ve learned the language, it&rsquo;s usually straightforward to construct a
+so once you’ve learned the language, it’s usually straightforward to construct a
 CSP model for the system you want to analyze.</p>
 
 <h5>Concurrent systems</h5>
@@ -116,14 +113,14 @@ portions of the overall behavior, and we keep the interaction points small so
 that we can understand how the parts work together to implement the whole.</p>
 
 <p>Note that concurrency is a design technique, which you think about while
-architecting and implementing your system.  It&rsquo;s not the same as <em>parallelism</em>,
+architecting and implementing your system.  It’s not the same as <em>parallelism</em>,
 which is an optimization technique.  Concurrency lets you simplify your design
 by dividing up responsibilities among different subsystems.  Parallelism only
 comes into play when your system is up and running: you try to do multiple
-things simultaneously (or &ldquo;in parallel&rdquo;) so that you can finish the overall job
-faster.  The two are definitely related — you can&rsquo;t execute two things in
-parallel unless they were already concurrent — but they&rsquo;re not the same thing.
-Since CSP is a modeling language, it&rsquo;s focused on concurrency, not parallelism.</p>
+things simultaneously (or “in parallel”) so that you can finish the overall job
+faster.  The two are definitely related — you can’t execute two things in
+parallel unless they were already concurrent — but they’re not the same thing.
+Since CSP is a modeling language, it’s focused on concurrency, not parallelism.</p>
 
 <h5>Processes and events</h5>
 
@@ -138,8 +135,8 @@ those events represent.</p>
 
 <h5>Composition operators</h5>
 
-<p>CSP is <em>composable</em> — once you&rsquo;ve defined the CSP processes for your small
-subsystems, you use one of CSP&rsquo;s composition operators to join those subsystems
+<p>CSP is <em>composable</em> — once you’ve defined the CSP processes for your small
+subsystems, you use one of CSP’s composition operators to join those subsystems
 together into a larger, more complex process.  There are several composition
 operators to choose from, depending on how each of the subsystems should
 interact with each other.</p>
@@ -165,24 +162,24 @@ interaction between the person and the machine.</p>
 
 <p>One of the most important features of CSP is that <strong>all communication is
 synchronous</strong>.  When two processes communicate via an event, that event will
-either occur simultaneously in both processes, or it won&rsquo;t occur in either.  In
-our example, this means that the machine won&rsquo;t detect a coin if the person never
-inserted one; and vice versa, that the person can&rsquo;t insert a coin without the
+either occur simultaneously in both processes, or it won’t occur in either.  In
+our example, this means that the machine won’t detect a coin if the person never
+inserted one; and vice versa, that the person can’t insert a coin without the
 machine detecting it.</p>
 
 <h5>Refinement checks</h5>
 
 <p>The main reason for using a formal method to model a real-world system is so
 that you can verify some properties of that system.  For instance, with our
-vending machine, we might want to make sure that &ldquo;if you insert a coin, you
-either get a drink or you get your coin back.&rdquo;</p>
+vending machine, we might want to make sure that “if you insert a coin, you
+either get a drink or you get your coin back.”</p>
 
-<p>In CSP, you do this using a <em>refinement check</em>.  &ldquo;Refinement&rdquo; is the
+<p>In CSP, you do this using a <em>refinement check</em>.  “Refinement” is the
 mathematical term for the particular way that we compare the behavior of two
 processes.  If you have a CSP process describing your system, and another
 describing the property you want to verify, then a refinement tells you whether
-the system satisfies that property.  More importantly, the refinement doesn&rsquo;t
-just tell you &ldquo;yes&rdquo; or &ldquo;no&rdquo;; it also provides a <em>proof</em> or a <em>counterexample</em>
+the system satisfies that property.  More importantly, the refinement doesn’t
+just tell you “yes” or “no”; it also provides a <em>proof</em> or a <em>counterexample</em>
 automatically.</p>
 
 <p>This is true of all formal methods — the entire reason for using a formal method
@@ -196,11 +193,11 @@ you use processes and events to describe both.</p>
 
 <h5>Tool support</h5>
 
-<p>Refinement checks are nice, but they&rsquo;d be rather pointless if we had to do them
+<p>Refinement checks are nice, but they’d be rather pointless if we had to do them
 by hand.  Our real-world systems are usually too large and complex for that to
 be practical.  If you have to write hundreds of pages of detailed mathematical
 proof to convince yourself that your system satsifies a safety property, then
-the benefit of having that mathematical proof isn&rsquo;t worth the cost of producing
+the benefit of having that mathematical proof isn’t worth the cost of producing
 it.</p>
 
 <p>That means that to be useful, a formal method needs to have good <em>tool support</em>.
@@ -208,7 +205,7 @@ For CSP, the tool of choice is <a href="https://www.cs.ox.ac.uk/projects/fdr/">F
 You provide machine-readable descriptions of your CSP processes, and ask it
 perform refinement checks for you.  It also provides a nice user interface for
 viewing counterexamples, to help you identify which parts of your system violate
-the properties that you&rsquo;re checking.</p>
+the properties that you’re checking.</p>
 
         </div>
       </div>

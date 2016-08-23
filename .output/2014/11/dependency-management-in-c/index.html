@@ -71,27 +71,27 @@
           <p>At <a href="http://www.redjack.com/">RedJack</a>, all of our <a href="http://www.redjack.com/solutions/">core
 products</a> depend on a network sensor that
 collects various bits of information about the raw traffic that we see on the
-network.  We&rsquo;re doing some non-trivial analysis on fairly large network links
-using commodity hardware, so we&rsquo;ve implemented this sensor in C.  At its core is
+network.  We’re doing some non-trivial analysis on fairly large network links
+using commodity hardware, so we’ve implemented this sensor in C.  At its core is
 an extremely fast custom <a href="http://en.wikipedia.org/wiki/Flow-based_programming">flow-based
 programming</a> framework.
-It&rsquo;s a damn cool piece of code, but this post isn&rsquo;t about the code itself; it&rsquo;s
+It’s a damn cool piece of code, but this post isn’t about the code itself; it’s
 about how we deliver that code to our customers.</p>
 
-<p>Just because we&rsquo;ve written this component in C, that doesn&rsquo;t mean we want to
+<p>Just because we’ve written this component in C, that doesn’t mean we want to
 turn our back on the kinds of tooling you get to use when working in other, more
-modern languages.  In particular, once you&rsquo;ve gotten used to modern package
+modern languages.  In particular, once you’ve gotten used to modern package
 managers like <a href="https://www.npmjs.org/">npm</a>, <a href="http://leiningen.org/">leiningen</a>,
 <a href="http://golang.org/doc/articles/go_command.html">go</a>, and
-<a href="http://doc.crates.io/guide.html">Cargo</a>, it&rsquo;s hard to go back to things like
+<a href="http://doc.crates.io/guide.html">Cargo</a>, it’s hard to go back to things like
 <a href="http://www.cmake.org/">CMake</a> and <em>[shudder]</em> the
 <a href="http://en.wikipedia.org/wiki/GNU_build_system">autotools</a>.</p>
 
-<hr class="jump">
+<hr class="jump" />
 
-<p>And the worst part is that those examples aren&rsquo;t even comparable.  Very little
+<p>And the worst part is that those examples aren’t even comparable.  Very little
 code exists in isolation these days; in addition to the actual source code that
-you&rsquo;ve written (in whatever language you&rsquo;ve chosen), you&rsquo;re going to have
+you’ve written (in whatever language you’ve chosen), you’re going to have
 dependencies on other libraries.  All of the npm-like package managers are
 full-featured systems that handle <strong>dependency management</strong> as well as the
 actual <strong>building</strong> of your code.  CMake and the autotools, on the other hand,
@@ -100,21 +100,21 @@ already available.</p>
 
 <p>At this point, C (and C++) developers usually throw up their hands and give up.
 You either try to avoid third-party dependencies at all, by embedding
-everything you need so that you can fold the &ldquo;dependency management&rdquo; step into
+everything you need so that you can fold the “dependency management” step into
 your existing build tool.  Or you list your dependencies in a human-readable
 <code>INSTALL</code> document in the source tree, and rely on the ingenuity and elbow
 grease of your users to track down and install all of the prereqs by hand.  If
-you&rsquo;re lucky, and your project is popular enough to include in the major Linux
-distros' package repositories, then the various package maintainers will
+you’re lucky, and your project is popular enough to include in the major Linux
+distros’ package repositories, then the various package maintainers will
 re-encode all of this information in the distro-specific package definitions.
-But because there&rsquo;s no single, standardized packaging specification for Linux
+But because there’s no single, standardized packaging specification for Linux
 (let alone for other POSIX-y operating systems), that means someone has to do
 that separately for each distro that you need to support.</p>
 
 <p>So we created <a href="https://github.com/redjack/buzzy/">Buzzy</a>.  It gives us npm-style
 dependency management for our C projects, and — almost as a side effect! — makes
 it easy to generate native packages of our software for all of the Linux distros
-that we need to support.  The end result is that it&rsquo;s dirt simple to build and
+that we need to support.  The end result is that it’s dirt simple to build and
 install <a href="https://github.com/redjack/varon-t/">one of our libraries</a>, along with
 all of its prerequisites:</p>
 
@@ -144,14 +144,14 @@ $ buzzy install -q
 <p>That single <code>buzzy</code> command works unchanged on Arch Linux, RHEL 6 and 7, any
 recent Debian or Ubuntu, and Mac OS X (via Homebrew).</p>
 
-<p><br></p>
+<p><br /></p>
 
 <p>Buzzy has some interesting characteristics that are definitely different than
 other bits of C project tooling — we purposefully tried to take into account the
 best practices that have emerged in other modern package managers.  Of course,
 there are also some idiosyncrasies that come from dealing with C projects.</p>
 
-<h5>Declarative package descriptions</h5>
+<h5 id="declarative-package-descriptions">Declarative package descriptions</h5>
 
 <p>With most existing C build tools, you provide a <strong>script</strong> that describes how to
 build your project.  With Buzzy, you provide a <a href="https://github.com/redjack/libcork/blob/develop/.buzzy/package.yaml">declarative
@@ -159,7 +159,7 @@ description</a>
 of the package, and let Buzzy decide what to do with that description for your
 particular platform.</p>
 
-<h5>Decentralized package descriptions</h5>
+<h5 id="decentralized-package-descriptions">Decentralized package descriptions</h5>
 
 <p>Buzzy does not have a single centralized database of package descriptions.
 Instead, you put your package description into the source repository as the code
@@ -167,21 +167,21 @@ itself.  Part of your package description is a list of
 <a href="https://github.com/redjack/libcork/blob/develop/.buzzy/links.yaml">links</a> to
 other Buzzy-enabled source repositories that you depend on.</p>
 
-<h5>Just handle dependencies and packaging</h5>
+<h5 id="just-handle-dependencies-and-packaging">Just handle dependencies and packaging</h5>
 
 <p>Buzzy is not a build tool; it delegates to something else to actually build the
 source code for any particular project.  We happen to use CMake for all of our
 libraries, and Buzzy also works fine with the autotools.</p>
 
-<h5>Use the native ecosystem wherever possible</h5>
+<h5 id="use-the-native-ecosystem-wherever-possible">Use the native ecosystem wherever possible</h5>
 
-<p>In part, this means that we produce native packages; we haven&rsquo;t invented a new
+<p>In part, this means that we produce native packages; we haven’t invented a new
 packaging format or anything like that.  It also means that if a dependency is
 available as a native package, we install that, instead of building our own.  We
-only fall back on building our own copy for those cases (I&rsquo;m looking at you,
+only fall back on building our own copy for those cases (I’m looking at you,
 RHEL!) where the native package is too old to satisfy a versioned dependency.</p>
 
-<h5>Auto-detect as much as possible</h5>
+<h5 id="auto-detect-as-much-as-possible">Auto-detect as much as possible</h5>
 
 <p>Wherever we can, we try to figure something out for you instead of making you
 state it explicitly.  If we see a <code>CMakeLists.txt</code> file in your source
@@ -195,17 +195,17 @@ we know to look for a native package called <code>jansson</code> or <code>libjan
 <code>jansson-devel</code> or <code>libjansson-devel</code> on RPM derivatives, and <code>jansson-dev</code> or
 <code>libjansson-dev</code> on Debian derivatives.</p>
 
-<p>And of course, there&rsquo;s a way to override this auto-detection if Buzzy doesn&rsquo;t
+<p>And of course, there’s a way to override this auto-detection if Buzzy doesn’t
 know best for a particular situation.  (Because we live in a world where <code>zlib</code>
 is called <code>zlib1g</code> on Debian systems.)</p>
 
-<p><br></p>
+<p><br /></p>
 
-<p>It&rsquo;s important to note that Buzzy is not a panacea.  It doesn&rsquo;t know, for
+<p>It’s important to note that Buzzy is not a panacea.  It doesn’t know, for
 instance, that RPM and Debian derivatives want you to make separate runtime and
 developer packages for your libraries.  Right now Buzzy just blindly builds a
-single monolithic package regardless of what distro you&rsquo;re on.  But, it&rsquo;s served
-us well so far, and it&rsquo;s definitely a good start!</p>
+single monolithic package regardless of what distro you’re on.  But, it’s served
+us well so far, and it’s definitely a good start!</p>
 
         </div>
       </div>
