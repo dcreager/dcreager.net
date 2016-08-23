@@ -81,7 +81,8 @@
           <div class="date">2016-08-19</div>
           <h2 class="series">Concurrency models in CSP</h2>
           <h1>Read Atomic: Internal consistency</h1>
-          <p>We’ll start by looking at the weakest concurrency model covered in the paper,
+          
+<p>We’ll start by looking at the weakest concurrency model covered in the paper,
 Read Atomic.  All of the concurrency models are defined as a combination of
 several axioms.  Read Atomic consists of only two: internal consistency and
 external consistency.  In this post, we’ll construct a CSP process that
@@ -99,27 +100,42 @@ strictly local to each transaction; we don’t have to consider the behavior of
 any other transaction when defining what it means for a transaction to be
 internally consistent.</p>
 
-<p>We start by defining some data types and channels:</p>
+<p>We start by defining some data types and channels.</p>
 
-<pre class="CodeRay"><code>datatype Object = {1..2}
-datatype Value = {1..5}
-</code></pre>
+<div class="aside-def">
+  <h2 id="channels">Channels</h2>
+  <p>Each \(\textbf{channel}\) statement defines one kind of event that your
+processes can produce.  Each event will typically carry some data; you use
+\(\textbf{datatype}\) and \(\textbf{nametype}\) statements to define the
+different kinds of data that can be carried by those events.</p>
+</div>
 
-<p>An <code>Object</code> is the <em>name</em> of one of the objects that can be read or written; it
-corresponds to the \(Obj\) set in the original paper.  The <code>Value</code> type is the
-set of values that can be stored in each object.  In the original paper, they
-use \(\mathbb{Z}\) (the set of integers); in our CSP spec, we’ll also use
-simple integers, but we’ll limit ourselves to a finite set.</p>
+<!-- nametype Object = {1..2}
+nametype Value = {1..5} -->
 
-<p>We can then use \(\mathbf{channel}\) statements to define some events:</p>
+<p>\[
+\textbf{nametype} ~ \textsf{Object} = \{1..2\} \\
+\textbf{nametype} ~ \textsf{Value} = \{1..5\}
+\]</p>
 
-<pre class="CodeRay"><code>channel read : Object x Value
-channel write : Object x Value
-</code></pre>
+<p>An \(\textsf{Object}\) is the <em>name</em> of one of the objects that can be read or
+written; it corresponds to the \(Obj\) set in the original paper.  The
+\(\textsf{Value}\) type is the set of values that can be stored in each
+object.  In the original paper, they use \(\mathbb{Z}\) (the set of integers);
+in our CSP spec, we’ll also use simple integers, but we’ll limit ourselves to a
+finite set.</p>
 
-<p>A <code>read</code> event signifies that a particular value was read for a particular
-object; similarly, a <code>write</code> event signifies that a particular value was written
-to a particular object.</p>
+<!-- channel read : Object.Value
+channel write : Object.Value -->
+
+<p>\[
+\textbf{channel} ~ \texttt{read} : \textsf{Object} \times \textsf{Value} \\
+\textbf{channel} ~ \texttt{write} : \textsf{Object} \times \textsf{Value}
+\]</p>
+
+<p>A \(\texttt{read}\) event signifies that a particular value was read for a
+particular object; similarly, a \(\texttt{write}\) event signifies that a
+particular value was written to a particular object.</p>
 
 <p>Based on the structure of these two CSP channels, you might expect that they
 correspond to the \(Op\) set from the original paper; however, they actually
@@ -137,41 +153,57 @@ consistency means in each of these two states.</p>
 <p>Each object starts <em>undefined</em>, meaning that <em>this transaction</em> has not yet
 written a value to the object:</p>
 
-<pre class="CodeRay"><code>Undefined(obj) =
-  read!obj?value -&gt; Undefined(obj)
+<!-- Undefined(obj) =
+  read!obj?value -> Undefined(obj)
     []
-  write!obj?value -&gt; Defined(obj, value)
-</code></pre>
+  write!obj?value -> Defined(obj, value) -->
+
+<p>\[
+\textrm{Undefined}(\textit{obj}) = {} \\
+  \quad\texttt{read}\,!\textit{obj}\,?\textit{value} \rightarrow
+        \textrm{Undefined}(\textit{obj}) \\
+  \qquad \Box \\
+  \quad\texttt{write}\,!\textit{obj}\,?\textit{value} \rightarrow
+        \textrm{Defined}(\textit{obj}, \textit{value})
+\]</p>
 
 <p>(Remember that internal consistency does not take into account what values other
 transactions write into an object.)</p>
 
-<p>Note that we have to include a <code>read</code> clause, even though internal consistency
-doesn’t say anything about which value is returned when we read from an object
-that we didn’t already write to.  This <code>read</code> clause tells us that we have no
-idea which value will be returned.  We can’t leave this clause out; that would
-say that internal consistency <em>actively prevents</em> transactions from performing
-these kinds of reads.  Instead, we’ll leave these reads unconstrained here, and
-use other CSP processes to define how each consistency model determines which
-values are returned based on which other transactions have completed and become
-visible.</p>
+<p>Note that we have to include a \(\texttt{read}\) clause, even though internal
+consistency doesn’t say anything about which value is returned when we read from
+an object that we didn’t already write to.  This \(\texttt{read}\) clause
+tells us that we have no idea which value will be returned.  We can’t leave this
+clause out; that would say that internal consistency <em>actively prevents</em>
+transactions from performing these kinds of reads.  Instead, we’ll leave these
+reads unconstrained here, and use other CSP processes to define how each
+consistency model determines which values are returned based on which other
+transactions have completed and become visible.</p>
 
-<p>The <code>write</code> clause means that you can write (whatever value you want) to an
-undefined object; doing so means us into the “defined” state.</p>
+<p>The \(\texttt{write}\) clause means that you can write (whatever value you
+want) to an undefined object; doing so means us into the “defined” state.</p>
 
 <p>When an object is <em>defined</em>, we also need to keep track of the current value:</p>
 
-<pre class="CodeRay"><code>Defined(obj, currentValue) =
-  read!obj!currentValue -&gt; Defined(obj, currentValue)
+<!-- Defined(obj, currentValue) =
+  read!obj!currentValue -> Defined(obj, currentValue)
     []
-  write!obj?newValue -&gt; Defined(obj, newValue)
-</code></pre>
+  write!obj?newValue -> Defined(obj, newValue) -->
 
-<p>When you <code>read</code> a defined value, we enforce that the value that’s returned is
-the current value of the object — that’s the entire point of internal
-consistency!  You can also <code>write</code> a <em>new</em> value to the object; doing means that
-the object is still “defined”, but overwrites the current value with the new
-one.</p>
+<p>\[
+\textrm{Defined}(\textit{obj}, \textit{currentValue}) = {} \\
+  \quad\texttt{read}\,!\textit{obj}\,!\textit{currentValue} \rightarrow
+        \textrm{Defined}(\textit{obj}, \textit{currentValue}) \\
+  \qquad \Box \\
+  \quad\texttt{write}\,!\textit{obj}\,?\textit{newValue} \rightarrow
+        \textrm{Defined}(\textit{obj}, \textit{newValue})
+\]</p>
+
+<p>When you \(\texttt{read}\) a defined value, we enforce that the value that’s
+returned is the current value of the object — that’s the entire point of
+internal consistency!  You can also \(\texttt{write}\) a <em>new</em> value to the
+object; doing means that the object is still “defined”, but overwrites the
+current value with the new one.</p>
 
         </div>
       </div>
