@@ -71,7 +71,7 @@
           <h1>Introduction</h1>
           <p>Two years ago, I started writing a series of <a href="/2014/01/07/intro-to-csp/">blog</a>
 <a href="/2014/02/csp-basics/">posts</a> about CSP — Communicating Sequential Processes.
-That series has&hellip;let&rsquo;s say &ldquo;stalled&rdquo;.  Part of the reason is that I didn&rsquo;t have
+That series has…let’s say “stalled”.  Part of the reason is that I didn’t have
 a good non-trivial example to work with.  The <a href="https://en.wikipedia.org/wiki/Communicating_sequential_processes#Examples">stereotypical running
 example</a>
 is the vending machine: start with a simple one, which accepts a single coin and
@@ -80,28 +80,28 @@ always had a hunch that I needed an example with more meat on it, but could
 never find one.</p>
 
 <p>Fast-forward to today.  I was reading through some of <a href="https://christophermeiklejohn.com/">Christopher
-Meiklejohn&rsquo;s</a> work on
+Meiklejohn’s</a> work on
 <a href="http://lasp-lang.org/">LASP</a>, I came across a citation to a really nice paper
 by <a href="http://drops.dagstuhl.de/opus/volltexte/2015/5375/">Cerone, Bernardi, and
 Gotsman</a>, which adds some
 formal rigor to the consistency models that we use to describe modern
 distributed systems.  Their formalism is a great combination of simple and
 expressive.  The core of the paper is about processes accessing a transactional
-data store, and when it&rsquo;s time to break out the proofs, one of their main tools
-is &ldquo;observational refinement&rdquo;.  This naturally led me to think about describing
+data store, and when it’s time to break out the proofs, one of their main tools
+is “observational refinement”.  This naturally led me to think about describing
 these same consistency models using CSP processes.</p>
 
-<p>And so I finally found my meaty running example!  I&rsquo;m resurrecting this blog
+<p>And so I finally found my meaty running example!  I’m resurrecting this blog
 series, and plan to work through each of the consistency models and proofs
 descirbed in the paper, translating them into CSP processes and refinements.
-This isn&rsquo;t an attempt to replace or outdo anything in the paper!  Far from it —
-it&rsquo;s my attempt to use something more familiar to work through the details of
+This isn’t an attempt to replace or outdo anything in the paper!  Far from it —
+it’s my attempt to use something more familiar to work through the details of
 something less familiar.</p>
 
-<p>I&rsquo;m not going to assume a working knowledge of CSP — or of the consistency
-models described in the paper!  If you&rsquo;re familiar with one, my hope is that
-you&rsquo;ll be able to follow along and pick up the other.  And if you&rsquo;re not
-familiar with either&hellip;well, I guess we&rsquo;ll see how good I am at writing an intro
+<p>I’m not going to assume a working knowledge of CSP — or of the consistency
+models described in the paper!  If you’re familiar with one, my hope is that
+you’ll be able to follow along and pick up the other.  And if you’re not
+familiar with either…well, I guess we’ll see how good I am at writing an intro
 to a difficult topic!</p>
 
         </div>

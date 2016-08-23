@@ -71,10 +71,10 @@
           <p>This post is the first in a series that describes the
 <code>push_callback_t</code> type in the
 <a href="http://github.com/dcreager/libpush/">libpush</a> library.  In these
-posts, we&rsquo;ll walk through a couple of possible ways to implement
-callbacks under the covers.  At each stage, we&rsquo;ll encounter problems
+posts, we’ll walk through a couple of possible ways to implement
+callbacks under the covers.  At each stage, we’ll encounter problems
 with the current design.  Fixing these problems should lead closer us
-to the actual implementation in libpush, and along the way, we&rsquo;ll gain
+to the actual implementation in libpush, and along the way, we’ll gain
 a good understanding of how our design decisions affect the
 performance and usability of the library.</p>
 
@@ -85,9 +85,9 @@ stream</em>, and produce an <em>output value</em>.  (The fact that callbacks tak
 in an input value, in addition to reading from the input stream, is
 what makes them <a href="http://www.haskell.org/arrows/"><em>arrows</em></a> instead of
 <a href="http://en.wikipedia.org/wiki/Monad_%28functional_programming%29"><em>monads</em></a>
-— but that&rsquo;s a story for a later post).</p>
+— but that’s a story for a later post).</p>
 
-<h2>First attempt: Callbacks as functions</h2>
+<h2 id="first-attempt-callbacks-as-functions">First attempt: Callbacks as functions</h2>
 
 <p>Now, with this simple structure, we might try to implement callbacks
 as regular C functions.  For instance, we could use something like the
@@ -110,20 +110,20 @@ parse_uint32(<span class="directive">void</span> *input, uint32_t *output, FILE 
 input stream, and uses that to output a <code>uint32_t</code> value.  The return
 value of the function is a boolean, indicating whether the parse was
 successful or not.  This lets us handle <em>parse errors</em> — for instance,
-if there are only three bytes left in the stream, we can&rsquo;t read in a
+if there are only three bytes left in the stream, we can’t read in a
 full integer.  We return <code>false</code> to indicate this error condition.</p>
 
-<p>We&rsquo;ve ignored some details here that aren&rsquo;t important for this example
-— for instance, we don&rsquo;t worry about the endianness of the integer,
+<p>We’ve ignored some details here that aren’t important for this example
+— for instance, we don’t worry about the endianness of the integer,
 nor do we worry about how the space for the output result is
 allocated.  We just assume that someone will pass in a pointer to a
 <code>uint32_t</code> variable, and our callback function will store its output
 value there.</p>
 
-<h2>Drawbacks</h2>
+<h2 id="drawbacks">Drawbacks</h2>
 
 <p>This approach works fine for simple cases, but unfortunately has two
-drawbacks.  First, we&rsquo;re limited to parsing from <code>FILE</code> streams.  Any
+drawbacks.  First, we’re limited to parsing from <code>FILE</code> streams.  Any
 real input source will probably be available as a stream, so this
 might not seem like a huge problem — though it does rule out parsing
 from a memory buffer, unless you use a non-portable function like
@@ -133,24 +133,24 @@ from a memory buffer, unless you use a non-portable function like
 full control over when and how much to read from the stream.  In this
 example, we try to read in the full four bytes for the <code>uint32_t</code>
 output value.  However, there might not be four bytes available in the
-stream.  If this is because we&rsquo;re at the end of a file, then we should
-treat this as a parse error.  If we&rsquo;re reading from a network socket,
+stream.  If this is because we’re at the end of a file, then we should
+treat this as a parse error.  If we’re reading from a network socket,
 though, another chunk of data might arrive if we wait for a bit.</p>
 
 <p>We could add logic to the callback to read from the stream repeatedly
-until we got enough data, but then we&rsquo;ll start <em>blocking</em> — so that we
-can distinguish between &ldquo;there&rsquo;s no more data here <em>yet</em>&rdquo; from
-&ldquo;there&rsquo;s no more data coming <em>at all</em>&rdquo;.</p>
+until we got enough data, but then we’ll start <em>blocking</em> — so that we
+can distinguish between “there’s no more data here <em>yet</em>” from
+“there’s no more data coming <em>at all</em>”.</p>
 
 <p>All of this is bad news.  First of all, this extra I/O logic is
-starting to get rather big, and we don&rsquo;t want each and every callback
-to have to include it.  And second, we don&rsquo;t want the rest of our
+starting to get rather big, and we don’t want each and every callback
+to have to include it.  And second, we don’t want the rest of our
 program to be held hostage by the callback — it should be up to our
-I/O code to decide whether it&rsquo;s okay to block waiting for more input,
+I/O code to decide whether it’s okay to block waiting for more input,
 or whether to whip up a nice <code>select</code> loop of some kind to read things
 more efficiently.</p>
 
-<p>In the next post, we&rsquo;ll describe <em>iteratees</em>, which give us this
+<p>In the next post, we’ll describe <em>iteratees</em>, which give us this
 capability.</p>
 
         </div>

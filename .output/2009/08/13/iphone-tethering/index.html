@@ -73,7 +73,7 @@ week, I had the opportunity to use one of the coolest features of my
 new iPhone 3GS — Bluetooth Internet tethering.  Assuming that your
 mobile carrier allows the feature on their network, it provides a very
 easy way to have a persistent Internet connection, for those
-situations where a free Ethernet drop or WiFi access point aren&rsquo;t
+situations where a free Ethernet drop or WiFi access point aren’t
 readily available.</p>
 
 <p>I happened to have my Dell Mini 9 (running Ubuntu Jaunty) with me for
@@ -84,10 +84,10 @@ posting</a>,
 however, provided exactly what I needed.</p>
 
 <p>Following this process, the connection worked without a hitch.  One
-caveat is that I didn&rsquo;t need to explicitly pair my phone with my
-laptop; the first time I ran the <code>pand &mdash;connect</code> command, my phone
+caveat is that I didn’t need to explicitly pair my phone with my
+laptop; the first time I ran the <code>pand --connect</code> command, my phone
 prompted me with the pairing confirmation dialog.  Later connections
-didn&rsquo;t require re-pairing.</p>
+didn’t require re-pairing.</p>
 
 <p>As for bandwidth, the connection was perfectly reasonable for email
 and basic Web surfing as long as I had decent 3G coverage — 3 of 5
@@ -98,7 +98,7 @@ would probably be unworkable for something large like a GNOME,
 texlive, or GHC update.  All in all, not bad for some surreptitious
 email checking during the talks.</p>
 
-<h2>Command-line scripts</h2>
+<h2 id="command-line-scripts">Command-line scripts</h2>
 
 <p>One thing that can be cumbersome about the instructions on the blog
 post is that you have to run the <code>pand</code> and <code>ifup</code>/<code>ifdown</code> commands
@@ -121,36 +121,36 @@ by running</p>
 <pre><code>tether down
 </code></pre>
 
-<p>Instead of hard-coding your phone&rsquo;s Bluetooth MAC address into the
+<p>Instead of hard-coding your phone’s Bluetooth MAC address into the
 script itself, you place it into the <em>$HOME/etc/bluetooth.conf</em> file.
-This file isn&rsquo;t checked into Git, so that I&rsquo;m not putting my personal
+This file isn’t checked into Git, so that I’m not putting my personal
 MAC addresses into the public repository.  Instead, the commit
 contains a <em>$HOME/etc/bluetooth.conf.sample</em> file, which you copy over
 to <em>bluetooth.conf</em>, and then edit appropriately.</p>
 
-<h2>Issues</h2>
+<h2 id="issues">Issues</h2>
 
 <p>While this script worked great for during the conference, there are
 two main issues with it as it stands.</p>
 
 <ul>
-<li><strong>dbus integration</strong> — Many applications now listen to the system&rsquo;s
+  <li>
+    <p><strong>dbus integration</strong> — Many applications now listen to the system’s
 dbus message bus to determine different facts about the current
-state of the system, including whether there&rsquo;s an active Internet
+state of the system, including whether there’s an active Internet
 connection.  The NetworkManager application knows to publish the
 correct dbus messages when it starts and stops a network connection.
 The <code>tether</code> script does not.  This means that each time I open up
 Firefox after turning on the tether, I have to manually uncheck the
 <em>File › Work Offline</em> menu option to be able to access any web
-pages.</li>
-</ul>
+pages.</p>
 
-<p>Fixing this issue should only require finding the appropriate dbus
-  messages to send, and adding them to the <code>up</code> and <code>down</code> cases in
-  the script.</p>
-
-<ul>
-<li><strong>GUI access</strong> — While I don&rsquo;t mind running a simple command to
+    <p>Fixing this issue should only require finding the appropriate dbus
+messages to send, and adding them to the <code>up</code> and <code>down</code> cases in
+the script.</p>
+  </li>
+  <li>
+    <p><strong>GUI access</strong> — While I don’t mind running a simple command to
 activate and deactivate the network connection, I realize that a GUI
 control within the NetworkManager applet would be more ideal.  (This
 would also eliminate the first issue, since NetworkManager would
@@ -160,7 +160,8 @@ Bluetooth PAN
 support</a>
 to <code>nm-applet</code>.  The new code is in the bleeding edge tree, so
 hopefully it will make it into a release in time to be picked up for
-October&rsquo;s Karmic release.</li>
+October’s Karmic release.</p>
+  </li>
 </ul>
 
         </div>

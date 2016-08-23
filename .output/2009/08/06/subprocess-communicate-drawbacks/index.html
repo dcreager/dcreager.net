@@ -79,7 +79,7 @@ The <code>subprocess</code> module aims to provide a more consistent interface,
 regardless of the particulars of how you need to interact with the
 subprocesses.</p>
 
-<h2>Overview of the <code>subprocess</code> module</h2>
+<h2 id="overview-of-the-subprocess-module">Overview of the <code>subprocess</code> module</h2>
 
 <p>Subprocesses are encapsulated in a <code>Popen</code> object.  You interact with
 a subprocess via its stdin, stdout, and stderr streams.  When you
@@ -89,23 +89,23 @@ the <code>Popen</code> object that you get back will have <code>stdin</code>, <c
 and/or <code>stderr</code> attributes.  Each of these is a file-like object,
 giving you access to the corresponding stream of the subprocess.</p>
 
-<p>Now, you have to be careful how you use these pipe objects, since it&rsquo;s
+<p>Now, you have to be careful how you use these pipe objects, since it’s
 easy to fall into a situation where you have deadlock.  For instance,
 your parent process might be trying to write some data into the
 <code>stdin</code> pipe, to send some information into the subprocess.  The
 subprocess, on the other hand, is trying to write some data into the
 <code>stdout</code> pipe, to send some information back out to the parent
-process.  If the <code>stdout</code> pipe&rsquo;s buffer is full, then the subprocess
-will block trying write into the pipe; it won&rsquo;t be able to proceed
+process.  If the <code>stdout</code> pipe’s buffer is full, then the subprocess
+will block trying write into the pipe; it won’t be able to proceed
 until the parent process has read some data from the <code>stdout</code> pipe,
 clearing room in the buffer for the new data.  However, the parent
 process is currently trying to write into the <code>stdin</code> pipe.  If this
 write is also blocked, then we have deadlock — neither process can
 proceed.</p>
 
-<h2>The <code>communicate</code> method</h2>
+<h2 id="the-communicate-method">The <code>communicate</code> method</h2>
 
-<p>The usual solution in these cases is to use the <code>Popen</code> object&rsquo;s
+<p>The usual solution in these cases is to use the <code>Popen</code> object’s
 <code>communicate</code> method.  This method takes in an optional string to send
 to the subprocess on stdin.  It then collects all of the stdout and
 stderr output from the subprocess, and returns these.  The
@@ -117,8 +117,8 @@ or stderr when the subprocess is ready to provide it.</p>
 <p>Under the covers, the <code>communicate</code> method uses a <code>select</code> loop to
 perform this choreography with the subprocess.  (At least for the Unix
 implementation of the <code>subprocess</code> module, that is.)  This solution is
-nice because it doesn&rsquo;t require introducing threading into the parent
-process.  During each iteration of the loop, it calls the OS&rsquo;s
+nice because it doesn’t require introducing threading into the parent
+process.  During each iteration of the loop, it calls the OS’s
 <code>select</code> system call, giving it the file descriptors of the stdin,
 stdout, and stderr pipes.  The <code>select</code> call tells us which of these
 file descriptors can perform an I/O operation without blocking.  If
@@ -126,17 +126,17 @@ none of them can immediately, it will block until one of them can.
 Once the <code>select</code> call returns, we read from or write to the pipes
 that are ready.  We repeat this process until we see EOF on both
 stdout and stderr; this indicates that the subprocess has finished —
-or at least, that it&rsquo;s through communicating with us.</p>
+or at least, that it’s through communicating with us.</p>
 
-<h2>Drawbacks</h2>
+<h2 id="drawbacks">Drawbacks</h2>
 
 <p>The <code>communicate</code> method provides a nice, simple interface for
 interacting with a subprocess, without having to worry about deadlock
 situations.  Unfortunately, it has two main drawbacks:</p>
 
 <ul>
-<li>The subprocess&rsquo;s stdout and stderr are collected into strings.</li>
-<li>You can only interact with one subprocess at a time.</li>
+  <li>The subprocess’s stdout and stderr are collected into strings.</li>
+  <li>You can only interact with one subprocess at a time.</li>
 </ul>
 
 <p>(If neither of these is an issue for you, then the rest of this post
@@ -150,18 +150,18 @@ thrash as it eats into virtual memory.</p>
 
 <p>The second item is a problem if you have to spawn multiple
 subprocesses, and interact with them simultaneously.  You could argue
-that there&rsquo;s no need to fix this problem if you haven&rsquo;t fixed the
+that there’s no need to fix this problem if you haven’t fixed the
 first: since the <code>communicate</code> method is just going to collect the
 stdout and stderr into strings, then you could just loop through each
 of your subprocesses, calling <code>communicate</code> on each in turn:</p>
 
 <pre class="CodeRay"><code><span class="keyword">import</span> <span class="include">subprocess</span>
 
-sp1 = subprocess.Popen([<span class="string"><span class="delimiter">&ldquo;</span><span class="content">ls</span><span class="delimiter">&rdquo;</span></span>, <span class="string"><span class="delimiter">&ldquo;</span><span class="content">-l</span><span class="delimiter">&rdquo;</span></span>],
+sp1 = subprocess.Popen([<span class="string"><span class="delimiter">&quot;</span><span class="content">ls</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">-l</span><span class="delimiter">&quot;</span></span>],
                        stdin=subprocess.PIPE,
                        stdout=subprocess.PIPE)
 
-sp2 = subprocess.Popen([<span class="string"><span class="delimiter">&ldquo;</span><span class="content">ls</span><span class="delimiter">&rdquo;</span></span>, <span class="string"><span class="delimiter">&ldquo;</span><span class="content">-al</span><span class="delimiter">&rdquo;</span></span>],
+sp2 = subprocess.Popen([<span class="string"><span class="delimiter">&quot;</span><span class="content">ls</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">-al</span><span class="delimiter">&quot;</span></span>],
                        stdin=subprocess.PIPE,
                        stdout=subprocess.PIPE)
 
@@ -174,10 +174,10 @@ sp2 = subprocess.Popen([<span class="string"><span class="delimiter">&ldquo;</sp
 strings for all of your subprocesses.</p>
 
 <p>However, doing so can make your subprocesses take longer to run, since
-you won&rsquo;t be able to exploit parallelism as much.  Since you&rsquo;re firing
+you won’t be able to exploit parallelism as much.  Since you’re firing
 off these subprocesses at the same time, you supposedly want them to
 execute simultaneously, allowing the OS to schedule them appropriate
-so that they finish as quickly as possible.  However, you&rsquo;ve
+so that they finish as quickly as possible.  However, you’ve
 introduced a serialization into this logic, since your parent process
 is only able to interact with one subprocess at a time.  For instance,
 subprocess #2 might be waiting for some input, while the parent

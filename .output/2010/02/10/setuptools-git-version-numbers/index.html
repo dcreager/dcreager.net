@@ -68,25 +68,25 @@
         <div class="blog">
           <div class="date">2010-02-10</div>
           <h1>Extracting setuptools version numbers from your git repository</h1>
-          <p>Just like everyone else, we&rsquo;re using
+          <p>Just like everyone else, we’re using
 <a href="http://pypi.python.org/pypi/setuptools">setuptools</a> as the core of
 the build system for our Python-based projects.  For the most part,
 this has been a painless, straightforward process.  However, one
-lingering annoyance is that we&rsquo;ve been specifying the version number
+lingering annoyance is that we’ve been specifying the version number
 directly in our <em>setup.py</em> files:</p>
 
 <pre class="CodeRay"><code><span class="keyword">from</span> <span class="include">setuptools</span> <span class="keyword">import</span> <span class="include">setup</span>
 
 setup(
-    name = <span class="string"><span class="delimiter">&ldquo;</span><span class="content">awesomelib</span><span class="delimiter">&rdquo;</span></span>,
-    version = <span class="string"><span class="delimiter">&ldquo;</span><span class="content">1.2</span><span class="delimiter">&rdquo;</span></span>,
-    <span class="comment"># &hellip;etc</span>
+    name = <span class="string"><span class="delimiter">&quot;</span><span class="content">awesomelib</span><span class="delimiter">&quot;</span></span>,
+    version = <span class="string"><span class="delimiter">&quot;</span><span class="content">1.2</span><span class="delimiter">&quot;</span></span>,
+    <span class="comment"># ...etc</span>
 )
 </code></pre>
 
 <p>On our maintenance branches, we get a nice <em>awesomelib-1.2.tar.gz</em>
 file when we run <code>python setup.py sdist</code>.  On our development branch,
-we&rsquo;ve also got the following <em>setup.cfg</em> file:</p>
+we’ve also got the following <em>setup.cfg</em> file:</p>
 
 <pre class="CodeRay"><code>[egg_info]
 tag_build = dev
@@ -94,32 +94,38 @@ tag_date = true
 </code></pre>
 
 <p>That gives us tarballs like <em>awesomelib-1.2dev-20100210.tar.gz</em> on our
-development branch.  Because we&rsquo;re using the <code>dev</code> suffix, which
-setuptools considers to be a &ldquo;prerelease&rdquo;, we have to remember to
+development branch.  Because we’re using the <code>dev</code> suffix, which
+setuptools considers to be a “prerelease”, we have to remember to
 increment the version number in development whenever we cut a new
 release.  The end result is that we have a longish process for
 creating releases.  If we want to create a new 1.3 release, we have to
 do the following:</p>
 
 <ol>
-<li><p>Create a new maintenance branch for 1.3:</p>
+  <li>
+    <p>Create a new maintenance branch for 1.3:</p>
 
-<pre><code>$ git checkout -b maint-1.3 master
-</code></pre></li>
-<li><p>Update the <em>setup.cfg</em> file to remove the <code>tag_build</code> and
-<code>tag_date</code> entries.  Commit this with a &ldquo;Tagging version 1.3&rdquo;
-commit message.</p></li>
-<li><p>Back on the development branch, update <em>setup.py</em> to increment the
-&ldquo;development version&rdquo; to 1.4.</p></li>
+    <pre><code>$ git checkout -b maint-1.3 master
+</code></pre>
+  </li>
+  <li>
+    <p>Update the <em>setup.cfg</em> file to remove the <code>tag_build</code> and
+<code>tag_date</code> entries.  Commit this with a “Tagging version 1.3”
+commit message.</p>
+  </li>
+  <li>
+    <p>Back on the development branch, update <em>setup.py</em> to increment the
+“development version” to 1.4.</p>
+  </li>
 </ol>
 
-<p>Granted, this isn&rsquo;t horribly difficult, but we can do better.</p>
+<p>Granted, this isn’t horribly difficult, but we can do better.</p>
 
-<h2>Calculating the version automatically</h2>
+<h2 id="calculating-the-version-automatically">Calculating the version automatically</h2>
 
 <p>Taking a page from the
 <a href="http://git.kernel.org/?p=git/git.git;a=blob;f=GIT-VERSION-GEN"><em>GIT-VERSION-GEN</em></a>
-script in git&rsquo;s source code, we&rsquo;re going to use the <code>git describe</code>
+script in git’s source code, we’re going to use the <code>git describe</code>
 command to automatically generate the version number.</p>
 
 <p>Our logic is implemented in a new <code>get_git_version()</code> Python function,
@@ -128,22 +134,26 @@ find the source code in a <a href="http://gist.github.com/300803">Github
 gist</a>.  Our basic strategy is:</p>
 
 <ol>
-<li><p>First, try to use <code>git describe</code> to create a version number.</p></li>
-<li><p>If this fails, then we&rsquo;re most likely not in a git working copy.
+  <li>
+    <p>First, try to use <code>git describe</code> to create a version number.</p>
+  </li>
+  <li>
+    <p>If this fails, then we’re most likely not in a git working copy.
 Probably, someone downloaded a release tarball and unpacked it,
-and we&rsquo;re running inside of there.  In this case, <code>git describe</code>
-can&rsquo;t give us a version number.  Instead, we&rsquo;re going to make sure
+and we’re running inside of there.  In this case, <code>git describe</code>
+can’t give us a version number.  Instead, we’re going to make sure
 we include a <em>RELEASE-VERSION</em> file in every tarball that we
 create.  So, if <code>git describe</code> fails, we fall back on the contents
-of this file as our version number.</p></li>
+of this file as our version number.</p>
+  </li>
 </ol>
 
-<h3>Tag names as version numbers</h3>
+<h3 id="tag-names-as-version-numbers">Tag names as version numbers</h3>
 
 <p>One thing to notice about this strategy is that we use the output of
 <code>git describe</code> directly as our version number.  This means that our
 tag names should be simple version numbers, without decoration.  To
-create the awesomelib 1.3 release from our example, we&rsquo;d just do:</p>
+create the awesomelib 1.3 release from our example, we’d just do:</p>
 
 <pre><code>$ git tag -s 1.3
 </code></pre>
@@ -151,29 +161,29 @@ create the awesomelib 1.3 release from our example, we&rsquo;d just do:</p>
 <p>(Note that the tag needs to be an annotated or signed tag in order to
 be picked up by <code>git describe</code>.)</p>
 
-<p>On our development branch, once we&rsquo;ve created new commits on top of
-the release point, we&rsquo;ll start getting output like this from <code>git
+<p>On our development branch, once we’ve created new commits on top of
+the release point, we’ll start getting output like this from <code>git
 describe</code>:</p>
 
 <pre><code>1.3-4-g6f32
 </code></pre>
 
-<p>This is a valid setuptools &ldquo;postrelease&rdquo; — setuptools will consider
+<p>This is a valid setuptools “postrelease” — setuptools will consider
 this to be a more recent version than <code>1.3</code>, which is exactly what we
 want.  This eliminates the need to maintain different <em>setup.cfg</em>
 files in our development and maintenance branches.</p>
 
-<h3>Getting the version number of a distribution tarball</h3>
+<h3 id="getting-the-version-number-of-a-distribution-tarball">Getting the version number of a distribution tarball</h3>
 
 <p>Another thing to notice is that we need to maintain a
 <em>RELEASE-VERSION</em> file, ensuring that it always contains the current
 version, and always including it when we create any source packages.
 That way, we can still get the current version number, even if we
-can&rsquo;t get it from <code>git describe</code>.</p>
+can’t get it from <code>git describe</code>.</p>
 
 <p>To keep the <em>RELEASE-VERSION</em> file up-to-date, the <code>get_git_version()</code>
 function always read in the current contents of the file as its first
-step.  If the output of <code>git describe</code> differs from what&rsquo;s in the
+step.  If the output of <code>git describe</code> differs from what’s in the
 file, we update the file with the new output before returning the
 version.</p>
 
@@ -185,21 +195,25 @@ necessary):</p>
 <pre><code>include RELEASE-VERSION
 </code></pre>
 
-<p>(Note that we don&rsquo;t want the <em>RELEASE-VERSION</em> file to be checked into
+<p>(Note that we don’t want the <em>RELEASE-VERSION</em> file to be checked into
 the git repository, so we also add it to the top-level <em>.gitignore</em>
 file.)</p>
 
-<h2>The simpler release process</h2>
+<h2 id="the-simpler-release-process">The simpler release process</h2>
 
 <p>With this script, our release process is now much simpler:</p>
 
 <ol>
-<li><p>Create a maintenance branch if you want to.</p></li>
-<li><p>Create a signed or annotated tag, whose name is the new version
-number.</p></li>
+  <li>
+    <p>Create a maintenance branch if you want to.</p>
+  </li>
+  <li>
+    <p>Create a signed or annotated tag, whose name is the new version
+number.</p>
+  </li>
 </ol>
 
-<p>Most importantly, no extra commits are needed, since we don&rsquo;t have to
+<p>Most importantly, no extra commits are needed, since we don’t have to
 edit any version numbers or maintain different <em>setup.cfg</em> files.</p>
 
         </div>
