@@ -27,6 +27,18 @@
     <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
   <![endif]-->
 
+  <!-- MathJax -->
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      jax: ["input/TeX","output/HTML-CSS"],
+      displayAlign: "left",
+      displayIndent: "2em"
+    });
+  </script>
+  <script type="text/javascript" async
+          src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+  </script>
+
   <!-- Customizations -->
   <link rel=stylesheet type=text/css media=screen
         href="/media/css/coderay.css">
@@ -67,6 +79,48 @@
       <div class="col-md-8 col-md-offset-2">
         <ul class="summaries">
 
+  
+    <li class="summary">
+      <div class="date">2016-09-07</div>
+      <h2 class="series"><a href="/2016/09/csp-read-atomic-internal/">Concurrency models in CSP</a></h2>
+      <h1><a href="/2016/09/csp-read-atomic-internal/">Read Atomic: Internal consistency</a></h1>
+      
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: {
+    Macros: {
+      interleavesym: "|\\mkern-2mu|\\mkern-2mu|",
+      interleave: "\\mathrel{\\interleavesym}",
+      Interleave: "\\mathop{\\interleavesym}"
+    }
+  }
+});
+</script>
+
+<p>We’ll start by looking at the weakest concurrency model covered in the paper,
+Read Atomic.  In fact, to keep things really simple to start with, we’re only
+going to look at <em>one</em> of Read Atomic’s two axioms: <strong>internal consistency</strong>.
+(We’ll look at external consistency in the next post.)</p>
+
+<!--
+ Read Atomic...can be implemented without requiring any coordination among
+ replicas...a replica can decide to commit a transaction without consulting
+ other replicas.
+-->
+
+<p>A transaction is internally consistent if it “reads its own writes”.  This is
+the simplest axiom covered in the paper, since it expresses a property that’s
+strictly <em>local</em> to each transaction; we don’t have to consider the behavior of
+any other transaction when defining what it means for a transaction to be
+internally consistent.</p>
+
+
+      <div class="link">
+        <a href="/2016/09/csp-read-atomic-internal/">
+          Continue reading <span class="glyphicon glyphicon-share-alt"></span>
+        </a>
+      </div>
+    </li>
   
     <li class="summary">
       <div class="date">2016-08-03</div>
@@ -383,70 +437,6 @@ compilation units.</p>
 
       <div class="link">
         <a href="/2010/02/17/llvm-lto-karmic/">
-          Continue reading <span class="glyphicon glyphicon-share-alt"></span>
-        </a>
-      </div>
-    </li>
-  
-    <li class="summary">
-      <div class="date">2010-02-10</div>
-      <h1><a href="/2010/02/10/setuptools-git-version-numbers/">Extracting setuptools version numbers from your git repository</a></h1>
-      <p>Just like everyone else, we’re using
-<a href="http://pypi.python.org/pypi/setuptools">setuptools</a> as the core of
-the build system for our Python-based projects.  For the most part,
-this has been a painless, straightforward process.  However, one
-lingering annoyance is that we’ve been specifying the version number
-directly in our <em>setup.py</em> files:</p>
-
-<pre class="CodeRay"><code><span class="keyword">from</span> <span class="include">setuptools</span> <span class="keyword">import</span> <span class="include">setup</span>
-
-setup(
-    name = <span class="string"><span class="delimiter">&quot;</span><span class="content">awesomelib</span><span class="delimiter">&quot;</span></span>,
-    version = <span class="string"><span class="delimiter">&quot;</span><span class="content">1.2</span><span class="delimiter">&quot;</span></span>,
-    <span class="comment"># ...etc</span>
-)
-</code></pre>
-
-<p>On our maintenance branches, we get a nice <em>awesomelib-1.2.tar.gz</em>
-file when we run <code>python setup.py sdist</code>.  On our development branch,
-we’ve also got the following <em>setup.cfg</em> file:</p>
-
-<pre class="CodeRay"><code>[egg_info]
-tag_build = dev
-tag_date = true
-</code></pre>
-
-<p>That gives us tarballs like <em>awesomelib-1.2dev-20100210.tar.gz</em> on our
-development branch.  Because we’re using the <code>dev</code> suffix, which
-setuptools considers to be a “prerelease”, we have to remember to
-increment the version number in development whenever we cut a new
-release.  The end result is that we have a longish process for
-creating releases.  If we want to create a new 1.3 release, we have to
-do the following:</p>
-
-<ol>
-  <li>
-    <p>Create a new maintenance branch for 1.3:</p>
-
-    <pre><code>$ git checkout -b maint-1.3 master
-</code></pre>
-  </li>
-  <li>
-    <p>Update the <em>setup.cfg</em> file to remove the <code>tag_build</code> and
-<code>tag_date</code> entries.  Commit this with a “Tagging version 1.3”
-commit message.</p>
-  </li>
-  <li>
-    <p>Back on the development branch, update <em>setup.py</em> to increment the
-“development version” to 1.4.</p>
-  </li>
-</ol>
-
-<p>Granted, this isn’t horribly difficult, but we can do better.</p>
-
-
-      <div class="link">
-        <a href="/2010/02/10/setuptools-git-version-numbers/">
           Continue reading <span class="glyphicon glyphicon-share-alt"></span>
         </a>
       </div>
