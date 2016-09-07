@@ -73,7 +73,6 @@ hr.jump {
 .aside-def {
     margin-top: 20px;
     margin-bottom: 20px;
-    margin-left: 80px;
     padding: 0px 15px;
     border: 0;
     border-top: 1px solid #eeeeee;
@@ -81,6 +80,12 @@ hr.jump {
     background-color: #f7f7f9;
     color: #666;
     font-size: 12px;
+}
+
+@media (min-width: 768px) {
+    .aside-def {
+        margin-left: 80px;
+    }
 }
 
 .aside-def h2 {
