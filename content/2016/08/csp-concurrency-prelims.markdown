@@ -4,6 +4,9 @@ created_at: 2016-08-03
 layout: post
 series: "Concurrency models in CSP"
 title: "Preliminaries"
+description: >-
+  in which we try to get through all of the annoying boilerplate before getting
+  to the good stuff
 tags: [csp]
 ---
 
