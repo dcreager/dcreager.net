@@ -458,7 +458,7 @@ events:
 
 However, at this point our implementation wants to \\(\textrm{read}\\) the value
 2 from object 1.  Since that's not allowed by our specification, the refinement
-fails, and we have proof that \\(\textrm{Unrepeatableread}\\) does not satisfy
+fails, and we have proof that \\(\textrm{UnrepeatableRead}\\) does not satisfy
 \\(\textrm{InternalConsistency}\\).
 
 #### Next steps
