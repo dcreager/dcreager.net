@@ -22,9 +22,9 @@ MathJax.Hub.Config({
 </script>
 
 We'll start by looking at the weakest concurrency model covered in the paper,
-Read Atomic.  And in fact, to keep things really simple to start with, we're
-only going to look at *one* of Read Atomic's two axioms: **internal
-consistency**.  (We'll look at external consistency in the next post.)
+Read Atomic.  In fact, to keep things really simple to start with, we're only
+going to look at *one* of Read Atomic's two axioms: **internal consistency**.
+(We'll look at external consistency in the next post.)
 
 <!--
  Read Atomic...can be implemented without requiring any coordination among
@@ -90,8 +90,8 @@ channel write : Object.Value
 \\]
 
 A \\(\texttt{read}\\) event tells us that a particular value was read from a
-particular object, while a \\(\texttt{write}\\) event signifies that a
-particular value was written to a particular object.  For instance,
+particular object, while a \\(\texttt{write}\\) event tells us that a particular
+value was written to a particular object.  For instance,
 \\(\texttt{read}{.}1{.}3\\) tells us that a transaction read the value 3 from
 object 1, and \\(\texttt{write}{.}2{.}4\\) tells us that a transaction wrote the
 value 4 to object 2.
@@ -159,15 +159,15 @@ below), and we remember the value that was written.
 <div class="aside-def">
 ## \\(\rightarrow\\) (prefix), \\(?\\) and \\(!\\)
 The prefix operator lets us introduce sequencing; \\(a \rightarrow B\\) means
-that the process performs an event \\(a\\), and then it whatever is described by
-the process \\(B\\).  Nice and simple!  The only wrinkle is that the left side
-of the arrow is an *event*, while the right side is a *process*.
+that the process performs an event \\(a\\), and then it does whatever is
+described by the process \\(B\\).  Nice and simple!  The only wrinkle is that
+the left side of the arrow is an *event*, while the right side is a *process*.
 
 You will usually see the special \\(?\\) and \\(!\\) event constructors used
-with the prefix operator.  This is just some syntactic sugar that means that we
-don't have to explicitly write out separate clauses for
-\\(\texttt{read}{.}1{.}1\\), \\(\texttt{read}{.}1{.}2\\),
-\\(\texttt{read}{.}2{.}1\\), \\(\texttt{read}{.}2{.}2\\), and so on.
+with the prefix operator.  This is just some syntactic sugar that means we don't
+have to explicitly write out separate clauses for \\(\texttt{read}{.}1{.}1\\),
+\\(\texttt{read}{.}1{.}2\\), \\(\texttt{read}{.}2{.}1\\),
+\\(\texttt{read}{.}2{.}2\\), and so on.
 
 The \\(?\\) constructor lets you create a new variable which can take on *any*
 of the possible values that could appear in that "slot" of the event; you can
@@ -185,9 +185,9 @@ This might be surprising!  Internal consistency doesn't tell you which value
 you'll read, so why should we include this case?  This is one of the first
 hurdles you'll encounter when learning about formal methods: in the world of
 math, there's a very big difference between *disallowing* something and *not
-caring*.  Here, we don't care: just because a value hasn't been defined by this
-transaction doesn't mean that some previous transaction hasn't committed a
-perfectly good value for it; in fact, all of the later concurrency models will
+caring* about it.  Here, we don't care: just because a value hasn't been defined
+by this transaction doesn't mean that some previous transaction hasn't committed
+a perfectly good value for it; in fact, all of the later concurrency models will
 be interesting exactly because of all of the different ways they decide which
 value you see!  We need to include the \\(\texttt{read}\\) clause, and use the
 \\(?\textit{value}\\) syntax to not place any constraints on what value is read,
@@ -200,9 +200,9 @@ is going to communicate or interact with something else, called its
 **environment**.  CSP uses a "rendezvous model", which means that both sides of
 an interaction must agree before an event can take place.  Typically, that
 "something else" is another process that we've combined together using one of
-CSP's composition operators.  But we can also talk about an "observer" — such as
-you, the specification author — who wants to explore the behavior of the process
-by walking through all of its possible combinations of events.
+CSP's parallel composition operators.  But we can also talk about an "observer"
+— such as you, the specification author — who wants to explore the behavior of
+the process by walking through all of its possible combinations of events.
 </div>
 
 <div class="aside-def">
@@ -216,7 +216,7 @@ On the other hand, if an event *is* in a process's alphabet, then the process
 controls whether and when that event occurs — or doesn't!  If the environment
 wants to perform an event in the process's alphabet, but the process isn't ready
 to perform that event, then the environment is *prohibited* from performing the
-event!
+event.
 
 With great power comes great responsibility!  You must be careful not to
 **overspecify** your processes; it can be easy to accidentally *prevent* an
@@ -228,16 +228,17 @@ case, you have to include a "fallthrough" clause like we did for reading
 undefined objects.
 </div>
 
-The two clauses are combined using external choice (\\(\Box\\)), which means
-that whenever it's time for the transaction for perform another operation, it's
-free to perform *either* a read or a write.
+The two clauses are combined using external choice, which means that whenever
+it's time for the transaction for perform another operation, it's free to
+perform *either* a read or a write.
 
 <div class="aside-def">
 ## \\(\Box\\) (external choice)
-The external choice operator combines two processes, giving the environment full
-control over which "branch" occurs.  For \\(A \mathrel{\Box} B\\), we're willing
-to act like process \\(A\\) or process \\(B\\), and don't care (and have no way
-to influence) which one occurs; the environment decides.
+CSP's "choice" operators combine two processes, allowing one or the other to
+proceed, but not both.  **External choice** (\\(\Box\\)) gives the environment
+full control over which "branch" occurs.  For \\(A \mathrel{\Box} B\\), we're
+willing to act like process \\(A\\) or process \\(B\\), and don't care (and have
+no way to influence) which one occurs; the environment decides.
 </div>
 
 #### Defined objects
@@ -288,19 +289,22 @@ process describing internal consistency as a whole.
 <div class="aside-def">
 ## Parallel composition
 The most important operators in CSP are the *parallel composition* operators,
-which combine two or more processes together and let them run concurrently.
+which combine two or more processes together and let them proceed concurrently.
 There are several different flavors of parallel composition, which we'll see as
 we work through the concurrency models, but they all have the same basic
 "shape".
 
-Each of the processes that you're combining are allowed to execute concurrently.
+Each of the processes that you're combining are allowed to proceed concurrently.
 There is a set of events (called the "interface") that the processes can use to
-communicate with each other.  For events outside the interface, the processes
-are completely independent: they can proceed as quickly or as slowly as they
-want, and cannot interfere which each other in any way.  If two processes both
-want to perform the same non-interface event, they can.  However, those events
-are also completely independent: the environment will see both "instances" of
-the event occur, and can't tell which one belonged to which process.
+communicate with each other.  The parallel composition operators are different
+only in how they decide which events are included in the interface.
+
+For events outside the interface, the processes are completely independent: they
+can proceed as quickly or as slowly as they want, and cannot interfere which
+each other in any way.  If two processes both want to perform the same
+non-interface event, they can.  However, those events are also completely
+independent: the environment will see both "instances" of the event occur, and
+can't tell which one belonged to which process.
 
 Events in the interface, however, are **synchronous**: *all* of the processes
 being combined must be ready to perform the event before *any* of them are
@@ -333,17 +337,17 @@ corresponding object is ever written to.
 ## \\(\interleave\\) (interleaving)
 
 The simplest parallel composition operator is "interleaving", where the
-interface is empty.  All of the processes execute completely independently, and
-cannot communicate with each other, even if their alphabets have any events in
-common.
+interface set is empty.  All of the processes execute completely independently,
+and cannot communicate with each other, even if their alphabets have any events
+in common.
 </div>
 
-We can use interleave here because the alphabet of each of our subprocesses is
+We can use interleave here because the alphabets of our subprocesses are
 disjoint — that is, they all work with completely distinct sets of events.
 (This is what we want, since whether or not object 1 is defined should have no
 bearing on what we can read or write for object 2.) No matter how we try to
 combine these subprocesses together, there is no way that they can interact with
-each other — so we might as well use the simplest composition operator.
+each other, so we might as well use the simplest composition operator.
 
 #### Testing it out
 

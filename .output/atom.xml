@@ -29,9 +29,9 @@ MathJax.Hub.Config({
 &lt;/script&gt;
 
 &lt;p&gt;We’ll start by looking at the weakest concurrency model covered in the paper,
-Read Atomic.  And in fact, to keep things really simple to start with, we’re
-only going to look at &lt;em&gt;one&lt;/em&gt; of Read Atomic’s two axioms: &lt;strong&gt;internal
-consistency&lt;/strong&gt;.  (We’ll look at external consistency in the next post.)&lt;/p&gt;
+Read Atomic.  In fact, to keep things really simple to start with, we’re only
+going to look at &lt;em&gt;one&lt;/em&gt; of Read Atomic’s two axioms: &lt;strong&gt;internal consistency&lt;/strong&gt;.
+(We’ll look at external consistency in the next post.)&lt;/p&gt;
 
 &lt;!--
  Read Atomic...can be implemented without requiring any coordination among
