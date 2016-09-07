@@ -4,6 +4,8 @@ created_at: 2016-09-07
 layout: post
 series: "Concurrency models in CSP"
 title: "Read Atomic: Internal consistency"
+description: >-
+  in which we put the lie to the old chestnut about the hobgoblins
 tags: [csp]
 ---
 

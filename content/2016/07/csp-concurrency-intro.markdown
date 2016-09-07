@@ -4,6 +4,8 @@ created_at: 2016-07-28
 layout: post
 series: "Concurrency models in CSP"
 title: "Introduction"
+description: >-
+  in which our prodigal author returns to a blog series abandoned two years ago
 tags: [csp]
 ---
 
