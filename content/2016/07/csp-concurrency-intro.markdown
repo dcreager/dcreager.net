@@ -19,22 +19,26 @@ never find one.
 
 Fast-forward to today.  I was reading through some of [Christopher
 Meiklejohn's](https://christophermeiklejohn.com/) work on
-[LASP](http://lasp-lang.org/), I came across a citation to a really nice paper
+[Lasp](http://lasp-lang.org/), I came across a citation to a really nice paper
 by [Cerone, Bernardi, and
 Gotsman](http://drops.dagstuhl.de/opus/volltexte/2015/5375/), which adds some
 formal rigor to the consistency models that we use to describe modern
 distributed systems.  Their formalism is a great combination of simple and
 expressive.  The core of the paper is about processes accessing a transactional
-data store, and when it's time to break out the proofs, one of their main tools
-is "observational refinement".  This naturally led me to think about describing
-these same consistency models using CSP processes.
+data store; the authors provide formal definitions of several concurrency
+models, and of some reference implementations that supposedly provide those
+concurrency models.  They then use a technique called "observational refinement"
+to show that the reference implementations really do provide the concurrency
+guarantees in question.
 
-And so I finally found my meaty running example!  I'm resurrecting this blog
-series, and plan to work through each of the consistency models and proofs
-descirbed in the paper, translating them into CSP processes and refinements.
-This isn't an attempt to replace or outdo anything in the paper!  Far from it —
-it's my attempt to use something more familiar to work through the details of
-something less familiar.
+This approach lines up very well with how you perform refinement checks in CSP
+to show that systems satisfy some specification.  And so I finally found my
+meaty running example!  I'm resurrecting this blog series, and plan to work
+through each of the consistency models and proofs described in the paper,
+translating them into CSP processes and refinement checks.  This isn't an
+attempt to replace or outdo anything in the paper!  Far from it — it's my
+attempt to use something more familiar to work through the details of something
+less familiar.
 
 I'm not going to assume a working knowledge of CSP — or of the consistency
 models described in the paper!  If you're familiar with one, my hope is that

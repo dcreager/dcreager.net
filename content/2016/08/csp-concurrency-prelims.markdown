@@ -22,9 +22,9 @@ properties that we hope our system exhibits.
 
 <hr class="jump">
 
-Each process has an *alphabet*, which is the set of events that it describes.
-(And constrains!)  The process itself is the description of when each of these
-events can occur.  (And when they cannot!)  There are two ways to define a
+Each process has an *alphabet*, which is the set of events that it describes
+(and constrains!).  The process itself is the description of when each of these
+events can occur (and when they cannot!).  There are two ways to define a
 process.  The first is as an *automaton* (called an "LTS" or "labeled transition
 system" in the CSP literature).  This is just your standard state machine, where
 nodes represent the current state of the process, and edges represent which
@@ -58,9 +58,16 @@ entities in our system participate in those events.
 
 [cmeik]: https://christophermeiklejohn.com/lasp/erlang/2015/10/27/tendency.html
 
-For these concurrency models, then, we're going to define a CSP process for each
+To dig into this paper, then, we're going to define a CSP process for each
 concurrency model.  The original paper uses several *axioms* to collectively
 define the behavior of each concurrency model; the more constrained models later
 in the paper include more axioms.  We'll define each of those axioms as a
 subprocess, and use CSP operators to combine them together into a single process
 describing the concurrency model as a whole.
+
+We'll also create CSP processes for each of the reference implementations.  The
+paper then defines and uses "operational refinement" to show that each reference
+implementation really does implement the concurrency model in question.  We'll
+do something similar with CSP; we'll make sure to construct the CSP processes
+for the concurrency model and for the reference implementation in such a way
+that we can use an FDR refinement check to show the same thing.
