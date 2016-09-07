@@ -1,11 +1,10 @@
 ---
 kind: article
-created_at: 2016-08-19
+created_at: 2016-09-07
 layout: post
 series: "Concurrency models in CSP"
 title: "Read Atomic: Internal consistency"
 tags: [csp]
-draft: true
 ---
 
 {::options parse_block_html="true" /}

@@ -2,13 +2,51 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
   <id>http://dcreager.net/</id>
   <title>dcreager.net</title>
-  <updated>2016-08-03T04:00:00Z</updated>
+  <updated>2016-09-07T04:00:00Z</updated>
   <link rel="alternate" href="http://dcreager.net/"/>
   <link rel="self" href="http://dcreager.net/atom.xml"/>
   <author>
     <name>Douglas Creager</name>
     <uri>http://dcreager.net/</uri>
   </author>
+  <entry>
+    <id>tag:dcreager.net,2016-09-07:/2016/09/csp-read-atomic-internal/</id>
+    <title type="html">Read Atomic: Internal consistency</title>
+    <published>2016-09-07T04:00:00Z</published>
+    <updated>2016-09-07T04:00:00Z</updated>
+    <link rel="alternate" href="http://dcreager.net/2016/09/csp-read-atomic-internal/"/>
+    <content type="html">
+&lt;script type="text/x-mathjax-config"&gt;
+MathJax.Hub.Config({
+  TeX: {
+    Macros: {
+      interleavesym: "|\\mkern-2mu|\\mkern-2mu|",
+      interleave: "\\mathrel{\\interleavesym}",
+      Interleave: "\\mathop{\\interleavesym}"
+    }
+  }
+});
+&lt;/script&gt;
+
+&lt;p&gt;We’ll start by looking at the weakest concurrency model covered in the paper,
+Read Atomic.  And in fact, to keep things really simple to start with, we’re
+only going to look at &lt;em&gt;one&lt;/em&gt; of Read Atomic’s two axioms: &lt;strong&gt;internal
+consistency&lt;/strong&gt;.  (We’ll look at external consistency in the next post.)&lt;/p&gt;
+
+&lt;!--
+ Read Atomic...can be implemented without requiring any coordination among
+ replicas...a replica can decide to commit a transaction without consulting
+ other replicas.
+--&gt;
+
+&lt;p&gt;A transaction is internally consistent if it “reads its own writes”.  This is
+the simplest axiom covered in the paper, since it expresses a property that’s
+strictly &lt;em&gt;local&lt;/em&gt; to each transaction; we don’t have to consider the behavior of
+any other transaction when defining what it means for a transaction to be
+internally consistent.&lt;/p&gt;
+
+</content>
+  </entry>
   <entry>
     <id>tag:dcreager.net,2016-08-03:/2016/08/csp-concurrency-prelims/</id>
     <title type="html">Preliminaries</title>
@@ -621,133 +659,6 @@ of download speed, which would be fine for small daily updates, but
 would probably be unworkable for something large like a GNOME,
 texlive, or GHC update.  All in all, not bad for some surreptitious
 email checking during the talks.&lt;/p&gt;
-
-</content>
-  </entry>
-  <entry>
-    <id>tag:dcreager.net,2009-08-13:/2009/08/13/subprocess-callbacks/</id>
-    <title type="html">Using callbacks with the subprocess module</title>
-    <published>2009-08-13T16:00:00Z</published>
-    <updated>2009-08-13T16:00:00Z</updated>
-    <link rel="alternate" href="http://dcreager.net/2009/08/13/subprocess-callbacks/"/>
-    <content type="html">&lt;p&gt;In a &lt;a href="/2009/08/06/subprocess-communicate-drawbacks/"&gt;previous post&lt;/a&gt;,
-we pointed out two drawbacks of Python’s &lt;code&gt;subprocess.communicate&lt;/code&gt;
-method.  In this post, we look at the first problem in more detail.
-To reiterate, the problem is that we collect the subprocess’s output
-streams into strings.  If the subprocess is going to generate a huge
-amount of output, it can be better to process the output data in a
-stream-oriented manner — that way we use a constant amount of memory
-regardless of how much output is produced.&lt;/p&gt;
-
-&lt;p&gt;If we look at the
-&lt;a href="http://svn.python.org/view/python/trunk/Lib/subprocess.py?revision=74029&amp;amp;view=markup"&gt;implementation&lt;/a&gt;
-of the &lt;code&gt;communicate&lt;/code&gt; method, we see this:&lt;/p&gt;
-
-&lt;div class="CodeRay"&gt;&lt;table class="CodeRay"&gt;&lt;tr&gt;
-  &lt;td class="line-numbers"&gt;&lt;pre&gt;&lt;a href="#n1" name="n1"&gt;1&lt;/a&gt;
-&lt;a href="#n2" name="n2"&gt;2&lt;/a&gt;
-&lt;a href="#n3" name="n3"&gt;3&lt;/a&gt;
-&lt;a href="#n4" name="n4"&gt;4&lt;/a&gt;
-&lt;a href="#n5" name="n5"&gt;5&lt;/a&gt;
-&lt;a href="#n6" name="n6"&gt;6&lt;/a&gt;
-&lt;a href="#n7" name="n7"&gt;7&lt;/a&gt;
-&lt;a href="#n8" name="n8"&gt;8&lt;/a&gt;
-&lt;a href="#n9" name="n9"&gt;9&lt;/a&gt;
-&lt;strong&gt;&lt;a href="#n10" name="n10"&gt;10&lt;/a&gt;&lt;/strong&gt;
-&lt;a href="#n11" name="n11"&gt;11&lt;/a&gt;
-&lt;a href="#n12" name="n12"&gt;12&lt;/a&gt;
-&lt;a href="#n13" name="n13"&gt;13&lt;/a&gt;
-&lt;a href="#n14" name="n14"&gt;14&lt;/a&gt;
-&lt;a href="#n15" name="n15"&gt;15&lt;/a&gt;
-&lt;a href="#n16" name="n16"&gt;16&lt;/a&gt;
-&lt;a href="#n17" name="n17"&gt;17&lt;/a&gt;
-&lt;a href="#n18" name="n18"&gt;18&lt;/a&gt;
-&lt;a href="#n19" name="n19"&gt;19&lt;/a&gt;
-&lt;strong&gt;&lt;a href="#n20" name="n20"&gt;20&lt;/a&gt;&lt;/strong&gt;
-&lt;a href="#n21" name="n21"&gt;21&lt;/a&gt;
-&lt;a href="#n22" name="n22"&gt;22&lt;/a&gt;
-&lt;a href="#n23" name="n23"&gt;23&lt;/a&gt;
-&lt;a href="#n24" name="n24"&gt;24&lt;/a&gt;
-&lt;a href="#n25" name="n25"&gt;25&lt;/a&gt;
-&lt;a href="#n26" name="n26"&gt;26&lt;/a&gt;
-&lt;a href="#n27" name="n27"&gt;27&lt;/a&gt;
-&lt;a href="#n28" name="n28"&gt;28&lt;/a&gt;
-&lt;a href="#n29" name="n29"&gt;29&lt;/a&gt;
-&lt;strong&gt;&lt;a href="#n30" name="n30"&gt;30&lt;/a&gt;&lt;/strong&gt;
-&lt;a href="#n31" name="n31"&gt;31&lt;/a&gt;
-&lt;a href="#n32" name="n32"&gt;32&lt;/a&gt;
-&lt;a href="#n33" name="n33"&gt;33&lt;/a&gt;
-&lt;a href="#n34" name="n34"&gt;34&lt;/a&gt;
-&lt;a href="#n35" name="n35"&gt;35&lt;/a&gt;
-&lt;a href="#n36" name="n36"&gt;36&lt;/a&gt;
-&lt;a href="#n37" name="n37"&gt;37&lt;/a&gt;
-&lt;a href="#n38" name="n38"&gt;38&lt;/a&gt;
-&lt;a href="#n39" name="n39"&gt;39&lt;/a&gt;
-&lt;strong&gt;&lt;a href="#n40" name="n40"&gt;40&lt;/a&gt;&lt;/strong&gt;
-&lt;a href="#n41" name="n41"&gt;41&lt;/a&gt;
-&lt;a href="#n42" name="n42"&gt;42&lt;/a&gt;
-&lt;a href="#n43" name="n43"&gt;43&lt;/a&gt;
-&lt;a href="#n44" name="n44"&gt;44&lt;/a&gt;
-&lt;a href="#n45" name="n45"&gt;45&lt;/a&gt;
-&lt;a href="#n46" name="n46"&gt;46&lt;/a&gt;
-&lt;a href="#n47" name="n47"&gt;47&lt;/a&gt;
-&lt;/pre&gt;&lt;/td&gt;
-  &lt;td class="code"&gt;&lt;pre&gt;&lt;span class="keyword"&gt;def&lt;/span&gt; &lt;span class="function"&gt;_communicate_with_select&lt;/span&gt;(&lt;span class="predefined-constant"&gt;self&lt;/span&gt;, &lt;span class="predefined"&gt;input&lt;/span&gt;):
-    read_set = []
-    write_set = []
-    stdout = &lt;span class="predefined-constant"&gt;None&lt;/span&gt; &lt;span class="comment"&gt;# Return&lt;/span&gt;
-    stderr = &lt;span class="predefined-constant"&gt;None&lt;/span&gt; &lt;span class="comment"&gt;# Return&lt;/span&gt;
-
-    &lt;span class="keyword"&gt;if&lt;/span&gt; &lt;span class="predefined-constant"&gt;self&lt;/span&gt;.stdin &lt;span class="keyword"&gt;and&lt;/span&gt; &lt;span class="predefined"&gt;input&lt;/span&gt;:
-        write_set.append(&lt;span class="predefined-constant"&gt;self&lt;/span&gt;.stdin)
-    &lt;span class="keyword"&gt;if&lt;/span&gt; &lt;span class="predefined-constant"&gt;self&lt;/span&gt;.stdout:
-        read_set.append(&lt;span class="predefined-constant"&gt;self&lt;/span&gt;.stdout)
-        stdout = []
-    &lt;span class="keyword"&gt;if&lt;/span&gt; &lt;span class="predefined-constant"&gt;self&lt;/span&gt;.stderr:
-        read_set.append(&lt;span class="predefined-constant"&gt;self&lt;/span&gt;.stderr)
-        stderr = []
-
-    input_offset = &lt;span class="integer"&gt;0&lt;/span&gt;
-    &lt;span class="keyword"&gt;while&lt;/span&gt; read_set &lt;span class="keyword"&gt;or&lt;/span&gt; write_set:
-        &lt;span class="keyword"&gt;try&lt;/span&gt;:
-            rlist, wlist, xlist = select.select(read_set, write_set, [])
-        &lt;span class="keyword"&gt;except&lt;/span&gt; select.error, e:
-            &lt;span class="keyword"&gt;if&lt;/span&gt; e.args[&lt;span class="integer"&gt;0&lt;/span&gt;] == errno.EINTR:
-                &lt;span class="keyword"&gt;continue&lt;/span&gt;
-            &lt;span class="keyword"&gt;raise&lt;/span&gt;
-
-        &lt;span class="keyword"&gt;if&lt;/span&gt; &lt;span class="predefined-constant"&gt;self&lt;/span&gt;.stdin &lt;span class="keyword"&gt;in&lt;/span&gt; wlist:
-            chunk = &lt;span class="predefined"&gt;input&lt;/span&gt;[input_offset : input_offset + _PIPE_BUF]
-            bytes_written = os.write(&lt;span class="predefined-constant"&gt;self&lt;/span&gt;.stdin.fileno(), chunk)
-            input_offset += bytes_written
-            &lt;span class="keyword"&gt;if&lt;/span&gt; input_offset &amp;gt;= &lt;span class="predefined"&gt;len&lt;/span&gt;(&lt;span class="predefined"&gt;input&lt;/span&gt;):
-                &lt;span class="predefined-constant"&gt;self&lt;/span&gt;.stdin.close()
-                write_set.remove(&lt;span class="predefined-constant"&gt;self&lt;/span&gt;.stdin)
-
-        &lt;span class="keyword"&gt;if&lt;/span&gt; &lt;span class="predefined-constant"&gt;self&lt;/span&gt;.stdout &lt;span class="keyword"&gt;in&lt;/span&gt; rlist:
-            data = os.read(&lt;span class="predefined-constant"&gt;self&lt;/span&gt;.stdout.fileno(), &lt;span class="integer"&gt;1024&lt;/span&gt;)
-            &lt;span class="keyword"&gt;if&lt;/span&gt; data == &lt;span class="string"&gt;&lt;span class="delimiter"&gt;&amp;quot;&lt;/span&gt;&lt;span class="delimiter"&gt;&amp;quot;&lt;/span&gt;&lt;/span&gt;:
-                &lt;span class="predefined-constant"&gt;self&lt;/span&gt;.stdout.close()
-                read_set.remove(&lt;span class="predefined-constant"&gt;self&lt;/span&gt;.stdout)
-            stdout.append(data)
-
-        &lt;span class="keyword"&gt;if&lt;/span&gt; &lt;span class="predefined-constant"&gt;self&lt;/span&gt;.stderr &lt;span class="keyword"&gt;in&lt;/span&gt; rlist:
-            data = os.read(&lt;span class="predefined-constant"&gt;self&lt;/span&gt;.stderr.fileno(), &lt;span class="integer"&gt;1024&lt;/span&gt;)
-            &lt;span class="keyword"&gt;if&lt;/span&gt; data == &lt;span class="string"&gt;&lt;span class="delimiter"&gt;&amp;quot;&lt;/span&gt;&lt;span class="delimiter"&gt;&amp;quot;&lt;/span&gt;&lt;/span&gt;:
-                &lt;span class="predefined-constant"&gt;self&lt;/span&gt;.stderr.close()
-                read_set.remove(&lt;span class="predefined-constant"&gt;self&lt;/span&gt;.stderr)
-            stderr.append(data)
-
-    &lt;span class="keyword"&gt;return&lt;/span&gt; (stdout, stderr)
-&lt;/pre&gt;&lt;/td&gt;
-&lt;/tr&gt;&lt;/table&gt;
-&lt;/div&gt;
-
-&lt;p&gt;(There are actually several different &lt;code&gt;communicate&lt;/code&gt; implementations in
-the module: a Windows-specific implementation, an implementation using
-the POSIX &lt;code&gt;poll&lt;/code&gt; function, and one using POSIX &lt;code&gt;select&lt;/code&gt;.  We’re going
-to look at the &lt;code&gt;select&lt;/code&gt; implementation; the modifications we make can
-be rolled into the other methods, too.)&lt;/p&gt;
 
 </content>
   </entry>
