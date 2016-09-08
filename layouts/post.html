@@ -16,7 +16,15 @@
           <h2 class="series"><%= @item[:series] %></h2>
           <%- end -%>
           <h1><%= @item[:title] %></h1>
+          <%- if @item[:prev]
+                prev_item = @items[@item[:prev]] -%>
+          <p class="prev"><%= link_to(prev_item[:title], prev_item) %></p>
+          <%- end -%>
           <%= yield %>
+          <%- if @item[:next]
+                next_item = @items[@item[:next]] -%>
+          <p class="next"><%= link_to(next_item[:title], next_item) %></p>
+          <%- end -%>
         </div>
       </div>
     </div> <!-- /row -->

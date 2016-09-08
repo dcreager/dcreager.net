@@ -35,7 +35,7 @@
   <meta name="twitter:card" content="summary">
   <meta name="twitter:site" content="@dcreager">
   <meta name="twitter:title"
-        content="<%= @item[:series]? @item[:series] + ': ': '' %><%= h(@item[:title]) %>">
+        content="<%= h(@item.full_title) %>">
   <meta name="twitter:description"
         content="<%= h(@item[:description] || '...') %>">
   <meta name="twitter:image"

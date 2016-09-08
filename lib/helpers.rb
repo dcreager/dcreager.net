@@ -13,6 +13,14 @@ def date_ymd(time)
 end
 
 class Nanoc::Item
+  def full_title
+    if self[:series] then
+      self[:series] + ': ' + self[:title]
+    else
+      self[:title]
+    end
+  end
+
   def summarize
     content = rep_named(:default).compiled_content
 

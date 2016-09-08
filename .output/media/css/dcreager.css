@@ -194,6 +194,18 @@ nav.navbar-default {
     margin-bottom: -2px;
 }
 
+.blog .prev a::before {
+    content: '← ';
+}
+
+.blog .next {
+    text-align: right;
+}
+
+.blog .next a::after {
+    content: ' →';
+}
+
 
 /*----------------------------------------------------------------
  * Blog summary
