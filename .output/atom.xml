@@ -2,13 +2,42 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
   <id>http://dcreager.net/</id>
   <title>dcreager.net</title>
-  <updated>2016-09-07T04:00:00Z</updated>
+  <updated>2016-11-16T05:00:00Z</updated>
   <link rel="alternate" href="http://dcreager.net/"/>
   <link rel="self" href="http://dcreager.net/atom.xml"/>
   <author>
     <name>Douglas Creager</name>
     <uri>http://dcreager.net/</uri>
   </author>
+  <entry>
+    <id>tag:dcreager.net,2016-11-16:/2016/11/hst-intro/</id>
+    <title type="html">Introduction</title>
+    <published>2016-11-16T05:00:00Z</published>
+    <updated>2016-11-16T05:00:00Z</updated>
+    <link rel="alternate" href="http://dcreager.net/2016/11/hst-intro/"/>
+    <content type="html">&lt;p&gt;It seems like this blog is basically turning into “all things CSP”!  As part of
+that trend, I’ve started implementing a new CSP refinement checker called
+&lt;a href="https://github.com/hst/hst/"&gt;HST&lt;/a&gt;.  Why do this when there’s a perfectly good refinement checker in
+&lt;a href="http://www.cs.ox.ac.uk/projects/fdr/"&gt;FDR&lt;/a&gt;?  Well, I want to learn more about how FDR’s refinement algorithm works.
+The algorithm is documented in Bill Roscoe’s &lt;a href="https://www.cs.ox.ac.uk/bill.roscoe/publications/68b.pdf"&gt;textbook&lt;/a&gt; (and a series of
+follow-on papers), and working through those descriptions gives you a good bit
+of insight into how refinenment really works.  But I often find it easier to
+learn a complex topic by implementing it (or at least, by looking at the code of
+an implementation).  Hence HST!  In this new series of blog posts, I’m going to
+walk through the CSP refinement algorithm in more detail than is presented in
+the academic literature, by implementing it (and describing that implementation)
+along the way.&lt;/p&gt;
+
+&lt;p&gt;I should emphasize that this is &lt;strong&gt;not&lt;/strong&gt; meant to be a replacement for FDR!  FDR
+is a very good piece of software, and if you’re writing any CSP specs in anger,
+you probably want FDR at your disposal.  HST is meant to be more of an
+educational exercise.  If people find it more generally useful than that, that’s
+great!  But it’s not what I’m aiming for.&lt;/p&gt;
+
+&lt;p&gt;(And as for the name, “HST” does &lt;em&gt;not&lt;/em&gt; stand for “Harry S. Truman”, just like
+“FDR” does &lt;em&gt;not&lt;/em&gt; stand for “Franklin Delano Roosevelt”.)&lt;/p&gt;
+</content>
+  </entry>
   <entry>
     <id>tag:dcreager.net,2016-09-07:/2016/09/csp-read-atomic-internal/</id>
     <title type="html">Read Atomic: Internal consistency</title>
@@ -627,43 +656,5 @@ the second problem in another post.&lt;/p&gt;
     <updated>2009-09-08T04:00:00Z</updated>
     <link rel="alternate" href="http://dcreager.net/2009/09/08/ubuntu-downgrading/"/>
     <content type="html"></content>
-  </entry>
-  <entry>
-    <id>tag:dcreager.net,2009-08-13:/2009/08/13/iphone-tethering/</id>
-    <title type="html">iPhone tethering</title>
-    <published>2009-08-13T17:00:00Z</published>
-    <updated>2009-08-13T17:00:00Z</updated>
-    <link rel="alternate" href="http://dcreager.net/2009/08/13/iphone-tethering/"/>
-    <content type="html">&lt;p&gt;While attending the &lt;a href="http://mil-oss.org/"&gt;Mil-OSS conference&lt;/a&gt; this
-week, I had the opportunity to use one of the coolest features of my
-new iPhone 3GS — Bluetooth Internet tethering.  Assuming that your
-mobile carrier allows the feature on their network, it provides a very
-easy way to have a persistent Internet connection, for those
-situations where a free Ethernet drop or WiFi access point aren’t
-readily available.&lt;/p&gt;
-
-&lt;p&gt;I happened to have my Dell Mini 9 (running Ubuntu Jaunty) with me for
-the conference, rather than my MacBook, so I thought that it might be
-difficult to get the Bluetooth connection working between the phone
-and laptop.  This &lt;a href="http://xn--9bi.net/2009/06/17/tethering-iphone-3-0-to-ubuntu-9-04/"&gt;blog
-posting&lt;/a&gt;,
-however, provided exactly what I needed.&lt;/p&gt;
-
-&lt;p&gt;Following this process, the connection worked without a hitch.  One
-caveat is that I didn’t need to explicitly pair my phone with my
-laptop; the first time I ran the &lt;code&gt;pand --connect&lt;/code&gt; command, my phone
-prompted me with the pairing confirmation dialog.  Later connections
-didn’t require re-pairing.&lt;/p&gt;
-
-&lt;p&gt;As for bandwidth, the connection was perfectly reasonable for email
-and basic Web surfing as long as I had decent 3G coverage — 3 of 5
-bars or higher and I was good to go.  I also did an &lt;code&gt;apt-get&lt;/code&gt; package
-update as a “beefier” test; I was usually seeing around 20-30 Kb/sec
-of download speed, which would be fine for small daily updates, but
-would probably be unworkable for something large like a GNOME,
-texlive, or GHC update.  All in all, not bad for some surreptitious
-email checking during the talks.&lt;/p&gt;
-
-</content>
   </entry>
 </feed>
