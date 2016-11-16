@@ -91,6 +91,39 @@
 
   
     <li class="summary">
+      <div class="date">2016-11-16</div>
+      <h2 class="series"><a href="/2016/11/hst-intro/">HST</a></h2>
+      <h1><a href="/2016/11/hst-intro/">Introduction</a></h1>
+      <p>It seems like this blog is basically turning into “all things CSP”!  As part of
+that trend, I’ve started implementing a new CSP refinement checker called
+<a href="https://github.com/hst/hst/">HST</a>.  Why do this when there’s a perfectly good refinement checker in
+<a href="http://www.cs.ox.ac.uk/projects/fdr/">FDR</a>?  Well, I want to learn more about how FDR’s refinement algorithm works.
+The algorithm is documented in Bill Roscoe’s <a href="https://www.cs.ox.ac.uk/bill.roscoe/publications/68b.pdf">textbook</a> (and a series of
+follow-on papers), and working through those descriptions gives you a good bit
+of insight into how refinenment really works.  But I often find it easier to
+learn a complex topic by implementing it (or at least, by looking at the code of
+an implementation).  Hence HST!  In this new series of blog posts, I’m going to
+walk through the CSP refinement algorithm in more detail than is presented in
+the academic literature, by implementing it (and describing that implementation)
+along the way.</p>
+
+<p>I should emphasize that this is <strong>not</strong> meant to be a replacement for FDR!  FDR
+is a very good piece of software, and if you’re writing any CSP specs in anger,
+you probably want FDR at your disposal.  HST is meant to be more of an
+educational exercise.  If people find it more generally useful than that, that’s
+great!  But it’s not what I’m aiming for.</p>
+
+<p>(And as for the name, “HST” does <em>not</em> stand for “Harry S. Truman”, just like
+“FDR” does <em>not</em> stand for “Franklin Delano Roosevelt”.)</p>
+
+      <div class="link">
+        <a href="/2016/11/hst-intro/">
+          Continue reading <span class="glyphicon glyphicon-share-alt"></span>
+        </a>
+      </div>
+    </li>
+  
+    <li class="summary">
       <div class="date">2016-09-07</div>
       <h2 class="series"><a href="/2016/09/csp-read-atomic-internal/">Concurrency models in CSP</a></h2>
       <h1><a href="/2016/09/csp-read-atomic-internal/">Read Atomic: Internal consistency</a></h1>
@@ -420,37 +453,6 @@ what makes them <a href="http://www.haskell.org/arrows/"><em>arrows</em></a> ins
 
       <div class="link">
         <a href="/2010/02/25/libpush-callbacks-part-1/">
-          Continue reading <span class="glyphicon glyphicon-share-alt"></span>
-        </a>
-      </div>
-    </li>
-  
-    <li class="summary">
-      <div class="date">2010-02-17</div>
-      <h1><a href="/2010/02/17/llvm-lto-karmic/">Using LLVM's link-time optimization on Ubuntu Karmic</a></h1>
-      <p>While playing around with
-<a href="http://github.com/dcreager/libpush">libpush</a> on my MacBook, I was
-pleasantly surprised to see a huge performance increase when I used
-the link-time optimization (LTO) feature of the LLVM GCC front end.
-(It’s really quite nifty; the new <a href="http://github.com/mxcl/homebrew">Homebrew package
-manager</a> uses it by default when
-compiling packages.)  On MacOS, using LTO is as simple as using
-<code>llvm-gcc</code> as your C compiler (or <code>llvm-g++</code> if you’re compiling C++),
-and passing in <code>-O4</code> as your optimization flag.  I use SCons as my
-builder, so this turns into:</p>
-
-<pre><code>$ scons CC=llvm-gcc CCFLAGS=-O4
-</code></pre>
-
-<p>This will cause GCC to output LLVM bytecode into the <em>.o</em> output
-files, and to perform whole-program optimizations during each linking
-phase.  I was able to see a big performance win simply from the linker
-being able to inline in copies of small functions that live in “other”
-compilation units.</p>
-
-
-      <div class="link">
-        <a href="/2010/02/17/llvm-lto-karmic/">
           Continue reading <span class="glyphicon glyphicon-share-alt"></span>
         </a>
       </div>
