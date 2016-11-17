@@ -104,16 +104,17 @@ in CSP, you use the same process language to describe the system you’re
 designing or investigating, as well as the properties that you would like that
 system to have.  (This is unlike most other formal methods, where you have
 separate languages for the system and the properties.)  In CSP, the system’s
-process is typically called <em>Impl</em> (for <strong>implementation</strong>), and the property
-description process is typically called <em>Spec</em> (for <strong>specification</strong>).</p>
+process is typically called \(Impl\) (for <strong>implementation</strong>), and the
+property description process is typically called \(Spec\) (for
+<strong>specification</strong>).</p>
 
 <p>CSP then defines several <strong>semantic models</strong> that provide rigorous mathematical
 definitions of what a process’s behavior is.  You perform a refinement check
 within the context of a particular semantic model.  A successful refinement
-check tells you that the property defined by <em>Spec</em> “holds” — specifically, that
-all of the behaviors of <em>Impl</em> are also allowed behaviors of <em>Spec</em>.  A failed
-refinement check gives you a <strong>counterexample</strong> — that is, a specific behavior
-of <em>Impl</em> that was disallowed by <em>Spec</em>.</p>
+check tells you that the property defined by \(Spec\) “holds” — specifically,
+that all of the behaviors of \(Impl\) are also allowed behaviors of
+\(Spec\).  A failed refinement check gives you a <strong>counterexample</strong> — that is,
+a specific behavior of \(Impl\) that was disallowed by \(Spec\).</p>
 
 <p>The three most common semantic models are <strong>traces</strong>, <strong>failures</strong>, and
 <strong>failures-divergences</strong>.  We’ll go into more detail about the mathematics
@@ -131,8 +132,8 @@ of <strong>endless loops</strong>.</li>
 
 <p>In my post about the <a href="/2016/09/csp-read-atomic-internal/#testing-it-out">Read Atomic concurreny model</a>, I use a traces
 refinement check to verify that Read Atomic doesn’t allow “unrepeatable reads”.
-In this example, the <em>Spec</em> process is a description of the Read Atomic
-concurrency model, while the <em>Impl</em> process is a “fake” implementation that
+In this example, the \(Spec\) process is a description of the Read Atomic
+concurrency model, while the \(Impl\) process is a “fake” implementation that
 immediately tries to perform an unrepeatable read.  Because that unrepeatable
 read isn’t allowed by the Read Atomic process, the traces refinement check
 fails.</p>
@@ -148,15 +149,15 @@ available on Roscoe's Oxford site. -->
 
 <ol>
   <li>
-    <p>Load in a description of the <em>Spec</em> and <em>Impl</em> processes, transforming them
-each into a <strong>labeled transition system (LTS)</strong>.</p>
+    <p>Load in a description of the \(Spec\) and \(Impl\) processes,
+transforming them each into a <strong>labeled transition system (LTS)</strong>.</p>
   </li>
   <li>
-    <p>Normalize the <em>Spec</em> process, resulting in a <strong>normalized LTS</strong>.</p>
+    <p>Normalize the \(Spec\) process, resulting in a <strong>normalized LTS</strong>.</p>
   </li>
   <li>
-    <p>Perform a <strong>simultaneous breadth-first search</strong> through the <em>Spec</em>’s
-normalized LTS and <em>Impl</em>’s (non-normalized) LTS, looking for a
+    <p>Perform a <strong>simultaneous breadth-first search</strong> through the \(Spec\)’s
+normalized LTS and \(Impl\)’s (non-normalized) LTS, looking for a
 counterexample to the refinement.</p>
   </li>
   <li>
@@ -168,6 +169,7 @@ the refinement check succeeds.</p>
 <p>This is enough to get started for now; in later posts I’ll drill down into each
 of these steps in (much) more detail, and show how to implement them in HST.</p>
 
+          <p class="next"><a href="/2016/11/semantic-methods/">Semantic methods</a></p>
         </div>
       </div>
     </div> <!-- /row -->

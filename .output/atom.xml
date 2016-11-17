@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
   <id>http://dcreager.net/</id>
   <title>dcreager.net</title>
-  <updated>2016-11-17T05:00:00Z</updated>
+  <updated>2016-11-17T14:00:00Z</updated>
   <link rel="alternate" href="http://dcreager.net/"/>
   <link rel="self" href="http://dcreager.net/atom.xml"/>
   <author>
@@ -10,10 +10,62 @@
     <uri>http://dcreager.net/</uri>
   </author>
   <entry>
+    <id>tag:dcreager.net,2016-11-17:/2016/11/semantic-methods/</id>
+    <title type="html">Semantic methods</title>
+    <published>2016-11-17T14:00:00Z</published>
+    <updated>2016-11-17T14:00:00Z</updated>
+    <link rel="alternate" href="http://dcreager.net/2016/11/semantic-methods/"/>
+    <content type="html">&lt;script type="text/x-mathjax-config"&gt;
+MathJax.Hub.Config({
+  TeX: {
+    Macros: {
+      interleavesym: "|\\mkern-2mu|\\mkern-2mu|",
+      interleave: "\\mathrel{\\interleavesym}",
+      Interleave: "\\mathop{\\interleavesym}"
+    }
+  }
+});
+&lt;/script&gt;
+
+&lt;p&gt;Since CSP is a formal method, it’s not surprising that Roscoe spends a large
+part of his textbook talking about how to use rigorous mathematics to talk about
+processes.  He actually goes one step (er, two?) further and defines &lt;strong&gt;three
+different&lt;/strong&gt; ways to do so:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;The &lt;strong&gt;denotational semantics&lt;/strong&gt; defines (mathematically, using sets and
+sequences) what the &lt;em&gt;behavior&lt;/em&gt; of a process is.  Each CSP operator comes
+with a rule for how to calculate a process’s behavior recursively — that is,
+in terms of the behavior of its operands.  (So for example, the “external
+choice” rule tells you how to define the behavior of \(P \mathrel{\Box}
+Q\) in terms of the behavior of \(P\) and \(Q\).)&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;The &lt;strong&gt;algebraic semantics&lt;/strong&gt; tell you to not worry about what a process
+“means” or what it “does”.  Instead, it provides a list of &lt;em&gt;rewrite rules&lt;/em&gt;
+that let you change what the definition of a process looks like without
+changing its behavior.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;The &lt;strong&gt;operational semantics&lt;/strong&gt; say that a process is nothing more than a
+state machine, with nodes representing processes (and subprocesses) and
+edges representing the events that allow you to transition between them.  We
+can learn anything important about a process just by interpreting or
+analyzing this state machine.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;One of the important contributions of the book is to not just describe these
+three different semantic methods (in detail), but to show that they’re
+&lt;strong&gt;equivalent&lt;/strong&gt;.  This is great, because all three semantics are useful in
+different situations:&lt;/p&gt;</content>
+  </entry>
+  <entry>
     <id>tag:dcreager.net,2016-11-17:/2016/11/refinement-overview/</id>
     <title type="html">Refinement overview</title>
-    <published>2016-11-17T05:00:00Z</published>
-    <updated>2016-11-17T05:00:00Z</updated>
+    <published>2016-11-17T13:00:00Z</published>
+    <updated>2016-11-17T13:00:00Z</updated>
     <link rel="alternate" href="http://dcreager.net/2016/11/refinement-overview/"/>
     <content type="html">&lt;p&gt;Our goal is to learn about CSP refinement by implementing a refinement checker.
 So a good first step is to make sure we’re all on the same page about what
@@ -27,16 +79,17 @@ in CSP, you use the same process language to describe the system you’re
 designing or investigating, as well as the properties that you would like that
 system to have.  (This is unlike most other formal methods, where you have
 separate languages for the system and the properties.)  In CSP, the system’s
-process is typically called &lt;em&gt;Impl&lt;/em&gt; (for &lt;strong&gt;implementation&lt;/strong&gt;), and the property
-description process is typically called &lt;em&gt;Spec&lt;/em&gt; (for &lt;strong&gt;specification&lt;/strong&gt;).&lt;/p&gt;
+process is typically called \(Impl\) (for &lt;strong&gt;implementation&lt;/strong&gt;), and the
+property description process is typically called \(Spec\) (for
+&lt;strong&gt;specification&lt;/strong&gt;).&lt;/p&gt;
 
 &lt;p&gt;CSP then defines several &lt;strong&gt;semantic models&lt;/strong&gt; that provide rigorous mathematical
 definitions of what a process’s behavior is.  You perform a refinement check
 within the context of a particular semantic model.  A successful refinement
-check tells you that the property defined by &lt;em&gt;Spec&lt;/em&gt; “holds” — specifically, that
-all of the behaviors of &lt;em&gt;Impl&lt;/em&gt; are also allowed behaviors of &lt;em&gt;Spec&lt;/em&gt;.  A failed
-refinement check gives you a &lt;strong&gt;counterexample&lt;/strong&gt; — that is, a specific behavior
-of &lt;em&gt;Impl&lt;/em&gt; that was disallowed by &lt;em&gt;Spec&lt;/em&gt;.&lt;/p&gt;
+check tells you that the property defined by \(Spec\) “holds” — specifically,
+that all of the behaviors of \(Impl\) are also allowed behaviors of
+\(Spec\).  A failed refinement check gives you a &lt;strong&gt;counterexample&lt;/strong&gt; — that is,
+a specific behavior of \(Impl\) that was disallowed by \(Spec\).&lt;/p&gt;
 
 &lt;p&gt;The three most common semantic models are &lt;strong&gt;traces&lt;/strong&gt;, &lt;strong&gt;failures&lt;/strong&gt;, and
 &lt;strong&gt;failures-divergences&lt;/strong&gt;.  We’ll go into more detail about the mathematics
@@ -660,26 +713,6 @@ and &lt;a href="http://soundadvice.id.au/blog/2009/08/16/#mimeLimitation"&gt;Ben
 Carlyle&lt;/a&gt;
 have good summaries of the different proposed technical solutions that
 would enable decentralized types.&lt;/p&gt;
-
-</content>
-  </entry>
-  <entry>
-    <id>tag:dcreager.net,2009-12-18:/2009/12/18/make-distclean-in-scons/</id>
-    <title type="html">Simulating “make distclean” in SCons</title>
-    <published>2009-12-18T05:00:00Z</published>
-    <updated>2009-12-18T05:00:00Z</updated>
-    <link rel="alternate" href="http://dcreager.net/2009/12/18/make-distclean-in-scons/"/>
-    <content type="html">&lt;p&gt;SCons provides an automatic “clean” target out of the box — just run
-&lt;code&gt;scons -c&lt;/code&gt;, and SCons will delete all of the objects that it knows how
-to build.  This is a very useful feature; however, there are two main
-missing features that I want to add to my build scripts.  First, I
-want to be able to delete all of the temporary files SCons uses, such
-as its configuration cache and any files I use to store variable
-values.  These aren’t included in the default list of the files to
-clean up.  Second, I want more control over which items are deleted by
-default, when you specify &lt;code&gt;scons -c&lt;/code&gt; without any targets.  I’ll
-describe my solution to the first problem in this post.  I’ll write up
-the second problem in another post.&lt;/p&gt;
 
 </content>
   </entry>

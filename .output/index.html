@@ -92,6 +92,62 @@
   
     <li class="summary">
       <div class="date">2016-11-17</div>
+      <h2 class="series"><a href="/2016/11/semantic-methods/">HST</a></h2>
+      <h1><a href="/2016/11/semantic-methods/">Semantic methods</a></h1>
+      <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: {
+    Macros: {
+      interleavesym: "|\\mkern-2mu|\\mkern-2mu|",
+      interleave: "\\mathrel{\\interleavesym}",
+      Interleave: "\\mathop{\\interleavesym}"
+    }
+  }
+});
+</script>
+
+<p>Since CSP is a formal method, it’s not surprising that Roscoe spends a large
+part of his textbook talking about how to use rigorous mathematics to talk about
+processes.  He actually goes one step (er, two?) further and defines <strong>three
+different</strong> ways to do so:</p>
+
+<ul>
+  <li>
+    <p>The <strong>denotational semantics</strong> defines (mathematically, using sets and
+sequences) what the <em>behavior</em> of a process is.  Each CSP operator comes
+with a rule for how to calculate a process’s behavior recursively — that is,
+in terms of the behavior of its operands.  (So for example, the “external
+choice” rule tells you how to define the behavior of \(P \mathrel{\Box}
+Q\) in terms of the behavior of \(P\) and \(Q\).)</p>
+  </li>
+  <li>
+    <p>The <strong>algebraic semantics</strong> tell you to not worry about what a process
+“means” or what it “does”.  Instead, it provides a list of <em>rewrite rules</em>
+that let you change what the definition of a process looks like without
+changing its behavior.</p>
+  </li>
+  <li>
+    <p>The <strong>operational semantics</strong> say that a process is nothing more than a
+state machine, with nodes representing processes (and subprocesses) and
+edges representing the events that allow you to transition between them.  We
+can learn anything important about a process just by interpreting or
+analyzing this state machine.</p>
+  </li>
+</ul>
+
+<p>One of the important contributions of the book is to not just describe these
+three different semantic methods (in detail), but to show that they’re
+<strong>equivalent</strong>.  This is great, because all three semantics are useful in
+different situations:</p>
+      <div class="link">
+        <a href="/2016/11/semantic-methods/">
+          Continue reading <span class="glyphicon glyphicon-share-alt"></span>
+        </a>
+      </div>
+    </li>
+  
+    <li class="summary">
+      <div class="date">2016-11-17</div>
       <h2 class="series"><a href="/2016/11/refinement-overview/">HST</a></h2>
       <h1><a href="/2016/11/refinement-overview/">Refinement overview</a></h1>
       <p>Our goal is to learn about CSP refinement by implementing a refinement checker.
@@ -106,16 +162,17 @@ in CSP, you use the same process language to describe the system you’re
 designing or investigating, as well as the properties that you would like that
 system to have.  (This is unlike most other formal methods, where you have
 separate languages for the system and the properties.)  In CSP, the system’s
-process is typically called <em>Impl</em> (for <strong>implementation</strong>), and the property
-description process is typically called <em>Spec</em> (for <strong>specification</strong>).</p>
+process is typically called \(Impl\) (for <strong>implementation</strong>), and the
+property description process is typically called \(Spec\) (for
+<strong>specification</strong>).</p>
 
 <p>CSP then defines several <strong>semantic models</strong> that provide rigorous mathematical
 definitions of what a process’s behavior is.  You perform a refinement check
 within the context of a particular semantic model.  A successful refinement
-check tells you that the property defined by <em>Spec</em> “holds” — specifically, that
-all of the behaviors of <em>Impl</em> are also allowed behaviors of <em>Spec</em>.  A failed
-refinement check gives you a <strong>counterexample</strong> — that is, a specific behavior
-of <em>Impl</em> that was disallowed by <em>Spec</em>.</p>
+check tells you that the property defined by \(Spec\) “holds” — specifically,
+that all of the behaviors of \(Impl\) are also allowed behaviors of
+\(Spec\).  A failed refinement check gives you a <strong>counterexample</strong> — that is,
+a specific behavior of \(Impl\) that was disallowed by \(Spec\).</p>
 
 <p>The three most common semantic models are <strong>traces</strong>, <strong>failures</strong>, and
 <strong>failures-divergences</strong>.  We’ll go into more detail about the mathematics
@@ -419,48 +476,6 @@ systems.</p>
 
       <div class="link">
         <a href="/2014/01/07/intro-to-csp/">
-          Continue reading <span class="glyphicon glyphicon-share-alt"></span>
-        </a>
-      </div>
-    </li>
-  
-    <li class="summary">
-      <div class="date">2010-05-13</div>
-      <h1><a href="/2010/05/13/powerpc-qemu-lucid/">Installing Ubuntu Lucid on a PowerPC QEMU virtual machine</a></h1>
-      <p>Part of the software I help develop at
-<a href="http://www.redjack.com/">RedJack</a> needs to be tested on both
-little-endian and big-endian machines.  Little-endian machines are
-easy, since everyone and their mother is running on a little-endian
-Intel or AMD x86 chip.  It used to be that big-endian was pretty easy
-to test, too — just break out your trusty Apple Powerbook G4 and
-you’re good to go.  Since Apple has shifted over to Intel chips,
-though, the situation has changed.</p>
-
-<p>Luckily, <a href="http://wiki.qemu.org/">QEMU</a> has PowerPC as one of the
-targets that it can emulate, so in theory, I can still easily test my
-code on a big-endian machine by creating a QEMU PowerPC virtual
-machine.  There’s already a writeup about trying to install Debian
-onto a QEMU VM
-<a href="http://machine-cycle.blogspot.com/2009/05/running-debian-on-qemu-powerpc.html">here</a>.
-<a href="http://www.aurel32.net/">Aurélien Jarno</a> has graciously put together
-downloadable disk images with Debian preinstalled.  If that’s good
-enough for your purposes, just go download those!  You won’t need any
-of the rest of the information on this page.</p>
-
-<p>Unfortunately, I didn’t want to run stock Debian; my little-endian
-build machine is running Ubuntu Lucid, and for consistency, I wanted
-my big-endian VM to be running the same.  As it turns out, this also
-required a fair dose of masochism on my part.  There are several
-issues that you’ll encounter if you try to do this by hand.  Here is
-my cheat sheet for getting around these issues.</p>
-
-<p>Note that this isn’t a full step-by-step account of how to install
-Lucid onto a QEMU VM.  For now, I’m just trying to get my notes down
-into a more permanent form.</p>
-
-
-      <div class="link">
-        <a href="/2010/05/13/powerpc-qemu-lucid/">
           Continue reading <span class="glyphicon glyphicon-share-alt"></span>
         </a>
       </div>
