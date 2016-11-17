@@ -91,6 +91,44 @@
 
   
     <li class="summary">
+      <div class="date">2016-11-17</div>
+      <h2 class="series"><a href="/2016/11/refinement-overview/">HST</a></h2>
+      <h1><a href="/2016/11/refinement-overview/">Refinement overview</a></h1>
+      <p>Our goal is to learn about CSP refinement by implementing a refinement checker.
+So a good first step is to make sure we’re all on the same page about what
+refinement is, and then to step through the refinement algorithm that we mean to
+implement.  (If nothing else, that will help make sure I don’t go off on too
+many tangents while implementing it!)</p>
+
+<p>I’ve mentioned refinement elsewhere on this blog a few times (for instance,
+<a href="/2016/09/csp-read-atomic-internal/#refinement">here</a>).  The basic idea is that
+in CSP, you use the same process language to describe the system you’re
+designing or investigating, as well as the properties that you would like that
+system to have.  (This is unlike most other formal methods, where you have
+separate languages for the system and the properties.)  In CSP, the system’s
+process is typically called <em>Impl</em> (for <strong>implementation</strong>), and the property
+description process is typically called <em>Spec</em> (for <strong>specification</strong>).</p>
+
+<p>CSP then defines several <strong>semantic models</strong> that provide rigorous mathematical
+definitions of what a process’s behavior is.  You perform a refinement check
+within the context of a particular semantic model.  A successful refinement
+check tells you that the property defined by <em>Spec</em> “holds” — specifically, that
+all of the behaviors of <em>Impl</em> are also allowed behaviors of <em>Spec</em>.  A failed
+refinement check gives you a <strong>counterexample</strong> — that is, a specific behavior
+of <em>Impl</em> that was disallowed by <em>Spec</em>.</p>
+
+<p>The three most common semantic models are <strong>traces</strong>, <strong>failures</strong>, and
+<strong>failures-divergences</strong>.  We’ll go into more detail about the mathematics
+behind these semantic models in later posts; for now, the 10,000-foot overview
+is that:</p>
+      <div class="link">
+        <a href="/2016/11/refinement-overview/">
+          Continue reading <span class="glyphicon glyphicon-share-alt"></span>
+        </a>
+      </div>
+    </li>
+  
+    <li class="summary">
       <div class="date">2016-11-16</div>
       <h2 class="series"><a href="/2016/11/hst-intro/">HST</a></h2>
       <h1><a href="/2016/11/hst-intro/">Introduction</a></h1>
@@ -423,36 +461,6 @@ into a more permanent form.</p>
 
       <div class="link">
         <a href="/2010/05/13/powerpc-qemu-lucid/">
-          Continue reading <span class="glyphicon glyphicon-share-alt"></span>
-        </a>
-      </div>
-    </li>
-  
-    <li class="summary">
-      <div class="date">2010-02-25</div>
-      <h1><a href="/2010/02/25/libpush-callbacks-part-1/">Parser callbacks in libpush, Part 1 — Streams</a></h1>
-      <p>This post is the first in a series that describes the
-<code>push_callback_t</code> type in the
-<a href="http://github.com/dcreager/libpush/">libpush</a> library.  In these
-posts, we’ll walk through a couple of possible ways to implement
-callbacks under the covers.  At each stage, we’ll encounter problems
-with the current design.  Fixing these problems should lead closer us
-to the actual implementation in libpush, and along the way, we’ll gain
-a good understanding of how our design decisions affect the
-performance and usability of the library.</p>
-
-<p>The <code>push_callback_t</code> type is used to define <em>parser callbacks</em>, which
-are the basic unit of parsing in libpush.  Callbacks are pretty
-simple: they take in an <em>input value</em>, read some data from the <em>input
-stream</em>, and produce an <em>output value</em>.  (The fact that callbacks take
-in an input value, in addition to reading from the input stream, is
-what makes them <a href="http://www.haskell.org/arrows/"><em>arrows</em></a> instead of
-<a href="http://en.wikipedia.org/wiki/Monad_%28functional_programming%29"><em>monads</em></a>
-— but that’s a story for a later post).</p>
-
-
-      <div class="link">
-        <a href="/2010/02/25/libpush-callbacks-part-1/">
           Continue reading <span class="glyphicon glyphicon-share-alt"></span>
         </a>
       </div>

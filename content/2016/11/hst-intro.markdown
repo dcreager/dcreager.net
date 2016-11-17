@@ -7,6 +7,7 @@ title: "Introduction"
 description: >-
   in which we learn by implementing
 tags: [csp]
+next: /2016/11/refinement-overview/
 ---
 
 It seems like this blog is basically turning into "all things CSP"!  As part of

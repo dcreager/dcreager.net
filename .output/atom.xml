@@ -2,13 +2,47 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
   <id>http://dcreager.net/</id>
   <title>dcreager.net</title>
-  <updated>2016-11-16T05:00:00Z</updated>
+  <updated>2016-11-17T05:00:00Z</updated>
   <link rel="alternate" href="http://dcreager.net/"/>
   <link rel="self" href="http://dcreager.net/atom.xml"/>
   <author>
     <name>Douglas Creager</name>
     <uri>http://dcreager.net/</uri>
   </author>
+  <entry>
+    <id>tag:dcreager.net,2016-11-17:/2016/11/refinement-overview/</id>
+    <title type="html">Refinement overview</title>
+    <published>2016-11-17T05:00:00Z</published>
+    <updated>2016-11-17T05:00:00Z</updated>
+    <link rel="alternate" href="http://dcreager.net/2016/11/refinement-overview/"/>
+    <content type="html">&lt;p&gt;Our goal is to learn about CSP refinement by implementing a refinement checker.
+So a good first step is to make sure we’re all on the same page about what
+refinement is, and then to step through the refinement algorithm that we mean to
+implement.  (If nothing else, that will help make sure I don’t go off on too
+many tangents while implementing it!)&lt;/p&gt;
+
+&lt;p&gt;I’ve mentioned refinement elsewhere on this blog a few times (for instance,
+&lt;a href="/2016/09/csp-read-atomic-internal/#refinement"&gt;here&lt;/a&gt;).  The basic idea is that
+in CSP, you use the same process language to describe the system you’re
+designing or investigating, as well as the properties that you would like that
+system to have.  (This is unlike most other formal methods, where you have
+separate languages for the system and the properties.)  In CSP, the system’s
+process is typically called &lt;em&gt;Impl&lt;/em&gt; (for &lt;strong&gt;implementation&lt;/strong&gt;), and the property
+description process is typically called &lt;em&gt;Spec&lt;/em&gt; (for &lt;strong&gt;specification&lt;/strong&gt;).&lt;/p&gt;
+
+&lt;p&gt;CSP then defines several &lt;strong&gt;semantic models&lt;/strong&gt; that provide rigorous mathematical
+definitions of what a process’s behavior is.  You perform a refinement check
+within the context of a particular semantic model.  A successful refinement
+check tells you that the property defined by &lt;em&gt;Spec&lt;/em&gt; “holds” — specifically, that
+all of the behaviors of &lt;em&gt;Impl&lt;/em&gt; are also allowed behaviors of &lt;em&gt;Spec&lt;/em&gt;.  A failed
+refinement check gives you a &lt;strong&gt;counterexample&lt;/strong&gt; — that is, a specific behavior
+of &lt;em&gt;Impl&lt;/em&gt; that was disallowed by &lt;em&gt;Spec&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;The three most common semantic models are &lt;strong&gt;traces&lt;/strong&gt;, &lt;strong&gt;failures&lt;/strong&gt;, and
+&lt;strong&gt;failures-divergences&lt;/strong&gt;.  We’ll go into more detail about the mathematics
+behind these semantic models in later posts; for now, the 10,000-foot overview
+is that:&lt;/p&gt;</content>
+  </entry>
   <entry>
     <id>tag:dcreager.net,2016-11-16:/2016/11/hst-intro/</id>
     <title type="html">Introduction</title>
@@ -648,13 +682,5 @@ describe my solution to the first problem in this post.  I’ll write up
 the second problem in another post.&lt;/p&gt;
 
 </content>
-  </entry>
-  <entry>
-    <id>tag:dcreager.net,2009-09-08:/2009/09/08/ubuntu-downgrading/</id>
-    <title type="html">Downgrading packages in Ubuntu</title>
-    <published>2009-09-08T04:00:00Z</published>
-    <updated>2009-09-08T04:00:00Z</updated>
-    <link rel="alternate" href="http://dcreager.net/2009/09/08/ubuntu-downgrading/"/>
-    <content type="html"></content>
   </entry>
 </feed>
