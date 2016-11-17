@@ -45,6 +45,8 @@ different** ways to do so:
     can learn anything important about a process just by interpreting or
     analyzing this state machine.
 
+<hr class="jump">
+
 One of the important contributions of the book is to not just describe these
 three different semantic methods (in detail), but to show that they're
 **equivalent**.  This is great, because all three semantics are useful in
