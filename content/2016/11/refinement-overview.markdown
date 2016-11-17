@@ -1,6 +1,6 @@
 ---
 kind: article
-created_at: 2016-11-17
+created_at: 2016-11-17 08:00
 layout: post
 series: "HST"
 title: "Refinement overview"
@@ -8,6 +8,7 @@ description: >-
   in which we see what's ahead of us and immediately regret this decision
 tags: [csp]
 prev: /2016/11/hst-intro/
+next: /2016/11/semantic-methods/
 ---
 
 Our goal is to learn about CSP refinement by implementing a refinement checker.
@@ -22,16 +23,17 @@ in CSP, you use the same process language to describe the system you're
 designing or investigating, as well as the properties that you would like that
 system to have.  (This is unlike most other formal methods, where you have
 separate languages for the system and the properties.)  In CSP, the system's
-process is typically called *Impl* (for **implementation**), and the property
-description process is typically called *Spec* (for **specification**).
+process is typically called \\(Impl\\) (for **implementation**), and the
+property description process is typically called \\(Spec\\) (for
+**specification**).
 
 CSP then defines several **semantic models** that provide rigorous mathematical
 definitions of what a process's behavior is.  You perform a refinement check
 within the context of a particular semantic model.  A successful refinement
-check tells you that the property defined by *Spec* "holds" — specifically, that
-all of the behaviors of *Impl* are also allowed behaviors of *Spec*.  A failed
-refinement check gives you a **counterexample** — that is, a specific behavior
-of *Impl* that was disallowed by *Spec*.
+check tells you that the property defined by \\(Spec\\) "holds" — specifically,
+that all of the behaviors of \\(Impl\\) are also allowed behaviors of
+\\(Spec\\).  A failed refinement check gives you a **counterexample** — that is,
+a specific behavior of \\(Impl\\) that was disallowed by \\(Spec\\).
 
 The three most common semantic models are **traces**, **failures**, and
 **failures-divergences**.  We'll go into more detail about the mathematics
@@ -47,8 +49,8 @@ is that:
 
 In my post about the [Read Atomic concurreny model][RA], I use a traces
 refinement check to verify that Read Atomic doesn't allow "unrepeatable reads".
-In this example, the *Spec* process is a description of the Read Atomic
-concurrency model, while the *Impl* process is a "fake" implementation that
+In this example, the \\(Spec\\) process is a description of the Read Atomic
+concurrency model, while the \\(Impl\\) process is a "fake" implementation that
 immediately tries to perform an unrepeatable read.  Because that unrepeatable
 read isn't allowed by the Read Atomic process, the traces refinement check
 fails.
@@ -68,13 +70,13 @@ available on Roscoe's Oxford site.
 
 [textbook]: https://www.cs.ox.ac.uk/bill.roscoe/publications/68b.pdf
 
-  1. Load in a description of the *Spec* and *Impl* processes, transforming them
-     each into a **labeled transition system (LTS)**.
+  1. Load in a description of the \\(Spec\\) and \\(Impl\\) processes,
+     transforming them each into a **labeled transition system (LTS)**.
 
-  2. Normalize the *Spec* process, resulting in a **normalized LTS**.
+  2. Normalize the \\(Spec\\) process, resulting in a **normalized LTS**.
 
-  3. Perform a **simultaneous breadth-first search** through the *Spec*'s
-     normalized LTS and *Impl*'s (non-normalized) LTS, looking for a
+  3. Perform a **simultaneous breadth-first search** through the \\(Spec\\)'s
+     normalized LTS and \\(Impl\\)'s (non-normalized) LTS, looking for a
      counterexample to the refinement.
 
   4. If we find any counterexample, the refinement check fails.  If we don't,

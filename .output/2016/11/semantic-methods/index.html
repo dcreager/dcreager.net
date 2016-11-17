@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>
+    dcreager.net – HST: Semantic methods
+  </title>
+  <meta name="author" content="Douglas Creager">
+
+    <meta charset="utf-8">
+
+  <meta name="google-site-verification"
+        content="7KIoYPNsfdDxIdX1QQ7SM2Nm_nyy13aRlDkzE3wzhhY" />
+
+  <link rel="shortcut icon" href="/media/images/dcreager.ico">
+
+  <link rel="alternate" type="application/atom+xml"
+        title="dcreager.net" href="/atom.xml"/>
+
+  <!-- Bootstrap -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel=stylesheet type=text/css media=screen
+        href="/media/vendor/css/bootstrap.min.css">
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+  <![endif]-->
+
+  <!-- MathJax -->
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      jax: ["input/TeX","output/HTML-CSS"],
+      displayAlign: "left",
+      displayIndent: "2em"
+    });
+  </script>
+  <script type="text/javascript" async
+          src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+  </script>
+
+  <!-- Twitter nonsense -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="@dcreager">
+  <meta name="twitter:title"
+        content="HST: Semantic methods">
+  <meta name="twitter:description"
+        content="in which all good things come in threes">
+  <meta name="twitter:image"
+        content="https://www.gravatar.com/avatar/04ee3ca11f1ae11c63faa7995dbf1ed7?s=2048">
+
+  <!-- Customizations -->
+  <link rel=stylesheet type=text/css media=screen
+        href="/media/css/coderay.css">
+  <link rel=stylesheet type=text/css media=screen
+        href="/media/css/dcreager.css">
+  <link rel=stylesheet type=text/css media=screen
+        href="http://fonts.googleapis.com/css?family=Oxygen:400,700">
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+  <div class="col-md-10 col-md-offset-1">
+    <nav class="navbar navbar-default" role="navigation">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand logo" href="/"><b>dcreager.net</b></a>
+      </div>
+
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="/about/">About</a></li></li>
+          <li><a href="/archive/">Archive</a></li></li>
+          <li><a href="/publications/">Publications</a></li></li>
+        </ul>
+      </div><!-- /.navbar-collapse -->
+    </nav>
+  </div>
+</div>
+
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        <div class="blog">
+          <div class="date">2016-11-17</div>
+          <h2 class="series">HST</h2>
+          <h1>Semantic methods</h1>
+          <p class="prev"><a href="/2016/11/refinement-overview/">Refinement overview</a></p>
+          <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: {
+    Macros: {
+      interleavesym: "|\\mkern-2mu|\\mkern-2mu|",
+      interleave: "\\mathrel{\\interleavesym}",
+      Interleave: "\\mathop{\\interleavesym}"
+    }
+  }
+});
+</script>
+
+<p>Since CSP is a formal method, it’s not surprising that Roscoe spends a large
+part of his textbook talking about how to use rigorous mathematics to talk about
+processes.  He actually goes one step (er, two?) further and defines <strong>three
+different</strong> ways to do so:</p>
+
+<ul>
+  <li>
+    <p>The <strong>denotational semantics</strong> defines (mathematically, using sets and
+sequences) what the <em>behavior</em> of a process is.  Each CSP operator comes
+with a rule for how to calculate a process’s behavior recursively — that is,
+in terms of the behavior of its operands.  (So for example, the “external
+choice” rule tells you how to define the behavior of \(P \mathrel{\Box}
+Q\) in terms of the behavior of \(P\) and \(Q\).)</p>
+  </li>
+  <li>
+    <p>The <strong>algebraic semantics</strong> tell you to not worry about what a process
+“means” or what it “does”.  Instead, it provides a list of <em>rewrite rules</em>
+that let you change what the definition of a process looks like without
+changing its behavior.</p>
+  </li>
+  <li>
+    <p>The <strong>operational semantics</strong> say that a process is nothing more than a
+state machine, with nodes representing processes (and subprocesses) and
+edges representing the events that allow you to transition between them.  We
+can learn anything important about a process just by interpreting or
+analyzing this state machine.</p>
+  </li>
+</ul>
+
+<p>One of the important contributions of the book is to not just describe these
+three different semantic methods (in detail), but to show that they’re
+<strong>equivalent</strong>.  This is great, because all three semantics are useful in
+different situations:</p>
+
+<ul>
+  <li>
+    <p>The denotational semantics are where the concept of refinement is actually
+defined, where we have the best intuition about what it means, and give us a
+language for describing counterexamples.</p>
+  </li>
+  <li>
+    <p>The algebraic semantics give us a way to simplify processes by “turning the
+crank”; we make superficial syntactic transformations to a process in a way
+that hopefully leads us to a simpler definition.</p>
+  </li>
+  <li>
+    <p>The operational semantics give us a data structure for representing
+processes that is easy to program with.</p>
+  </li>
+</ul>
+
+<p>And more importantly, we’re going to pick and choose the most useful pieces of
+each semantic method as part of the refinement algorithm that we describes in
+the previous post:</p>
+
+<ol>
+  <li>
+    <p>Load in a description of the \(Spec\) and \(Impl\) processes,
+transforming them each into a <strong>labeled transition system (LTS)</strong> <em>(using
+the rules from the operational semantics)</em>.</p>
+  </li>
+  <li>
+    <p>Normalize the \(Spec\) process, resulting in a <strong>normalized LTS</strong> <em>(using
+the normalization operation from the algebraic semantics)</em>.</p>
+  </li>
+  <li>
+    <p>Perform a <strong>simultaneous breadth-first search</strong> through the \(Spec\)’s
+normalized LTS and \(Impl\)’s (non-normalized) LTS, looking for a
+counterexample to the refinement <em>(taking advantage of the fact that the
+operational and denotational semantics are equivalent)</em>.</p>
+  </li>
+  <li>
+    <p>If we find any counterexample, the refinement check fails.  If we don’t,
+the refinement check succeeds.  <em>(In either case, we describe the result in
+terms of the denotational semantics.)</em></p>
+  </li>
+</ol>
+
+        </div>
+      </div>
+    </div> <!-- /row -->
+  </div> <!-- /container -->
+
+    <footer class="copyright">
+    <div class="container">
+      <p>Copyright © 2009-2016, Douglas Creager.
+      All&nbsp;rights&nbsp;reserved.</p>
+    </div>
+  </footer>
+
+    <script src="//code.jquery.com/jquery.min.js"></script>
+  <script src="/media/vendor/js/bootstrap.min.js"></script>
+
+<!-- Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-83885503-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+</html>
