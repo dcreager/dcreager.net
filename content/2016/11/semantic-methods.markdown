@@ -64,7 +64,7 @@ different situations:
     processes that is easy to program with.
 
 And more importantly, we're going to pick and choose the most useful pieces of
-each semantic method as part of the refinement algorithm that we describes in
+each semantic method as part of the refinement algorithm that we described in
 the previous post:
 
   1. Load in a description of the \\(Spec\\) and \\(Impl\\) processes,
