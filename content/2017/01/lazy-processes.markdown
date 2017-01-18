@@ -53,6 +53,8 @@ especially once you start using the parallel composition operators.  And by
 "state space explosion" problem that is the bane of any exhaustive formal model
 checking technique.
 
+<hr class="jump">
+
 As a somewhat contrived example, consider the following processes:
 
 {::comment}

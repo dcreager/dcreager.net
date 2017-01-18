@@ -123,6 +123,19 @@ have to write very much code, since you can find a decent pre-canned graph
 library for just about any programming language you can think of.  You’d walk
 through the operational semantics rules of the process’s description, creating
 explicit nodes and edges in the graph for each subprocess and transition.</p>
+
+<p>This approach has some real advantages.  First off, it’s conceptually simple:
+there’s a physical graph edge in memory for each transition rule describe by the
+operational semantics.  Second, if you choose a good graph representation, an
+explicit LTS can be very dense, memory-efficient, and cache-friendly.</p>
+
+<p>However, there is also one very large drawback: CSP processes can get very big,
+especially once you start using the parallel composition operators.  And by
+“big”, I mean “large enough to exhaust your physical memory”.  This is the
+“state space explosion” problem that is the bane of any exhaustive formal model
+checking technique.</p>
+
+
       <div class="link">
         <a href="/2017/01/lazy-processes/">
           Continue reading <span class="glyphicon glyphicon-share-alt"></span>
