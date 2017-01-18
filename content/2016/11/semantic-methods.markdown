@@ -8,6 +8,7 @@ description: >-
   in which all good things come in threes
 tags: [csp]
 prev: /2016/11/refinement-overview/
+next: /2017/01/lazy-processes/
 ---
 
 <script type="text/x-mathjax-config">

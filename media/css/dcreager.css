@@ -93,6 +93,14 @@ hr.jump {
     margin-top: 15px;
 }
 
+.csp-algo-step {
+    border-top: 1px solid #eeeeee;
+    border-bottom: 1px solid #eeeeee;
+    background-color: #f7f7f9;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
 
 /*----------------------------------------------------------------
  * Footnotes

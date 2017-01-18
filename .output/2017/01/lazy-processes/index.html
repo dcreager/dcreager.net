@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>
+    dcreager.net – HST: Lazy processes
+  </title>
+  <meta name="author" content="Douglas Creager">
+
+    <meta charset="utf-8">
+
+  <meta name="google-site-verification"
+        content="7KIoYPNsfdDxIdX1QQ7SM2Nm_nyy13aRlDkzE3wzhhY" />
+
+  <link rel="shortcut icon" href="/media/images/dcreager.ico">
+
+  <link rel="alternate" type="application/atom+xml"
+        title="dcreager.net" href="/atom.xml"/>
+
+  <!-- Bootstrap -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel=stylesheet type=text/css media=screen
+        href="/media/vendor/css/bootstrap.min.css">
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+  <![endif]-->
+
+  <!-- MathJax -->
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      jax: ["input/TeX","output/HTML-CSS"],
+      displayAlign: "left",
+      displayIndent: "2em"
+    });
+  </script>
+  <script type="text/javascript" async
+          src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+  </script>
+
+  <!-- Twitter nonsense -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="@dcreager">
+  <meta name="twitter:title"
+        content="HST: Lazy processes">
+  <meta name="twitter:description"
+        content="in which we reaffirm that laziness is a virtue">
+  <meta name="twitter:image"
+        content="https://www.gravatar.com/avatar/04ee3ca11f1ae11c63faa7995dbf1ed7?s=2048">
+
+  <!-- Customizations -->
+  <link rel=stylesheet type=text/css media=screen
+        href="/media/css/coderay.css">
+  <link rel=stylesheet type=text/css media=screen
+        href="/media/css/dcreager.css">
+  <link rel=stylesheet type=text/css media=screen
+        href="http://fonts.googleapis.com/css?family=Oxygen:400,700">
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+  <div class="col-md-10 col-md-offset-1">
+    <nav class="navbar navbar-default" role="navigation">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand logo" href="/"><b>dcreager.net</b></a>
+      </div>
+
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="/about/">About</a></li></li>
+          <li><a href="/archive/">Archive</a></li></li>
+          <li><a href="/publications/">Publications</a></li></li>
+        </ul>
+      </div><!-- /.navbar-collapse -->
+    </nav>
+  </div>
+</div>
+
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        <div class="blog">
+          <div class="date">2017-01-17</div>
+          <h2 class="series">HST</h2>
+          <h1>Lazy processes</h1>
+          <p class="prev"><a href="/2016/11/semantic-methods/">Semantic methods</a></p>
+          
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: {
+    Macros: {
+      interleavesym: "|\\mkern-2mu|\\mkern-2mu|",
+      interleave: "\\mathrel{\\interleavesym}",
+    }
+  }
+});
+</script>
+
+<ol start="1" class="csp-algo-step">
+  <li>Load in a description of the \(Spec\) and \(Impl\) processes,
+transforming them each into a <strong>labeled transition system (LTS)</strong>.</li>
+</ol>
+
+<p>In this post we’re going to look at how to represent processes in code.  As
+mentioned in the <a href="/2016/11/semantic-methods/">previous post</a>, we’re going to rely on the
+<em>labeled transition system</em> defined by CSP’s <em>operational semantics</em>.  An LTS is
+just a directed graph, with nodes representing processes and subprocesses, and
+edges representing events.  Our question then becomes how to represent this
+graph.</p>
+
+<p>The simplest answer would be to store the LTS graph directly.  You wouldn’t even
+have to write very much code, since you can find a decent pre-canned graph
+library for just about any programming language you can think of.  You’d walk
+through the operational semantics rules of the process’s description, creating
+explicit nodes and edges in the graph for each subprocess and transition.</p>
+
+<p>This approach has some real advantages.  First off, it’s conceptually simple:
+there’s a physical graph edge in memory for each transition rule describe by the
+operational semantics.  Second, if you choose a good graph representation, an
+explicit LTS can be very dense, memory-efficient, and cache-friendly.</p>
+
+<p>However, there is also one very large drawback: CSP processes can get very big,
+especially once you start using the parallel composition operators.  And by
+“big”, I mean “large enough to exhaust your physical memory”.  This is the
+“state space explosion” problem that is the bane of any exhaustive formal model
+checking technique.</p>
+
+<p>As a somewhat contrived example, consider the following processes:</p>
+
+<!-- A(x) = a!x -> x > 1 & A(x-1)
+B(x) = b!x -> x > 1 & B(x-1) -->
+
+<p>\[
+\textrm{A}(\textit{x}) =
+  \texttt{a}\,!\textit{x} \rightarrow \textit{x} &gt; 0 \mathop{\&amp;}
+  \textrm{A}(\textit{x} - 1) <br />
+\]</p>
+
+<p>These processes just count down from \(\textit{x}\) to \(1\), producing one
+event for each value.  For instance, \(\textrm{A}(2)\) is equivalent to:</p>
+
+<p>\[
+  \texttt{a}{.}2 \rightarrow \texttt{a}{.}1 \rightarrow \textrm{STOP}
+\]</p>
+
+<p>By themselves, these processes aren’t that big of a deal.  Things become
+unwieldy when we start combining them together.  For instance, if we interleave
+them together — \(\textrm{A}(2) \interleave \textrm{B}(2)\) — we get six
+possible traces:</p>
+
+<p>\[
+\langle \texttt{a}{.}2, \texttt{a}{.}1, \texttt{b}{.}2, \texttt{b}{.}1 \rangle \quad\quad
+\langle \texttt{b}{.}2, \texttt{b}{.}1, \texttt{a}{.}2, \texttt{a}{.}1 \rangle\\
+\langle \texttt{a}{.}2, \texttt{b}{.}2, \texttt{a}{.}1, \texttt{b}{.}1 \rangle \quad\quad
+\langle \texttt{b}{.}2, \texttt{a}{.}2, \texttt{b}{.}1, \texttt{a}{.}1 \rangle\\
+\langle \texttt{a}{.}2, \texttt{b}{.}2, \texttt{b}{.}1, \texttt{a}{.}1 \rangle \quad\quad
+\langle \texttt{b}{.}2, \texttt{a}{.}2, \texttt{a}{.}1, \texttt{b}{.}1 \rangle
+\]</p>
+
+<p>The number of possible interleavings is \(O(n!)\) in the length of the
+processes.  Bumping up to \(\textrm{A}(20) \interleave \textrm{B}(20)\), we
+already have <strong>137 billion</strong> possible interleavings.  Going further to
+\(\textrm{A}(50) \interleave \textrm{B}(50)\), we have <strong>\(1 \times
+10^{29}\)</strong> possible interleavings.  Fifty possible internal states is not
+outrageously large, but combining two reasonably-sized processes gives us
+something that we can’t possibly load into memory at once.  We want to avoid
+creating a full LTS in advance for a large process like this, <em>especially</em> if we
+don’t need to analyze every subprocess to determine whether a particular
+refinement check holds.  This puts us in a bit of a pickle: we want to avoid
+explicitly creating the full LTS graph of a process, but we still need walk
+through that LTS graph as part of a refinement check.</p>
+
+<p>To get around this problem, we need to implement some kind of <strong>laziness</strong>.
+Instead of storing the LTS directly, we store a “recipe” for constructing the
+LTS on the fly, as we need it.</p>
+
+<p>We can implement laziness in a number of different ways.  Roscoe spends several
+pages describing FDR’s approach: “supercompilation”.  Briefly, supercompilation
+defines an internal language (almost like a bytecode) that can be used to encode
+the operational semantics rules of each CSP operator.</p>
+
+<p>In HST, we’re going to take a different approach.  Instead of using something
+like a bytecode to represent the transition rules, we’re going to use code
+itself, using two common object-oriented patterns: <strong>interfaces</strong> and
+<strong>visitors</strong>.  For each CSP operator, we’ll implement the following interface:</p>
+
+<pre><code>interface Process
+  initials(visitor: EventVisitor)
+  afters(initial: Event, visitor: EdgeVisitor)
+
+interface EventVisitor
+  visit(event: Event)
+
+interface EdgeVisitor
+  visit(event: Event, after: Process)
+</code></pre>
+
+<p>I’ve used pseudocode to describe the interfaces, since every programming
+language gives us some construct that we can use to implement this idea.  You’d
+use classes in C++ or Java, traits in Rust, interfaces in Go, higher-order
+functions in Clojure or Haskell.  I happen to be using C for my first stab at
+HST; in later posts, we’ll see how to use “interface structs” to implement this
+pattern in C.</p>
+
+<p>Regardless of which language you use, this pattern means that you don’t have to
+instantiate the in-memory representation of any particular sub-process until you
+actually need it.</p>
+
+<!-- Under the covers, we're using the [Judy][] library to do the heavy lifting.
+[Judy]: http://judy.sourceforge.net/ -->
+
+        </div>
+      </div>
+    </div> <!-- /row -->
+  </div> <!-- /container -->
+
+    <footer class="copyright">
+    <div class="container">
+      <p>Copyright © 2009-2017, Douglas Creager.
+      All&nbsp;rights&nbsp;reserved.</p>
+    </div>
+  </footer>
+
+    <script src="//code.jquery.com/jquery.min.js"></script>
+  <script src="/media/vendor/js/bootstrap.min.js"></script>
+
+<!-- Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-83885503-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+</html>

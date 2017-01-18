@@ -2,13 +2,49 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
   <id>http://dcreager.net/</id>
   <title>dcreager.net</title>
-  <updated>2016-11-17T14:00:00Z</updated>
+  <updated>2017-01-17T05:00:00Z</updated>
   <link rel="alternate" href="http://dcreager.net/"/>
   <link rel="self" href="http://dcreager.net/atom.xml"/>
   <author>
     <name>Douglas Creager</name>
     <uri>http://dcreager.net/</uri>
   </author>
+  <entry>
+    <id>tag:dcreager.net,2017-01-17:/2017/01/lazy-processes/</id>
+    <title type="html">Lazy processes</title>
+    <published>2017-01-17T05:00:00Z</published>
+    <updated>2017-01-17T05:00:00Z</updated>
+    <link rel="alternate" href="http://dcreager.net/2017/01/lazy-processes/"/>
+    <content type="html">
+&lt;script type="text/x-mathjax-config"&gt;
+MathJax.Hub.Config({
+  TeX: {
+    Macros: {
+      interleavesym: "|\\mkern-2mu|\\mkern-2mu|",
+      interleave: "\\mathrel{\\interleavesym}",
+    }
+  }
+});
+&lt;/script&gt;
+
+&lt;ol start="1" class="csp-algo-step"&gt;
+  &lt;li&gt;Load in a description of the \(Spec\) and \(Impl\) processes,
+transforming them each into a &lt;strong&gt;labeled transition system (LTS)&lt;/strong&gt;.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;In this post we’re going to look at how to represent processes in code.  As
+mentioned in the &lt;a href="/2016/11/semantic-methods/"&gt;previous post&lt;/a&gt;, we’re going to rely on the
+&lt;em&gt;labeled transition system&lt;/em&gt; defined by CSP’s &lt;em&gt;operational semantics&lt;/em&gt;.  An LTS is
+just a directed graph, with nodes representing processes and subprocesses, and
+edges representing events.  Our question then becomes how to represent this
+graph.&lt;/p&gt;
+
+&lt;p&gt;The simplest answer would be to store the LTS graph directly.  You wouldn’t even
+have to write very much code, since you can find a decent pre-canned graph
+library for just about any programming language you can think of.  You’d walk
+through the operational semantics rules of the process’s description, creating
+explicit nodes and edges in the graph for each subprocess and transition.&lt;/p&gt;</content>
+  </entry>
   <entry>
     <id>tag:dcreager.net,2016-11-17:/2016/11/semantic-methods/</id>
     <title type="html">Semantic methods</title>
@@ -671,45 +707,6 @@ them, and a brief overview of how to use the library.  (The library is
 hosted on &lt;a href="http://github.com/dcreager/libhwm/"&gt;Github&lt;/a&gt;).&lt;/p&gt;
 
 &lt;p&gt;By the way, this post (and the library) is all in C.&lt;/p&gt;
-
-</content>
-  </entry>
-  <entry>
-    <id>tag:dcreager.net,2009-12-21:/2009/12/21/decentralized-datatypes/</id>
-    <title type="html">Decentralized datatypes</title>
-    <published>2009-12-21T05:00:00Z</published>
-    <updated>2009-12-21T05:00:00Z</updated>
-    <link rel="alternate" href="http://dcreager.net/2009/12/21/decentralized-datatypes/"/>
-    <content type="html">&lt;p&gt;Over the past year or so there have been quite a few blog postings in
-the REST world about MIME types, and their role in the REST
-architecture.  A lot of the discussion seems to be prompted by WADL,
-which is an attempt to define a WSDL-style interface description
-language for REST services.  &lt;a href="http://bitworking.org/news/193/Do-we-need-WADL"&gt;Joe
-Gregorio&lt;/a&gt; argues that
-MIME types are more useful for describing the semantics of a service
-than a WADL document, since there are parts of the service’s semantics
-that just can’t be encoded in a machine-readable format.  MIME types
-acknowledge this, providing a standard way of identifying a data
-format and pointing to the human- and machine-readable documents (such
-as RFCs and XSDs) that define the syntax and accompanying semantics.&lt;/p&gt;
-
-&lt;p&gt;Following this idea, several people have begun debating whether or not
-the centralized assignment of MIME types is the right way to handle
-the variety of data formats that REST-based systems produce and
-consume.  &lt;a href="http://www.markbaker.ca/blog/2008/02/media-type-centralization-is-a-feature-not-a-bug/"&gt;Mark
-Baker&lt;/a&gt;
-comes in on the side of centralized assignment, whereas &lt;a href="http://www.innoq.com/blog/st/2008/02/decentralizing_media_types.html"&gt;Stefan
-Tilkov&lt;/a&gt;,
-&lt;a href="http://netzooid.com/blog/2008/02/07/why-a-restful-idl-is-an-oxymoron-and-what-we-really-need-instead/"&gt;Dan
-Diephouse&lt;/a&gt;,
-and &lt;a href="http://macstrac.blogspot.com/2007/11/atompub-services-and-auto-detecting.html"&gt;James
-Strachan&lt;/a&gt;
-argue in favor of decentralized types.  &lt;a href="http://bill.burkecentral.com/2008/03/05/restful-xml-content-negotitation/"&gt;Bill
-Burke&lt;/a&gt;
-and &lt;a href="http://soundadvice.id.au/blog/2009/08/16/#mimeLimitation"&gt;Benjamin
-Carlyle&lt;/a&gt;
-have good summaries of the different proposed technical solutions that
-would enable decentralized types.&lt;/p&gt;
 
 </content>
   </entry>
