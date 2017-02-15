@@ -304,8 +304,22 @@ li.reference div.citation_number {
     margin-right: -35px;
 }
 
+li.reference div.left-details {
+    display: inline-block;
+    width: 36px;
+    text-align: center;
+    position: relative;
+    left: -42px;
+    margin-right: -41px;
+}
+
 li.reference div.citation {
     display: inline;
+}
+
+li.reference div.talk-title {
+    display: inline;
+    font-weight: bold;
 }
 
 li.reference div.note {
