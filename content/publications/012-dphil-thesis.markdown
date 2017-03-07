@@ -1,6 +1,10 @@
 ---
 layout: default
-title: Publication details
+title: A graph-based approach to the automated discovery of data transformations
+description: >-
+  This thesis presents an automated solution to the data mismatch problem that
+  is also fully generic: it makes absolutely no assumptions about the underlying
+  data whatsoever.
 ---
 
 # Publication details
