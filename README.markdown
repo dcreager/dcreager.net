@@ -44,10 +44,10 @@ For the most part, you're going to be working with files in the *content*,
 
 - *content* is where the Markdown or HTML source for each individual web page
   lives.  Each file in this directory starts with some [YAML
-  front-matter](http://nanoc.ws/docs/basics/#attributes describing the), and
-  then contains the Markdown or partial HTML for the main content of the page.
-  These files do **not** contain any of the web chrome that makes it a full,
-  valid HTML file.
+  front-matter](http://nanoc.ws/docs/basics/#attributes) describing the page,
+  and then contains the Markdown or partial HTML for the main content of the
+  page.  These files do **not** contain any of the web chrome that makes it a
+  full, valid HTML file.
 
 - *layout* is where the [web chrome](http://nanoc.ws/docs/basics/#layouts)
   lives.  There are quite a few layouts, so that we can define navigation bars
@@ -66,7 +66,7 @@ For the most part, you're going to be working with files in the *content*,
 
 If you've made any changes to the source files, you can run the following:
 
-    $ nanoc compile
+    $ bundle exec nanoc compile
 
 (You can abbreviate `compile` to `co` if you like.)
 
@@ -77,7 +77,7 @@ Running `nanoc compile` repeatedly can be a pain, so you can also start a
 watcher process, which will automatically recompile the site whenever it detects
 any changed files in any of the various source directories:
 
-    $ guard &
+    $ bundle exec guard
 
 
 ## Viewing the website locally
@@ -88,7 +88,7 @@ files are set up with the assumption that they're going to be served from a web
 server.  Luckily there's a quick-and-dirty web server that you can use to view
 your edits locally:
 
-    $ nanoc view &
+    $ bundle exec nanoc view
 
 That will let you the currently compiled version of the site (including any
 local changes that you've made) at [localhost:3000](http://localhost:3000).
@@ -100,8 +100,8 @@ If you've made some changes (and made nice git commits out of them), then you
 can deploy the compiled site so that it's live at
 [dcreager.net](http://dcreager.net/).
 
-    $ nanoc compile
-    $ nanoc deploy
+    $ bundle exec nanoc compile
+    $ bundle exec nanoc deploy
 
 (The `compile` command will usually be superfluous, since you'll have been
 compiling or watching as you were editing.  But it doesn't hurt to make sure.)
