@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: /default.html
 title: A graph-based approach to the automated discovery of data transformations
 description: >-
   This thesis presents an automated solution to the data mismatch problem that

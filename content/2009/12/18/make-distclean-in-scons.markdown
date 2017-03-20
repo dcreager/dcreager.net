@@ -1,7 +1,7 @@
 ---
 kind: article
 created_at: 2009-12-18
-layout: post
+layout: /post.html
 title: Simulating “make distclean” in SCons
 tags: [scons]
 ---

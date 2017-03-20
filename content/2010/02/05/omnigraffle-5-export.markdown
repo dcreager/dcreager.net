@@ -1,7 +1,7 @@
 ---
 kind: article
 created_at: 2010-02-05
-layout: post
+layout: /post.html
 title: Updating graffle-export to work with OmniGraffle 5
 tags: [omnigraffle, papers]
 ---

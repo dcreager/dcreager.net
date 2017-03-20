@@ -1,13 +1,13 @@
 ---
 kind: article
 created_at: 2016-07-28
-layout: post
+layout: /post.html
 series: "Concurrency models in CSP"
 title: "Introduction"
 description: >-
   in which our prodigal author returns to a blog series abandoned two years ago
 tags: [csp]
-next: /2016/08/csp-concurrency-prelims/
+next: /2016/08/csp-concurrency-prelims.markdown
 ---
 
 Two years ago, I started writing a series of [blog](/2014/01/07/intro-to-csp/)

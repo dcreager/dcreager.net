@@ -1,7 +1,7 @@
 ---
 kind: article
 created_at: 2010-01-05
-layout: post
+layout: /post.html
 title: Exporting OmniGraffle documents from the command line
 tags: [omnigraffle, papers]
 ---

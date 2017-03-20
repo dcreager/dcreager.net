@@ -1,7 +1,7 @@
 ---
 kind: article
 created_at: 2010-02-06
-layout: post
+layout: /post.html
 title: A combinator-based parsing library for C
 tags: [libpush, c]
 ---

@@ -12,7 +12,7 @@ def date_ymd(time)
   end
 end
 
-class Nanoc::Item
+class Nanoc::ItemWithRepsView
   def full_title
     if self[:series] then
       self[:series] + ': ' + self[:title]
@@ -22,7 +22,7 @@ class Nanoc::Item
   end
 
   def summarize
-    content = rep_named(:default).compiled_content
+    content = reps[:default].compiled_content
 
     # If there's an <hX> or <hr> anywhere in the content, assume that everything
     # before it is an introduction, and use that as the summary.

@@ -1,7 +1,7 @@
 ---
 kind: article
 created_at: 2010-02-10
-layout: post
+layout: /post.html
 title: Extracting setuptools version numbers from your git repository
 tags: [setuptools, python, git]
 ---

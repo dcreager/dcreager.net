@@ -1,7 +1,7 @@
 ---
 kind: article
 created_at: 2010-02-17
-layout: post
+layout: /post.html
 title: Using LLVM's link-time optimization on Ubuntu Karmic
 tags: [ubuntu, llvm]
 ---

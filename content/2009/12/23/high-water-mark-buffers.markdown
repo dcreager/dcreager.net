@@ -1,7 +1,7 @@
 ---
 kind: article
 created_at: 2009-12-23
-layout: post
+layout: /post.html
 title: “High-water mark” buffers
 tags: [c, libhwm]
 ---

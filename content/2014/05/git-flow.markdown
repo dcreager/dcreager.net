@@ -1,7 +1,7 @@
 ---
 kind: article
 created_at: 2014-05-14
-layout: post
+layout: /post.html
 title: "Tagged releases using git flow"
 tags: [git]
 ---

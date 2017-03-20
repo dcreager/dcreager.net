@@ -1,7 +1,7 @@
 ---
 kind: article
 created_at: 2009-12-21
-layout: post
+layout: /post.html
 title: Decentralized datatypes
 tags: [datatypes, data-transformation]
 ---

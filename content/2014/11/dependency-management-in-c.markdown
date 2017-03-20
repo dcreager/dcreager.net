@@ -1,7 +1,7 @@
 ---
 kind: article
 created_at: 2014-11-21
-layout: post
+layout: /post.html
 title: "Dependency management in C"
 tags: [c, packaging, buzzy]
 ---

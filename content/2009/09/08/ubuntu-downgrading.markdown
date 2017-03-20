@@ -1,7 +1,7 @@
 ---
 kind: article
 created_at: 2009-09-08
-layout: post
+layout: /post.html
 title: Downgrading packages in Ubuntu
 tags: [ubuntu]
 ---

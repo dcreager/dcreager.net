@@ -1,7 +1,7 @@
 ---
 kind: article
 created_at: 2009-08-07
-layout: post
+layout: /post.html
 title: Adding Disqus comments
 tags: [dcreager.net, disqus, jekyll]
 ---

@@ -1,7 +1,7 @@
 ---
 kind: article
 created_at: 2009-08-05
-layout: post
+layout: /post.html
 title: Site layout
 tags: [dcreager.net, jekyll]
 ---

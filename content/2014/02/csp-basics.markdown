@@ -1,7 +1,7 @@
 ---
 kind: article
 created_at: 2014-02-28
-layout: post
+layout: /post.html
 title: "CSP: The basics"
 tags: [csp]
 ---

@@ -1,7 +1,7 @@
 ---
 kind: article
 created_at: 2010-02-25
-layout: post
+layout: /post.html
 title: Parser callbacks in libpush, Part 1 — Streams
 tags: [libpush, c]
 ---

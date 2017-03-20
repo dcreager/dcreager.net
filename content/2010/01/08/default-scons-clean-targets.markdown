@@ -1,7 +1,7 @@
 ---
 kind: article
 created_at: 2010-01-08
-layout: post
+layout: /post.html
 title: Default “scons -c” targets
 tags: [scons]
 ---

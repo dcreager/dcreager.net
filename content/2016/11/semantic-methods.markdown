@@ -1,14 +1,14 @@
 ---
 kind: article
 created_at: 2016-11-17 09:00
-layout: post
+layout: /post.html
 series: "HST"
 title: "Semantic methods"
 description: >-
   in which all good things come in threes
 tags: [csp]
-prev: /2016/11/refinement-overview/
-next: /2017/01/lazy-processes/
+prev: /2016/11/refinement-overview.markdown
+next: /2017/01/lazy-processes.markdown
 ---
 
 <script type="text/x-mathjax-config">

@@ -13,36 +13,35 @@
 #   item, use the pattern “/about/*/”; “/about/*” will also select the parent,
 #   because “*” matches zero or more characters.
 
-compile '/htaccess/' do
+compile '/htaccess.*' do
   filter :erb
+  write '/.htaccess'
 end
 
-route '/htaccess/' do
-  '/.htaccess'
+compile '/keybase.*' do
+  write '/.well-known/keybase.txt'
 end
 
-compile '/keybase/' do
-end
-
-route '/keybase/' do
-  '/.well-known/keybase.txt'
-end
-
-compile '/media/*' do
+compile '/media/**/*' do
   # don’t filter or layout
+  write item.identifier
 end
 
-compile '/atom/' do
+compile '/atom.*' do
   filter :erb
+  write '/atom.xml'
 end
 
-route '/atom/' do
-  '/atom.xml'
+compile '/index.html' do
+  filter :erb, :trim_mode => '-'
+  layout '/default.html'
+  write item.identifier
 end
 
-compile '*' do
+compile '/**/*' do
   if item.binary?
     # don’t filter binary items
+    write item.identifier
   else
     case item[:extension]
       when 'c'
@@ -60,25 +59,12 @@ compile '*' do
         filter :erb, :trim_mode => '-'
         layout (item[:layout] or 'default')
     end
+    write item.identifier.without_ext + '/index.html'
   end
 end
 
-route '/404/' do
-  '/404.html'
+compile '/404.*' do
+  write '/404.html'
 end
 
-route '/media/*' do
-  item.identifier.chop
-end
-
-route '*' do
-  if item.binary?
-    # Write item with identifier /foo/ to /foo.ext
-    item.identifier.chop + '.' + item[:extension]
-  else
-    # Write item with identifier /foo/ to /foo/index.html
-    item.identifier + 'index.html'
-  end
-end
-
-layout '*', :erb, :trim_mode => '-'
+layout '/**/*', :erb, :trim_mode => '-'

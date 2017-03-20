@@ -1,7 +1,7 @@
 ---
 kind: article
 created_at: 2010-05-13
-layout: post
+layout: /post.html
 title: Installing Ubuntu Lucid on a PowerPC QEMU virtual machine
 tags: [ubuntu]
 ---

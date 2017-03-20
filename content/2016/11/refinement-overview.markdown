@@ -1,14 +1,14 @@
 ---
 kind: article
 created_at: 2016-11-17 08:00
-layout: post
+layout: /post.html
 series: "HST"
 title: "Refinement overview"
 description: >-
   in which we see what's ahead of us and immediately regret this decision
 tags: [csp]
-prev: /2016/11/hst-intro/
-next: /2016/11/semantic-methods/
+prev: /2016/11/hst-intro.markdown
+next: /2016/11/semantic-methods.markdown
 ---
 
 Our goal is to learn about CSP refinement by implementing a refinement checker.

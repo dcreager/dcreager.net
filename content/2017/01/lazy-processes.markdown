@@ -1,13 +1,13 @@
 ---
 kind: article
 created_at: 2017-01-17
-layout: post
+layout: /post.html
 series: "HST"
 title: "Lazy processes"
 description: >-
   in which we reaffirm that laziness is a virtue
 tags: [csp]
-prev: /2016/11/semantic-methods/
+prev: /2016/11/semantic-methods.markdown
 ---
 
 {::options parse_block_html="true" /}

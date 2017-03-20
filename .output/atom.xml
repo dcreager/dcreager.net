@@ -1,8 +1,9 @@
+
 <?xml version="1.0" encoding="UTF-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
   <id>http://dcreager.net/</id>
   <title>dcreager.net</title>
-  <updated>2017-01-17T05:00:00Z</updated>
+  <updated>2017-01-17T00:00:00Z</updated>
   <link rel="alternate" href="http://dcreager.net/"/>
   <link rel="self" href="http://dcreager.net/atom.xml"/>
   <author>
@@ -12,8 +13,8 @@
   <entry>
     <id>tag:dcreager.net,2017-01-17:/2017/01/lazy-processes/</id>
     <title type="html">Lazy processes</title>
-    <published>2017-01-17T05:00:00Z</published>
-    <updated>2017-01-17T05:00:00Z</updated>
+    <published>2017-01-17T00:00:00Z</published>
+    <updated>2017-01-17T00:00:00Z</updated>
     <link rel="alternate" href="http://dcreager.net/2017/01/lazy-processes/"/>
     <content type="html">
 &lt;script type="text/x-mathjax-config"&gt;
@@ -64,7 +65,8 @@ checking technique.&lt;/p&gt;
     <published>2016-11-17T14:00:00Z</published>
     <updated>2016-11-17T14:00:00Z</updated>
     <link rel="alternate" href="http://dcreager.net/2016/11/semantic-methods/"/>
-    <content type="html">&lt;script type="text/x-mathjax-config"&gt;
+    <content type="html">
+&lt;script type="text/x-mathjax-config"&gt;
 MathJax.Hub.Config({
   TeX: {
     Macros: {
@@ -113,7 +115,8 @@ analyzing this state machine.&lt;/p&gt;
     <published>2016-11-17T13:00:00Z</published>
     <updated>2016-11-17T13:00:00Z</updated>
     <link rel="alternate" href="http://dcreager.net/2016/11/refinement-overview/"/>
-    <content type="html">&lt;p&gt;Our goal is to learn about CSP refinement by implementing a refinement checker.
+    <content type="html">
+&lt;p&gt;Our goal is to learn about CSP refinement by implementing a refinement checker.
 So a good first step is to make sure we’re all on the same page about what
 refinement is, and then to step through the refinement algorithm that we mean to
 implement.  (If nothing else, that will help make sure I don’t go off on too
@@ -145,10 +148,11 @@ is that:&lt;/p&gt;</content>
   <entry>
     <id>tag:dcreager.net,2016-11-16:/2016/11/hst-intro/</id>
     <title type="html">Introduction</title>
-    <published>2016-11-16T05:00:00Z</published>
-    <updated>2016-11-16T05:00:00Z</updated>
+    <published>2016-11-16T00:00:00Z</published>
+    <updated>2016-11-16T00:00:00Z</updated>
     <link rel="alternate" href="http://dcreager.net/2016/11/hst-intro/"/>
-    <content type="html">&lt;p&gt;It seems like this blog is basically turning into “all things CSP”!  As part of
+    <content type="html">
+&lt;p&gt;It seems like this blog is basically turning into “all things CSP”!  As part of
 that trend, I’ve started implementing a new CSP refinement checker called
 &lt;a href="https://github.com/hst/hst/"&gt;HST&lt;/a&gt;.  Why do this when there’s a perfectly good refinement checker in
 &lt;a href="http://www.cs.ox.ac.uk/projects/fdr/"&gt;FDR&lt;/a&gt;?  Well, I want to learn more about how FDR’s refinement algorithm works.
@@ -174,8 +178,8 @@ great!  But it’s not what I’m aiming for.&lt;/p&gt;
   <entry>
     <id>tag:dcreager.net,2016-09-07:/2016/09/csp-read-atomic-internal/</id>
     <title type="html">Read Atomic: Internal consistency</title>
-    <published>2016-09-07T04:00:00Z</published>
-    <updated>2016-09-07T04:00:00Z</updated>
+    <published>2016-09-07T00:00:00Z</published>
+    <updated>2016-09-07T00:00:00Z</updated>
     <link rel="alternate" href="http://dcreager.net/2016/09/csp-read-atomic-internal/"/>
     <content type="html">
 &lt;script type="text/x-mathjax-config"&gt;
@@ -212,10 +216,11 @@ internally consistent.&lt;/p&gt;
   <entry>
     <id>tag:dcreager.net,2016-08-03:/2016/08/csp-concurrency-prelims/</id>
     <title type="html">Preliminaries</title>
-    <published>2016-08-03T04:00:00Z</published>
-    <updated>2016-08-03T04:00:00Z</updated>
+    <published>2016-08-03T00:00:00Z</published>
+    <updated>2016-08-03T00:00:00Z</updated>
     <link rel="alternate" href="http://dcreager.net/2016/08/csp-concurrency-prelims/"/>
-    <content type="html">&lt;p&gt;Before diving into the details of our first concurrency model, it will be
+    <content type="html">
+&lt;p&gt;Before diving into the details of our first concurrency model, it will be
 helpful to give an overview of how we’re going to use CSP in these posts.&lt;/p&gt;
 
 &lt;p&gt;At the highest level, a CSP specification consists of a set of &lt;em&gt;processes&lt;/em&gt;,
@@ -233,10 +238,11 @@ properties that we hope our system exhibits.&lt;/p&gt;
   <entry>
     <id>tag:dcreager.net,2016-07-28:/2016/07/csp-concurrency-intro/</id>
     <title type="html">Introduction</title>
-    <published>2016-07-28T04:00:00Z</published>
-    <updated>2016-07-28T04:00:00Z</updated>
+    <published>2016-07-28T00:00:00Z</published>
+    <updated>2016-07-28T00:00:00Z</updated>
     <link rel="alternate" href="http://dcreager.net/2016/07/csp-concurrency-intro/"/>
-    <content type="html">&lt;p&gt;Two years ago, I started writing a series of &lt;a href="/2014/01/07/intro-to-csp/"&gt;blog&lt;/a&gt;
+    <content type="html">
+&lt;p&gt;Two years ago, I started writing a series of &lt;a href="/2014/01/07/intro-to-csp/"&gt;blog&lt;/a&gt;
 &lt;a href="/2014/02/csp-basics/"&gt;posts&lt;/a&gt; about CSP — Communicating Sequential Processes.
 That series has…let’s say “stalled”.  Part of the reason is that I didn’t have
 a good non-trivial example to work with.  The &lt;a href="https://en.wikipedia.org/wiki/Communicating_sequential_processes#Examples"&gt;stereotypical running
@@ -279,10 +285,11 @@ to a difficult topic!&lt;/p&gt;
   <entry>
     <id>tag:dcreager.net,2014-11-21:/2014/11/dependency-management-in-c/</id>
     <title type="html">Dependency management in C</title>
-    <published>2014-11-21T05:00:00Z</published>
-    <updated>2014-11-21T05:00:00Z</updated>
+    <published>2014-11-21T00:00:00Z</published>
+    <updated>2014-11-21T00:00:00Z</updated>
     <link rel="alternate" href="http://dcreager.net/2014/11/dependency-management-in-c/"/>
-    <content type="html">&lt;p&gt;At &lt;a href="http://www.redjack.com/"&gt;RedJack&lt;/a&gt;, all of our &lt;a href="http://www.redjack.com/solutions/"&gt;core
+    <content type="html">
+&lt;p&gt;At &lt;a href="http://www.redjack.com/"&gt;RedJack&lt;/a&gt;, all of our &lt;a href="http://www.redjack.com/solutions/"&gt;core
 products&lt;/a&gt; depend on a network sensor that
 collects various bits of information about the raw traffic that we see on the
 network.  We’re doing some non-trivial analysis on fairly large network links
@@ -306,10 +313,11 @@ managers like &lt;a href="https://www.npmjs.org/"&gt;npm&lt;/a&gt;, &lt;a href="
   <entry>
     <id>tag:dcreager.net,2014-05-14:/2014/05/git-flow/</id>
     <title type="html">Tagged releases using git flow</title>
-    <published>2014-05-14T04:00:00Z</published>
-    <updated>2014-05-14T04:00:00Z</updated>
+    <published>2014-05-14T00:00:00Z</published>
+    <updated>2014-05-14T00:00:00Z</updated>
     <link rel="alternate" href="http://dcreager.net/2014/05/git-flow/"/>
-    <content type="html">&lt;p&gt;I’ve used &lt;code&gt;git flow&lt;/code&gt; for most of my software projects — specifically for those
+    <content type="html">
+&lt;p&gt;I’ve used &lt;code&gt;git flow&lt;/code&gt; for most of my software projects — specifically for those
 that have versioned releases.  The &lt;a href="http://nvie.com/posts/a-successful-git-branching-model/"&gt;original
 post&lt;/a&gt; describing &lt;code&gt;git
 flow&lt;/code&gt; is still the best overview of how it works.  In short, you have a &lt;code&gt;master&lt;/code&gt;
@@ -340,10 +348,11 @@ described.  That means that I can’t use &lt;code&gt;git flow release finish&lt
   <entry>
     <id>tag:dcreager.net,2014-02-28:/2014/02/csp-basics/</id>
     <title type="html">CSP: The basics</title>
-    <published>2014-02-28T05:00:00Z</published>
-    <updated>2014-02-28T05:00:00Z</updated>
+    <published>2014-02-28T00:00:00Z</published>
+    <updated>2014-02-28T00:00:00Z</updated>
     <link rel="alternate" href="http://dcreager.net/2014/02/csp-basics/"/>
-    <content type="html">&lt;p class="big-def"&gt;&lt;em class="tldr"&gt;tl;dr&lt;/em&gt; CSP is a &lt;em&gt;formal method&lt;/em&gt; that lets you describe and reason
+    <content type="html">
+&lt;p class="big-def"&gt;&lt;em class="tldr"&gt;tl;dr&lt;/em&gt; CSP is a &lt;em&gt;formal method&lt;/em&gt; that lets you describe and reason
 about the behavior of &lt;em&gt;concurrent systems&lt;/em&gt;.  CSP is &lt;em&gt;composable&lt;/em&gt;; you write
 simple &lt;em&gt;processes&lt;/em&gt;, and then use special &lt;em&gt;operators&lt;/em&gt; to combine them together
 into larger, more complex processes.  A process is a summary of some system; it
@@ -362,10 +371,11 @@ single paragraph.  Let’s look at each of those key points in more detail.&lt;/
   <entry>
     <id>tag:dcreager.net,2014-01-07:/2014/01/07/intro-to-csp/</id>
     <title type="html">CSP: An introduction</title>
-    <published>2014-01-07T05:00:00Z</published>
-    <updated>2014-01-07T05:00:00Z</updated>
+    <published>2014-01-07T00:00:00Z</published>
+    <updated>2014-01-07T00:00:00Z</updated>
     <link rel="alternate" href="http://dcreager.net/2014/01/07/intro-to-csp/"/>
-    <content type="html">&lt;p&gt;Communicating Sequential Processes (CSP) has been around for almost four decades
+    <content type="html">
+&lt;p&gt;Communicating Sequential Processes (CSP) has been around for almost four decades
 at this point, but for much of its life, it was only well-known among
 theoretical computer scientists and formal methods advocates.  More recently,
 many more people have at least &lt;em&gt;heard&lt;/em&gt; of CSP, largely because it inspired the
@@ -413,10 +423,11 @@ systems.&lt;/p&gt;
   <entry>
     <id>tag:dcreager.net,2010-05-13:/2010/05/13/powerpc-qemu-lucid/</id>
     <title type="html">Installing Ubuntu Lucid on a PowerPC QEMU virtual machine</title>
-    <published>2010-05-13T04:00:00Z</published>
-    <updated>2010-05-13T04:00:00Z</updated>
+    <published>2010-05-13T00:00:00Z</published>
+    <updated>2010-05-13T00:00:00Z</updated>
     <link rel="alternate" href="http://dcreager.net/2010/05/13/powerpc-qemu-lucid/"/>
-    <content type="html">&lt;p&gt;Part of the software I help develop at
+    <content type="html">
+&lt;p&gt;Part of the software I help develop at
 &lt;a href="http://www.redjack.com/"&gt;RedJack&lt;/a&gt; needs to be tested on both
 little-endian and big-endian machines.  Little-endian machines are
 easy, since everyone and their mother is running on a little-endian
@@ -452,10 +463,11 @@ into a more permanent form.&lt;/p&gt;
   <entry>
     <id>tag:dcreager.net,2010-02-25:/2010/02/25/libpush-callbacks-part-1/</id>
     <title type="html">Parser callbacks in libpush, Part 1 — Streams</title>
-    <published>2010-02-25T05:00:00Z</published>
-    <updated>2010-02-25T05:00:00Z</updated>
+    <published>2010-02-25T00:00:00Z</published>
+    <updated>2010-02-25T00:00:00Z</updated>
     <link rel="alternate" href="http://dcreager.net/2010/02/25/libpush-callbacks-part-1/"/>
-    <content type="html">&lt;p&gt;This post is the first in a series that describes the
+    <content type="html">
+&lt;p&gt;This post is the first in a series that describes the
 &lt;code&gt;push_callback_t&lt;/code&gt; type in the
 &lt;a href="http://github.com/dcreager/libpush/"&gt;libpush&lt;/a&gt; library.  In these
 posts, we’ll walk through a couple of possible ways to implement
@@ -479,10 +491,11 @@ what makes them &lt;a href="http://www.haskell.org/arrows/"&gt;&lt;em&gt;arrows&
   <entry>
     <id>tag:dcreager.net,2010-02-17:/2010/02/17/llvm-lto-karmic/</id>
     <title type="html">Using LLVM's link-time optimization on Ubuntu Karmic</title>
-    <published>2010-02-17T05:00:00Z</published>
-    <updated>2010-02-17T05:00:00Z</updated>
+    <published>2010-02-17T00:00:00Z</published>
+    <updated>2010-02-17T00:00:00Z</updated>
     <link rel="alternate" href="http://dcreager.net/2010/02/17/llvm-lto-karmic/"/>
-    <content type="html">&lt;p&gt;While playing around with
+    <content type="html">
+&lt;p&gt;While playing around with
 &lt;a href="http://github.com/dcreager/libpush"&gt;libpush&lt;/a&gt; on my MacBook, I was
 pleasantly surprised to see a huge performance increase when I used
 the link-time optimization (LTO) feature of the LLVM GCC front end.
@@ -507,10 +520,11 @@ compilation units.&lt;/p&gt;
   <entry>
     <id>tag:dcreager.net,2010-02-10:/2010/02/10/setuptools-git-version-numbers/</id>
     <title type="html">Extracting setuptools version numbers from your git repository</title>
-    <published>2010-02-10T05:00:00Z</published>
-    <updated>2010-02-10T05:00:00Z</updated>
+    <published>2010-02-10T00:00:00Z</published>
+    <updated>2010-02-10T00:00:00Z</updated>
     <link rel="alternate" href="http://dcreager.net/2010/02/10/setuptools-git-version-numbers/"/>
-    <content type="html">&lt;p&gt;Just like everyone else, we’re using
+    <content type="html">
+&lt;p&gt;Just like everyone else, we’re using
 &lt;a href="http://pypi.python.org/pypi/setuptools"&gt;setuptools&lt;/a&gt; as the core of
 the build system for our Python-based projects.  For the most part,
 this has been a painless, straightforward process.  However, one
@@ -568,10 +582,11 @@ commit message.&lt;/p&gt;
   <entry>
     <id>tag:dcreager.net,2010-02-06:/2010/02/06/libpush/</id>
     <title type="html">A combinator-based parsing library for C</title>
-    <published>2010-02-06T05:00:00Z</published>
-    <updated>2010-02-06T05:00:00Z</updated>
+    <published>2010-02-06T00:00:00Z</published>
+    <updated>2010-02-06T00:00:00Z</updated>
     <link rel="alternate" href="http://dcreager.net/2010/02/06/libpush/"/>
-    <content type="html">&lt;p&gt;Recently I’ve been working on
+    <content type="html">
+&lt;p&gt;Recently I’ve been working on
 &lt;a href="http://github.com/dcreager/libpush/"&gt;libpush&lt;/a&gt;, which a new parsing
 library for C.  It has two main features that I think will be
 valuable: it’s a &lt;em&gt;push parser&lt;/em&gt;, which means that instead of parsing a
@@ -601,10 +616,11 @@ finally tries to match a nested set that occurs after the current set.&lt;/p&gt;
   <entry>
     <id>tag:dcreager.net,2010-02-05:/2010/02/05/omnigraffle-5-export/</id>
     <title type="html">Updating graffle-export to work with OmniGraffle 5</title>
-    <published>2010-02-05T05:00:00Z</published>
-    <updated>2010-02-05T05:00:00Z</updated>
+    <published>2010-02-05T00:00:00Z</published>
+    <updated>2010-02-05T00:00:00Z</updated>
     <link rel="alternate" href="http://dcreager.net/2010/02/05/omnigraffle-5-export/"/>
-    <content type="html">&lt;p&gt;I recently upgraded to OmniGraffle 5, which caused my
+    <content type="html">
+&lt;p&gt;I recently upgraded to OmniGraffle 5, which caused my
 &lt;a href="http://github.com/dcreager/graffle-export/"&gt;graffle-export&lt;/a&gt; script to
 break:&lt;/p&gt;
 
@@ -627,10 +643,11 @@ contents of the file.  The important line of the script is:&lt;/p&gt;</content>
   <entry>
     <id>tag:dcreager.net,2010-01-08:/2010/01/08/default-scons-clean-targets/</id>
     <title type="html">Default “scons -c” targets</title>
-    <published>2010-01-08T05:00:00Z</published>
-    <updated>2010-01-08T05:00:00Z</updated>
+    <published>2010-01-08T00:00:00Z</published>
+    <updated>2010-01-08T00:00:00Z</updated>
     <link rel="alternate" href="http://dcreager.net/2010/01/08/default-scons-clean-targets/"/>
-    <content type="html">&lt;p&gt;As I mentioned in a &lt;a href="/2009/12/18/make-distclean-in-scons/"&gt;previous
+    <content type="html">
+&lt;p&gt;As I mentioned in a &lt;a href="/2009/12/18/make-distclean-in-scons/"&gt;previous
 post&lt;/a&gt;, the automatic “clean”
 target provided by SCons (&lt;code&gt;scons -c&lt;/code&gt;) is very useful for cleaning out
 build files, without requiring much in the way of configuration.
@@ -675,10 +692,11 @@ $ scons -c build-tests
   <entry>
     <id>tag:dcreager.net,2010-01-05:/2010/01/05/omnigraffle-export/</id>
     <title type="html">Exporting OmniGraffle documents from the command line</title>
-    <published>2010-01-05T05:00:00Z</published>
-    <updated>2010-01-05T05:00:00Z</updated>
+    <published>2010-01-05T00:00:00Z</published>
+    <updated>2010-01-05T00:00:00Z</updated>
     <link rel="alternate" href="http://dcreager.net/2010/01/05/omnigraffle-export/"/>
-    <content type="html">&lt;p&gt;&lt;a href="http://www.omnigroup.com/applications/OmniGraffle/"&gt;OmniGraffle&lt;/a&gt; is
+    <content type="html">
+&lt;p&gt;&lt;a href="http://www.omnigroup.com/applications/OmniGraffle/"&gt;OmniGraffle&lt;/a&gt; is
 my tool of choice for creating figures for my papers.  It’s biggest
 drawback is that it’s only available for Mac OS, which can make it
 cumbersome if I’m working on one of my Linux machines and need to
@@ -710,10 +728,11 @@ files into some directory that’s on your &lt;code&gt;$PATH&lt;/code&gt;, such 
   <entry>
     <id>tag:dcreager.net,2009-12-23:/2009/12/23/high-water-mark-buffers/</id>
     <title type="html">“High-water mark” buffers</title>
-    <published>2009-12-23T05:00:00Z</published>
-    <updated>2009-12-23T05:00:00Z</updated>
+    <published>2009-12-23T00:00:00Z</published>
+    <updated>2009-12-23T00:00:00Z</updated>
     <link rel="alternate" href="http://dcreager.net/2009/12/23/high-water-mark-buffers/"/>
-    <content type="html">&lt;p&gt;My coding project for today was to extract out some code for dealing
+    <content type="html">
+&lt;p&gt;My coding project for today was to extract out some code for dealing
 with “high-water mark buffers”, putting it in a separate library call
 &lt;code&gt;libhwm&lt;/code&gt;.  In this post, I’m going to describe the rationale for using
 them, and a brief overview of how to use the library.  (The library is
@@ -724,3 +743,4 @@ hosted on &lt;a href="http://github.com/dcreager/libhwm/"&gt;Github&lt;/a&gt;).&
 </content>
   </entry>
 </feed>
+

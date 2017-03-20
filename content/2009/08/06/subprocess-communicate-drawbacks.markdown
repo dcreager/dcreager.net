@@ -1,7 +1,7 @@
 ---
 kind: article
 created_at: 2009-08-06 13:00
-layout: post
+layout: /post.html
 title: Problems with Python's subprocess.communicate method
 tags: [python, subprocess]
 ---

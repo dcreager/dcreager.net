@@ -1,15 +1,15 @@
 ---
 kind: article
 created_at: 2016-08-03
-layout: post
+layout: /post.html
 series: "Concurrency models in CSP"
 title: "Preliminaries"
 description: >-
   in which we try to get through all of the annoying boilerplate before getting
   to the good stuff
 tags: [csp]
-prev: /2016/07/csp-concurrency-intro/
-next: /2016/09/csp-read-atomic-internal/
+prev: /2016/07/csp-concurrency-intro.markdown
+next: /2016/09/csp-read-atomic-internal.markdown
 ---
 
 Before diving into the details of our first concurrency model, it will be
