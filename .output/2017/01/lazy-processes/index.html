@@ -155,9 +155,13 @@ event for each value.  For instance, \(\textrm{A}(2)\) is equivalent to:</p>
 \]</p>
 
 <p>By themselves, these processes aren’t that big of a deal.  Things become
-unwieldy when we start combining them together.  For instance, if we interleave
-them together — \(\textrm{A}(2) \interleave \textrm{B}(2)\) — we get six
-possible traces:</p>
+unwieldy when we start combining them together.  For instance, we can interleave
+the processes together — \(\textrm{A}(2) \interleave \textrm{B}(2)\) — giving
+us the following LTS:</p>
+
+<p><img src="/media/images/csp/a2-interleave-b2.png" class="figure" /></p>
+
+<p>This interleaving has six possible traces:</p>
 
 <p>\[
 \langle \texttt{a}{.}2, \texttt{a}{.}1, \texttt{b}{.}2, \texttt{b}{.}1 \rangle \quad\quad

@@ -19,6 +19,11 @@ compile '/**/index.html' do
   write item.identifier
 end
 
+compile '/**/*.gv' do
+  filter :dot
+  write item.identifier.without_ext + '.png'
+end
+
 compile '/**/*.html' do
   filter :erb, :trim_mode => '-'
   layout (item[:layout] or '/default.html')

@@ -76,9 +76,13 @@ event for each value.  For instance, \\(\textrm{A}(2)\\) is equivalent to:
 \\]
 
 By themselves, these processes aren't that big of a deal.  Things become
-unwieldy when we start combining them together.  For instance, if we interleave
-them together — \\(\textrm{A}(2) \interleave \textrm{B}(2)\\) — we get six
-possible traces:
+unwieldy when we start combining them together.  For instance, we can interleave
+the processes together — \\(\textrm{A}(2) \interleave \textrm{B}(2)\\) — giving
+us the following LTS:
+
+<%= figure "csp/a2-interleave-b2" %>
+
+This interleaving has six possible traces:
 
 \\[
 \langle \texttt{a}{.}2, \texttt{a}{.}1, \texttt{b}{.}2, \texttt{b}{.}1 \rangle \quad\quad
