@@ -20,8 +20,18 @@ compile '/**/index.html' do
 end
 
 compile '/**/*.gv' do
-  filter :dot
+  filter :dot, :size => :medium
   write item.identifier.without_ext + '.png'
+end
+
+compile '/**/*.gv', rep: :tall do
+  filter :dot, :size => :tall
+  write item.identifier.without_ext + '.tall.png'
+end
+
+compile '/**/*.gv', rep: :large do
+  filter :dot, :size => :large
+  write item.identifier.without_ext + '.large.png'
 end
 
 compile '/**/*.html' do
