@@ -13,58 +13,38 @@
 #   item, use the pattern “/about/*/”; “/about/*” will also select the parent,
 #   because “*” matches zero or more characters.
 
-compile '/htaccess.*' do
-  filter :erb
-  write '/.htaccess'
-end
-
-compile '/keybase.*' do
-  write '/.well-known/keybase.txt'
-end
-
-compile '/media/**/*' do
-  # don’t filter or layout
-  write item.identifier
-end
-
-compile '/atom.*' do
-  filter :erb
-  write '/atom.xml'
-end
-
-compile '/index.html' do
+compile '/**/index.html' do
   filter :erb, :trim_mode => '-'
   layout '/default.html'
   write item.identifier
 end
 
-compile '/**/*' do
-  if item.binary?
-    # don’t filter binary items
-    write item.identifier
-  else
-    case item[:extension]
-      when 'c'
-        filter :rocco,
-          :template_file => 'lib/rocco/template.html',
-          :language => 'c'
-        layout 'rocco'
-
-      when 'markdown'
-        filter :erb, :trim_mode => '-'
-        filter :kramdown
-        layout (item[:layout] or 'default')
-
-      else
-        filter :erb, :trim_mode => '-'
-        layout (item[:layout] or 'default')
-    end
-    write item.identifier.without_ext + '/index.html'
-  end
+compile '/**/*.html' do
+  filter :erb, :trim_mode => '-'
+  layout (item[:layout] or '/default.html')
+  write item.identifier.without_ext + '/index.html'
 end
 
-compile '/404.*' do
-  write '/404.html'
+compile '/**/*.markdown' do
+  filter :erb, :trim_mode => '-'
+  filter :kramdown
+  layout (item[:layout] or '/default.html')
+  write item.identifier.without_ext + '/index.html'
+end
+
+compile '/**/.htaccess' do
+  write item.identifier
+end
+
+compile '/.well-known/**/*' do
+  write item.identifier
+end
+
+compile '/**/*' do
+  if not item.binary?
+    filter :erb, :trim_mode => '-'
+  end
+  write item.identifier
 end
 
 layout '/**/*', :erb, :trim_mode => '-'

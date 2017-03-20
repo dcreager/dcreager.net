@@ -14,11 +14,11 @@ author_uri: http://dcreager.net/
 identifier_type: full
 string_pattern_type: glob
 
-#data_sources:
-      #  -
-#    type: static
-#    prefix: media
-#    items_root: /media
+data_sources:
+  - type: filesystem
+    extra_files:
+      - "**/.htaccess"
+      - ".well-known/**/*"
 
 deploy:
   default:
