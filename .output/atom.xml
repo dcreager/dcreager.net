@@ -33,29 +33,12 @@ MathJax.Hub.Config({
 transforming them each into a &lt;strong&gt;labeled transition system (LTS)&lt;/strong&gt;.&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;p&gt;In this post we’re going to look at how to represent processes in code.  As
-mentioned in the &lt;a href="/2016/11/semantic-methods/"&gt;previous post&lt;/a&gt;, we’re going to rely on the
-&lt;em&gt;labeled transition system&lt;/em&gt; defined by CSP’s &lt;em&gt;operational semantics&lt;/em&gt;.  An LTS is
-just a directed graph, with nodes representing processes and subprocesses, and
-edges representing events.  Our question then becomes how to represent this
-graph.&lt;/p&gt;
-
-&lt;p&gt;The simplest answer would be to store the LTS graph directly.  You wouldn’t even
-have to write very much code, since you can find a decent pre-canned graph
-library for just about any programming language you can think of.  You’d walk
-through the operational semantics rules of the process’s description, creating
-explicit nodes and edges in the graph for each subprocess and transition.&lt;/p&gt;
-
-&lt;p&gt;This approach has some real advantages.  First off, it’s conceptually simple:
-there’s a physical graph edge in memory for each transition rule describe by the
-operational semantics.  Second, if you choose a good graph representation, an
-explicit LTS can be very dense, memory-efficient, and cache-friendly.&lt;/p&gt;
-
-&lt;p&gt;However, there is also one very large drawback: CSP processes can get very big,
-especially once you start using the parallel composition operators.  And by
-“big”, I mean “large enough to exhaust your physical memory”.  This is the
-“state space explosion” problem that is the bane of any exhaustive formal model
-checking technique.&lt;/p&gt;
+&lt;p&gt;As mentioned in the &lt;a href="/2016/11/semantic-methods/"&gt;previous post&lt;/a&gt;, we’re going to rely on
+the &lt;em&gt;labeled transition system&lt;/em&gt; defined by CSP’s &lt;em&gt;operational semantics&lt;/em&gt; to
+represent processes in our refinement checker.  An LTS is just a directed graph,
+with nodes representing processes and subprocesses, and edges representing
+events.  In this post, we’ll look at LTSes in a bit more detail, and at how best
+to represent them in code.&lt;/p&gt;
 
 </content>
   </entry>
