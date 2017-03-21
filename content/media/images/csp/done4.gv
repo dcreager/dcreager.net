@@ -1,0 +1,59 @@
+digraph {
+  rankdir=LR;
+  bgcolor=transparent;
+  node [bgcolor=white, shape=box, style=filled, fillcolor=white];
+
+  done1234 [label="Done({1,2,3,4})"];
+  done123 [label="Done({1,2,3})"];
+  done124 [label="Done({1,2,4})"];
+  done134 [label="Done({1,3,4})"];
+  done234 [label="Done({2,3,4})"];
+  done12 [label="Done({1,2})"];
+  done13 [label="Done({1,3})"];
+  done14 [label="Done({1,4})"];
+  done23 [label="Done({2,3})"];
+  done24 [label="Done({2,4})"];
+  done34 [label="Done({3,4})"];
+  done1 [label="Done({1})"];
+  done2 [label="Done({2})"];
+  done3 [label="Done({3})"];
+  done4 [label="Done({4})"];
+  stop [label="STOP"];
+
+  done1234 -> done234 [label="done.1"];
+  done123 -> done23 [label="done.1"];
+  done124 -> done24 [label="done.1"];
+  done134 -> done34 [label="done.1"];
+  done12 -> done2 [label="done.1"];
+  done13 -> done3 [label="done.1"];
+  done14 -> done4 [label="done.1"];
+  done1 -> stop [label="done.1"];
+
+  done1234 -> done134 [label="done.2"];
+  done123 -> done13 [label="done.2"];
+  done124 -> done14 [label="done.2"];
+  done234 -> done34 [label="done.2"];
+  done12 -> done1 [label="done.2"];
+  done23 -> done3 [label="done.2"];
+  done24 -> done4 [label="done.2"];
+  done2 -> stop [label="done.2"];
+
+  done1234 -> done124 [label="done.3"];
+  done123 -> done12 [label="done.3"];
+  done134 -> done14 [label="done.3"];
+  done234 -> done24 [label="done.3"];
+  done13 -> done1 [label="done.3"];
+  done23 -> done2 [label="done.3"];
+  done34 -> done4 [label="done.3"];
+  done3 -> stop [label="done.3"];
+
+  done1234 -> done123 [label="done.4"];
+  done124 -> done12 [label="done.4"];
+  done134 -> done13 [label="done.4"];
+  done234 -> done23 [label="done.4"];
+  done14 -> done1 [label="done.4"];
+  done24 -> done2 [label="done.4"];
+  done34 -> done3 [label="done.4"];
+  done4 -> stop [label="done.4"];
+}
+

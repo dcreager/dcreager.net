@@ -113,29 +113,12 @@ MathJax.Hub.Config({
 transforming them each into a <strong>labeled transition system (LTS)</strong>.</li>
 </ol>
 
-<p>In this post we’re going to look at how to represent processes in code.  As
-mentioned in the <a href="/2016/11/semantic-methods/">previous post</a>, we’re going to rely on the
-<em>labeled transition system</em> defined by CSP’s <em>operational semantics</em>.  An LTS is
-just a directed graph, with nodes representing processes and subprocesses, and
-edges representing events.  Our question then becomes how to represent this
-graph.</p>
-
-<p>The simplest answer would be to store the LTS graph directly.  You wouldn’t even
-have to write very much code, since you can find a decent pre-canned graph
-library for just about any programming language you can think of.  You’d walk
-through the operational semantics rules of the process’s description, creating
-explicit nodes and edges in the graph for each subprocess and transition.</p>
-
-<p>This approach has some real advantages.  First off, it’s conceptually simple:
-there’s a physical graph edge in memory for each transition rule describe by the
-operational semantics.  Second, if you choose a good graph representation, an
-explicit LTS can be very dense, memory-efficient, and cache-friendly.</p>
-
-<p>However, there is also one very large drawback: CSP processes can get very big,
-especially once you start using the parallel composition operators.  And by
-“big”, I mean “large enough to exhaust your physical memory”.  This is the
-“state space explosion” problem that is the bane of any exhaustive formal model
-checking technique.</p>
+<p>As mentioned in the <a href="/2016/11/semantic-methods/">previous post</a>, we’re going to rely on
+the <em>labeled transition system</em> defined by CSP’s <em>operational semantics</em> to
+represent processes in our refinement checker.  An LTS is just a directed graph,
+with nodes representing processes and subprocesses, and edges representing
+events.  In this post, we’ll look at LTSes in a bit more detail, and at how best
+to represent them in code.</p>
 
 
       <div class="link">

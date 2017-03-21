@@ -35,6 +35,17 @@ class Nanoc::ItemWithRepsView
   end
 end
 
+def figure(slug)
+  path = '/media/images/' + slug
+  [
+    "<picture>",
+    "<source media=\"(max-width: 511px)\" srcset=\"#{path}.tall.png\">",
+    "<source media=\"(min-width: 2048pw)\" srcset=\"#{path}.large.png\">",
+    "<img src=\"#{path}.png\" class=\"figure\">",
+    "</picture>",
+  ].join('')
+end
+
 def navbar_link(text, target, attributes={})
   path = target.is_a?(String) ? target : target.path
 
