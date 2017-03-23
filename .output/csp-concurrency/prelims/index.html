@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>
+    dcreager.net – Concurrency models in CSP: Preliminaries
+  </title>
+  <meta name="author" content="Douglas Creager">
+
+    <meta charset="utf-8">
+
+  <meta name="google-site-verification"
+        content="7KIoYPNsfdDxIdX1QQ7SM2Nm_nyy13aRlDkzE3wzhhY" />
+
+  <link rel="shortcut icon" href="/media/images/dcreager.ico">
+
+  <link rel="alternate" type="application/atom+xml"
+        title="dcreager.net" href="/atom.xml"/>
+
+  <!-- Bootstrap -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel=stylesheet type=text/css media=screen
+        href="/media/vendor/css/bootstrap.min.css">
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+  <![endif]-->
+
+  <!-- MathJax -->
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      jax: ["input/TeX","output/HTML-CSS"],
+      displayAlign: "left",
+      displayIndent: "2em"
+    });
+  </script>
+  <script type="text/javascript" async
+          src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+  </script>
+
+  <!-- Twitter nonsense -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="@dcreager">
+  <meta name="twitter:title"
+        content="Concurrency models in CSP: Preliminaries">
+  <meta name="twitter:description"
+        content="in which we try to get through all of the annoying boilerplate before getting to the good stuff">
+  <meta name="twitter:image"
+        content="https://www.gravatar.com/avatar/04ee3ca11f1ae11c63faa7995dbf1ed7?s=2048">
+
+  <!-- Customizations -->
+  <link rel=stylesheet type=text/css media=screen
+        href="/media/css/coderay.css">
+  <link rel=stylesheet type=text/css media=screen
+        href="/media/css/dcreager.css">
+  <link rel=stylesheet type=text/css media=screen
+        href="http://fonts.googleapis.com/css?family=Oxygen:400,700">
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+  <div class="col-md-10 col-md-offset-1">
+    <nav class="navbar navbar-default" role="navigation">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand logo" href="/"><b>dcreager.net</b></a>
+      </div>
+
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="/about/">About</a></li></li>
+          <li><a href="/archive/">Archive</a></li></li>
+          <li><a href="/talks/">Talks</a></li></li>
+          <li><a href="/publications/">Publications</a></li></li>
+        </ul>
+      </div><!-- /.navbar-collapse -->
+    </nav>
+  </div>
+</div>
+
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        <div class="blog">
+          <div class="date">2016-08-03</div>
+          <h2 class="series">Concurrency models in CSP</h2>
+          <h1>Preliminaries</h1>
+          <p class="prev"><a href="/csp-concurrency/intro/">Introduction</a></p>
+          
+<p>Before diving into the details of our first concurrency model, it will be
+helpful to give an overview of how we’re going to use CSP in these posts.</p>
+
+<p>At the highest level, a CSP specification consists of a set of <em>processes</em>,
+which use <em>events</em> to describe their behavior.  We use a process to represent
+any vantage point that lets us talk about which events occur and in which order.
+Each entity in our system is a process (which might be defined using
+subprocesses to describe each of its components or parts).  We also use
+processes to describe how two or more entities interact with each other, and to
+describe any global properties of the entire system.  And lastly, because CSP
+verification is based on “refinement”, we also use processes to define the
+properties that we hope our system exhibits.</p>
+
+<hr class="jump" />
+
+<p>Each process has an <em>alphabet</em>, which is the set of events that it describes
+(and constrains!).  The process itself is the description of when each of these
+events can occur (and when they cannot!).  There are two ways to define a
+process.  The first is as an <em>automaton</em> (called an “LTS” or “labeled transition
+system” in the CSP literature).  This is just your standard state machine, where
+nodes represent the current state of the process, and edges represent which
+events are allowed in that state (and which state you move to if the event
+occurs).  This kind of process description is useful because you can use
+automated tools (like <a href="https://www.cs.ox.ac.uk/projects/fdr/">FDR</a>) to analyze them — for instance, proving that a
+particular system (described by one CSP process) satisfies a particular property
+(described by another).</p>
+
+<!--
+It doesn't technically have to be a *finite* state machine, but if you want to
+use a tool like FDR to analyze your specification, it will be.
+-->
+
+<p>For humans, on the other hand, we define processes using <em>CSP operators</em>.  These
+operators are more high-level, and more intuitive, than the lower-level LTS
+representation, and they line up with common patterns that we use when
+describing or implementing a complex system.  In particular, there are several
+operators for combining subprocesses into larger processes, giving you full
+control over how the events in each subprocess interact with each other.  There
+is a well-defined way to translate each operator into an LTS, which is what
+allows tools like FDR to analyze our human-readable process specifications.</p>
+
+<p><a href="https://christophermeiklejohn.com/lasp/erlang/2015/10/27/tendency.html">Just like the real world</a>, CSP does not impose any global ordering on
+any of the events in our system.  We can only talk about event ordering in the
+context of a single process.  If we want to talk about global event orderings,
+we have to construct a process that includes information about how <em>all</em> of the
+entities in our system participate in those events.</p>
+
+<p>To dig into this paper, then, we’re going to define a CSP process for each
+concurrency model.  The original paper uses several <em>axioms</em> to collectively
+define the behavior of each concurrency model; the more constrained models later
+in the paper include more axioms.  We’ll define each of those axioms as a
+subprocess, and use CSP operators to combine them together into a single process
+describing the concurrency model as a whole.</p>
+
+<p>We’ll also create CSP processes for each of the reference implementations.  The
+paper then defines and uses “operational refinement” to show that each reference
+implementation really does implement the concurrency model in question.  We’ll
+do something similar with CSP; we’ll make sure to construct the CSP processes
+for the concurrency model and for the reference implementation in such a way
+that we can use an FDR refinement check to show the same thing.</p>
+
+          <p class="next"><a href="/csp-concurrency/read-atomic-internal/">Read Atomic: Internal consistency</a></p>
+        </div>
+      </div>
+    </div> <!-- /row -->
+  </div> <!-- /container -->
+
+    <footer class="copyright">
+    <div class="container">
+      <p>Copyright © 2009-2017, Douglas Creager.
+      All&nbsp;rights&nbsp;reserved.</p>
+    </div>
+  </footer>
+
+    <script src="//code.jquery.com/jquery.min.js"></script>
+  <script src="/media/vendor/js/bootstrap.min.js"></script>
+
+<!-- Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-83885503-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+</html>

@@ -7,8 +7,8 @@ title: "Refinement overview"
 description: >-
   in which we see what's ahead of us and immediately regret this decision
 tags: [csp]
-prev: /2016/11/hst-intro.markdown
-next: /2016/11/semantic-methods.markdown
+prev: /hst/intro.markdown
+next: /hst/semantic-methods.markdown
 ---
 
 Our goal is to learn about CSP refinement by implementing a refinement checker.
@@ -18,8 +18,8 @@ implement.  (If nothing else, that will help make sure I don't go off on too
 many tangents while implementing it!)
 
 I've mentioned refinement elsewhere on this blog a few times (for instance,
-[here](/2016/09/csp-read-atomic-internal/#refinement)).  The basic idea is that
-in CSP, you use the same process language to describe the system you're
+[here](/csp-concurrency/read-atomic-internal/#refinement)).  The basic idea is
+that in CSP, you use the same process language to describe the system you're
 designing or investigating, as well as the properties that you would like that
 system to have.  (This is unlike most other formal methods, where you have
 separate languages for the system and the properties.)  In CSP, the system's
@@ -55,7 +55,7 @@ immediately tries to perform an unrepeatable read.  Because that unrepeatable
 read isn't allowed by the Read Atomic process, the traces refinement check
 fails.
 
-[RA]: /2016/09/csp-read-atomic-internal/#testing-it-out
+[RA]: /csp-concurrency/read-atomic-internal/#testing-it-out
 
 Given all of that, how do we write a program that can perform refinement checks
 for us?  The answer is strewn throughout Bill Roscoe's textbook, [*The theory

@@ -7,7 +7,7 @@ title: "Lazy processes"
 description: >-
   in which we reaffirm that laziness is a virtue
 tags: [csp]
-prev: /2016/11/semantic-methods.markdown
+prev: /hst/semantic-methods.markdown
 ---
 
 {::options parse_block_html="true" /}
@@ -34,7 +34,7 @@ with nodes representing processes and subprocesses, and edges representing
 events.  In this post, we'll look at LTSes in a bit more detail, and at how best
 to represent them in code.
 
-[semantic methods]: /2016/11/semantic-methods/
+[semantic methods]: /hst/semantic-methods/
 
 #### It's just a state machine
 

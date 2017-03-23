@@ -7,7 +7,7 @@ title: "Read Atomic: Internal consistency"
 description: >-
   in which we put the lie to the old chestnut about the hobgoblins
 tags: [csp]
-prev: /2016/08/csp-concurrency-prelims.markdown
+prev: /csp-concurrency/prelims.markdown
 ---
 
 {::options parse_block_html="true" /}

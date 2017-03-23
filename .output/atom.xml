@@ -11,11 +11,11 @@
     <uri>http://dcreager.net/</uri>
   </author>
   <entry>
-    <id>tag:dcreager.net,2017-01-17:/2017/01/lazy-processes/</id>
+    <id>tag:dcreager.net,2017-01-17:/hst/lazy-processes/</id>
     <title type="html">Lazy processes</title>
     <published>2017-01-17T00:00:00Z</published>
     <updated>2017-01-17T00:00:00Z</updated>
-    <link rel="alternate" href="http://dcreager.net/2017/01/lazy-processes/"/>
+    <link rel="alternate" href="http://dcreager.net/hst/lazy-processes/"/>
     <content type="html">
 &lt;script type="text/x-mathjax-config"&gt;
 MathJax.Hub.Config({
@@ -33,7 +33,7 @@ MathJax.Hub.Config({
 transforming them each into a &lt;strong&gt;labeled transition system (LTS)&lt;/strong&gt;.&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;p&gt;As mentioned in the &lt;a href="/2016/11/semantic-methods/"&gt;previous post&lt;/a&gt;, we’re going to rely on
+&lt;p&gt;As mentioned in the &lt;a href="/hst/semantic-methods/"&gt;previous post&lt;/a&gt;, we’re going to rely on
 the &lt;em&gt;labeled transition system&lt;/em&gt; defined by CSP’s &lt;em&gt;operational semantics&lt;/em&gt; to
 represent processes in our refinement checker.  An LTS is just a directed graph,
 with nodes representing processes and subprocesses, and edges representing
@@ -43,11 +43,11 @@ to represent them in code.&lt;/p&gt;
 </content>
   </entry>
   <entry>
-    <id>tag:dcreager.net,2016-11-17:/2016/11/semantic-methods/</id>
+    <id>tag:dcreager.net,2016-11-17:/hst/semantic-methods/</id>
     <title type="html">Semantic methods</title>
     <published>2016-11-17T14:00:00Z</published>
     <updated>2016-11-17T14:00:00Z</updated>
-    <link rel="alternate" href="http://dcreager.net/2016/11/semantic-methods/"/>
+    <link rel="alternate" href="http://dcreager.net/hst/semantic-methods/"/>
     <content type="html">
 &lt;script type="text/x-mathjax-config"&gt;
 MathJax.Hub.Config({
@@ -93,11 +93,11 @@ analyzing this state machine.&lt;/p&gt;
 </content>
   </entry>
   <entry>
-    <id>tag:dcreager.net,2016-11-17:/2016/11/refinement-overview/</id>
+    <id>tag:dcreager.net,2016-11-17:/hst/refinement-overview/</id>
     <title type="html">Refinement overview</title>
     <published>2016-11-17T13:00:00Z</published>
     <updated>2016-11-17T13:00:00Z</updated>
-    <link rel="alternate" href="http://dcreager.net/2016/11/refinement-overview/"/>
+    <link rel="alternate" href="http://dcreager.net/hst/refinement-overview/"/>
     <content type="html">
 &lt;p&gt;Our goal is to learn about CSP refinement by implementing a refinement checker.
 So a good first step is to make sure we’re all on the same page about what
@@ -106,8 +106,8 @@ implement.  (If nothing else, that will help make sure I don’t go off on too
 many tangents while implementing it!)&lt;/p&gt;
 
 &lt;p&gt;I’ve mentioned refinement elsewhere on this blog a few times (for instance,
-&lt;a href="/2016/09/csp-read-atomic-internal/#refinement"&gt;here&lt;/a&gt;).  The basic idea is that
-in CSP, you use the same process language to describe the system you’re
+&lt;a href="/csp-concurrency/read-atomic-internal/#refinement"&gt;here&lt;/a&gt;).  The basic idea is
+that in CSP, you use the same process language to describe the system you’re
 designing or investigating, as well as the properties that you would like that
 system to have.  (This is unlike most other formal methods, where you have
 separate languages for the system and the properties.)  In CSP, the system’s
@@ -129,11 +129,11 @@ behind these semantic models in later posts; for now, the 10,000-foot overview
 is that:&lt;/p&gt;</content>
   </entry>
   <entry>
-    <id>tag:dcreager.net,2016-11-16:/2016/11/hst-intro/</id>
+    <id>tag:dcreager.net,2016-11-16:/hst/intro/</id>
     <title type="html">Introduction</title>
     <published>2016-11-16T00:00:00Z</published>
     <updated>2016-11-16T00:00:00Z</updated>
-    <link rel="alternate" href="http://dcreager.net/2016/11/hst-intro/"/>
+    <link rel="alternate" href="http://dcreager.net/hst/intro/"/>
     <content type="html">
 &lt;p&gt;It seems like this blog is basically turning into “all things CSP”!  As part of
 that trend, I’ve started implementing a new CSP refinement checker called
@@ -159,11 +159,11 @@ great!  But it’s not what I’m aiming for.&lt;/p&gt;
 </content>
   </entry>
   <entry>
-    <id>tag:dcreager.net,2016-09-07:/2016/09/csp-read-atomic-internal/</id>
+    <id>tag:dcreager.net,2016-09-07:/csp-concurrency/read-atomic-internal/</id>
     <title type="html">Read Atomic: Internal consistency</title>
     <published>2016-09-07T00:00:00Z</published>
     <updated>2016-09-07T00:00:00Z</updated>
-    <link rel="alternate" href="http://dcreager.net/2016/09/csp-read-atomic-internal/"/>
+    <link rel="alternate" href="http://dcreager.net/csp-concurrency/read-atomic-internal/"/>
     <content type="html">
 &lt;script type="text/x-mathjax-config"&gt;
 MathJax.Hub.Config({
@@ -197,11 +197,11 @@ internally consistent.&lt;/p&gt;
 </content>
   </entry>
   <entry>
-    <id>tag:dcreager.net,2016-08-03:/2016/08/csp-concurrency-prelims/</id>
+    <id>tag:dcreager.net,2016-08-03:/csp-concurrency/prelims/</id>
     <title type="html">Preliminaries</title>
     <published>2016-08-03T00:00:00Z</published>
     <updated>2016-08-03T00:00:00Z</updated>
-    <link rel="alternate" href="http://dcreager.net/2016/08/csp-concurrency-prelims/"/>
+    <link rel="alternate" href="http://dcreager.net/csp-concurrency/prelims/"/>
     <content type="html">
 &lt;p&gt;Before diving into the details of our first concurrency model, it will be
 helpful to give an overview of how we’re going to use CSP in these posts.&lt;/p&gt;
@@ -219,11 +219,11 @@ properties that we hope our system exhibits.&lt;/p&gt;
 </content>
   </entry>
   <entry>
-    <id>tag:dcreager.net,2016-07-28:/2016/07/csp-concurrency-intro/</id>
+    <id>tag:dcreager.net,2016-07-28:/csp-concurrency/intro/</id>
     <title type="html">Introduction</title>
     <published>2016-07-28T00:00:00Z</published>
     <updated>2016-07-28T00:00:00Z</updated>
-    <link rel="alternate" href="http://dcreager.net/2016/07/csp-concurrency-intro/"/>
+    <link rel="alternate" href="http://dcreager.net/csp-concurrency/intro/"/>
     <content type="html">
 &lt;p&gt;Two years ago, I started writing a series of &lt;a href="/2014/01/07/intro-to-csp/"&gt;blog&lt;/a&gt;
 &lt;a href="/2014/02/csp-basics/"&gt;posts&lt;/a&gt; about CSP — Communicating Sequential Processes.
