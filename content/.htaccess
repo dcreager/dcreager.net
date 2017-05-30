@@ -1,6 +1,6 @@
 Redirect 301 /2013/01/07/intro-to-csp/ /2014/01/07/intro-to-csp/
 
-Redirect 301 /2016/07/csp-concurrency/ /csp-concurrency/intro/
+Redirect 301 /2016/07/csp-concurrency-intro/ /csp-concurrency/intro/
 Redirect 301 /2016/08/csp-concurrency-prelims/ /csp-concurrency/prelims/
 Redirect 301 /2016/09/csp-read-atomic-internal/ /csp-concurrency/read-atomic-internal/
 
