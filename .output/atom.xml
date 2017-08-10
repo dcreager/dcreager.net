@@ -3,13 +3,55 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
   <id>http://dcreager.net/</id>
   <title>dcreager.net</title>
-  <updated>2017-01-17T00:00:00Z</updated>
+  <updated>2017-08-10T00:00:00Z</updated>
   <link rel="alternate" href="http://dcreager.net/"/>
   <link rel="self" href="http://dcreager.net/atom.xml"/>
   <author>
     <name>Douglas Creager</name>
     <uri>http://dcreager.net/</uri>
   </author>
+  <entry>
+    <id>tag:dcreager.net,2017-08-10:/obligations/intro/</id>
+    <title type="html">Introduction</title>
+    <published>2017-08-10T00:00:00Z</published>
+    <updated>2017-08-10T00:00:00Z</updated>
+    <link rel="alternate" href="http://dcreager.net/obligations/intro/"/>
+    <content type="html">
+&lt;p&gt;Programming languages have a lot of interesting ways to think about what you’re
+allowed to do, and not allowed to do.  In a statically typed language, your
+compiler will yell at you if you try to do something that’s not allowed, and a
+lot of interesting PL research involves teaching your language and compiler to
+disallow things in increasingly sophisticated ways.&lt;/p&gt;
+
+&lt;p&gt;This is not limited to statically typed languages.  In a dynamically typed
+language, your interpreter is just as invested in disallowing certain behaviors.
+It’s just that the enforcement happens while your program is running!&lt;/p&gt;
+
+&lt;p&gt;Someone with a theoretical background might quibble with my choice of the word
+“disallow”.  They might prefer that I say that certain operations in your
+programming language are “invalid”.  In the world of mathematics, it’s usually
+not the case that some little gremlin is actively preventing these operations
+from occurring; instead, it’s that the invalid operations don’t even exist as
+possibilities!&lt;/p&gt;
+
+&lt;p&gt;But regardless what language you’re programming in, and regardless of whether
+you think in terms of &lt;strong&gt;permissions&lt;/strong&gt; or &lt;strong&gt;possibilities&lt;/strong&gt;, the act of
+programming is to consider all of these possible operations, and choose which
+ones you want to use to accomplish your goal.  At any given time, there are many
+possible operations, and you have the control to decide which ones to use!&lt;/p&gt;
+
+&lt;p&gt;In this series of posts I want to look at the flip side of this, and talk about
+&lt;strong&gt;requirements&lt;/strong&gt; or &lt;strong&gt;obligations&lt;/strong&gt;.  What mechanisms do programming languages
+have to &lt;em&gt;force&lt;/em&gt; you to perform some operation, or to ensure that some operation
+is performed even if you don’t actively choose to do it yourself?&lt;/p&gt;
+
+&lt;p&gt;At the end of this series, I hope to convince you that obligations are just as
+important as possibilities, and that there are interesting complex behaviors
+that are easier to think about and work with if we use programming languages
+that can talk about obligations directly.&lt;/p&gt;
+
+</content>
+  </entry>
   <entry>
     <id>tag:dcreager.net,2017-01-17:/hst/lazy-processes/</id>
     <title type="html">Lazy processes</title>
@@ -707,23 +749,6 @@ extracted the code from our Oxford SVN repository and uploaded it to
 &lt;p&gt;To install the script, just place the &lt;em&gt;graffle.sh&lt;/em&gt; and &lt;em&gt;graffle.scpt&lt;/em&gt;
 files into some directory that’s on your &lt;code&gt;$PATH&lt;/code&gt;, such as
 &lt;em&gt;/usr/local/bin&lt;/em&gt; or &lt;em&gt;$HOME/bin&lt;/em&gt;.  Then just run&lt;/p&gt;</content>
-  </entry>
-  <entry>
-    <id>tag:dcreager.net,2009-12-23:/2009/12/23/high-water-mark-buffers/</id>
-    <title type="html">“High-water mark” buffers</title>
-    <published>2009-12-23T00:00:00Z</published>
-    <updated>2009-12-23T00:00:00Z</updated>
-    <link rel="alternate" href="http://dcreager.net/2009/12/23/high-water-mark-buffers/"/>
-    <content type="html">
-&lt;p&gt;My coding project for today was to extract out some code for dealing
-with “high-water mark buffers”, putting it in a separate library call
-&lt;code&gt;libhwm&lt;/code&gt;.  In this post, I’m going to describe the rationale for using
-them, and a brief overview of how to use the library.  (The library is
-hosted on &lt;a href="http://github.com/dcreager/libhwm/"&gt;Github&lt;/a&gt;).&lt;/p&gt;
-
-&lt;p&gt;By the way, this post (and the library) is all in C.&lt;/p&gt;
-
-</content>
   </entry>
 </feed>
 

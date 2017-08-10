@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>
+    dcreager.net – Obligations: Introduction
+  </title>
+  <meta name="author" content="Douglas Creager">
+
+    <meta charset="utf-8">
+
+  <meta name="google-site-verification"
+        content="7KIoYPNsfdDxIdX1QQ7SM2Nm_nyy13aRlDkzE3wzhhY" />
+
+  <link rel="shortcut icon" href="/media/images/dcreager.ico">
+
+  <link rel="alternate" type="application/atom+xml"
+        title="dcreager.net" href="/atom.xml"/>
+
+  <!-- Bootstrap -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel=stylesheet type=text/css media=screen
+        href="/media/vendor/css/bootstrap.min.css">
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+  <![endif]-->
+
+  <!-- MathJax -->
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      jax: ["input/TeX","output/HTML-CSS"],
+      displayAlign: "left",
+      displayIndent: "2em"
+    });
+  </script>
+  <script type="text/javascript" async
+          src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+  </script>
+
+  <!-- Twitter nonsense -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="@dcreager">
+  <meta name="twitter:title"
+        content="Obligations: Introduction">
+  <meta name="twitter:description"
+        content="in which our options are limited">
+  <meta name="twitter:image"
+        content="https://www.gravatar.com/avatar/04ee3ca11f1ae11c63faa7995dbf1ed7?s=2048">
+
+  <!-- Customizations -->
+  <link rel=stylesheet type=text/css media=screen
+        href="/media/css/coderay.css">
+  <link rel=stylesheet type=text/css media=screen
+        href="/media/css/dcreager.css">
+  <link rel=stylesheet type=text/css media=screen
+        href="http://fonts.googleapis.com/css?family=Oxygen:400,700">
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+  <div class="col-md-10 col-md-offset-1">
+    <nav class="navbar navbar-default" role="navigation">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand logo" href="/"><b>dcreager.net</b></a>
+      </div>
+
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="/about/">About</a></li></li>
+          <li><a href="/archive/">Archive</a></li></li>
+          <li><a href="/talks/">Talks</a></li></li>
+          <li><a href="/publications/">Publications</a></li></li>
+        </ul>
+      </div><!-- /.navbar-collapse -->
+    </nav>
+  </div>
+</div>
+
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        <div class="blog">
+          <div class="date">2017-08-10</div>
+          <h2 class="series">Obligations</h2>
+          <h1>Introduction</h1>
+          
+<p>Programming languages have a lot of interesting ways to think about what you’re
+allowed to do, and not allowed to do.  In a statically typed language, your
+compiler will yell at you if you try to do something that’s not allowed, and a
+lot of interesting PL research involves teaching your language and compiler to
+disallow things in increasingly sophisticated ways.</p>
+
+<p>This is not limited to statically typed languages.  In a dynamically typed
+language, your interpreter is just as invested in disallowing certain behaviors.
+It’s just that the enforcement happens while your program is running!</p>
+
+<p>Someone with a theoretical background might quibble with my choice of the word
+“disallow”.  They might prefer that I say that certain operations in your
+programming language are “invalid”.  In the world of mathematics, it’s usually
+not the case that some little gremlin is actively preventing these operations
+from occurring; instead, it’s that the invalid operations don’t even exist as
+possibilities!</p>
+
+<p>But regardless what language you’re programming in, and regardless of whether
+you think in terms of <strong>permissions</strong> or <strong>possibilities</strong>, the act of
+programming is to consider all of these possible operations, and choose which
+ones you want to use to accomplish your goal.  At any given time, there are many
+possible operations, and you have the control to decide which ones to use!</p>
+
+<p>In this series of posts I want to look at the flip side of this, and talk about
+<strong>requirements</strong> or <strong>obligations</strong>.  What mechanisms do programming languages
+have to <em>force</em> you to perform some operation, or to ensure that some operation
+is performed even if you don’t actively choose to do it yourself?</p>
+
+<p>At the end of this series, I hope to convince you that obligations are just as
+important as possibilities, and that there are interesting complex behaviors
+that are easier to think about and work with if we use programming languages
+that can talk about obligations directly.</p>
+
+<hr class="jump" />
+
+<!-- not permissions "you can only close a file after you opened it"
+
+obligations: "once you've opened a file you MUST close it"
+
+simple initial example: guaranteeing that you close a file exactly once after
+you open it
+
+sad face (C)
+
+GC objects + finalizers (Python)
+
+not ideal, since you aren't guaranteed when that will run
+
+
+Scope-based solutions (Python context managers, RAII/destructors in C++)
+
+enforcing that something will happen by piggy-backing on another language
+feature
+
+
+Works even for things not technically "scope-shaped"
+
+You can pass that file around in C++.  What if they save it somewhere?  You'll
+have a dangling memory reference!
+
+You can pass that file object around in Python.  What if they save it somewhere?
+The file will be closed at the right time, but you'll have a dangling reference.
+
+
+Move semantics in C++ / Rust ownership types to the rescue
+
+You can't save the reference, you can only borrow it -->
+
+        </div>
+      </div>
+    </div> <!-- /row -->
+  </div> <!-- /container -->
+
+    <footer class="copyright">
+    <div class="container">
+      <p>Copyright © 2009-2017, Douglas Creager.
+      All&nbsp;rights&nbsp;reserved.</p>
+    </div>
+  </footer>
+
+    <script src="//code.jquery.com/jquery.min.js"></script>
+  <script src="/media/vendor/js/bootstrap.min.js"></script>
+
+<!-- Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-83885503-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+</html>

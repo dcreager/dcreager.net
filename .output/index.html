@@ -93,6 +93,52 @@
 
   
     <li class="summary">
+      <div class="date">2017-08-10</div>
+      <h2 class="series"><a href="/obligations/intro/">Obligations</a></h2>
+      <h1><a href="/obligations/intro/">Introduction</a></h1>
+      
+<p>Programming languages have a lot of interesting ways to think about what you’re
+allowed to do, and not allowed to do.  In a statically typed language, your
+compiler will yell at you if you try to do something that’s not allowed, and a
+lot of interesting PL research involves teaching your language and compiler to
+disallow things in increasingly sophisticated ways.</p>
+
+<p>This is not limited to statically typed languages.  In a dynamically typed
+language, your interpreter is just as invested in disallowing certain behaviors.
+It’s just that the enforcement happens while your program is running!</p>
+
+<p>Someone with a theoretical background might quibble with my choice of the word
+“disallow”.  They might prefer that I say that certain operations in your
+programming language are “invalid”.  In the world of mathematics, it’s usually
+not the case that some little gremlin is actively preventing these operations
+from occurring; instead, it’s that the invalid operations don’t even exist as
+possibilities!</p>
+
+<p>But regardless what language you’re programming in, and regardless of whether
+you think in terms of <strong>permissions</strong> or <strong>possibilities</strong>, the act of
+programming is to consider all of these possible operations, and choose which
+ones you want to use to accomplish your goal.  At any given time, there are many
+possible operations, and you have the control to decide which ones to use!</p>
+
+<p>In this series of posts I want to look at the flip side of this, and talk about
+<strong>requirements</strong> or <strong>obligations</strong>.  What mechanisms do programming languages
+have to <em>force</em> you to perform some operation, or to ensure that some operation
+is performed even if you don’t actively choose to do it yourself?</p>
+
+<p>At the end of this series, I hope to convince you that obligations are just as
+important as possibilities, and that there are interesting complex behaviors
+that are easier to think about and work with if we use programming languages
+that can talk about obligations directly.</p>
+
+
+      <div class="link">
+        <a href="/obligations/intro/">
+          Continue reading <span class="glyphicon glyphicon-share-alt"></span>
+        </a>
+      </div>
+    </li>
+  
+    <li class="summary">
       <div class="date">2017-01-17</div>
       <h2 class="series"><a href="/hst/lazy-processes/">HST</a></h2>
       <h1><a href="/hst/lazy-processes/">Lazy processes</a></h1>
@@ -439,32 +485,6 @@ described.  That means that I can’t use <code>git flow release finish</code> a
 
       <div class="link">
         <a href="/2014/05/git-flow/">
-          Continue reading <span class="glyphicon glyphicon-share-alt"></span>
-        </a>
-      </div>
-    </li>
-  
-    <li class="summary">
-      <div class="date">2014-02-28</div>
-      <h1><a href="/2014/02/csp-basics/">CSP: The basics</a></h1>
-      
-<p class="big-def"><em class="tldr">tl;dr</em> CSP is a <em>formal method</em> that lets you describe and reason
-about the behavior of <em>concurrent systems</em>.  CSP is <em>composable</em>; you write
-simple <em>processes</em>, and then use special <em>operators</em> to combine them together
-into larger, more complex processes.  A process is a summary of some system; it
-uses <em>events</em> to describe how that system works, and to <em>synchronously
-communicate</em> with other processes.  You can compare two processes using a
-<em>refinement check</em>; this lets us check, for instance, whether a real-world
-system satisfies some important safety or liveness property.  CSP has good <em>tool
-support</em>, which lets us perform these refinement checks quickly and
-automatically.</p>
-
-<p>Well that was easy, wasn’t it?  You can boil just about anything down to a
-single paragraph.  Let’s look at each of those key points in more detail.</p>
-
-
-      <div class="link">
-        <a href="/2014/02/csp-basics/">
           Continue reading <span class="glyphicon glyphicon-share-alt"></span>
         </a>
       </div>
