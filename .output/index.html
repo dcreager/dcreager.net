@@ -93,6 +93,48 @@
 
   
     <li class="summary">
+      <div class="date">2017-08-30</div>
+      <h2 class="series"><a href="/obligations/resources/">Obligations</a></h2>
+      <h1><a href="/obligations/resources/">Resources</a></h1>
+      
+<p>We want to talk about <strong>requirements</strong> and <strong>obligations</strong> in our programming
+languages, and how they differ from <strong>permissions</strong> or <strong>possibilities</strong>.  To
+start the discussion, we should think about what kinds of requirements we might
+want to support.  That will help ground the discussion on how we can implement
+those requirements.</p>
+
+<p>The most common example of a requirement in a program involves <strong>resource
+management</strong>.  Your program acquires some resource, and we want to ensure that
+you clean up that resource when you’re done with it.  C is notorious for being
+an “unsafe” language because it provides basically no mechanisms for making
+these kinds of guarantees.  To be clear, this does <em>not</em> mean that it’s
+impossible to write a safe program in C; it just means that it’s <em>entirely</em> on
+you, the programmer, to implement whatever safety features you need, and to do
+all of the mental bookkeeping to make sure you didn’t miss anything.  There’s
+nothing in C that prevents you from doing either of the following:</p>
+
+<pre class="CodeRay"><code><span class="directive">void</span> not_very_nice(<span class="directive">void</span>) {
+    FILE* file = fopen(<span class="string"><span class="delimiter">&quot;</span><span class="content">/usr/share/words</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">r</span><span class="delimiter">&quot;</span></span>);
+    <span class="keyword">return</span>;
+}
+
+<span class="directive">void</span> also_not_nice(<span class="directive">void</span>) {
+    <span class="predefined-type">int</span>* i = malloc(<span class="keyword">sizeof</span>(<span class="predefined-type">int</span>));
+    <span class="keyword">return</span>;
+}
+</code></pre>
+
+<p>So what do other languages do to handle these kinds of situations?</p>
+
+
+      <div class="link">
+        <a href="/obligations/resources/">
+          Continue reading <span class="glyphicon glyphicon-share-alt"></span>
+        </a>
+      </div>
+    </li>
+  
+    <li class="summary">
       <div class="date">2017-08-10</div>
       <h2 class="series"><a href="/obligations/intro/">Obligations</a></h2>
       <h1><a href="/obligations/intro/">Introduction</a></h1>
@@ -447,44 +489,6 @@ managers like <a href="https://www.npmjs.org/">npm</a>, <a href="http://leininge
 
       <div class="link">
         <a href="/2014/11/dependency-management-in-c/">
-          Continue reading <span class="glyphicon glyphicon-share-alt"></span>
-        </a>
-      </div>
-    </li>
-  
-    <li class="summary">
-      <div class="date">2014-05-14</div>
-      <h1><a href="/2014/05/git-flow/">Tagged releases using git flow</a></h1>
-      
-<p>I’ve used <code>git flow</code> for most of my software projects — specifically for those
-that have versioned releases.  The <a href="http://nvie.com/posts/a-successful-git-branching-model/">original
-post</a> describing <code>git
-flow</code> is still the best overview of how it works.  In short, you have a <code>master</code>
-branch where <strong>every</strong> commit is a merge commit.  Each of these merge commits
-represents a new release, and is tagged with the version number of that release.
-The merge brings in all of the subsidiary commits and feature branches that make
-up that release.  Ongoing work happens on a separate <code>develop</code> branch.  This is
-where you merge in completed new features and bug fixes on a day-to-day basis.
-<code>develop</code> should always be a stable version of the software — you don’t merge a
-feature branch into <code>develop</code> until it passes all of your tests and is
-“complete” with regards to the feature you’re trying to implement.</p>
-
-<p>My favorite part of this model is how each release is just some tagged commit on
-the <code>master</code> branch.  You want to see the code for the latest released version?
-That’s easy — <code>git checkout master</code>.  You want version 1.2.5 specifically?  Use
-<code>git checkout 1.2.5</code> instead.</p>
-
-<p>Unfortunately, the <a href="https://github.com/nvie/gitflow"><code>git flow</code> tool</a> has
-implemented a <a href="https://github.com/nvie/gitflow/issues/206">slightly different
-behavior</a> for awhile now.  That
-patch makes <code>git flow</code> tag the last commit on the release branch, instead of the
-merge commit on the <code>master</code> branch.  The reasons for this might be perfectly
-valid, but it’s not what I want, and it’s not what the original <code>git flow</code> post
-described.  That means that I can’t use <code>git flow release finish</code> as-is.</p>
-
-
-      <div class="link">
-        <a href="/2014/05/git-flow/">
           Continue reading <span class="glyphicon glyphicon-share-alt"></span>
         </a>
       </div>
