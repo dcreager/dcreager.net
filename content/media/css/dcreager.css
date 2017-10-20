@@ -305,13 +305,19 @@ li.reference div.citation_number {
     margin-right: -35px;
 }
 
-li.reference div.left-details {
+li.reference ul.details {
+    list-style-type: none;
+    padding-left: 0px;
+    margin-left: -5px;
+}
+
+li.reference ul.details li {
     display: inline-block;
-    width: 36px;
-    text-align: center;
-    position: relative;
-    left: -42px;
-    margin-right: -41px;
+    margin: auto 5px;
+}
+
+li.reference ul.details span.glyphicon {
+    margin-right: 3px;
 }
 
 li.reference div.citation {
@@ -321,6 +327,11 @@ li.reference div.citation {
 li.reference div.talk-title {
     display: inline;
     font-weight: bold;
+    margin-left: -16px;
+}
+
+li.reference div.talk-abstract {
+    margin-top: 8px;
 }
 
 li.reference div.note {
