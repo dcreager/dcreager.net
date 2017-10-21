@@ -312,8 +312,14 @@ li.reference ul.details {
 }
 
 li.reference ul.details li {
-    display: inline-block;
+    display: inline;
     margin: auto 5px;
+}
+
+li.reference ul.details li.date:before {
+    content: "·";
+    margin-left: -6px;
+    padding-right: 6px;
 }
 
 li.reference ul.details span.glyphicon {
@@ -325,9 +331,14 @@ li.reference div.citation {
 }
 
 li.reference div.talk-title {
-    display: inline;
     font-weight: bold;
     margin-left: -16px;
+}
+
+li.reference div.talk-date:before {
+    content: "·";
+    padding: 0 4px;
+    margin-right: 4px;
 }
 
 li.reference div.talk-abstract {
