@@ -1,6 +1,9 @@
 ---
 layout: /default.html
-title: Publication details
+title: >-
+  A modular architecture for biological microscope image analysis
+description: >-
+  in which I first discover the dataflow Kool-Aid
 ---
 
 # Publication details

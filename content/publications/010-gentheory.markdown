@@ -1,6 +1,9 @@
 ---
 layout: /default.html
-title: Publication details
+title: >-
+  Towards a fully generic theory of data
+description: >-
+  ICFEM 2006, Macau, China
 ---
 
 # Publication details

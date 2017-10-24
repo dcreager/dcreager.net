@@ -1,6 +1,9 @@
 ---
 layout: /default.html
-title: Publication details
+title: >-
+  Empirical analysis and optimization of an NP-hard algorithm using CSP and FDR
+description: >-
+  SBMF 2007, Ouro Preto, Brazil
 ---
 
 # Publication details
