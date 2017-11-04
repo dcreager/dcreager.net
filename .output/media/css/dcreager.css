@@ -44,6 +44,14 @@ hr.jump {
     display: none;
 }
 
+a code {
+    color: #428bca;
+    background-color: #f4f6f9;
+}
+
+ul ul, ol ul, ul ol, ol ol {
+    margin-bottom: 10px;
+}
 
 /*----------------------------------------------------------------
  * Important definitions
