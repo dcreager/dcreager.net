@@ -3,13 +3,41 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
   <id>http://dcreager.net/</id>
   <title>dcreager.net</title>
-  <updated>2017-08-10T00:00:00Z</updated>
+  <updated>2017-10-29T00:00:00Z</updated>
   <link rel="alternate" href="http://dcreager.net/"/>
   <link rel="self" href="http://dcreager.net/atom.xml"/>
   <author>
     <name>Douglas Creager</name>
     <uri>http://dcreager.net/</uri>
   </author>
+  <entry>
+    <id>tag:dcreager.net,2017-10-29:/shared-library-versions/</id>
+    <title type="html">Shared library versions</title>
+    <published>2017-10-29T00:00:00Z</published>
+    <updated>2017-10-29T00:00:00Z</updated>
+    <link rel="alternate" href="http://dcreager.net/shared-library-versions/"/>
+    <content type="html">
+&lt;p&gt;Congratulations, you’ve written a software library!  You hope that lots of
+people will find it useful, and will take it as a dependency when writing their
+own software.  You know that at some point you’ll have to make changes to your
+library, either to add features or to fix bugs.  Being a good maintainer, you
+want to be as diligent as possible in telling your users what to expect as you
+publish these changes.  Will they need to change their code in response to the
+changes that you’ve made?  Have you retired features that they depend on?  Or
+are the changes “safe”, presumably requiring no updates on their part?&lt;/p&gt;
+
+&lt;p&gt;The traditional approach is to encode all of this information into an
+easy-to-digest &lt;strong&gt;version number&lt;/strong&gt;.  Of course, nothing in this world is simple,
+so there are a number of different systems for encoding compatibility
+information into a version number.  And surprisingly, if you’re writing a shared
+library for a compiled language like C or C++, there are (at least!) two
+different versioning systems that you’ll need to learn.  In this post, we’re
+going to look at these different systems, how they relate to each other, and how
+to actually apply these version numbers to your library using a couple of common
+build tools.&lt;/p&gt;
+
+</content>
+  </entry>
   <entry>
     <id>tag:dcreager.net,2017-08-10:/obligations/intro/</id>
     <title type="html">Introduction</title>
@@ -713,42 +741,6 @@ $ scons -c build-tests
 &lt;code&gt;make clean&lt;/code&gt; would in the Automake world.&lt;/p&gt;
 
 </content>
-  </entry>
-  <entry>
-    <id>tag:dcreager.net,2010-01-05:/2010/01/05/omnigraffle-export/</id>
-    <title type="html">Exporting OmniGraffle documents from the command line</title>
-    <published>2010-01-05T00:00:00Z</published>
-    <updated>2010-01-05T00:00:00Z</updated>
-    <link rel="alternate" href="http://dcreager.net/2010/01/05/omnigraffle-export/"/>
-    <content type="html">
-&lt;p&gt;&lt;a href="http://www.omnigroup.com/applications/OmniGraffle/"&gt;OmniGraffle&lt;/a&gt; is
-my tool of choice for creating figures for my papers.  It’s biggest
-drawback is that it’s only available for Mac OS, which can make it
-cumbersome if I’m working on one of my Linux machines and need to
-create or modify a figure.  But it’s ease-of-use and the quality of
-the figures it creates are hard to beat.&lt;/p&gt;
-
-&lt;p&gt;Of course, creating the figure isn’t enough — since I write my papers
-in LaTeX, I have to export my figures into EPS or PDF (depending on
-whether I’m creating a PostScript or PDF version of the paper) before
-I can use them in my documents.  It’s easy enough to use the Export
-dialog to do this (keyboard shortcut: ⌥⌘E), but ideally I’d like the
-ability to export figures from the command line.  Coupled with a good
-Makefile, this would let me run a simple &lt;code&gt;make paper&lt;/code&gt; command, and
-automatically re-export any necessary figures before rebuilding the
-paper itself.&lt;/p&gt;
-
-&lt;p&gt;Luckily, OmniGraffle has always had rather good support for being
-controlled via AppleScript.  The commands can be somewhat
-undocumented, requiring a bit of trial and error, but while entrenched
-in our PhD studies at Oxford, my colleague David Faitelson and I were
-able to whip together a script that suited our needs.  I’ve recently
-extracted the code from our Oxford SVN repository and uploaded it to
-&lt;a href="http://github.com/dcreager/graffle-export"&gt;Github&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;To install the script, just place the &lt;em&gt;graffle.sh&lt;/em&gt; and &lt;em&gt;graffle.scpt&lt;/em&gt;
-files into some directory that’s on your &lt;code&gt;$PATH&lt;/code&gt;, such as
-&lt;em&gt;/usr/local/bin&lt;/em&gt; or &lt;em&gt;$HOME/bin&lt;/em&gt;.  Then just run&lt;/p&gt;</content>
   </entry>
 </feed>
 

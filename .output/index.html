@@ -93,6 +93,37 @@
 
   
     <li class="summary">
+      <div class="date">2017-10-29</div>
+      <h1><a href="/shared-library-versions/">Shared library versions</a></h1>
+      
+<p>Congratulations, you’ve written a software library!  You hope that lots of
+people will find it useful, and will take it as a dependency when writing their
+own software.  You know that at some point you’ll have to make changes to your
+library, either to add features or to fix bugs.  Being a good maintainer, you
+want to be as diligent as possible in telling your users what to expect as you
+publish these changes.  Will they need to change their code in response to the
+changes that you’ve made?  Have you retired features that they depend on?  Or
+are the changes “safe”, presumably requiring no updates on their part?</p>
+
+<p>The traditional approach is to encode all of this information into an
+easy-to-digest <strong>version number</strong>.  Of course, nothing in this world is simple,
+so there are a number of different systems for encoding compatibility
+information into a version number.  And surprisingly, if you’re writing a shared
+library for a compiled language like C or C++, there are (at least!) two
+different versioning systems that you’ll need to learn.  In this post, we’re
+going to look at these different systems, how they relate to each other, and how
+to actually apply these version numbers to your library using a couple of common
+build tools.</p>
+
+
+      <div class="link">
+        <a href="/shared-library-versions/">
+          Continue reading <span class="glyphicon glyphicon-share-alt"></span>
+        </a>
+      </div>
+    </li>
+  
+    <li class="summary">
       <div class="date">2017-08-10</div>
       <h2 class="series"><a href="/obligations/intro/">Obligations</a></h2>
       <h1><a href="/obligations/intro/">Introduction</a></h1>
@@ -447,44 +478,6 @@ managers like <a href="https://www.npmjs.org/">npm</a>, <a href="http://leininge
 
       <div class="link">
         <a href="/2014/11/dependency-management-in-c/">
-          Continue reading <span class="glyphicon glyphicon-share-alt"></span>
-        </a>
-      </div>
-    </li>
-  
-    <li class="summary">
-      <div class="date">2014-05-14</div>
-      <h1><a href="/2014/05/git-flow/">Tagged releases using git flow</a></h1>
-      
-<p>I’ve used <code>git flow</code> for most of my software projects — specifically for those
-that have versioned releases.  The <a href="http://nvie.com/posts/a-successful-git-branching-model/">original
-post</a> describing <code>git
-flow</code> is still the best overview of how it works.  In short, you have a <code>master</code>
-branch where <strong>every</strong> commit is a merge commit.  Each of these merge commits
-represents a new release, and is tagged with the version number of that release.
-The merge brings in all of the subsidiary commits and feature branches that make
-up that release.  Ongoing work happens on a separate <code>develop</code> branch.  This is
-where you merge in completed new features and bug fixes on a day-to-day basis.
-<code>develop</code> should always be a stable version of the software — you don’t merge a
-feature branch into <code>develop</code> until it passes all of your tests and is
-“complete” with regards to the feature you’re trying to implement.</p>
-
-<p>My favorite part of this model is how each release is just some tagged commit on
-the <code>master</code> branch.  You want to see the code for the latest released version?
-That’s easy — <code>git checkout master</code>.  You want version 1.2.5 specifically?  Use
-<code>git checkout 1.2.5</code> instead.</p>
-
-<p>Unfortunately, the <a href="https://github.com/nvie/gitflow"><code>git flow</code> tool</a> has
-implemented a <a href="https://github.com/nvie/gitflow/issues/206">slightly different
-behavior</a> for awhile now.  That
-patch makes <code>git flow</code> tag the last commit on the release branch, instead of the
-merge commit on the <code>master</code> branch.  The reasons for this might be perfectly
-valid, but it’s not what I want, and it’s not what the original <code>git flow</code> post
-described.  That means that I can’t use <code>git flow release finish</code> as-is.</p>
-
-
-      <div class="link">
-        <a href="/2014/05/git-flow/">
           Continue reading <span class="glyphicon glyphicon-share-alt"></span>
         </a>
       </div>
