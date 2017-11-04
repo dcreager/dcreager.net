@@ -236,10 +236,11 @@ pattern, and more about whether you should use *any* kind of version number.) --
 <strong>minor version</strong>, and a <strong>patch level</strong>.  Each of these corresponds to one kind
 of change, and each time you cut a new release, you “bump” the portion that
 lines up with the “strongest” change that you’ve made to the public API.  Any
-backwards incompatible changes?  Bump the major version.  Any backwards
-compatible changes?  Bump the minor version.  No changes at all?  Bump the patch
-level.  This intuitively lines up with what many project maintainers were doing
-anyway, and semver just codifies those as an explicit set of rules.</p>
+backwards incompatible changes?  Bump the major version, set minor and patch to
+0.  Any backwards compatible changes?  Bump the minor version, set patch to 0.
+No changes at all?  Bump the patch level.  This intuitively lines up with what
+many project maintainers were doing anyway, and semver just codifies those as an
+explicit set of rules.</p>
 
 <!-- What about bug fixes?  Most versioning schemes describe how the library is
 **supposed** to work.  If we discover a bug in the library, and we publish a fix
@@ -309,7 +310,7 @@ including this change, you would bump the version number from <strong>1.3.0</str
 <strong>1.3.1</strong>.</p>
 
 <p>But if your user doesn’t recompile their code, they’ll get the wrong answer when
-they run their program:</p>
+they run their program using the new version of your library:</p>
 
 <p><code>
 Adelaide 11.14 (95)
@@ -343,13 +344,14 @@ will be symlinks to the last one.</p>
 
 <p>The <code>libfoo.so</code> file is only used at build-time.  (In fact, Debian-based systems
 will only include this file in the library’s <code>-dev</code> package; if you don’t have
-that package installed, you’ll only see the two versioned filenames.)  When you
-compile some code that uses libfoo, by passing in <code>-lfoo</code> to your build tools,
-they don’t know in advance which version of the library is installed.  Instead
-of doing some kind of wildcard match, looking for all filenames that match a
-pattern, the build tools assume that they can find the library with a simple
-<code>libfoo.so</code> filename.  It’s up to you (or more realistically, your package
-manager) to make sure that this points at the currently installed version.</p>
+that package installed, you’ll only see the last two versioned filenames.)  When
+you compile some code that uses libfoo, by passing in <code>-lfoo</code> to your build
+tools, they don’t know in advance which version of the library is installed.
+Instead of doing some kind of wildcard match, looking for all filenames that
+match a pattern, the build tools assume that they can find the library with a
+simple <code>libfoo.so</code> filename.  It’s up to you (or more realistically, your
+package manager) to make sure that this points at the currently installed
+version.</p>
 
 <p>The <code>libfoo.so.1</code> file is used at runtime.  By convention, this base filename,
 which only includes the <em>major version</em> of the library, is called the library’s
@@ -387,8 +389,8 @@ previous section that the Semantic Version that you’ve chosen for your project
 library file (<code>libfoo.so.2.1.0</code>).  Au contraire, my friend!</p>
 
 <p>While there are many build systems out there these days for the C and C++
-ecosystem, the dreaded <a href="https://autotools.io/index.html">autotools</a> are still where we get most of our most
-cherished conventions.  The autotool responsible for shared libraries is called
+ecosystem, the dreaded <a href="https://autotools.io/index.html">autotools</a> are still where we get our most cherished
+conventions.  The autotool responsible for shared libraries is called
 <a href="https://www.gnu.org/software/libtool/">libtool</a>, and it has its own <a href="https://www.gnu.org/software/libtool/manual/html_node/Versioning.html">versioning scheme</a>, with
 exactly the same goals as semver — but its rules are <strong>just</strong> different enough
 to give you different version numbers for the same sequence of API changes.  And
@@ -419,7 +421,7 @@ according to libtool’s <a href="https://www.gnu.org/software/libtool/manual/ht
 
     <ul>
       <li>Backwards-incompatible change: bump current, set revision and age to 0.</li>
-      <li>Backwards-compatible change: bump current and age, set revision to 0.</li>
+      <li>Backwards-compatible change: bump current <em>and</em> age, set revision to 0.</li>
       <li>No API change: bump revision.</li>
     </ul>
   </li>
@@ -445,7 +447,8 @@ something else, I trust you to wing it.</p>
 <p>CMake doesn’t implement the <a href="http://git.savannah.gnu.org/cgit/libtool.git/tree/build-aux/ltmain.in?id=722b6af0fad19b3d9f21924ae5aa6dfae5957378#n7042">libtool magic</a> that transforms a
 version info into the shared library filename.  Instead, it gives you nice
 precise control over exactly what goes into your shared library’s filename and
-linker commands, using the <a href="https://cmake.org/cmake/help/v3.0/command/set_target_properties.html"><code>set_target_properties</code> command</a>.</p>
+linker commands, using the <a href="https://cmake.org/cmake/help/v3.0/command/set_target_properties.html"><code>set_target_properties</code> command</a> to set
+the library’s <code>VERSION</code> and <code>SOVERSION</code> properties.</p>
 
 <p>If you want to follow libtool’s scheme to the letter, you have two options:</p>
 

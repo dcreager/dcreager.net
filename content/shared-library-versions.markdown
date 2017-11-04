@@ -152,10 +152,11 @@ Under semver, a version number consists of three numbers: a **major version**, a
 **minor version**, and a **patch level**.  Each of these corresponds to one kind
 of change, and each time you cut a new release, you "bump" the portion that
 lines up with the "strongest" change that you've made to the public API.  Any
-backwards incompatible changes?  Bump the major version.  Any backwards
-compatible changes?  Bump the minor version.  No changes at all?  Bump the patch
-level.  This intuitively lines up with what many project maintainers were doing
-anyway, and semver just codifies those as an explicit set of rules.
+backwards incompatible changes?  Bump the major version, set minor and patch to
+0.  Any backwards compatible changes?  Bump the minor version, set patch to 0.
+No changes at all?  Bump the patch level.  This intuitively lines up with what
+many project maintainers were doing anyway, and semver just codifies those as an
+explicit set of rules.
 
 {::comment}
 What about bug fixes?  Most versioning schemes describe how the library is
@@ -230,7 +231,7 @@ including this change, you would bump the version number from **1.3.0** to
 **1.3.1**.
 
 But if your user doesn't recompile their code, they'll get the wrong answer when
-they run their program:
+they run their program using the new version of your library:
 
 ```
 Adelaide 11.14 (95)
@@ -263,13 +264,14 @@ will be symlinks to the last one.
 
 The `libfoo.so` file is only used at build-time.  (In fact, Debian-based systems
 will only include this file in the library's `-dev` package; if you don't have
-that package installed, you'll only see the two versioned filenames.)  When you
-compile some code that uses libfoo, by passing in `-lfoo` to your build tools,
-they don't know in advance which version of the library is installed.  Instead
-of doing some kind of wildcard match, looking for all filenames that match a
-pattern, the build tools assume that they can find the library with a simple
-`libfoo.so` filename.  It's up to you (or more realistically, your package
-manager) to make sure that this points at the currently installed version.
+that package installed, you'll only see the last two versioned filenames.)  When
+you compile some code that uses libfoo, by passing in `-lfoo` to your build
+tools, they don't know in advance which version of the library is installed.
+Instead of doing some kind of wildcard match, looking for all filenames that
+match a pattern, the build tools assume that they can find the library with a
+simple `libfoo.so` filename.  It's up to you (or more realistically, your
+package manager) to make sure that this points at the currently installed
+version.
 
 The `libfoo.so.1` file is used at runtime.  By convention, this base filename,
 which only includes the *major version* of the library, is called the library's
@@ -305,8 +307,8 @@ previous section that the Semantic Version that you've chosen for your project
 library file (`libfoo.so.2.1.0`).  Au contraire, my friend!
 
 While there are many build systems out there these days for the C and C++
-ecosystem, the dreaded [autotools][] are still where we get most of our most
-cherished conventions.  The autotool responsible for shared libraries is called
+ecosystem, the dreaded [autotools][] are still where we get our most cherished
+conventions.  The autotool responsible for shared libraries is called
 [libtool][], and it has its own [versioning scheme][libtool versions], with
 exactly the same goals as semver — but its rules are **just** different enough
 to give you different version numbers for the same sequence of API changes.  And
@@ -340,7 +342,7 @@ rules], but here's a summary:
    according to libtool's [rules][libtool rules]:
 
    - Backwards-incompatible change: bump current, set revision and age to 0.
-   - Backwards-compatible change: bump current and age, set revision to 0.
+   - Backwards-compatible change: bump current *and* age, set revision to 0.
    - No API change: bump revision.
 
 3. You will endeavour to pass this version info to the `libtool` using the
@@ -366,7 +368,8 @@ something else, I trust you to wing it.
 CMake doesn't implement the [libtool magic][libtool munging] that transforms a
 version info into the shared library filename.  Instead, it gives you nice
 precise control over exactly what goes into your shared library's filename and
-linker commands, using the [`set_target_properties` command][cmake rules].
+linker commands, using the [`set_target_properties` command][cmake rules] to set
+the library's `VERSION` and `SOVERSION` properties.
 
 [cmake rules]: https://cmake.org/cmake/help/v3.0/command/set_target_properties.html
 
