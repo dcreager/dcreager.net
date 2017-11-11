@@ -135,34 +135,34 @@ But because there’s no single, standardized packaging specification for Linux
 (let alone for other POSIX-y operating systems), that means someone has to do
 that separately for each distro that you need to support.</p>
 
-<p>So we created <a href="https://github.com/redjack/buzzy/">Buzzy</a>.  It gives us npm-style
+<p>So we created <a href="https://github.com/dcreager/buzzy/">Buzzy</a>.  It gives us npm-style
 dependency management for our C projects, and — almost as a side effect! — makes
 it easy to generate native packages of our software for all of the Linux distros
 that we need to support.  The end result is that it’s dirt simple to build and
-install <a href="https://github.com/redjack/varon-t/">one of our libraries</a>, along with
+install <a href="https://github.com/dcreager/varon-t/">one of our libraries</a>, along with
 all of its prerequisites:</p>
 
-<pre><code>$ git clone git://github.com/redjack/varon-t.git
+<pre><code>$ git clone git://github.com/dcreager/varon-t.git
+$ cd varon-t
 $ buzzy install -q
-[1] Clone git://github.com/redjack/check.git (master)
-[2] Clone git://github.com/redjack/libcork.git (master)
-[3] Clone git://github.com/redjack/clogger.git (master)
-[4] Clone git://github.com/redjack/buzzy-core.git (master)
-[5] Install native Arch package pkg-config 0.28+rev.2
-[6] Install native Arch package check 0.9.14
-[7] Install native Arch package cmake 3.0.2
-[8] Build libcork 0.14.1 (cmake)
-[9] Stage libcork 0.14.1 (cmake)
-[10] Package libcork 0.14.1 (pacman)
-[11] Install libcork 0.14.1 (pacman)
-[12] Build clogger 0.3.1 (cmake)
-[13] Stage clogger 0.3.1 (cmake)
-[14] Package clogger 0.3.1 (pacman)
-[15] Install clogger 0.3.1 (pacman)
-[16] Build varon-t 1.0.2 (cmake)
-[17] Stage varon-t 1.0.2 (cmake)
-[18] Package varon-t 1.0.2 (pacman)
-[19] Install varon-t 1.0.2 (pacman)
+[1] Clone git://github.com/dcreager/libcork.git (master)
+[2] Clone git://github.com/dcreager/clogger.git (master)
+[3] Clone git://github.com/dcreager/buzzy-core.git (master)
+[4] Install native Arch package pkg-config 0.28+rev.2
+[5] Install native Arch package check 0.9.14
+[6] Install native Arch package cmake 3.0.2
+[7] Build libcork 0.14.1 (cmake)
+[8] Stage libcork 0.14.1 (cmake)
+[9] Package libcork 0.14.1 (pacman)
+[10] Install libcork 0.14.1 (pacman)
+[11] Build clogger 0.3.1 (cmake)
+[12] Stage clogger 0.3.1 (cmake)
+[13] Package clogger 0.3.1 (pacman)
+[14] Install clogger 0.3.1 (pacman)
+[15] Build varon-t 1.0.2 (cmake)
+[16] Stage varon-t 1.0.2 (cmake)
+[17] Package varon-t 1.0.2 (pacman)
+[18] Install varon-t 1.0.2 (pacman)
 </code></pre>
 
 <p>That single <code>buzzy</code> command works unchanged on Arch Linux, RHEL 6 and 7, any
@@ -178,7 +178,7 @@ there are also some idiosyncrasies that come from dealing with C projects.</p>
 <h5 id="declarative-package-descriptions">Declarative package descriptions</h5>
 
 <p>With most existing C build tools, you provide a <strong>script</strong> that describes how to
-build your project.  With Buzzy, you provide a <a href="https://github.com/redjack/libcork/blob/develop/.buzzy/package.yaml">declarative
+build your project.  With Buzzy, you provide a <a href="https://github.com/dcreager/libcork/blob/develop/.buzzy/package.yaml">declarative
 description</a>
 of the package, and let Buzzy decide what to do with that description for your
 particular platform.</p>
@@ -188,7 +188,7 @@ particular platform.</p>
 <p>Buzzy does not have a single centralized database of package descriptions.
 Instead, you put your package description into the source repository as the code
 itself.  Part of your package description is a list of
-<a href="https://github.com/redjack/libcork/blob/develop/.buzzy/links.yaml">links</a> to
+<a href="https://github.com/dcreager/libcork/blob/develop/.buzzy/links.yaml">links</a> to
 other Buzzy-enabled source repositories that you depend on.</p>
 
 <h5 id="just-handle-dependencies-and-packaging">Just handle dependencies and packaging</h5>
