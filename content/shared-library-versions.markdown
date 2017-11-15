@@ -75,10 +75,10 @@ a thing.  Shared libraries provide two main benefits:
   making this sharing safe.  (No process can overwrite any of the library code,
   invalidating it for the other processes sharing that copy.)
 
-Both of these benefits are proportional to number of projects that depend on the
-shared library, so they're especially useful for "core" libraries that are used
-by a lot of other software packages — e.g., the low-level GUI toolkit provided
-by [GTK+][], or the [standard C library][glibc].
+Both of these benefits are proportional to the number of projects that depend on
+the shared library, so they're especially useful for "core" libraries that are
+used by a lot of other software packages — e.g., the low-level GUI toolkit
+provided by [GTK+][], or the [standard C library][glibc].
 
 [GTK+]: https://www.gtk.org/
 [glibc]: https://www.gnu.org/software/libc/
@@ -153,10 +153,10 @@ Under semver, a version number consists of three numbers: a **major version**, a
 of change, and each time you cut a new release, you "bump" the portion that
 lines up with the "strongest" change that you've made to the public API.  Any
 backwards incompatible changes?  Bump the major version, set minor and patch to
-0.  Any backwards compatible changes?  Bump the minor version, set patch to 0.
+0.  Only backwards compatible changes?  Bump the minor version, set patch to 0.
 No changes at all?  Bump the patch level.  This intuitively lines up with what
-many project maintainers were doing anyway, and semver just codifies those as an
-explicit set of rules.
+many project maintainers were doing anyway; semver just codifies that behavior
+as an explicit set of rules.
 
 {::comment}
 What about bug fixes?  Most versioning schemes describe how the library is
@@ -225,7 +225,7 @@ struct score {
 <% end %>
 
 Your user's code is still perfectly valid!  If you only consider the source API,
-since your user doesn't have to make any changes to their code, semver considers
+since your user doesn't have to make any changes to their code, semver calls
 this a bug-fix change.  When it's time to release the new version of the library
 including this change, you would bump the version number from **1.3.0** to
 **1.3.1**.
@@ -238,8 +238,8 @@ Adelaide 11.14 (95)
 ```
 
 Because the two pieces of *compiled* code had different assumptions about how
-the fields in `struct score` were laid out, they were incompatible, even though
-the original source code was fine!
+the fields in `struct score` were laid out in memory, they were incompatible,
+even though the original source code was fine!
 
 All of this means that if you're working with a compiled language and shared
 libraries, you should consider the **compiled ABI** as well as the **source
@@ -249,10 +249,13 @@ your version from **1.3.0** to **2.0.0**.
 
 #### Shared library filenames
 
+Now that we've talked about version numbers in the abstract, what do we see in
+practice?
+
 On Linux and Mac machines, you will also encode version numbers into the
 filenames of your shared libraries.  Each library will end up with **two or
 three** different filenames under `/usr/lib`.  For instance, if you have version
-1.2.3 of libfoo installed, you'll find:
+1.2.3 of a shared library called _libfoo_ installed, you'll find:
 
     $ ls /usr/lib/libfoo*
     /usr/lib/libfoo.so
@@ -264,14 +267,14 @@ will be symlinks to the last one.
 
 The `libfoo.so` file is only used at build-time.  (In fact, Debian-based systems
 will only include this file in the library's `-dev` package; if you don't have
-that package installed, you'll only see the last two versioned filenames.)  When
-you compile some code that uses libfoo, by passing in `-lfoo` to your build
-tools, they don't know in advance which version of the library is installed.
-Instead of doing some kind of wildcard match, looking for all filenames that
-match a pattern, the build tools assume that they can find the library with a
-simple `libfoo.so` filename.  It's up to you (or more realistically, your
-package manager) to make sure that this points at the currently installed
-version.
+that package installed, you'll only see the last two versioned filenames.) You
+compile some code that uses _libfoo_ by passing in `-lfoo` to your build tools.
+But when you do this, the build tools don't know in advance which version of the
+library is installed.  Instead of doing some kind of wildcard match, looking for
+all filenames that match a pattern, the build tools assume that they can find
+the library with a simple `libfoo.so` filename.  It's up to you (or more
+realistically, your package manager) to make sure that this points at the
+currently installed version.
 
 The `libfoo.so.1` file is used at runtime.  By convention, this base filename,
 which only includes the *major version* of the library, is called the library's
@@ -296,8 +299,8 @@ So, at runtime, when `/usr/bin/foo` is loaded, the dynamic linker will see these
 The last file, with the full version number included in the filename, isn't
 technically needed these days.  I guess you could have multiple copies of the
 same major version installed, but the symlinks will only point at one of them,
-so it's not clear to me how that would be useful beyond satisfying your hoarder
-tendencies!
+so it's not clear to me how that would be useful beyond satisfying any hoarder
+tendencies you might have!
 
 #### libtool versions
 
