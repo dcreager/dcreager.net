@@ -1,6 +1,6 @@
 # dcreager.net
 
-This is the source tree for [dcreager.net](http://dcreager.net/).  Most of the
+This is the source tree for [dcreager.net](https://dcreager.net/).  Most of the
 pages on the site are generated from Markdown files or partial HTML files in
 this git repository.  I use [nanoc](http://nanoc.ws) to compile the source into
 a full static HTML website.
@@ -98,7 +98,7 @@ local changes that you've made) at [localhost:3000](http://localhost:3000).
 
 If you've made some changes (and made nice git commits out of them), then you
 can deploy the compiled site so that it's live at
-[dcreager.net](http://dcreager.net/).
+[dcreager.net](https://dcreager.net/).
 
     $ bundle exec nanoc compile
     $ bundle exec nanoc deploy
