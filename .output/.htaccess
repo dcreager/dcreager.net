@@ -1,3 +1,11 @@
+# ensure HTTPS
+RewriteCond %{HTTP:X-Forwarded-Proto} !https
+RewriteCond %{HTTPS} off
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# HSTS!
+Header set Strict-Transport-Security "max-age=31536000" env=HTTPS
+
 # Lets Encrypt support
 RewriteRule ^.well-known/(.*)$ - [L]
 
