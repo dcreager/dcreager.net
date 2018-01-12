@@ -6,6 +6,11 @@ RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 # HSTS!
 Header set Strict-Transport-Security "max-age=31536000" env=HTTPS
 
+# NEL!
+Header set Report-To "{\"group\": \"nel\", \"url\": \"https://dcreager.net/nel\", \"max-age\": 86400}" env=HTTPS
+Header set NEL "{\"report-to\": \"nel\", \"max-age\": 86400, \"success-fraction\": 1.0, \"failure-fraction\": 1.0}" env=HTTPS
+RewriteRule ^nel/?$ - [L,R=204]
+
 # Lets Encrypt support
 RewriteRule ^.well-known/(.*)$ - [L]
 
