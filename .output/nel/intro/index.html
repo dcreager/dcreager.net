@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>
+    dcreager.net – Introducing Network Error Logging
+  </title>
+  <meta name="author" content="Douglas Creager">
+
+    <meta charset="utf-8">
+
+  <meta name="google-site-verification"
+        content="7KIoYPNsfdDxIdX1QQ7SM2Nm_nyy13aRlDkzE3wzhhY" />
+
+  <link rel="shortcut icon" href="/media/images/dcreager.ico">
+
+  <link rel="alternate" type="application/atom+xml"
+        title="dcreager.net" href="/atom.xml"/>
+
+  <!-- Bootstrap -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel=stylesheet type=text/css media=screen
+        href="/media/vendor/css/bootstrap.min.css">
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+  <![endif]-->
+
+  <!-- MathJax -->
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      jax: ["input/TeX","output/HTML-CSS"],
+      displayAlign: "left",
+      displayIndent: "2em"
+    });
+  </script>
+  <script type="text/javascript" async
+          src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+  </script>
+
+  <!-- Twitter nonsense -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="@dcreager">
+  <meta name="twitter:title"
+        content="Introducing Network Error Logging">
+  <meta name="twitter:description"
+        content="in which we get the browser to do our work for us">
+  <meta name="twitter:image"
+        content="https://www.gravatar.com/avatar/04ee3ca11f1ae11c63faa7995dbf1ed7?s=2048">
+
+  <!-- Customizations -->
+  <link rel=stylesheet type=text/css media=screen
+        href="/media/css/coderay.css">
+  <link rel=stylesheet type=text/css media=screen
+        href="/media/css/dcreager.css">
+  <link rel=stylesheet type=text/css media=screen
+        href="https://fonts.googleapis.com/css?family=Oxygen:400,700">
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+  <div class="col-md-10 col-md-offset-1">
+    <nav class="navbar navbar-default" role="navigation">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand logo" href="/"><b>dcreager.net</b></a>
+      </div>
+
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="/about/">About</a></li></li>
+          <li><a href="/archive/">Archive</a></li></li>
+          <li><a href="/talks/">Talks</a></li></li>
+          <li><a href="/publications/">Publications</a></li></li>
+        </ul>
+      </div><!-- /.navbar-collapse -->
+    </nav>
+  </div>
+</div>
+
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        <div class="blog">
+          <div class="date">2018-03-26</div>
+          <h1>Introducing Network Error Logging</h1>
+          
+<style>
+.log {
+  border-radius: 0;
+  font-size: 11px;
+  padding: 6px;
+}
+
+.actor {
+  width: 10em;
+  margin-right: 20px;
+  float: left;
+}
+</style>
+
+<p>Let’s say you’ve got a web site or REST service.  You have clients that send
+requests to your server, which performs some interesting processing and sends
+responses back.  The clients might be people using a browser, or native code in
+a mobile app making requests on behalf of the user, or something more exotic.
+But the overall picture is the same:</p>
+
+<p><img src="service-flow.png" alt="request service flow" class="figure" /></p>
+
+<p>How do you monitor this service — especially when that cloudy bit in the middle
+is completely out of your control?</p>
+
+<p>Server logs are a great source of information, and are typically part of the
+answer.  Your server creates a record for every single connection attempt that
+it receives, including information about the client, the resource they
+requested, and whether or not the request succeeded:</p>
+
+<p><img src="server.png" alt="server" class="actor" /></p>
+
+<pre class="log">
+192.0.2.1 - - [26/Mar/2018:03:04:05.123 +0000] "GET /about/" 200 -
+192.0.2.1 - - [26/Mar/2018:03:04:17.456 +0000] "GET /login/" 200 -
+198.51.100.13 - - [26/Mar/2018:03:04:24.924 +0000] "GET /unknown/" 402 -
+198.51.100.13 - - [26/Mar/2018:03:04:38.129 +0000] "GET /" 200 -
+198.51.100.13 - - [26/Mar/2018:03:05:08.751 +0000] "GET /about/" 200 -
+192.0.2.1 - - [26/Mar/2018:03:05:13.314 +0000] "GET /contact/" 200 -
+192.0.2.1 - - [26/Mar/2018:03:05:48.624 +0000] "GET /directions/" 200 -
+203.0.113.56 - - [26/Mar/2018:03:08:08.242 +0000] "GET /" 200 -
+203.0.113.56 - - [26/Mar/2018:03:08:52.018 +0000] "GET /about/" 200 -
+203.0.113.56 - - [26/Mar/2018:03:09:03.483 +0000] "GET /contact/" 200 -
+203.0.113.56 - - [26/Mar/2018:03:10:32.851 +0000] "GET /logout/" 500 -
+192.0.2.1 - - [26/Mar/2018:03:10:50.823 +0000] "GET /menu/" 200 -
+192.0.2.1 - - [26/Mar/2018:03:12:03.802 +0000] "GET /specials/" 200 -
+198.51.100.13 - - [26/Mar/2018:03:12:24.516 +0000] "GET /login/" 200 -
+</pre>
+
+<p>There are a couple of interesting wrinkles.  First, how do you get at those
+server logs?  Your web server will typically write those to disk on the machine
+that it’s running on, so you need to somehow copy the contents of the logs to
+whatever monitoring or observability platform you’re using.  (When you’re first
+starting off, you can get away with manually logging into the servers and
+grepping through the files directly, but that doesn’t scale as you add machines
+or developers.)  This isn’t an unsolvable problem, but it does add some
+operational complexity to your setup.</p>
+
+<p>More interesting is that your server logs don’t have visibility into all of the
+problems that your clients might encounter — especially those that involve the
+network!  Since the network isn’t under your control, you have to consider it a
+black box: your client puts requests into one side, and hopefully those requests
+come out the other side at your server.</p>
+
+<p>To have an end-to-end view of your request traffic, you need to instrument the
+client side of the connection, too.  Have it record every time it attempts a
+request:</p>
+
+<p><img src="client.png" alt="client" class="actor" /></p>
+
+<pre class="log">
+2018-03-26 03:04:04 https://example.com/about/ ⇒ 200
+2018-03-26 03:04:16 https://example.com/login/ ⇒ 200
+2018-03-26 03:05:13 https://example.com/contact/ ⇒ 200
+2018-03-26 03:05:47 https://example.com/directions/ ⇒ 200
+2018-03-26 03:10:50 https://example.com/menu/ ⇒ 200
+2018-03-26 03:12:02 https://example.com/specials/ ⇒ 200
+</pre>
+
+<p>Then send those records to the same analysis platform that you send the server
+logs to.  If there’s a record that appears on the client side, but not on the
+server side, then you’ve found an interesting case where the network dropped
+your connection!  (The next step is to figure out <strong>why</strong> the connection was
+dropped, which is a topic worthy of its own post.)</p>
+
+<p>When you have control over the client code, this is pretty doable.  Most of the
+libraries that you’d use to make those HTTP requests provide all of the
+necessary hooks to add in this kind of instrumentation.  If you’re trying to
+monitor a web site that your users access directly from a browser, it’s a bit
+more complicated; but with the right JavaScript (and maybe a smattering of
+service workers), you can hook into and monitor the browser’s requests to your
+site, too.</p>
+
+<p>Of course, even if it’s easy to spackle all of the pieces together, that’s one
+more bit of operational coding that takes you away from working on your actual
+service.  Wouldn’t it be nice if the browser or HTTP library would do all of
+this client-side monitoring work for you?</p>
+
+<p>Enter <a href="https://wicg.github.io/network-error-logging/">Network Error Logging</a> (NEL), a new web platform spec that we’re
+working on in the W3C’s <a href="https://www.w3.org/webperf/">Web Performance Working Group</a>.  With NEL, you
+can instruct user agents to collect the same set of information that would
+appear in your server logs.  But since the data is being collected directly by
+the user agent, you should have visibility into <strong>all</strong> of your clients’
+connection requests, not just those that made it to your serving infrastructure.</p>
+
+<p>NEL is still in its early stages.  We have what we think is a good initial
+draft, and we’re wrapping up proof-of-concept implementations (both in the
+browser and in a handful of HTTP request libraries).  But we’d love to hear
+feedback.  Do you have any interesting outages that NEL would’ve given you
+better visibility into?  Is there anything you think we’ve missed?  Let me know
+through <a href="/about/">the usual channels</a> or by filing an issue on <a href="https://github.com/wicg/network-error-logging">our Github
+repo</a>.</p>
+
+
+        </div>
+      </div>
+    </div> <!-- /row -->
+  </div> <!-- /container -->
+
+    <footer class="copyright">
+    <div class="container">
+      <p>Copyright © 2009-2018, Douglas Creager.
+      All&nbsp;rights&nbsp;reserved.</p>
+    </div>
+  </footer>
+
+    <script src="//code.jquery.com/jquery.min.js"></script>
+  <script src="/media/vendor/js/bootstrap.min.js"></script>
+
+<!-- Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-83885503-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+</html>
