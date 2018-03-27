@@ -1,14 +1,25 @@
 ---
-draft: true
 kind: article
-created_at: 2018-03-26
-updated_at: 2018-03-27
+created_at: 2018-03-27
 layout: /post.html
 title: "Introducing Network Error Logging"
 description: >-
   in which we get the browser to do our work for us
 tags: [nel]
 ---
+
+Let's say you've got a web site or REST service.  You have clients that send
+requests to your server, which performs some interesting processing and sends
+responses back.  The clients might be people using a browser, or native code in
+a mobile app making requests on behalf of the user, or something more exotic.
+But the overall picture is the same:
+
+![request service flow](/nel/intro/service-flow.png){:.figure}
+
+How do you monitor this service — especially when that annoying cloudy bit in
+the middle is completely out of your control?
+
+<hr class="jump">
 
 <style>
 .log {
@@ -27,23 +38,12 @@ tags: [nel]
 }
 </style>
 
-Let's say you've got a web site or REST service.  You have clients that send
-requests to your server, which performs some interesting processing and sends
-responses back.  The clients might be people using a browser, or native code in
-a mobile app making requests on behalf of the user, or something more exotic.
-But the overall picture is the same:
-
-![request service flow](service-flow.png){:.figure}
-
-How do you monitor this service — especially when that annoying cloudy bit in
-the middle is completely out of your control?
-
 Server logs are a great source of information, and are typically part of the
 answer.  Your server creates a record for every single connection attempt that
 it receives, including information about the client, the resource they
 requested, and whether or not the request succeeded:
 
-![server](server.png){:.actor}
+![server](/nel/intro/server.png){:.actor}
 
 <pre class="log">
 192.0.2.1 - - [26/Mar/2018:03:04:05.123 +0000] "GET /about/" 200 -
@@ -81,7 +81,7 @@ To have an end-to-end view of your request traffic, you need to instrument the
 client side of the connection, too.  Have it record every time it attempts a
 request:
 
-![client](client.png){:.actor}
+![client](/nel/intro/client.png){:.actor}
 
 <pre class="log">
 2018-03-26 03:04:04 https://example.com/about/ ⇒ 200

@@ -3,13 +3,33 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
   <id>https://dcreager.net/</id>
   <title>dcreager.net</title>
-  <updated>2017-10-29T00:00:00Z</updated>
+  <updated>2018-03-27T00:00:00Z</updated>
   <link rel="alternate" href="https://dcreager.net/"/>
   <link rel="self" href="https://dcreager.net/atom.xml"/>
   <author>
     <name>Douglas Creager</name>
     <uri>https://dcreager.net/</uri>
   </author>
+  <entry>
+    <id>tag:dcreager.net,2018-03-27:/nel/intro/</id>
+    <title type="html">Introducing Network Error Logging</title>
+    <published>2018-03-27T00:00:00Z</published>
+    <updated>2018-03-27T00:00:00Z</updated>
+    <link rel="alternate" href="https://dcreager.net/nel/intro/"/>
+    <content type="html">
+&lt;p&gt;Let’s say you’ve got a web site or REST service.  You have clients that send
+requests to your server, which performs some interesting processing and sends
+responses back.  The clients might be people using a browser, or native code in
+a mobile app making requests on behalf of the user, or something more exotic.
+But the overall picture is the same:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="/nel/intro/service-flow.png" alt="request service flow" class="figure" /&gt;&lt;/p&gt;
+
+&lt;p&gt;How do you monitor this service — especially when that annoying cloudy bit in
+the middle is completely out of your control?&lt;/p&gt;
+
+</content>
+  </entry>
   <entry>
     <id>tag:dcreager.net,2017-10-29:/shared-library-versions/</id>
     <title type="html">Shared library versions</title>
@@ -692,55 +712,6 @@ is in order.  The core logic of the OmniGraffle exporter is an
 AppleScript.  Unfortunately, AppleScripts are stored in a binary
 format, so if you go to the Github page, you can’t easily view the
 contents of the file.  The important line of the script is:&lt;/p&gt;</content>
-  </entry>
-  <entry>
-    <id>tag:dcreager.net,2010-01-08:/2010/01/08/default-scons-clean-targets/</id>
-    <title type="html">Default “scons -c” targets</title>
-    <published>2010-01-08T00:00:00Z</published>
-    <updated>2010-01-08T00:00:00Z</updated>
-    <link rel="alternate" href="https://dcreager.net/2010/01/08/default-scons-clean-targets/"/>
-    <content type="html">
-&lt;p&gt;As I mentioned in a &lt;a href="/2009/12/18/make-distclean-in-scons/"&gt;previous
-post&lt;/a&gt;, the automatic “clean”
-target provided by SCons (&lt;code&gt;scons -c&lt;/code&gt;) is very useful for cleaning out
-build files, without requiring much in the way of configuration.
-Anything that SCons generates when you run &lt;code&gt;scons&lt;/code&gt; will be
-automatically cleaned when you run &lt;code&gt;scons -c&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;While useful, I’d like more control over the behavior of &lt;code&gt;scons -c&lt;/code&gt;.
-Specifically, being a good TDD junkie, I have several test cases that
-I can run using &lt;code&gt;scons test&lt;/code&gt;:&lt;/p&gt;
-
-&lt;pre class="CodeRay"&gt;&lt;code&gt;build_test = env.Program( ... )
-env.Alias(&lt;span class="string"&gt;&lt;span class="delimiter"&gt;&amp;quot;&lt;/span&gt;&lt;span class="content"&gt;build-tests&lt;/span&gt;&lt;span class="delimiter"&gt;&amp;quot;&lt;/span&gt;&lt;/span&gt;, build_test)
-
-run_test = env.Alias(&lt;span class="string"&gt;&lt;span class="delimiter"&gt;&amp;quot;&lt;/span&gt;&lt;span class="content"&gt;test&lt;/span&gt;&lt;span class="delimiter"&gt;&amp;quot;&lt;/span&gt;&lt;/span&gt;, [build_test],
-                     [&lt;span class="string"&gt;&lt;span class="delimiter"&gt;&amp;quot;&lt;/span&gt;&lt;span class="content"&gt;@%s&lt;/span&gt;&lt;span class="delimiter"&gt;&amp;quot;&lt;/span&gt;&lt;/span&gt; % build_test[&lt;span class="integer"&gt;0&lt;/span&gt;].abspath])
-env.AlwaysBuild(run_test)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;By setting it up this way, the test programs aren’t built by default:
-you have to explicitly run &lt;code&gt;scons build-tests&lt;/code&gt; (if you want to build
-the tests but not run them) or &lt;code&gt;scons test&lt;/code&gt; (if you want to build and
-run them).  Moreover, because of SCons’s dependency tracking, I can
-just use &lt;code&gt;scons test&lt;/code&gt; as my usual build command during my
-Edit-Test-Debug loop.  SCons will automatically rebuild any changed
-source files before running the tests.&lt;/p&gt;
-
-&lt;p&gt;All of this is great.  So what’s the problem?  As I mentioned above,
-&lt;code&gt;scons -c&lt;/code&gt; only cleans the build files that are created by &lt;code&gt;scons&lt;/code&gt; —
-and since I’ve explicitly set things up so that tests aren’t &lt;em&gt;built&lt;/em&gt;
-by default, they’ll also not be &lt;em&gt;cleaned&lt;/em&gt; by default.  This means that
-to fully clean out my build targets, I have to run two commands:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;$ scons -c
-$ scons -c build-tests
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Not ideal!  I’d prefer if &lt;code&gt;scons -c&lt;/code&gt; cleaned everything, just like
-&lt;code&gt;make clean&lt;/code&gt; would in the Automake world.&lt;/p&gt;
-
-</content>
   </entry>
 </feed>
 

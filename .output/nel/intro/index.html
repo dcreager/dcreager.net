@@ -90,13 +90,23 @@
       <div class="col-md-8 col-md-offset-2">
         <div class="blog">
           <div class="date">
-            2018-03-26
-            <span class="updated">
-              [last updated 2018-03-27]
-            </span>
+            2018-03-27
           </div>
           <h1>Introducing Network Error Logging</h1>
           
+<p>Let’s say you’ve got a web site or REST service.  You have clients that send
+requests to your server, which performs some interesting processing and sends
+responses back.  The clients might be people using a browser, or native code in
+a mobile app making requests on behalf of the user, or something more exotic.
+But the overall picture is the same:</p>
+
+<p><img src="/nel/intro/service-flow.png" alt="request service flow" class="figure" /></p>
+
+<p>How do you monitor this service — especially when that annoying cloudy bit in
+the middle is completely out of your control?</p>
+
+<hr class="jump" />
+
 <style>
 .log {
   border-radius: 0;
@@ -114,23 +124,12 @@
 }
 </style>
 
-<p>Let’s say you’ve got a web site or REST service.  You have clients that send
-requests to your server, which performs some interesting processing and sends
-responses back.  The clients might be people using a browser, or native code in
-a mobile app making requests on behalf of the user, or something more exotic.
-But the overall picture is the same:</p>
-
-<p><img src="service-flow.png" alt="request service flow" class="figure" /></p>
-
-<p>How do you monitor this service — especially when that annoying cloudy bit in
-the middle is completely out of your control?</p>
-
 <p>Server logs are a great source of information, and are typically part of the
 answer.  Your server creates a record for every single connection attempt that
 it receives, including information about the client, the resource they
 requested, and whether or not the request succeeded:</p>
 
-<p><img src="server.png" alt="server" class="actor" /></p>
+<p><img src="/nel/intro/server.png" alt="server" class="actor" /></p>
 
 <pre class="log">
 192.0.2.1 - - [26/Mar/2018:03:04:05.123 +0000] "GET /about/" 200 -
@@ -168,7 +167,7 @@ come out the other side at your server.</p>
 client side of the connection, too.  Have it record every time it attempts a
 request:</p>
 
-<p><img src="client.png" alt="client" class="actor" /></p>
+<p><img src="/nel/intro/client.png" alt="client" class="actor" /></p>
 
 <pre class="log">
 2018-03-26 03:04:04 https://example.com/about/ ⇒ 200

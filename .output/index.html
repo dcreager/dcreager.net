@@ -93,6 +93,29 @@
 
   
     <li class="summary">
+      <div class="date">2018-03-27</div>
+      <h1><a href="/nel/intro/">Introducing Network Error Logging</a></h1>
+      
+<p>Let’s say you’ve got a web site or REST service.  You have clients that send
+requests to your server, which performs some interesting processing and sends
+responses back.  The clients might be people using a browser, or native code in
+a mobile app making requests on behalf of the user, or something more exotic.
+But the overall picture is the same:</p>
+
+<p><img src="/nel/intro/service-flow.png" alt="request service flow" class="figure" /></p>
+
+<p>How do you monitor this service — especially when that annoying cloudy bit in
+the middle is completely out of your control?</p>
+
+
+      <div class="link">
+        <a href="/nel/intro/">
+          Continue reading <span class="glyphicon glyphicon-share-alt"></span>
+        </a>
+      </div>
+    </li>
+  
+    <li class="summary">
       <div class="date">2017-10-29</div>
       <h1><a href="/shared-library-versions/">Shared library versions</a></h1>
       
@@ -447,37 +470,6 @@ to a difficult topic!</p>
 
       <div class="link">
         <a href="/csp-concurrency/intro/">
-          Continue reading <span class="glyphicon glyphicon-share-alt"></span>
-        </a>
-      </div>
-    </li>
-  
-    <li class="summary">
-      <div class="date">2014-11-21</div>
-      <h1><a href="/2014/11/dependency-management-in-c/">Dependency management in C</a></h1>
-      
-<p>At <a href="http://www.redjack.com/">RedJack</a>, all of our <a href="http://www.redjack.com/solutions/">core
-products</a> depend on a network sensor that
-collects various bits of information about the raw traffic that we see on the
-network.  We’re doing some non-trivial analysis on fairly large network links
-using commodity hardware, so we’ve implemented this sensor in C.  At its core is
-an extremely fast custom <a href="http://en.wikipedia.org/wiki/Flow-based_programming">flow-based
-programming</a> framework.
-It’s a damn cool piece of code, but this post isn’t about the code itself; it’s
-about how we deliver that code to our customers.</p>
-
-<p>Just because we’ve written this component in C, that doesn’t mean we want to
-turn our back on the kinds of tooling you get to use when working in other, more
-modern languages.  In particular, once you’ve gotten used to modern package
-managers like <a href="https://www.npmjs.org/">npm</a>, <a href="http://leiningen.org/">leiningen</a>,
-<a href="http://golang.org/doc/articles/go_command.html">go</a>, and
-<a href="http://doc.crates.io/guide.html">Cargo</a>, it’s hard to go back to things like
-<a href="http://www.cmake.org/">CMake</a> and <em>[shudder]</em> the
-<a href="http://en.wikipedia.org/wiki/GNU_build_system">autotools</a>.</p>
-
-
-      <div class="link">
-        <a href="/2014/11/dependency-management-in-c/">
           Continue reading <span class="glyphicon glyphicon-share-alt"></span>
         </a>
       </div>
