@@ -110,6 +110,14 @@ ul ul, ol ul, ul ol, ol ol {
     padding-bottom: 10px;
 }
 
+.thanks {
+    border-top: 1px solid #eeeeee;
+    margin-top: 14px;
+    padding-top: 10px;
+    font-size: 12px;
+    color: #aaa;
+}
+
 
 /*----------------------------------------------------------------
  * Footnotes

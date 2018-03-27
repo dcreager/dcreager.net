@@ -32,8 +32,8 @@ But the overall picture is the same:
 
 ![request service flow](service-flow.png){:.figure}
 
-How do you monitor this service — especially when that cloudy bit in the middle
-is completely out of your control?
+How do you monitor this service — especially when that annoying cloudy bit in
+the middle is completely out of your control?
 
 Server logs are a great source of information, and are typically part of the
 answer.  Your server creates a record for every single connection attempt that
@@ -95,25 +95,42 @@ server side, then you've found an interesting case where the network dropped
 your connection!  (The next step is to figure out **why** the connection was
 dropped, which is a topic worthy of its own post.)
 
-When you have control over the client code, this is pretty doable.  Most of the
-libraries that you'd use to make those HTTP requests provide all of the
-necessary hooks to add in this kind of instrumentation.  If you're trying to
-monitor a web site that your users access directly from a browser, it's a bit
-more complicated; but with the right JavaScript (and maybe a smattering of
-service workers), you can hook into and monitor the browser's requests to your
-site, too.
+When you have control over the client code (for instance, writing native code
+for a mobile app), this is pretty doable.  Most of the libraries that you'd use
+to make those HTTP requests provide all of the necessary hooks to add in this
+kind of instrumentation.  Of course, that's one more bit of operational coding
+that takes you away from working on your actual service.
 
-Of course, even if it's easy to spackle all of the pieces together, that's one
-more bit of operational coding that takes you away from working on your actual
-service.  Wouldn't it be nice if the browser or HTTP library would do all of
-this client-side monitoring work for you?
+This also works if you're trying to monitor a site or service that is accessed
+from a browser.  You'd attach custom JavaScript callbacks to `onerror` events,
+for instance, and check for errors on manual `fetch` requests.  It's a bit
+tedious, but definitely doable.  But there are two ways that this can fall over:
+
+First, there are some browser-initiated requests that don't provide the hooks
+that you need (navigation requests, for instance).  There's no amount of
+client-side coding that can give you visibility into these requests.
+
+More interestingly, it's the site that **initiates** the request that would get
+to see these events, not the origin that **receives** them.  For instance, if
+you've written a popular REST API that lots of sites decide to use, you really
+want to instrument **all** uses of your API, without requiring those sites to do
+any manual work.  You could provide a JavaScript wrapper API that instruments
+every request that it makes, but what about the request to download that
+JavaScript code?  What if it fails?  The site that uses your API would have
+visibility into that failure, but you, the API author, and the person best
+placed to fix the problem, would not!
+
+Given all of these issues, wouldn't it be nice if the browser or HTTP library
+would do all of this client-side monitoring work for you?
 
 Enter [Network Error Logging][NEL] (NEL), a new web platform spec that we're
 working on in the W3C's [Web Performance Working Group][WebPerf].  With NEL, you
 can instruct user agents to collect the same set of information that would
-appear in your server logs.  But since the data is being collected directly by
-the user agent, you should have visibility into **all** of your clients'
-connection requests, not just those that made it to your serving infrastructure.
+appear in your server logs.  Those instructions would apply to **all** requests
+to your server's origin, regardless of how (and on which containing sites) those
+requests were initiated.  And since the data is collected directly by the user
+agent, you should have visibility into **all** of your clients' connection
+requests, not just those that made it to your serving infrastructure.
 
 [NEL]: https://wicg.github.io/network-error-logging/
 [WebPerf]: https://www.w3.org/webperf/
@@ -128,3 +145,6 @@ repo][NEL github].
 
 [contact]: /about/
 [NEL github]: https://github.com/wicg/network-error-logging
+
+Thanks to Ilya Grigorik for comments and corrections.
+{:.thanks}
