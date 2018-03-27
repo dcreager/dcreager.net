@@ -2,6 +2,7 @@
 draft: true
 kind: article
 created_at: 2018-03-26
+updated_at: 2018-03-27
 layout: /post.html
 title: "Introducing Network Error Logging"
 description: >-

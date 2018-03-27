@@ -11,7 +11,14 @@
     <div class="row">
       <div class="col-md-8 col-md-offset-2">
         <div class="blog">
-          <div class="date"><%= date_ymd(@item[:created_at]) %></div>
+          <div class="date">
+            <%= date_ymd(@item[:created_at]) %>
+            <%- if @item[:updated_at] -%>
+            <span class="updated">
+              [last updated <%= date_ymd(@item[:updated_at]) %>]
+            </span>
+            <%- end -%>
+          </div>
           <%- if @item[:series] -%>
           <h2 class="series"><%= @item[:series] %></h2>
           <%- end -%>

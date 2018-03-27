@@ -202,6 +202,10 @@ nav.navbar-default {
     color: #888;
 }
 
+.blog .date .updated {
+    margin-left: 0.5em;
+}
+
 .blog h1 {
     margin-top: 0px;
 }
