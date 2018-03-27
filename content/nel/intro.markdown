@@ -15,11 +15,14 @@ tags: [nel]
   border-radius: 0;
   font-size: 11px;
   padding: 6px;
+  margin: 3em 0;
 }
 
 .actor {
   width: 10em;
   margin-right: 20px;
+  margin-top: 1.5em;
+  margin-bottom: 1em;
   float: left;
 }
 </style>
