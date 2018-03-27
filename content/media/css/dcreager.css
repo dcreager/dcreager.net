@@ -124,6 +124,13 @@ ul ul, ol ul, ul ol, ol ol {
  * Code snippets
  */
 
+code,
+kbd,
+pre,
+samp {
+  font-family: Menlo, Monaco, Consolas, monospace;
+}
+
 pre, pre code {
     white-space: pre;
 }
