@@ -7,9 +7,9 @@ RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 Header set Strict-Transport-Security "max-age=31536000" env=HTTPS
 
 # NEL!
-Header set Report-To "{\"group\": \"nel\", \"max-age\": 86400, \"endpoints\": [{\"url\": \"https://dcreager.net/upload-nel/alpha/\", \"priority\": 1, \"weight\": 2}, {\"url\": \"https://dcreager.net/upload-nel/beta/\", \"priority\": 1, \"weight\": 3}]}" env=HTTPS
-Header append Report-To "{\"group\": \"other\", \"max-age\": 86400, \"endpoints\": [{\"url\": \"https://dcreager.net/upload-nel/gamma/\", \"priority\": 1, \"weight\": 2}]}" env=HTTPS
-Header set NEL "{\"report-to\": \"nel\", \"max-age\": 600, \"success-fraction\": 1.0, \"failure-fraction\": 1.0}" env=HTTPS
+Header set Report-To "{\"group\": \"nel\", \"max-age\": 86400, \"include-subdomains\": true, \"endpoints\": [{\"url\": \"https://dcreager.net/upload-nel/alpha/\", \"priority\": 1, \"weight\": 2}, {\"url\": \"https://dcreager.net/upload-nel/beta/\", \"priority\": 1, \"weight\": 3}]}" env=HTTPS
+Header append Report-To "{\"group\": \"other\", \"max-age\": 86400, \"include-subdomains\": true, \"endpoints\": [{\"url\": \"https://dcreager.net/upload-nel/gamma/\", \"priority\": 1, \"weight\": 2}]}" env=HTTPS
+Header set NEL "{\"report-to\": \"nel\", \"max-age\": 600, \"include-subdomains\": true, \"success-fraction\": 1.0, \"failure-fraction\": 1.0}" env=HTTPS
 RewriteRule ^upload-nel/(.*)$ - [L,R=204]
 
 # Lets Encrypt support
