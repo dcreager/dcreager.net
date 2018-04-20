@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>
+    dcreager.net – Clean git histories and code review workflows
+  </title>
+  <meta name="author" content="Douglas Creager">
+
+    <meta charset="utf-8">
+
+  <meta name="google-site-verification"
+        content="7KIoYPNsfdDxIdX1QQ7SM2Nm_nyy13aRlDkzE3wzhhY" />
+
+  <link rel="shortcut icon" href="/media/images/dcreager.ico">
+
+  <link rel="alternate" type="application/atom+xml"
+        title="dcreager.net" href="/atom.xml"/>
+
+  <!-- Bootstrap -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel=stylesheet type=text/css media=screen
+        href="/media/vendor/css/bootstrap.min.css">
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+  <![endif]-->
+
+  <!-- MathJax -->
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      jax: ["input/TeX","output/HTML-CSS"],
+      displayAlign: "left",
+      displayIndent: "2em"
+    });
+  </script>
+  <script type="text/javascript" async
+          src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+  </script>
+
+  <!-- Twitter nonsense -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="@dcreager">
+  <meta name="twitter:title"
+        content="Clean git histories and code review workflows">
+  <meta name="twitter:description"
+        content="in which we get the browser to do our work for us">
+  <meta name="twitter:image"
+        content="https://www.gravatar.com/avatar/04ee3ca11f1ae11c63faa7995dbf1ed7?s=2048">
+
+  <!-- Customizations -->
+  <link rel=stylesheet type=text/css media=screen
+        href="/media/css/coderay.css">
+  <link rel=stylesheet type=text/css media=screen
+        href="/media/css/dcreager.css">
+  <link rel=stylesheet type=text/css media=screen
+        href="https://fonts.googleapis.com/css?family=Oxygen:400,700">
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+  <div class="col-md-10 col-md-offset-1">
+    <nav class="navbar navbar-default" role="navigation">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand logo" href="/"><b>dcreager.net</b></a>
+      </div>
+
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="/about/">About</a></li></li>
+          <li><a href="/archive/">Archive</a></li></li>
+          <li><a href="/talks/">Talks</a></li></li>
+          <li><a href="/publications/">Publications</a></li></li>
+        </ul>
+      </div><!-- /.navbar-collapse -->
+    </nav>
+  </div>
+</div>
+
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        <div class="blog">
+          <div class="date">
+            2018-04-19
+          </div>
+          <h1>Clean git histories and code review workflows</h1>
+          
+<script async="" src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<p>A couple of recent tweets really resonated me.</p>
+
+<p><a href="https://adityamukerjee.net/">Aditya</a> started an interesting conversation:</p>
+
+<blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">If you&#39;d asked me a few weeks ago whether I preferred squash-merges or merge commits, I&#39;d have been somewhat ambivalent.<br /><br />After today, I&#39;m pretty sold on squash-merge as the better strategy. It&#39;s not without drawbacks, but on net, it&#39;s still so much better to work with.</p>&mdash; Aditya Mukerjee (@chimeracoder) <a href="https://twitter.com/chimeracoder/status/986376765567356928?ref_src=twsrc%5Etfw">April 17, 2018</a></blockquote>
+
+<p>I’ve always really liked having a “clean” history in the git logs of my
+projects.  They look nicer!  There’s a real joy to running <a href="https://git-scm.com/docs/git-log"><code>git log</code></a> (or
+even better, <a href="https://git-scm.com/docs/git-log"><code>git log --graph --all</code></a>!) on a project that’s
+maintained a beautiful log.  There are a number of tangible benefits, too, which
+<a href="https://chris.beams.io/posts/git-commit/">others</a> <a href="https://www.git-tower.com/learn/git/ebook/en/command-line/appendix/best-practices">have</a> <a href="https://www.slideshare.net/TarinGamberini/commit-messages-goodpractices">described</a> well enough that I
+don’t need to repeat them here.</p>
+
+<p>More than that, though, for a long time I assumed that if you were using GitHub
+pull requests, there was One True Way to produce a clean history, echoed by
+<a href="https://sevein.com/">Jesús</a>:</p>
+
+<blockquote class="twitter-tweet" data-conversation="none" data-lang="en"><p lang="en" dir="ltr">Best merges to me are the fast-forward merges that bring a number of meaninful, atomic, functional and self-contained commits! Not always possible...</p>&mdash; Jesús García Crespo (@sevein) <a href="https://twitter.com/sevein/status/986412919964368896?ref_src=twsrc%5Etfw">April 18, 2018</a></blockquote>
+
+<p>But recently, just like Aditya, I’ve had a change of heart!  I realized that I
+was thinking about pull requests, and what they represent in terms of the final
+commit log I’m aiming for, in the wrong way.  In this post I’ll describe the
+come-to-Aditya moment that made me appreciate squash-commits.  And along the way
+I’ll have described two workflows that make it easy to keep a clean history: one
+that doesn’t use GitHub at all (and mimics how we did git-driven development
+before GitHub existed), and one that does.</p>
+
+<hr class="jump" />
+
+<h4 id="what-is-a-clean-history-anyway">What is a clean history anyway?</h4>
+
+<p>Before we can figure out how to achieve a clean history, we have to decide what
+exactly we mean by one.  If you have a “clean history”, then if I look at the
+log of git commits for the project, all of the following should be true:</p>
+
+<ol>
+  <li>
+    <p><strong>Each commit must be self-contained</strong>.</p>
+
+    <p>This is sometimes stated as “your commit must make exactly one change”, or
+“your commit should be as small as possible, but no smaller”.</p>
+
+    <p>What does this mean?  You should be able to describe — very briefly and
+precisely — what <strong><em>single</em></strong> change the commit makes to the code base.  What
+can the code do now that it couldn’t do before?  What bug was there before
+that isn’t now?</p>
+
+    <p>If your commit makes two or more changes to the code, each of which you could
+describe very briefly, then you should split that into two or more commits!
+If your commit doesn’t contain <strong><em>all</em></strong> of the modifications needed for that
+change, then it’s not “self-contained”, and needs to be bigger!</p>
+  </li>
+  <li>
+    <p><strong>If you have an automated test suite, the code must pass all tests after
+each commit.</strong></p>
+
+    <p>This is a corollary to rule #1: if the test suite doesn’t pass, then you’ve
+either added a new test without adding the new code that it’s meant to cover,
+or you’ve updated some code without updating all of the effected test cases.
+In both cases, your commit isn’t really self-contained.</p>
+  </li>
+  <li>
+    <p><strong>Each commit must have a clear description, formatted as described in the
+<a href="https://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html">Gospel According to Tim</a></strong>.</p>
+
+    <p>Tim’s post (now &gt;10 years old!) contains the clearest description of the
+Generally Accepted Rules for writing commit messages.  These rules are pretty
+strict!  You can probably loosen some of grammar recommendations if you like.
+(…not really, just train yourself to follow all of them!)</p>
+
+    <p>But you really should keep to a short 50-character subject line + longer
+description.  And that description should actually be descriptive!  Describe
+what the commit is trying to accomplish, and why.  You might end up copying a
+lot of text from your issue tracker, or from comments or documentation that
+is also in the code itself.  And that’s okay!  I want to be able to see at
+least a high-level overview of each change without needing anything other
+than <a href="https://git-scm.com/docs/git-log"><code>git log</code></a></p>
+  </li>
+  <li>
+    <p><strong>Code review does not appear in the final history of your project</strong>.</p>
+
+    <p>This rule is probably the least obvious.  My hunch is that if you canvas a
+whole bunch of Clean History Zealots like myself, this is the rule most
+likely to be left out.  But it’s important!</p>
+
+    <p>Note that I’m <strong>not</strong> saying you shouldn’t have some kind of <a href="https://mtlynch.io/human-code-reviews-1/">code review
+process</a>.  Quite the opposite, you must!  Even if you’re working on a small
+project by yourself, you should have some kind of careful self-review step
+before you merge anything into master.</p>
+
+    <p>As part of that code review process, you’re going to make edits to your
+commits: fixing typos, changing names, maybe some refactoring.  Maybe in your
+first draft of the commit, you forgot to update some test cases.  Your
+reviewer (or your CI) points this out, and you duly update those test cases.
+Everything’s great, and now you’re ready to merge your change!  But: you
+don’t want each of those drafts showing up as distinct entries in the final
+git log!  It’s still a single logical change, deserving of exactly one
+self-contained commit in the history — it just took you a couple of tries to
+get that commit just right.</p>
+
+    <p>Now, you <em>might</em> want a record of all of those drafts, and the back-and-forth
+comments between you and your review, to be recorded <em>somewhere</em> for
+posterity.  But the git log is not the right place for it!  Instead, make
+sure that your code review tool is itself long-lived and searchable (archived
+GitHub pull requests, mailing list archives, etc).</p>
+  </li>
+</ol>
+
+<p>Some of these rules might seem draconian, especially if you’re used to a “just
+press the green button already” workflow.  If you’re not worried about keeping a
+clean history, that’s totally fine!  But if you are, I think this is the minimum
+set of rules that you should strive to follow.</p>
+
+<h4 id="the-linux-kernel-workflow-mailing-lists-and-personal-insults">The “Linux kernel” workflow: mailing lists and personal insults</h4>
+
+<p>Since git was <a href="https://git-scm.com/book/en/v2/Getting-Started-A-Short-History-of-Git">originally developed</a> to track changes to the Linux
+kernel, and the kernel has a well-earned reputation for keeping a very clean
+<a href="https://www.destroyallsoftware.com/blog/2017/the-biggest-and-weirdest-commits-in-linux-kernel-git-history">history</a>, it makes sense to look at the kernel’s
+<a href="https://www.kernel.org/doc/html/v4.10/process/development-process.html">development workflow</a>.</p>
+
+<p>Linux is a big enough project, with a large enough population of contributors,
+that there isn’t really a single <a href="https://www.kernel.org/doc/html/v4.10/process/2.Process.html#how-patches-get-into-the-kernel">Grand Unified Process</a>.  That
+said, kernel patches are typically reviewed via <a href="https://www.kernel.org/doc/html/v4.10/process/5.Posting.html">regular emails sent to mailing
+lists</a>.  This, by the way, is the reason for the <a href="https://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html">Generally
+Accepted Rules</a> for commit messages — it’s so the end
+result looks “right” when formatted as an email message!  There are even several
+git subcommands (which you probably never use) specifically designed for this
+kind of workflow: <a href="https://git-scm.com/docs/git-format-patch"><code>git format-patch</code></a>, <a href="https://git-scm.com/docs/git-send-email"><code>git send-email</code></a>, <a href="https://git-scm.com/docs/git-apply"><code>git apply</code></a>,
+<a href="https://git-scm.com/docs/git-am"><code>git am</code></a>.</p>
+
+<p>How does it work in practice?  Each proposed commit is sent as single email.  If
+you have a series of commits that implement a larger feature, you construct the
+emails so that later commits in the series look like replies to earlier commits.
+That way, the entire series shows up as a single thread in your email client.
+Other developers review your code by replying to those same emails, using
+perfectly standard email clients.</p>
+
+<p>At this point, the author will make changes to their code based on the comments
+from the reviewers.  And here is where Rule 4 comes into play — the author
+<strong><em>doesn’t</em></strong> add new commits to their local branch titled “Edit typos” or
+“Address comments from Sue”.  Instead, they’ll rewrite the existing commits on
+their local branch (using <a href="https://git-scm.com/docs/git-commit"><code>git commit --amend</code></a>, for instance, or
+the various flavors of <a href="https://git-scm.com/docs/git-rebase"><code>git rebase</code></a>), producing a <strong><em>completely new
+snapshot</em></strong> of commits.  They’ll then email that new snapshot to the same
+mailing list, just like they did with the original one.</p>
+
+<p>This process repeats until consensus is reached that the commits are ready to be
+merged.  At that point, one of the subsystem maintainers responsible for that
+section of code will merge the code, using <a href="https://git-scm.com/docs/git-am"><code>git am</code></a> or <a href="https://git-scm.com/docs/git-fetch"><code>git fetch</code></a>+<a href="https://git-scm.com/docs/git-merge"><code>git
+merge</code></a>.</p>
+
+<p>This process results in a clean history that satisfies all four of the rules
+listed above.  The reviewers themselves ensure that Rules 1-3 hold, and the fact
+that reviewer feedback is incorporated by <strong>locally rewriting history</strong> ensures
+that Rule 4 is followed.  The resulting git log does <strong>not</strong> contain any record
+of the back-and-forth that occurred during review; if you want to see that, you
+have to dig through the mailing list archives.</p>
+
+<h4 id="the-squash-merge-model">The squash-merge model</h4>
+
+<p>For better or worse, “mailing lists and the command line” aren’t a good fit for
+most projects these days, and GitHub as won the resulting Great Code Hosting
+Wars.  Is there an easy way that we can maintain a clean history, in the style
+of the Linux kernel, following the Four Rules, while using only the core tooling
+provided by GitHub?  Now that GitHub supports <a href="https://blog.github.com/2016-04-01-squash-your-commits/">squash merges</a>, the answer is a
+resounding “maybe”.</p>
+
+<p>Before the advent of squash merges, the only option for incorporating the
+contents of a PR into master was a <a href="https://help.github.com/articles/about-pull-request-merges/">merge commit</a>.  This actually
+didn’t seem so bad, since under the covers, it’s just a <a href="https://git-scm.com/docs/git-merge"><code>git merge</code></a> of the
+PR’s feature branch.  That actually didn’t seem that bad to us at the time,
+since it’s exactly what the maintainer would do in the mailing list model!</p>
+
+<p>But!  There’s a disconnect, which is that the mailing list model also relies on
+locally rewriting history to address any changes suggested by your reviewers.
+You can do this with GitHub PRs — rewrite your commit history on your local copy
+of the branch, and then force-push to GitHub.  For a good 10 years of my life,
+this is exactly what I would do!</p>
+
+<p>However, GitHub <a href="https://help.github.com/articles/about-pull-requests/">strongly discourages</a> you from force-pushing,
+even to a PR feature branch.  After yet another perfectly good review comment
+disappeared into the ether, because it was linked to a commit that was
+rewritten, having worked recently with other code review tools (like <a href="https://www.gerritcodereview.com/">Gerrit</a>
+and <a href="https://www.phacility.com/phabricator/">Phabricator</a>), I saw the error of my ways.</p>
+
+<p>The key insight is that you’re using a GitHub pull request to track two distinct
+things:</p>
+
+<ul>
+  <li>
+    <p>the snapshot of what you want to appear in the final commit history, and</p>
+  </li>
+  <li>
+    <p>a record of the interactions between you and your reviewers.</p>
+  </li>
+</ul>
+
+<p>In the mailing list model, these two things are tracked separately — one using
+git commits, and the other using emails and replies.  In a GitHub PR, however,
+<strong>both are tracked using git commits</strong>.  And that makes it very easy to conflate
+the two.</p>
+
+<p>So mentally, you have to teach yourself to separate the two.  The PR’s feature
+branch should track your interactions with your reviewers.  Even though as a
+fellow Clean History Zealot, it feels like fingernails on a chalkboard to create
+a commit labelled “Fixed some typos”, <strong>that’s what you have to do</strong>, because
+that’s the most accurate description of how the new PR snapshot differs from the
+previous one!  And luckily, with a squash-commit, <strong>none of those commits</strong> will
+end up in the permanent history.</p>
+
+
+        </div>
+      </div>
+    </div> <!-- /row -->
+  </div> <!-- /container -->
+
+    <footer class="copyright">
+    <div class="container">
+      <p>Copyright © 2009-2018, Douglas Creager.
+      All&nbsp;rights&nbsp;reserved.</p>
+    </div>
+  </footer>
+
+    <script src="//code.jquery.com/jquery.min.js"></script>
+  <script src="/media/vendor/js/bootstrap.min.js"></script>
+
+<!-- Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-83885503-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+</html>
