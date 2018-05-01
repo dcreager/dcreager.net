@@ -2,6 +2,7 @@
 kind: article
 draft: true
 created_at: 2018-04-19
+updated_at: 2018-04-30
 layout: /post.html
 title: "Clean git histories and code review workflows"
 description: >-
@@ -91,7 +92,7 @@ log of git commits for the project, all of the following should be true:
    lot of text from your issue tracker, or from comments or documentation that
    is also in the code itself.  And that's okay!  I want to be able to see at
    least a high-level overview of each change without needing anything other
-   than [`git log`][]
+   than [`git log`][].
 
 4. **Code review does not appear in the final history of your project**.
 
@@ -115,7 +116,7 @@ log of git commits for the project, all of the following should be true:
    get that commit just right.
 
    Now, you *might* want a record of all of those drafts, and the back-and-forth
-   comments between you and your review, to be recorded *somewhere* for
+   comments between you and your reviewer, to be recorded *somewhere* for
    posterity.  But the git log is not the right place for it!  Instead, make
    sure that your code review tool is itself long-lived and searchable (archived
    GitHub pull requests, mailing list archives, etc).
@@ -194,8 +195,8 @@ resounding "maybe".
 Before the advent of squash merges, the only option for incorporating the
 contents of a PR into master was a [merge commit][github merge].  This actually
 didn't seem so bad, since under the covers, it's just a [`git merge`][] of the
-PR's feature branch.  That actually didn't seem that bad to us at the time,
-since it's exactly what the maintainer would do in the mailing list model!
+PR's feature branch — exactly what the maintainer would do in the mailing list
+model!
 
 [github merge]: https://help.github.com/articles/about-pull-request-merges/
 
@@ -206,10 +207,10 @@ of the branch, and then force-push to GitHub.  For a good 10 years of my life,
 this is exactly what I would do!
 
 However, GitHub [strongly discourages][no force-pushes] you from force-pushing,
-even to a PR feature branch.  After yet another perfectly good review comment
-disappeared into the ether, because it was linked to a commit that was
-rewritten, having worked recently with other code review tools (like [Gerrit][]
-and [Phabricator][]), I saw the error of my ways.
+even to a PR feature branch.  Having worked recently with other code review
+tools (like [Gerrit][] and [Phabricator][]), I eventually saw the error of my
+ways, but only after yet another perfectly good review comment disappeared into
+the ether, because it was linked to a commit that had been rewritten.
 
 [no force-pushes]: https://help.github.com/articles/about-pull-requests/
 [Gerrit]: https://www.gerritcodereview.com/
@@ -234,6 +235,96 @@ a commit labelled "Fixed some typos", **that's what you have to do**, because
 that's the most accurate description of how the new PR snapshot differs from the
 previous one!  And luckily, with a squash-commit, **none of those commits** will
 end up in the permanent history.
+
+#### Squash-merging a *series* of commits
+
+As I've described them so far, there's one remaining discrepancy between the
+email-based workflow and the GitHub squash-merge workflow: **_series_** of
+commits.  With the email workflow, it was possible to implement a larger feature
+as a series of smaller steps (individual emails for each small commit, threaded
+together using email replies), and importantly, **to have the entire series
+reviewed as a unit**.  Reviewers would reply to the individual emails to make
+comments on the small commits, and the patch series as a whole would only be
+merged when **all of the commits in the series were approved**.
+
+For a long time, I was confused about how best to accomplish this on GitHub,
+because of the same misunderstanding about what GitHub PRs are meant to
+represent.  A PR can contain several commits, and so my natural inclination was
+to use a single PR to represent the entire patch series.  You would see each of
+the individual commits in the PR, just like you would see in an email thread.
+Moreover, the force-pushes that I was using to update the contents of the PR
+lined up with the local rewrites that I would've performed in the email
+workflow.
+
+But we've already seen the problems with force-pushing to a PR branch, and how
+we should use the commits on a PR to describe **_code review_**, not the
+**_history of features_**.  So is there a way to author and review a patch
+series using the squash-merge workflow?
+
+Unfortunately, the answer is "no" — at least, not without paying careful
+attention to what you're doing.  You can use a GitHub issue to describe the
+patch series, and have separate PRs for each of the commits that you eventually
+want to appear in the history.  The problem is that you can't (easily) have all
+of those PRs out for review at the same time.  The problem is twofold:
+
+  - When looking at a PR "later" in the series, you don't want the diff view to
+    be cluttered with any of the changes added by the PRs "earlier" in the
+    series.  Each PR should be reviewed as if all of the earlier PRs had already
+    been merged.
+
+  - You don't want to merge the "later" PR until all of the "earlier" PRs have
+    been merged in.  For bonus points, you could somehow contrive for the entire
+    series to be approved or not, rather than the individual pieces, but as long
+    as you have to ability to block the merging of later PRs that's not strictly
+    necessary.
+
+You can use the [base branch][] of the PR to take care of the first part,
+marking the "earlier" PR as the base of the "later" PR.  If you do this, GitHub
+will correctly ignore any commit on the base branch when determining which
+commits belong to the later PR, and when rendering the diff view.  But the base
+branch also determines which branch the PR would get merged into once it's
+approved, which isn't quite what we want.  [Grayson Koonce][] has described a
+way to make the merging work, though it's not *quite* the result that I'm
+looking for: you end up with a single commit in the git log, containing all of
+the changes from all of the commits in the series.  I created the separate PRs
+in the first place because I wanted each one to show up separately in the final
+history.
+
+[base branch]: https://help.github.com/articles/creating-a-pull-request/#changing-the-branch-range-and-destination-repository
+[Grayson Koonce]: https://graysonkoonce.com/stacked-pull-requests-keeping-github-diffs-small/#4landingthestack
+
+Since Grayson wrote his article, GitHub has added support for [changing the base
+branch of a PR][].  This gets us **_so close_**: you'd mark the earlier PR as
+the base of the later PR.  After everything is approved, you'd squash-merge the
+earlier PR into master.  And at that point, you'd update the later PR so that
+it's base is now master.  There are two problems: one is that because we
+squash-merge, the commit that got merged into master for the earlier PR isn't
+*quite* what's in the history of the later PR, and you'll have to perform a
+couple of merges (one of them using `--strategy ours`) to get everything to line
+up.  And more importantly, you can't currently change the base **_repo_** of the
+later PR, which means that your feature branches and the master branch that you
+want to merge into have to be in the same upstream repository.  If you're
+following the usual strategy of editing feature branches in a personal fork, and
+creating pull requests in the "upstream" repository, branch changing won't work.
+
+[changing the base branch of a PR]: https://help.github.com/articles/changing-the-base-branch-of-a-pull-request/
+
+So unfortunately, the current best practice is to not send out your later PRs
+for review until your earlier PRs have been approved and merged; or
+alternatively, for your reviewers to just deal with the fact that later PRs will
+include changes from earlier PRs in the series.
+
+To solve this for real, GitHub should separate the current [base branch][]
+concept into two pieces: The **base** would be the branch this PR should
+eventually be merged into (i.e, always "master" unless you're doing something
+weird).  The **predecessor**, on the other hand, should be the "earlier" PR that
+this one depends on.  The "Files changed" tab would only show the diff between
+the predecessor PR's branch and the current PR's branch.  GitHub wouldn't allow
+you to merge the PR until the predecessor was merged.  But when everything is
+ready, it would merge the PR directly into the base branch.
+
+Or, of course, we could just all go back to email patches around on mailing
+lists.
 
 [`git am`]: https://git-scm.com/docs/git-am
 [`git apply`]: https://git-scm.com/docs/git-apply
