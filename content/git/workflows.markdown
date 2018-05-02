@@ -2,7 +2,7 @@
 kind: article
 draft: true
 created_at: 2018-04-19
-updated_at: 2018-04-30
+updated_at: 2018-05-02
 layout: /post.html
 title: "Clean git histories and code review workflows"
 description: >-
@@ -153,26 +153,39 @@ kind of workflow: [`git format-patch`][], [`git send-email`][], [`git apply`][],
 [kernel trees]: https://www.kernel.org/doc/html/v4.10/process/2.Process.html#how-patches-get-into-the-kernel
 [kernel email]: https://www.kernel.org/doc/html/v4.10/process/5.Posting.html
 
-How does it work in practice?  Each proposed commit is sent as single email.  If
-you have a series of commits that implement a larger feature, you construct the
-emails so that later commits in the series look like replies to earlier commits.
-That way, the entire series shows up as a single thread in your email client.
-Other developers review your code by replying to those same emails, using
-perfectly standard email clients.
+How does it work in practice?  Let's say you've developed an interesting new
+feature, and you've structured using three commits that build on each other:
+
+![basic feature branch](/git/workflows/figure-1.png){:.figure}
+
+To get your new feature reviews, you send each proposed commit as a single
+email.  You construct the emails so that later commits in the series look like
+replies to earlier commits.  That way, the entire series shows up as a single
+thread in your email client.  Other developers review your code by replying to
+those same emails, using perfectly standard email clients.
 
 At this point, the author will make changes to their code based on the comments
 from the reviewers.  And here is where Rule 4 comes into play — the author
 **_doesn't_** add new commits to their local branch titled "Edit typos" or
-"Address comments from Sue".  Instead, they'll rewrite the existing commits on
-their local branch (using [`git commit --amend`][`git commit`], for instance, or
-the various flavors of [`git rebase`][]), producing a **_completely new
-snapshot_** of commits.  They'll then email that new snapshot to the same
-mailing list, just like they did with the original one.
+"Address comments from Sue":
+
+![no typo commits](/git/workflows/figure-2.png){:.figure}
+
+Instead, they'll rewrite the existing commits on their local branch (using [`git
+commit --amend`][`git commit`], for instance, or the various flavors of [`git
+rebase`][]), producing a **_completely new snapshot_** of commits:
+
+![fix typos by rebasing](/git/workflows/figure-3.png){:.figure}
+
+They'll then email that new snapshot to the same mailing list, just like they
+did with the original one.
 
 This process repeats until consensus is reached that the commits are ready to be
 merged.  At that point, one of the subsystem maintainers responsible for that
 section of code will merge the code, using [`git am`][] or [`git fetch`][]+[`git
-merge`][].
+merge`][]:
+
+![merged into master](/git/workflows/figure-4.png){:.figure}
 
 This process results in a clean history that satisfies all four of the rules
 listed above.  The reviewers themselves ensure that Rules 1-3 hold, and the fact
@@ -228,13 +241,23 @@ git commits, and the other using emails and replies.  In a GitHub PR, however,
 **both are tracked using git commits**.  And that makes it very easy to conflate
 the two.
 
-So mentally, you have to teach yourself to separate the two.  The PR's feature
-branch should track your interactions with your reviewers.  Even though as a
-fellow Clean History Zealot, it feels like fingernails on a chalkboard to create
-a commit labelled "Fixed some typos", **that's what you have to do**, because
-that's the most accurate description of how the new PR snapshot differs from the
-previous one!  And luckily, with a squash-commit, **none of those commits** will
-end up in the permanent history.
+So mentally, you have to teach yourself to separate the two.  You must create
+**exactly one PR for each single commit** you want to appear in the final commit
+history:
+
+![single PR for each final commit](/git/workflows/figure-5.png){:.figure}
+
+And that PR's feature branch should track your interactions with your reviewers:
+
+![PR tracks reviewers](/git/workflows/figure-6.png){:.figure}
+
+Even though as a fellow Clean History Zealot, it feels like fingernails on a
+chalkboard to create a commit labeled "Fixed some typos", **that's what you have
+to do**, because that's the most accurate description of how the new PR snapshot
+differs from the previous one!  And luckily, with a squash-commit, **none of
+those commits** will end up in the permanent history:
+
+![squash merge](/git/workflows/figure-7.png){:.figure}
 
 #### Squash-merging a *series* of commits
 

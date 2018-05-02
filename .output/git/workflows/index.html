@@ -92,7 +92,7 @@
           <div class="date">
             2018-04-19
             <span class="updated">
-              [last updated 2018-04-30]
+              [last updated 2018-05-02]
             </span>
           </div>
           <h1>Clean git histories and code review workflows</h1>
@@ -229,26 +229,39 @@ git subcommands (which you probably never use) specifically designed for this
 kind of workflow: <a href="https://git-scm.com/docs/git-format-patch"><code>git format-patch</code></a>, <a href="https://git-scm.com/docs/git-send-email"><code>git send-email</code></a>, <a href="https://git-scm.com/docs/git-apply"><code>git apply</code></a>,
 <a href="https://git-scm.com/docs/git-am"><code>git am</code></a>.</p>
 
-<p>How does it work in practice?  Each proposed commit is sent as single email.  If
-you have a series of commits that implement a larger feature, you construct the
-emails so that later commits in the series look like replies to earlier commits.
-That way, the entire series shows up as a single thread in your email client.
-Other developers review your code by replying to those same emails, using
-perfectly standard email clients.</p>
+<p>How does it work in practice?  Let’s say you’ve developed an interesting new
+feature, and you’ve structured using three commits that build on each other:</p>
+
+<p><img src="/git/workflows/figure-1.png" alt="basic feature branch" class="figure" /></p>
+
+<p>To get your new feature reviews, you send each proposed commit as a single
+email.  You construct the emails so that later commits in the series look like
+replies to earlier commits.  That way, the entire series shows up as a single
+thread in your email client.  Other developers review your code by replying to
+those same emails, using perfectly standard email clients.</p>
 
 <p>At this point, the author will make changes to their code based on the comments
 from the reviewers.  And here is where Rule 4 comes into play — the author
 <strong><em>doesn’t</em></strong> add new commits to their local branch titled “Edit typos” or
-“Address comments from Sue”.  Instead, they’ll rewrite the existing commits on
-their local branch (using <a href="https://git-scm.com/docs/git-commit"><code>git commit --amend</code></a>, for instance, or
-the various flavors of <a href="https://git-scm.com/docs/git-rebase"><code>git rebase</code></a>), producing a <strong><em>completely new
-snapshot</em></strong> of commits.  They’ll then email that new snapshot to the same
-mailing list, just like they did with the original one.</p>
+“Address comments from Sue”:</p>
+
+<p><img src="/git/workflows/figure-2.png" alt="no typo commits" class="figure" /></p>
+
+<p>Instead, they’ll rewrite the existing commits on their local branch (using <a href="https://git-scm.com/docs/git-commit"><code>git
+commit --amend</code></a>, for instance, or the various flavors of <a href="https://git-scm.com/docs/git-rebase"><code>git
+rebase</code></a>), producing a <strong><em>completely new snapshot</em></strong> of commits:</p>
+
+<p><img src="/git/workflows/figure-3.png" alt="fix typos by rebasing" class="figure" /></p>
+
+<p>They’ll then email that new snapshot to the same mailing list, just like they
+did with the original one.</p>
 
 <p>This process repeats until consensus is reached that the commits are ready to be
 merged.  At that point, one of the subsystem maintainers responsible for that
 section of code will merge the code, using <a href="https://git-scm.com/docs/git-am"><code>git am</code></a> or <a href="https://git-scm.com/docs/git-fetch"><code>git fetch</code></a>+<a href="https://git-scm.com/docs/git-merge"><code>git
-merge</code></a>.</p>
+merge</code></a>:</p>
+
+<p><img src="/git/workflows/figure-4.png" alt="merged into master" class="figure" /></p>
 
 <p>This process results in a clean history that satisfies all four of the rules
 listed above.  The reviewers themselves ensure that Rules 1-3 hold, and the fact
@@ -301,13 +314,23 @@ git commits, and the other using emails and replies.  In a GitHub PR, however,
 <strong>both are tracked using git commits</strong>.  And that makes it very easy to conflate
 the two.</p>
 
-<p>So mentally, you have to teach yourself to separate the two.  The PR’s feature
-branch should track your interactions with your reviewers.  Even though as a
-fellow Clean History Zealot, it feels like fingernails on a chalkboard to create
-a commit labelled “Fixed some typos”, <strong>that’s what you have to do</strong>, because
-that’s the most accurate description of how the new PR snapshot differs from the
-previous one!  And luckily, with a squash-commit, <strong>none of those commits</strong> will
-end up in the permanent history.</p>
+<p>So mentally, you have to teach yourself to separate the two.  You must create
+<strong>exactly one PR for each single commit</strong> you want to appear in the final commit
+history:</p>
+
+<p><img src="/git/workflows/figure-5.png" alt="single PR for each final commit" class="figure" /></p>
+
+<p>And that PR’s feature branch should track your interactions with your reviewers:</p>
+
+<p><img src="/git/workflows/figure-6.png" alt="PR tracks reviewers" class="figure" /></p>
+
+<p>Even though as a fellow Clean History Zealot, it feels like fingernails on a
+chalkboard to create a commit labeled “Fixed some typos”, <strong>that’s what you have
+to do</strong>, because that’s the most accurate description of how the new PR snapshot
+differs from the previous one!  And luckily, with a squash-commit, <strong>none of
+those commits</strong> will end up in the permanent history:</p>
+
+<p><img src="/git/workflows/figure-7.png" alt="squash merge" class="figure" /></p>
 
 <h4 id="squash-merging-a-series-of-commits">Squash-merging a <em>series</em> of commits</h4>
 
