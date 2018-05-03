@@ -93,6 +93,47 @@
 
   
     <li class="summary">
+      <div class="date">2018-04-19</div>
+      <h1><a href="/git/workflows/">Clean git histories and code review workflows</a></h1>
+      
+<script async="" src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<p>A couple of recent tweets really resonated me.</p>
+
+<p><a href="https://adityamukerjee.net/">Aditya</a> started an interesting conversation:</p>
+
+<blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">If you&#39;d asked me a few weeks ago whether I preferred squash-merges or merge commits, I&#39;d have been somewhat ambivalent.<br /><br />After today, I&#39;m pretty sold on squash-merge as the better strategy. It&#39;s not without drawbacks, but on net, it&#39;s still so much better to work with.</p>&mdash; Aditya Mukerjee (@chimeracoder) <a href="https://twitter.com/chimeracoder/status/986376765567356928?ref_src=twsrc%5Etfw">April 17, 2018</a></blockquote>
+
+<p>I’ve always really liked having a “clean” history in the git logs of my
+projects.  They look nicer!  There’s a real joy to running <a href="https://git-scm.com/docs/git-log"><code>git log</code></a> (or
+even better, <a href="https://git-scm.com/docs/git-log"><code>git log --graph --all</code></a>!) on a project that’s
+maintained a beautiful log.  There are a number of tangible benefits, too, which
+<a href="https://chris.beams.io/posts/git-commit/">others</a> <a href="https://www.git-tower.com/learn/git/ebook/en/command-line/appendix/best-practices">have</a> <a href="https://www.slideshare.net/TarinGamberini/commit-messages-goodpractices">described</a> well enough that I
+don’t need to repeat them here.</p>
+
+<p>More than that, though, for a long time I assumed that if you were using GitHub
+pull requests, there was One True Way to produce a clean history, echoed by
+<a href="https://sevein.com/">Jesús</a>:</p>
+
+<blockquote class="twitter-tweet" data-conversation="none" data-lang="en"><p lang="en" dir="ltr">Best merges to me are the fast-forward merges that bring a number of meaninful, atomic, functional and self-contained commits! Not always possible...</p>&mdash; Jesús García Crespo (@sevein) <a href="https://twitter.com/sevein/status/986412919964368896?ref_src=twsrc%5Etfw">April 18, 2018</a></blockquote>
+
+<p>But recently, just like Aditya, I’ve had a change of heart!  I realized that I
+was thinking about pull requests, and what they represent in terms of the final
+commit log I’m aiming for, in the wrong way.  In this post I’ll describe the
+come-to-Aditya moment that made me appreciate squash-commits.  And along the way
+I’ll have described two workflows that make it easy to keep a clean history: one
+that doesn’t use GitHub at all (and mimics how we did git-driven development
+before GitHub existed), and one that does.</p>
+
+
+      <div class="link">
+        <a href="/git/workflows/">
+          Continue reading <span class="glyphicon glyphicon-share-alt"></span>
+        </a>
+      </div>
+    </li>
+  
+    <li class="summary">
       <div class="date">2018-03-27</div>
       <h1><a href="/nel/intro/">Introducing Network Error Logging</a></h1>
       
@@ -419,57 +460,6 @@ properties that we hope our system exhibits.</p>
 
       <div class="link">
         <a href="/csp-concurrency/prelims/">
-          Continue reading <span class="glyphicon glyphicon-share-alt"></span>
-        </a>
-      </div>
-    </li>
-  
-    <li class="summary">
-      <div class="date">2016-07-28</div>
-      <h2 class="series"><a href="/csp-concurrency/intro/">Concurrency models in CSP</a></h2>
-      <h1><a href="/csp-concurrency/intro/">Introduction</a></h1>
-      
-<p>Two years ago, I started writing a series of <a href="/2014/01/07/intro-to-csp/">blog</a>
-<a href="/2014/02/csp-basics/">posts</a> about CSP — Communicating Sequential Processes.
-That series has…let’s say “stalled”.  Part of the reason is that I didn’t have
-a good non-trivial example to work with.  The <a href="https://en.wikipedia.org/wiki/Communicating_sequential_processes#Examples">stereotypical running
-example</a>
-is the vending machine: start with a simple one, which accepts a single coin and
-spits out a tea; add more detail as you introduce more of the language.  I
-always had a hunch that I needed an example with more meat on it, but could
-never find one.</p>
-
-<p>Fast-forward to today.  I was reading through some of <a href="https://christophermeiklejohn.com/">Christopher
-Meiklejohn’s</a> work on
-<a href="http://lasp-lang.org/">Lasp</a>, I came across a citation to a really nice paper
-by <a href="http://drops.dagstuhl.de/opus/volltexte/2015/5375/">Cerone, Bernardi, and
-Gotsman</a>, which adds some
-formal rigor to the consistency models that we use to describe modern
-distributed systems.  Their formalism is a great combination of simple and
-expressive.  The core of the paper is about processes accessing a transactional
-data store; the authors provide formal definitions of several concurrency
-models, and of some reference implementations that supposedly provide those
-concurrency models.  They then use a technique called “observational refinement”
-to show that the reference implementations really do provide the concurrency
-guarantees in question.</p>
-
-<p>This approach lines up very well with how you perform refinement checks in CSP
-to show that systems satisfy some specification.  And so I finally found my
-meaty running example!  I’m resurrecting this blog series, and plan to work
-through each of the consistency models and proofs described in the paper,
-translating them into CSP processes and refinement checks.  This isn’t an
-attempt to replace or outdo anything in the paper!  Far from it — it’s my
-attempt to use something more familiar to work through the details of something
-less familiar.</p>
-
-<p>I’m not going to assume a working knowledge of CSP — or of the consistency
-models described in the paper!  If you’re familiar with one, my hope is that
-you’ll be able to follow along and pick up the other.  And if you’re not
-familiar with either…well, I guess we’ll see how good I am at writing an intro
-to a difficult topic!</p>
-
-      <div class="link">
-        <a href="/csp-concurrency/intro/">
           Continue reading <span class="glyphicon glyphicon-share-alt"></span>
         </a>
       </div>
