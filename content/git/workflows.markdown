@@ -357,3 +357,6 @@ lists.
 [`git merge`]: https://git-scm.com/docs/git-merge
 [`git rebase`]: https://git-scm.com/docs/git-rebase
 [`git send-email`]: https://git-scm.com/docs/git-send-email
+
+Thanks to Jesús García Crespo for comments and corrections.
+{:.thanks}
