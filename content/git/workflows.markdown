@@ -1,6 +1,5 @@
 ---
 kind: article
-draft: true
 created_at: 2018-04-19
 updated_at: 2018-05-02
 layout: /post.html
