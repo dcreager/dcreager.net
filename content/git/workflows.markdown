@@ -5,7 +5,7 @@ updated_at: 2018-05-02
 layout: /post.html
 title: "Clean git histories and code review workflows"
 description: >-
-  in which we get the browser to do our work for us
+  Happy the people whose annals are tiresome
 tags: [git]
 ---
 
