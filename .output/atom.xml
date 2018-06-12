@@ -3,13 +3,30 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
   <id>https://dcreager.net/</id>
   <title>dcreager.net</title>
-  <updated>2018-05-02T00:00:00Z</updated>
+  <updated>2018-06-12T00:00:00Z</updated>
   <link rel="alternate" href="https://dcreager.net/"/>
   <link rel="self" href="https://dcreager.net/atom.xml"/>
   <author>
     <name>Douglas Creager</name>
     <uri>https://dcreager.net/</uri>
   </author>
+  <entry>
+    <id>tag:dcreager.net,2018-05-31:/np-hard/</id>
+    <title type="html">NP-hard isn't the end of the world</title>
+    <published>2018-05-31T00:00:00Z</published>
+    <updated>2018-06-12T00:00:00Z</updated>
+    <link rel="alternate" href="https://dcreager.net/np-hard/"/>
+    <content type="html">
+&lt;p class="big-def"&gt;&lt;em class="tldr"&gt;tl;dr&lt;/em&gt; We’ve typically considered it a deal-breaker to discover that
+an algorithm we care about is &lt;em&gt;NP&lt;/em&gt;-hard.  We’ll go to great lengths to simplify
+the problem domain so that we can switch to a polynomial-time algorithm.  But if
+we simplify too much, then we run the risk that our solution is no longer
+useful.  Luckily, we might not have to!  &lt;em&gt;NP&lt;/em&gt;-hard is a &lt;strong&gt;&lt;em&gt;worst-case&lt;/em&gt;&lt;/strong&gt; bound.
+If we can convince ourselves that we won’t encounter pathological inputs, the
+&lt;em&gt;NP&lt;/em&gt;-hard algorithm might be just fine in practice.&lt;/p&gt;
+
+</content>
+  </entry>
   <entry>
     <id>tag:dcreager.net,2018-04-19:/git/workflows/</id>
     <title type="html">Clean git histories and code review workflows</title>
@@ -689,40 +706,6 @@ commit message.&lt;/p&gt;
 &lt;p&gt;Granted, this isn’t horribly difficult, but we can do better.&lt;/p&gt;
 
 </content>
-  </entry>
-  <entry>
-    <id>tag:dcreager.net,2010-02-06:/2010/02/06/libpush/</id>
-    <title type="html">A combinator-based parsing library for C</title>
-    <published>2010-02-06T00:00:00Z</published>
-    <updated>2010-02-06T00:00:00Z</updated>
-    <link rel="alternate" href="https://dcreager.net/2010/02/06/libpush/"/>
-    <content type="html">
-&lt;p&gt;Recently I’ve been working on
-&lt;a href="http://github.com/dcreager/libpush/"&gt;libpush&lt;/a&gt;, which a new parsing
-library for C.  It has two main features that I think will be
-valuable: it’s a &lt;em&gt;push parser&lt;/em&gt;, which means that instead of parsing a
-file, stream, or single memory buffer, you supply the data (or “push”
-it) to the parser in chunks, as it becomes available.  I plan to
-discuss this aspect of the parser in more detail in a later post.&lt;/p&gt;
-
-&lt;p&gt;The other main feature is that you design your parsers using
-&lt;em&gt;combinators&lt;/em&gt;.  Parser combinators are widely used in Haskell, with
-&lt;a href="http://legacy.cs.uu.nl/daan/parsec.html"&gt;Parsec&lt;/a&gt; being the most
-common example.  Combinator-based parsing libraries are especially
-nice in Haskell, because Haskell’s syntax makes them look very simple.
-For instance, a parser that parses matching nested parentheses is:&lt;/p&gt;
-
-&lt;pre class="CodeRay"&gt;&lt;code&gt;parens :: Parser ()
-parens = (char '(' &amp;gt;&amp;gt; parens &amp;gt;&amp;gt; char ')' &amp;gt;&amp;gt; parens) &amp;lt;|&amp;gt; return ()
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Here, the &lt;code&gt;&amp;lt;|&amp;gt;&lt;/code&gt; operator represents &lt;em&gt;choice&lt;/em&gt;: we try parsing the left
-operand, and if it fails, then we try the right operand.  In our
-example, the right operand is the base case, which matches the empty
-string.  The left operand parses an opening parenthesis; then
-recursively calls itself to match any parentheses that might be nested
-in the current set; then parses the closing parenthesis; and then
-finally tries to match a nested set that occurs after the current set.&lt;/p&gt;</content>
   </entry>
 </feed>
 

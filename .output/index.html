@@ -93,6 +93,26 @@
 
   
     <li class="summary">
+      <div class="date">2018-05-31</div>
+      <h1><a href="/np-hard/">NP-hard isn't the end of the world</a></h1>
+      
+<p class="big-def"><em class="tldr">tl;dr</em> We’ve typically considered it a deal-breaker to discover that
+an algorithm we care about is <em>NP</em>-hard.  We’ll go to great lengths to simplify
+the problem domain so that we can switch to a polynomial-time algorithm.  But if
+we simplify too much, then we run the risk that our solution is no longer
+useful.  Luckily, we might not have to!  <em>NP</em>-hard is a <strong><em>worst-case</em></strong> bound.
+If we can convince ourselves that we won’t encounter pathological inputs, the
+<em>NP</em>-hard algorithm might be just fine in practice.</p>
+
+
+      <div class="link">
+        <a href="/np-hard/">
+          Continue reading <span class="glyphicon glyphicon-share-alt"></span>
+        </a>
+      </div>
+    </li>
+  
+    <li class="summary">
       <div class="date">2018-04-19</div>
       <h1><a href="/git/workflows/">Clean git histories and code review workflows</a></h1>
       
@@ -434,32 +454,6 @@ internally consistent.</p>
 
       <div class="link">
         <a href="/csp-concurrency/read-atomic-internal/">
-          Continue reading <span class="glyphicon glyphicon-share-alt"></span>
-        </a>
-      </div>
-    </li>
-  
-    <li class="summary">
-      <div class="date">2016-08-03</div>
-      <h2 class="series"><a href="/csp-concurrency/prelims/">Concurrency models in CSP</a></h2>
-      <h1><a href="/csp-concurrency/prelims/">Preliminaries</a></h1>
-      
-<p>Before diving into the details of our first concurrency model, it will be
-helpful to give an overview of how we’re going to use CSP in these posts.</p>
-
-<p>At the highest level, a CSP specification consists of a set of <em>processes</em>,
-which use <em>events</em> to describe their behavior.  We use a process to represent
-any vantage point that lets us talk about which events occur and in which order.
-Each entity in our system is a process (which might be defined using
-subprocesses to describe each of its components or parts).  We also use
-processes to describe how two or more entities interact with each other, and to
-describe any global properties of the entire system.  And lastly, because CSP
-verification is based on “refinement”, we also use processes to define the
-properties that we hope our system exhibits.</p>
-
-
-      <div class="link">
-        <a href="/csp-concurrency/prelims/">
           Continue reading <span class="glyphicon glyphicon-share-alt"></span>
         </a>
       </div>
