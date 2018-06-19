@@ -110,7 +110,7 @@ Now, this doesn't necessarily apply to all _NP_-hard problems.  You might be
 dealing with something so fundamentally difficult that all interesting inputs
 take exponential time to solve.  If that's the case...well, this post isn't
 going to help you all that much.  You'll still have to simplify your problem
-domaiun somewhow to make any forward progress.
+domain somewhow to make any forward progress.
 
 But before you go down that road, it's worth thinking through some real-world
 use cases.  You might be pleasantly surprised!
