@@ -12,27 +12,25 @@ def date_ymd(time)
   end
 end
 
-class Nanoc::ItemWithRepsView
-  def full_title
-    if self[:series] then
-      self[:series] + ': ' + self[:title]
-    else
-      self[:title]
-    end
+def full_title(item)
+  if item[:series] then
+    item[:series] + ': ' + item[:title]
+  else
+    item[:title]
+  end
+end
+
+def summarize(item)
+  content = item.compiled_content(snapshot: :pre)
+
+  # If there's an <hX> or <hr> anywhere in the content, assume that everything
+  # before it is an introduction, and use that as the summary.
+  if content =~ /<h[1-6r]/ then
+    return content.split(/<h[1-6r]/).first
   end
 
-  def summarize
-    content = reps[:default].compiled_content
-
-    # If there's an <hX> or <hr> anywhere in the content, assume that everything
-    # before it is an introduction, and use that as the summary.
-    if content =~ /<h[1-6r]/ then
-      return content.split(/<h[1-6r]/).first
-    end
-
-    # Otherwise, use the article's first four paragraphs as the summary.
-    content.split("\n\n").take(4).join "\n\n"
-  end
+  # Otherwise, use the article's first four paragraphs as the summary.
+  content.split("\n\n").take(4).join "\n\n"
 end
 
 def figure(slug)

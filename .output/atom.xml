@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom">
+<feed xmlns="http://www.w3.org/2005/Atom" xml:base="https://dcreager.net/">
   <id>https://dcreager.net/</id>
   <title>dcreager.net</title>
   <updated>2018-06-12T00:00:00Z</updated>
@@ -15,8 +15,7 @@
     <published>2018-05-31T00:00:00Z</published>
     <updated>2018-06-12T00:00:00Z</updated>
     <link rel="alternate" href="https://dcreager.net/np-hard/"/>
-    <content type="html">
-&lt;p class="big-def"&gt;&lt;em class="tldr"&gt;tl;dr&lt;/em&gt; We’ve typically considered it a deal-breaker to discover that
+    <content type="html">&lt;p class="big-def"&gt;&lt;em class="tldr"&gt;tl;dr&lt;/em&gt; We’ve typically considered it a deal-breaker to discover that
 an algorithm we care about is &lt;em&gt;NP&lt;/em&gt;-hard.  We’ll go to great lengths to simplify
 the problem domain so that we can switch to a polynomial-time algorithm.  But if
 we simplify too much, then we run the risk that our solution is no longer
@@ -32,8 +31,7 @@ If we can convince ourselves that we won’t encounter pathological inputs, the
     <published>2018-04-19T00:00:00Z</published>
     <updated>2018-05-02T00:00:00Z</updated>
     <link rel="alternate" href="https://dcreager.net/git/workflows/"/>
-    <content type="html">
-&lt;script async="" src="https://platform.twitter.com/widgets.js" charset="utf-8"&gt;&lt;/script&gt;
+    <content type="html">&lt;script async="" src="https://platform.twitter.com/widgets.js" charset="utf-8"&gt;&lt;/script&gt;
 
 &lt;p&gt;A couple of recent tweets really resonated me.&lt;/p&gt;
 
@@ -70,8 +68,7 @@ before GitHub existed), and one that does.&lt;/p&gt;
     <published>2018-03-27T00:00:00Z</published>
     <updated>2018-03-27T00:00:00Z</updated>
     <link rel="alternate" href="https://dcreager.net/nel/intro/"/>
-    <content type="html">
-&lt;p&gt;Let’s say you’ve got a web site or REST service.  You have clients that send
+    <content type="html">&lt;p&gt;Let’s say you’ve got a web site or REST service.  You have clients that send
 requests to your server, which performs some interesting processing and sends
 responses back.  The clients might be people using a browser, or native code in
 a mobile app making requests on behalf of the user, or something more exotic.
@@ -90,8 +87,7 @@ the middle is completely out of your control?&lt;/p&gt;
     <published>2017-10-29T00:00:00Z</published>
     <updated>2017-10-29T00:00:00Z</updated>
     <link rel="alternate" href="https://dcreager.net/shared-library-versions/"/>
-    <content type="html">
-&lt;p&gt;Congratulations, you’ve written a software library!  You hope that lots of
+    <content type="html">&lt;p&gt;Congratulations, you’ve written a software library!  You hope that lots of
 people will find it useful, and will take it as a dependency when writing their
 own software.  You know that at some point you’ll have to make changes to your
 library, either to add features or to fix bugs.  Being a good maintainer, you
@@ -118,8 +114,7 @@ build tools.&lt;/p&gt;
     <published>2017-08-10T00:00:00Z</published>
     <updated>2017-08-10T00:00:00Z</updated>
     <link rel="alternate" href="https://dcreager.net/obligations/intro/"/>
-    <content type="html">
-&lt;p&gt;Programming languages have a lot of interesting ways to think about what you’re
+    <content type="html">&lt;p&gt;Programming languages have a lot of interesting ways to think about what you’re
 allowed to do, and not allowed to do.  In a statically typed language, your
 compiler will yell at you if you try to do something that’s not allowed, and a
 lot of interesting PL research involves teaching your language and compiler to
@@ -192,8 +187,7 @@ to represent them in code.&lt;/p&gt;
     <published>2016-11-17T14:00:00Z</published>
     <updated>2016-11-17T14:00:00Z</updated>
     <link rel="alternate" href="https://dcreager.net/hst/semantic-methods/"/>
-    <content type="html">
-&lt;script type="text/x-mathjax-config"&gt;
+    <content type="html">&lt;script type="text/x-mathjax-config"&gt;
 MathJax.Hub.Config({
   TeX: {
     Macros: {
@@ -242,8 +236,7 @@ analyzing this state machine.&lt;/p&gt;
     <published>2016-11-17T13:00:00Z</published>
     <updated>2016-11-17T13:00:00Z</updated>
     <link rel="alternate" href="https://dcreager.net/hst/refinement-overview/"/>
-    <content type="html">
-&lt;p&gt;Our goal is to learn about CSP refinement by implementing a refinement checker.
+    <content type="html">&lt;p&gt;Our goal is to learn about CSP refinement by implementing a refinement checker.
 So a good first step is to make sure we’re all on the same page about what
 refinement is, and then to step through the refinement algorithm that we mean to
 implement.  (If nothing else, that will help make sure I don’t go off on too
@@ -278,8 +271,7 @@ is that:&lt;/p&gt;</content>
     <published>2016-11-16T00:00:00Z</published>
     <updated>2016-11-16T00:00:00Z</updated>
     <link rel="alternate" href="https://dcreager.net/hst/intro/"/>
-    <content type="html">
-&lt;p&gt;It seems like this blog is basically turning into “all things CSP”!  As part of
+    <content type="html">&lt;p&gt;It seems like this blog is basically turning into “all things CSP”!  As part of
 that trend, I’ve started implementing a new CSP refinement checker called
 &lt;a href="https://github.com/hst/hst/"&gt;HST&lt;/a&gt;.  Why do this when there’s a perfectly good refinement checker in
 &lt;a href="http://www.cs.ox.ac.uk/projects/fdr/"&gt;FDR&lt;/a&gt;?  Well, I want to learn more about how FDR’s refinement algorithm works.
@@ -346,8 +338,7 @@ internally consistent.&lt;/p&gt;
     <published>2016-08-03T00:00:00Z</published>
     <updated>2016-08-03T00:00:00Z</updated>
     <link rel="alternate" href="https://dcreager.net/csp-concurrency/prelims/"/>
-    <content type="html">
-&lt;p&gt;Before diving into the details of our first concurrency model, it will be
+    <content type="html">&lt;p&gt;Before diving into the details of our first concurrency model, it will be
 helpful to give an overview of how we’re going to use CSP in these posts.&lt;/p&gt;
 
 &lt;p&gt;At the highest level, a CSP specification consists of a set of &lt;em&gt;processes&lt;/em&gt;,
@@ -368,8 +359,7 @@ properties that we hope our system exhibits.&lt;/p&gt;
     <published>2016-07-28T00:00:00Z</published>
     <updated>2016-07-28T00:00:00Z</updated>
     <link rel="alternate" href="https://dcreager.net/csp-concurrency/intro/"/>
-    <content type="html">
-&lt;p&gt;Two years ago, I started writing a series of &lt;a href="/2014/01/07/intro-to-csp/"&gt;blog&lt;/a&gt;
+    <content type="html">&lt;p&gt;Two years ago, I started writing a series of &lt;a href="/2014/01/07/intro-to-csp/"&gt;blog&lt;/a&gt;
 &lt;a href="/2014/02/csp-basics/"&gt;posts&lt;/a&gt; about CSP — Communicating Sequential Processes.
 That series has…let’s say “stalled”.  Part of the reason is that I didn’t have
 a good non-trivial example to work with.  The &lt;a href="https://en.wikipedia.org/wiki/Communicating_sequential_processes#Examples"&gt;stereotypical running
@@ -415,8 +405,7 @@ to a difficult topic!&lt;/p&gt;
     <published>2014-11-21T00:00:00Z</published>
     <updated>2014-11-21T00:00:00Z</updated>
     <link rel="alternate" href="https://dcreager.net/2014/11/dependency-management-in-c/"/>
-    <content type="html">
-&lt;p&gt;At &lt;a href="http://www.redjack.com/"&gt;RedJack&lt;/a&gt;, all of our &lt;a href="http://www.redjack.com/solutions/"&gt;core
+    <content type="html">&lt;p&gt;At &lt;a href="http://www.redjack.com/"&gt;RedJack&lt;/a&gt;, all of our &lt;a href="http://www.redjack.com/solutions/"&gt;core
 products&lt;/a&gt; depend on a network sensor that
 collects various bits of information about the raw traffic that we see on the
 network.  We’re doing some non-trivial analysis on fairly large network links
@@ -443,8 +432,7 @@ managers like &lt;a href="https://www.npmjs.org/"&gt;npm&lt;/a&gt;, &lt;a href="
     <published>2014-05-14T00:00:00Z</published>
     <updated>2014-05-14T00:00:00Z</updated>
     <link rel="alternate" href="https://dcreager.net/2014/05/git-flow/"/>
-    <content type="html">
-&lt;p&gt;I’ve used &lt;code&gt;git flow&lt;/code&gt; for most of my software projects — specifically for those
+    <content type="html">&lt;p&gt;I’ve used &lt;code&gt;git flow&lt;/code&gt; for most of my software projects — specifically for those
 that have versioned releases.  The &lt;a href="http://nvie.com/posts/a-successful-git-branching-model/"&gt;original
 post&lt;/a&gt; describing &lt;code&gt;git
 flow&lt;/code&gt; is still the best overview of how it works.  In short, you have a &lt;code&gt;master&lt;/code&gt;
@@ -478,8 +466,7 @@ described.  That means that I can’t use &lt;code&gt;git flow release finish&lt
     <published>2014-02-28T00:00:00Z</published>
     <updated>2014-02-28T00:00:00Z</updated>
     <link rel="alternate" href="https://dcreager.net/2014/02/csp-basics/"/>
-    <content type="html">
-&lt;p class="big-def"&gt;&lt;em class="tldr"&gt;tl;dr&lt;/em&gt; CSP is a &lt;em&gt;formal method&lt;/em&gt; that lets you describe and reason
+    <content type="html">&lt;p class="big-def"&gt;&lt;em class="tldr"&gt;tl;dr&lt;/em&gt; CSP is a &lt;em&gt;formal method&lt;/em&gt; that lets you describe and reason
 about the behavior of &lt;em&gt;concurrent systems&lt;/em&gt;.  CSP is &lt;em&gt;composable&lt;/em&gt;; you write
 simple &lt;em&gt;processes&lt;/em&gt;, and then use special &lt;em&gt;operators&lt;/em&gt; to combine them together
 into larger, more complex processes.  A process is a summary of some system; it
@@ -501,8 +488,7 @@ single paragraph.  Let’s look at each of those key points in more detail.&lt;/
     <published>2014-01-07T00:00:00Z</published>
     <updated>2014-01-07T00:00:00Z</updated>
     <link rel="alternate" href="https://dcreager.net/2014/01/07/intro-to-csp/"/>
-    <content type="html">
-&lt;p&gt;Communicating Sequential Processes (CSP) has been around for almost four decades
+    <content type="html">&lt;p&gt;Communicating Sequential Processes (CSP) has been around for almost four decades
 at this point, but for much of its life, it was only well-known among
 theoretical computer scientists and formal methods advocates.  More recently,
 many more people have at least &lt;em&gt;heard&lt;/em&gt; of CSP, largely because it inspired the
@@ -553,8 +539,7 @@ systems.&lt;/p&gt;
     <published>2010-05-13T00:00:00Z</published>
     <updated>2010-05-13T00:00:00Z</updated>
     <link rel="alternate" href="https://dcreager.net/2010/05/13/powerpc-qemu-lucid/"/>
-    <content type="html">
-&lt;p&gt;Part of the software I help develop at
+    <content type="html">&lt;p&gt;Part of the software I help develop at
 &lt;a href="http://www.redjack.com/"&gt;RedJack&lt;/a&gt; needs to be tested on both
 little-endian and big-endian machines.  Little-endian machines are
 easy, since everyone and their mother is running on a little-endian
@@ -593,8 +578,7 @@ into a more permanent form.&lt;/p&gt;
     <published>2010-02-25T00:00:00Z</published>
     <updated>2010-02-25T00:00:00Z</updated>
     <link rel="alternate" href="https://dcreager.net/2010/02/25/libpush-callbacks-part-1/"/>
-    <content type="html">
-&lt;p&gt;This post is the first in a series that describes the
+    <content type="html">&lt;p&gt;This post is the first in a series that describes the
 &lt;code&gt;push_callback_t&lt;/code&gt; type in the
 &lt;a href="http://github.com/dcreager/libpush/"&gt;libpush&lt;/a&gt; library.  In these
 posts, we’ll walk through a couple of possible ways to implement
@@ -621,8 +605,7 @@ what makes them &lt;a href="http://www.haskell.org/arrows/"&gt;&lt;em&gt;arrows&
     <published>2010-02-17T00:00:00Z</published>
     <updated>2010-02-17T00:00:00Z</updated>
     <link rel="alternate" href="https://dcreager.net/2010/02/17/llvm-lto-karmic/"/>
-    <content type="html">
-&lt;p&gt;While playing around with
+    <content type="html">&lt;p&gt;While playing around with
 &lt;a href="http://github.com/dcreager/libpush"&gt;libpush&lt;/a&gt; on my MacBook, I was
 pleasantly surprised to see a huge performance increase when I used
 the link-time optimization (LTO) feature of the LLVM GCC front end.
@@ -650,8 +633,7 @@ compilation units.&lt;/p&gt;
     <published>2010-02-10T00:00:00Z</published>
     <updated>2010-02-10T00:00:00Z</updated>
     <link rel="alternate" href="https://dcreager.net/2010/02/10/setuptools-git-version-numbers/"/>
-    <content type="html">
-&lt;p&gt;Just like everyone else, we’re using
+    <content type="html">&lt;p&gt;Just like everyone else, we’re using
 &lt;a href="http://pypi.python.org/pypi/setuptools"&gt;setuptools&lt;/a&gt; as the core of
 the build system for our Python-based projects.  For the most part,
 this has been a painless, straightforward process.  However, one

@@ -3,5 +3,5 @@ title: dcreager.net
 ---
 <%= atom_feed :limit => 20,
     :articles => sorted_articles.reject { |a| a[:draft] },
-    :content_proc => lambda { |article| article.summarize }
+    :content_proc => lambda { |article| summarize(article) }
 %>

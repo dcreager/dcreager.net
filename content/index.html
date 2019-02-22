@@ -12,7 +12,7 @@ layout: /default.html
       <h2 class="series"><a href="<%= article.path %>"><%= article[:series] %></a></h2>
       <%- end -%>
       <h1><a href="<%= article.path %>"><%= article[:title] %></a></h1>
-      <%= article.summarize %>
+      <%= summarize(article) %>
       <div class="link">
         <a href="<%= article.path %>">
           Continue reading <span class="glyphicon glyphicon-share-alt"></span>
