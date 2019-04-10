@@ -118,6 +118,12 @@ ul ul, ol ul, ul ol, ol ol {
     color: #aaa;
 }
 
+.subscribe {
+    margin-top: 24px;
+    padding-top: 8px;
+    text-align: center;
+    color: #888;
+}
 
 /*----------------------------------------------------------------
  * Footnotes
