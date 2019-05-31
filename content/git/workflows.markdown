@@ -153,11 +153,11 @@ kind of workflow: [`git format-patch`][], [`git send-email`][], [`git apply`][],
 [kernel email]: https://www.kernel.org/doc/html/v4.10/process/5.Posting.html
 
 How does it work in practice?  Let's say you've developed an interesting new
-feature, and you've structured using three commits that build on each other:
+feature, and you've structured it using three commits that build on each other:
 
 ![basic feature branch](/git/workflows/figure-1.png){:.figure}
 
-To get your new feature reviews, you send each proposed commit as a single
+To get your new feature reviewed, you send each proposed commit as a single
 email.  You construct the emails so that later commits in the series look like
 replies to earlier commits.  That way, the entire series shows up as a single
 thread in your email client.  Other developers review your code by replying to
@@ -196,7 +196,7 @@ have to dig through the mailing list archives.
 #### The squash-merge model
 
 For better or worse, "mailing lists and the command line" aren't a good fit for
-most projects these days, and GitHub as won the resulting Great Code Hosting
+most projects these days, and GitHub has won the resulting Great Code Hosting
 Wars.  Is there an easy way that we can maintain a clean history, in the style
 of the Linux kernel, following the Four Rules, while using only the core tooling
 provided by GitHub?  Now that GitHub supports [squash merges][], the answer is a
