@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>
+    dcreager.net – Network Error Logging: Client-side measurement of end-to-end web service reliability
+  </title>
+  <meta name="author" content="Douglas Creager">
+
+    <meta charset="utf-8">
+
+  <meta name="google-site-verification"
+        content="7KIoYPNsfdDxIdX1QQ7SM2Nm_nyy13aRlDkzE3wzhhY" />
+
+  <link rel="shortcut icon" href="/media/images/dcreager.ico">
+
+  <link rel="alternate" type="application/atom+xml"
+        title="dcreager.net" href="/atom.xml"/>
+
+  <!-- Bootstrap -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel=stylesheet type=text/css media=screen
+        href="/media/vendor/css/bootstrap.min.css">
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+  <![endif]-->
+
+  <!-- MathJax -->
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      jax: ["input/TeX","output/HTML-CSS"],
+      displayAlign: "left",
+      displayIndent: "2em"
+    });
+  </script>
+  <script type="text/javascript" async
+          src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+  </script>
+
+  <!-- Twitter nonsense -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="@dcreager">
+  <meta name="twitter:title"
+        content="Network Error Logging: Client-side measurement of end-to-end web service reliability">
+  <meta name="twitter:description"
+        content="NSDI 2020, Santa Clara, California">
+  <meta name="twitter:image"
+        content="https://www.gravatar.com/avatar/04ee3ca11f1ae11c63faa7995dbf1ed7?s=2048">
+
+  <!-- Customizations -->
+  <link rel=stylesheet type=text/css media=screen
+        href="/media/css/coderay.css">
+  <link rel=stylesheet type=text/css media=screen
+        href="/media/css/dcreager.css">
+  <link rel=stylesheet type=text/css media=screen
+        href="https://fonts.googleapis.com/css?family=Oxygen:400,700">
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+  <div class="col-md-10 col-md-offset-1">
+    <nav class="navbar navbar-default" role="navigation">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand logo" href="/"><b>dcreager.net</b></a>
+      </div>
+
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="/about/">About</a></li></li>
+          <li><a href="/archive/">Archive</a></li></li>
+          <li><a href="https://tinyletter.com/dcreager/">Newsletter</a></li></li>
+          <li><a href="/talks/">Talks</a></li></li>
+          <li><a href="/publications/">Publications</a></li></li>
+        </ul>
+      </div><!-- /.navbar-collapse -->
+    </nav>
+  </div>
+</div>
+
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        <h1 id="publication-details">Publication details</h1>
+
+<ol class="publications">
+<li class="reference">
+  <div class="citation_number">[15]</div>
+  <div class="details">
+    <a href="015-nel/"><span class="glyphicon glyphicon-list-alt"></span></a>
+  </div>
+  <div class="citation">
+    S Burnett, L Chen, DA Creager, M Efimov, I Grigorik, B Jones, HV Madhyastha,
+    P Papageorge, B Rogan, C Stahl, and J Tuttle.
+
+    “Network Error Logging: Client-side measurement of end-to-end web service
+    reliability.”
+
+    In <em>Proceedings of the 17th USENIX Symposium on Networked Systems Design
+      and Implementation (NSDI 2020)</em>.
+
+    USENIX, February 2020.
+
+    Santa Clara, California.
+  </div>
+
+  <div class="downloads">
+    <a href="nel-paper.pdf">
+    <button type="button" class="btn btn-primary">
+      <span class="glyphicon glyphicon-download"></span> PDF
+    </button>
+    </a>
+  </div>
+</li>
+</ol>
+
+<h2 id="abstract">Abstract</h2>
+
+<p>We present NEL (Network Error Logging), a planet-scale, client-side, network
+reliability measurement system. NEL is implemented in Chrome and has been
+proposed as a new <a href="https://w3c.github.io/network-error-logging/">W3C standard</a>,
+letting any web site operator collect reports of clients’ successful and failed
+requests to their sites. These reports are similar to web server logs, but
+include information about failed requests that never reach serving
+infrastructure. Reports are uploaded via redundant failover paths, reducing the
+likelihood of shared-fate failures of report uploads. We have designed NEL such
+that service providers can glean no additional information about users or their
+behavior compared to what services already have visibility into during normal
+operation. Since 2014, NEL has been invaluable in monitoring all of Google’s
+domains, allowing us to detect and investigate instances of DNS hijacking, BGP
+route leaks, protocol deployment bugs, and other problems where packets might
+never reach our servers. This paper presents the design of NEL, case studies of
+real outages, and deployment lessons for other operators who choose to use NEL
+to monitor their traffic.</p>
+
+      </div>
+    </div> <!-- /row -->
+  </div> <!-- /container -->
+
+    <footer class="copyright">
+    <div class="container">
+      <p>Copyright © 2009-2020, Douglas Creager.
+      All&nbsp;rights&nbsp;reserved.</p>
+    </div>
+  </footer>
+
+    <script src="//code.jquery.com/jquery.min.js"></script>
+  <script src="/media/vendor/js/bootstrap.min.js"></script>
+
+<!-- Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-83885503-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+</html>

@@ -1,0 +1,59 @@
+---
+layout: /default.html
+title: >-
+  Network Error Logging: Client-side measurement of end-to-end web service reliability
+description: >-
+  NSDI 2020, Santa Clara, California
+---
+
+# Publication details
+
+<ol class="publications">
+<li class="reference">
+  <div class="citation_number">[15]</div>
+  <div class="details">
+    <a href="015-nel/"><span class="glyphicon glyphicon-list-alt"></span></a>
+  </div>
+  <div class="citation">
+    S Burnett, L Chen, DA Creager, M Efimov, I Grigorik, B Jones, HV Madhyastha,
+    P Papageorge, B Rogan, C Stahl, and J Tuttle.
+
+    “Network Error Logging: Client-side measurement of end-to-end web service
+    reliability.”
+
+    In <em>Proceedings of the 17th USENIX Symposium on Networked Systems Design
+      and Implementation (NSDI 2020)</em>.
+
+    USENIX, February 2020.
+
+    Santa Clara, California.
+  </div>
+
+  <div class="downloads">
+    <a href="nel-paper.pdf">
+    <button type="button" class="btn btn-primary">
+      <span class="glyphicon glyphicon-download"></span> PDF
+    </button>
+    </a>
+  </div>
+</li>
+</ol>
+
+## Abstract
+
+We present NEL (Network Error Logging), a planet-scale, client-side, network
+reliability measurement system. NEL is implemented in Chrome and has been
+proposed as a new [W3C standard](https://w3c.github.io/network-error-logging/),
+letting any web site operator collect reports of clients’ successful and failed
+requests to their sites. These reports are similar to web server logs, but
+include information about failed requests that never reach serving
+infrastructure. Reports are uploaded via redundant failover paths, reducing the
+likelihood of shared-fate failures of report uploads. We have designed NEL such
+that service providers can glean no additional information about users or their
+behavior compared to what services already have visibility into during normal
+operation. Since 2014, NEL has been invaluable in monitoring all of Google’s
+domains, allowing us to detect and investigate instances of DNS hijacking, BGP
+route leaks, protocol deployment bugs, and other problems where packets might
+never reach our servers. This paper presents the design of NEL, case studies of
+real outages, and deployment lessons for other operators who choose to use NEL
+to monitor their traffic.
