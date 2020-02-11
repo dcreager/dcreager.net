@@ -9,6 +9,14 @@ description: >-
 tags: [git]
 ---
 
+<div class="alert alert-warning">
+  <p>
+    <strong>NOTE</strong>: Though I'm currently employed by GitHub, I wrote this
+    article before I started working there!  This post (like all of the posts on
+    this site) contains my own personal views, and not those of my employer.
+  </p>
+</div>
+
 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
 A couple of recent tweets really resonated me.

@@ -31,7 +31,15 @@ If we can convince ourselves that we won’t encounter pathological inputs, the
     <published>2018-04-19T00:00:00Z</published>
     <updated>2018-05-02T00:00:00Z</updated>
     <link rel="alternate" href="https://dcreager.net/git/workflows/"/>
-    <content type="html">&lt;script async="" src="https://platform.twitter.com/widgets.js" charset="utf-8"&gt;&lt;/script&gt;
+    <content type="html">&lt;div class="alert alert-warning"&gt;
+  &lt;p&gt;
+    &lt;strong&gt;NOTE&lt;/strong&gt;: Though I'm currently employed by GitHub, I wrote this
+    article before I started working there!  This post (like all of the posts on
+    this site) contains my own personal views, and not those of my employer.
+  &lt;/p&gt;
+&lt;/div&gt;
+
+&lt;script async="" src="https://platform.twitter.com/widgets.js" charset="utf-8"&gt;&lt;/script&gt;
 
 &lt;p&gt;A couple of recent tweets really resonated me.&lt;/p&gt;
 
