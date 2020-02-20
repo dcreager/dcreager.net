@@ -1,0 +1,10 @@
+baseURL: https://dcreager.net/
+title: dcreager.net
+languageCode: en-us
+
+disableHugoGeneratorInject: true
+disableKinds:
+  - taxonomy
+  - taxonomyTerm
+
+publishDir: .output

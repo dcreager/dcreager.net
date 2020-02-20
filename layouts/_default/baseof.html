@@ -1,20 +1,21 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <%= render '/title.html' %>
-  <%= render '/links.html' %>
+  {{ partial "title.html" . }}
+  {{ partial "links.html" . }}
 </head>
 
 <body>
   <div class="container">
-    <%= render '/topnav.html' %>
+    {{ partial "topnav.html" . }}
     <div class="row">
       <div class="col-md-8 col-md-offset-2">
-        <%= yield %>
+        {{ block "main" . }}
+        {{ end }}
       </div>
     </div> <!-- /row -->
   </div> <!-- /container -->
 
-  <%= render '/foot.html' %>
-  <%= render '/js.html' %>
+  {{ partial "foot.html" . }}
+  {{ partial "js.html" . }}
 </html>

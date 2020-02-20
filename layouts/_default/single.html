@@ -1,0 +1,27 @@
+{{ define "main" }}
+<div class="blog">
+  <div class="date">
+    {{ .Date.Format "2006-01-02" }}
+    {{ if .Lastmod }}
+    <span class="updated">
+      [last updated {{ .Lastmod.Format "2006-01-02" }}]
+    </span>
+    {{ end }}
+  </div>
+  {{ if .Params.series }}
+  <h2 class="series">{{ .Params.series }}</h2>
+  {{ end }}
+  <h1>{{ .Title }}</h1>
+  {{ if .Params.prev }}
+  <p class="prev"><a href="{{ .Permalink }}">{{ .Title }}</a></p>
+  {{ end }}
+  {{ .Content }}
+  {{ if .Params.next }}
+  <p class="next"><a href="{{ .Permalink }}">{{ .Title }}</a></p>
+  {{ end }}
+  <div class="subscribe">
+    Stay up to date by subscribing to <a
+      href="https://tinyletter.com/dcreager/">my newsletter</a>.
+  </div>
+</div>
+{{ end }}

@@ -43,7 +43,7 @@
   <meta name="twitter:title"
         content="Home">
   <meta name="twitter:description"
-        content="...">
+        content="">
   <meta name="twitter:image"
         content="https://www.gravatar.com/avatar/04ee3ca11f1ae11c63faa7995dbf1ed7?s=2048">
 
@@ -74,384 +74,30 @@
 
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav navbar-right">
-          <li><a href="/about/">About</a></li></li>
-          <li><a href="/archive/">Archive</a></li></li>
-          <li><a href="https://tinyletter.com/dcreager/">Newsletter</a></li></li>
-          <li><a href="/talks/">Talks</a></li></li>
-          <li><a href="/publications/">Publications</a></li></li>
+          <li><a href="/about/">About</a></li>
+          <li><a href="/archive/">Archive</a></li>
+          <li><a href="https://tinyletter.com/dcreager/">Newsletter</a></li>
+          <li><a href="/talks/">Talks</a></li>
+          <li><a href="/publications/">Publications</a></li>
         </ul>
-      </div><!-- /.navbar-collapse -->
+      </div>
     </nav>
   </div>
 </div>
 
     <div class="row">
       <div class="col-md-8 col-md-offset-2">
-        <ul class="summaries">
+        
+<ul class="summaries">
 
   
     <li class="summary">
-      <div class="date">2018-05-31</div>
-      <h1><a href="/np-hard/">NP-hard isn't the end of the world</a></h1>
-      <p class="big-def"><em class="tldr">tl;dr</em> We’ve typically considered it a deal-breaker to discover that
-an algorithm we care about is <em>NP</em>-hard.  We’ll go to great lengths to simplify
-the problem domain so that we can switch to a polynomial-time algorithm.  But if
-we simplify too much, then we run the risk that our solution is no longer
-useful.  Luckily, we might not have to!  <em>NP</em>-hard is a <strong><em>worst-case</em></strong> bound.
-If we can convince ourselves that we won’t encounter pathological inputs, the
-<em>NP</em>-hard algorithm might be just fine in practice.</p>
-
-
-      <div class="link">
-        <a href="/np-hard/">
-          Continue reading <span class="glyphicon glyphicon-share-alt"></span>
-        </a>
-      </div>
-    </li>
-  
-    <li class="summary">
-      <div class="date">2018-04-19</div>
-      <h1><a href="/git/workflows/">Clean git histories and code review workflows</a></h1>
-      <div class="alert alert-warning">
-  <p>
-    <strong>NOTE</strong>: Though I'm currently employed by GitHub, I wrote this
-    article before I started working there!  This post (like all of the posts on
-    this site) contains my own personal views, and not those of my employer.
-  </p>
-</div>
-
-<script async="" src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-
-<p>A couple of recent tweets really resonated me.</p>
-
-<p><a href="https://adityamukerjee.net/">Aditya</a> started an interesting conversation:</p>
-
-<blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">If you&#39;d asked me a few weeks ago whether I preferred squash-merges or merge commits, I&#39;d have been somewhat ambivalent.<br /><br />After today, I&#39;m pretty sold on squash-merge as the better strategy. It&#39;s not without drawbacks, but on net, it&#39;s still so much better to work with.</p>&mdash; Aditya Mukerjee (@chimeracoder) <a href="https://twitter.com/chimeracoder/status/986376765567356928?ref_src=twsrc%5Etfw">April 17, 2018</a></blockquote>
-
-<p>I’ve always really liked having a “clean” history in the git logs of my
-projects.  They look nicer!  There’s a real joy to running <a href="https://git-scm.com/docs/git-log"><code>git log</code></a> (or
-even better, <a href="https://git-scm.com/docs/git-log"><code>git log --graph --all</code></a>!) on a project that’s
-maintained a beautiful log.  There are a number of tangible benefits, too, which
-<a href="https://chris.beams.io/posts/git-commit/">others</a> <a href="https://www.git-tower.com/learn/git/ebook/en/command-line/appendix/best-practices">have</a> <a href="https://www.slideshare.net/TarinGamberini/commit-messages-goodpractices">described</a> well enough that I
-don’t need to repeat them here.</p>
-
-<p>More than that, though, for a long time I assumed that if you were using GitHub
-pull requests, there was One True Way to produce a clean history, echoed by
-<a href="https://sevein.com/">Jesús</a>:</p>
-
-<blockquote class="twitter-tweet" data-conversation="none" data-lang="en"><p lang="en" dir="ltr">Best merges to me are the fast-forward merges that bring a number of meaninful, atomic, functional and self-contained commits! Not always possible...</p>&mdash; Jesús García Crespo (@sevein) <a href="https://twitter.com/sevein/status/986412919964368896?ref_src=twsrc%5Etfw">April 18, 2018</a></blockquote>
-
-<p>But recently, just like Aditya, I’ve had a change of heart!  I realized that I
-was thinking about pull requests, and what they represent in terms of the final
-commit log I’m aiming for, in the wrong way.  In this post I’ll describe the
-come-to-Aditya moment that made me appreciate squash-commits.  And along the way
-I’ll have described two workflows that make it easy to keep a clean history: one
-that doesn’t use GitHub at all (and mimics how we did git-driven development
-before GitHub existed), and one that does.</p>
-
-
-      <div class="link">
-        <a href="/git/workflows/">
-          Continue reading <span class="glyphicon glyphicon-share-alt"></span>
-        </a>
-      </div>
-    </li>
-  
-    <li class="summary">
-      <div class="date">2018-03-27</div>
-      <h1><a href="/nel/intro/">Introducing Network Error Logging</a></h1>
-      <p>Let’s say you’ve got a web site or REST service.  You have clients that send
-requests to your server, which performs some interesting processing and sends
-responses back.  The clients might be people using a browser, or native code in
-a mobile app making requests on behalf of the user, or something more exotic.
-But the overall picture is the same:</p>
-
-<p><img src="/nel/intro/service-flow.png" alt="request service flow" class="figure" /></p>
-
-<p>How do you monitor this service — especially when that annoying cloudy bit in
-the middle is completely out of your control?</p>
-
-
-      <div class="link">
-        <a href="/nel/intro/">
-          Continue reading <span class="glyphicon glyphicon-share-alt"></span>
-        </a>
-      </div>
-    </li>
-  
-    <li class="summary">
-      <div class="date">2017-10-29</div>
-      <h1><a href="/shared-library-versions/">Shared library versions</a></h1>
-      <p>Congratulations, you’ve written a software library!  You hope that lots of
-people will find it useful, and will take it as a dependency when writing their
-own software.  You know that at some point you’ll have to make changes to your
-library, either to add features or to fix bugs.  Being a good maintainer, you
-want to be as diligent as possible in telling your users what to expect as you
-publish these changes.  Will they need to change their code in response to the
-changes that you’ve made?  Have you retired features that they depend on?  Or
-are the changes “safe”, presumably requiring no updates on their part?</p>
-
-<p>The traditional approach is to encode all of this information into an
-easy-to-digest <strong>version number</strong>.  Of course, nothing in this world is simple,
-so there are a number of different systems for encoding compatibility
-information into a version number.  And surprisingly, if you’re writing a shared
-library for a compiled language like C or C++, there are (at least!) two
-different versioning systems that you’ll need to learn.  In this post, we’re
-going to look at these different systems, how they relate to each other, and how
-to actually apply these version numbers to your library using a couple of common
-build tools.</p>
-
-
-      <div class="link">
-        <a href="/shared-library-versions/">
-          Continue reading <span class="glyphicon glyphicon-share-alt"></span>
-        </a>
-      </div>
-    </li>
-  
-    <li class="summary">
-      <div class="date">2017-08-10</div>
-      <h2 class="series"><a href="/obligations/intro/">Obligations</a></h2>
-      <h1><a href="/obligations/intro/">Introduction</a></h1>
-      <p>Programming languages have a lot of interesting ways to think about what you’re
-allowed to do, and not allowed to do.  In a statically typed language, your
-compiler will yell at you if you try to do something that’s not allowed, and a
-lot of interesting PL research involves teaching your language and compiler to
-disallow things in increasingly sophisticated ways.</p>
-
-<p>This is not limited to statically typed languages.  In a dynamically typed
-language, your interpreter is just as invested in disallowing certain behaviors.
-It’s just that the enforcement happens while your program is running!</p>
-
-<p>Someone with a theoretical background might quibble with my choice of the word
-“disallow”.  They might prefer that I say that certain operations in your
-programming language are “invalid”.  In the world of mathematics, it’s usually
-not the case that some little gremlin is actively preventing these operations
-from occurring; instead, it’s that the invalid operations don’t even exist as
-possibilities!</p>
-
-<p>But regardless what language you’re programming in, and regardless of whether
-you think in terms of <strong>permissions</strong> or <strong>possibilities</strong>, the act of
-programming is to consider all of these possible operations, and choose which
-ones you want to use to accomplish your goal.  At any given time, there are many
-possible operations, and you have the control to decide which ones to use!</p>
-
-<p>In this series of posts I want to look at the flip side of this, and talk about
-<strong>requirements</strong> or <strong>obligations</strong>.  What mechanisms do programming languages
-have to <em>force</em> you to perform some operation, or to ensure that some operation
-is performed even if you don’t actively choose to do it yourself?</p>
-
-<p>At the end of this series, I hope to convince you that obligations are just as
-important as possibilities, and that there are interesting complex behaviors
-that are easier to think about and work with if we use programming languages
-that can talk about obligations directly.</p>
-
-
-      <div class="link">
-        <a href="/obligations/intro/">
-          Continue reading <span class="glyphicon glyphicon-share-alt"></span>
-        </a>
-      </div>
-    </li>
-  
-    <li class="summary">
-      <div class="date">2017-01-17</div>
-      <h2 class="series"><a href="/hst/lazy-processes/">HST</a></h2>
-      <h1><a href="/hst/lazy-processes/">Lazy processes</a></h1>
+      <div class="date">0001-01-01</div>
       
-<script type="text/x-mathjax-config">
-MathJax.Hub.Config({
-  TeX: {
-    Macros: {
-      interleavesym: "|\\mkern-2mu|\\mkern-2mu|",
-      interleave: "\\mathrel{\\interleavesym}",
-    }
-  }
-});
-</script>
-
-<ol start="1" class="csp-algo-step">
-  <li>Load in a description of the \(Spec\) and \(Impl\) processes,
-transforming them each into a <strong>labeled transition system (LTS)</strong>.</li>
-</ol>
-
-<p>As mentioned in the <a href="/hst/semantic-methods/">previous post</a>, we’re going to rely on
-the <em>labeled transition system</em> defined by CSP’s <em>operational semantics</em> to
-represent processes in our refinement checker.  An LTS is just a directed graph,
-with nodes representing processes and subprocesses, and edges representing
-events.  In this post, we’ll look at LTSes in a bit more detail, and at how best
-to represent them in code.</p>
-
-
-      <div class="link">
-        <a href="/hst/lazy-processes/">
-          Continue reading <span class="glyphicon glyphicon-share-alt"></span>
-        </a>
-      </div>
-    </li>
-  
-    <li class="summary">
-      <div class="date">2016-11-17</div>
-      <h2 class="series"><a href="/hst/semantic-methods/">HST</a></h2>
-      <h1><a href="/hst/semantic-methods/">Semantic methods</a></h1>
-      <script type="text/x-mathjax-config">
-MathJax.Hub.Config({
-  TeX: {
-    Macros: {
-      interleavesym: "|\\mkern-2mu|\\mkern-2mu|",
-      interleave: "\\mathrel{\\interleavesym}",
-      Interleave: "\\mathop{\\interleavesym}"
-    }
-  }
-});
-</script>
-
-<p>Since CSP is a formal method, it’s not surprising that Roscoe spends a large
-part of his textbook talking about how to use rigorous mathematics to talk about
-processes.  He actually goes one step (er, two?) further and defines <strong>three
-different</strong> ways to do so:</p>
-
-<ul>
-  <li>
-    <p>The <strong>denotational semantics</strong> defines (mathematically, using sets and
-sequences) what the <em>behavior</em> of a process is.  Each CSP operator comes
-with a rule for how to calculate a process’s behavior recursively — that is,
-in terms of the behavior of its operands.  (So for example, the “external
-choice” rule tells you how to define the behavior of \(P \mathrel{\Box}
-Q\) in terms of the behavior of \(P\) and \(Q\).)</p>
-  </li>
-  <li>
-    <p>The <strong>algebraic semantics</strong> tell you to not worry about what a process
-“means” or what it “does”.  Instead, it provides a list of <em>rewrite rules</em>
-that let you change what the definition of a process looks like without
-changing its behavior.</p>
-  </li>
-  <li>
-    <p>The <strong>operational semantics</strong> say that a process is nothing more than a
-state machine, with nodes representing processes (and subprocesses) and
-edges representing the events that allow you to transition between them.  We
-can learn anything important about a process just by interpreting or
-analyzing this state machine.</p>
-  </li>
-</ul>
-
-
-      <div class="link">
-        <a href="/hst/semantic-methods/">
-          Continue reading <span class="glyphicon glyphicon-share-alt"></span>
-        </a>
-      </div>
-    </li>
-  
-    <li class="summary">
-      <div class="date">2016-11-17</div>
-      <h2 class="series"><a href="/hst/refinement-overview/">HST</a></h2>
-      <h1><a href="/hst/refinement-overview/">Refinement overview</a></h1>
-      <p>Our goal is to learn about CSP refinement by implementing a refinement checker.
-So a good first step is to make sure we’re all on the same page about what
-refinement is, and then to step through the refinement algorithm that we mean to
-implement.  (If nothing else, that will help make sure I don’t go off on too
-many tangents while implementing it!)</p>
-
-<p>I’ve mentioned refinement elsewhere on this blog a few times (for instance,
-<a href="/csp-concurrency/read-atomic-internal/#refinement">here</a>).  The basic idea is
-that in CSP, you use the same process language to describe the system you’re
-designing or investigating, as well as the properties that you would like that
-system to have.  (This is unlike most other formal methods, where you have
-separate languages for the system and the properties.)  In CSP, the system’s
-process is typically called \(Impl\) (for <strong>implementation</strong>), and the
-property description process is typically called \(Spec\) (for
-<strong>specification</strong>).</p>
-
-<p>CSP then defines several <strong>semantic models</strong> that provide rigorous mathematical
-definitions of what a process’s behavior is.  You perform a refinement check
-within the context of a particular semantic model.  A successful refinement
-check tells you that the property defined by \(Spec\) “holds” — specifically,
-that all of the behaviors of \(Impl\) are also allowed behaviors of
-\(Spec\).  A failed refinement check gives you a <strong>counterexample</strong> — that is,
-a specific behavior of \(Impl\) that was disallowed by \(Spec\).</p>
-
-<p>The three most common semantic models are <strong>traces</strong>, <strong>failures</strong>, and
-<strong>failures-divergences</strong>.  We’ll go into more detail about the mathematics
-behind these semantic models in later posts; for now, the 10,000-foot overview
-is that:</p>
-      <div class="link">
-        <a href="/hst/refinement-overview/">
-          Continue reading <span class="glyphicon glyphicon-share-alt"></span>
-        </a>
-      </div>
-    </li>
-  
-    <li class="summary">
-      <div class="date">2016-11-16</div>
-      <h2 class="series"><a href="/hst/intro/">HST</a></h2>
-      <h1><a href="/hst/intro/">Introduction</a></h1>
-      <p>It seems like this blog is basically turning into “all things CSP”!  As part of
-that trend, I’ve started implementing a new CSP refinement checker called
-<a href="https://github.com/hst/hst/">HST</a>.  Why do this when there’s a perfectly good refinement checker in
-<a href="http://www.cs.ox.ac.uk/projects/fdr/">FDR</a>?  Well, I want to learn more about how FDR’s refinement algorithm works.
-The algorithm is documented in Bill Roscoe’s <a href="https://www.cs.ox.ac.uk/bill.roscoe/publications/68b.pdf">textbook</a> (and a series of
-follow-on papers), and working through those descriptions gives you a good bit
-of insight into how refinenment really works.  But I often find it easier to
-learn a complex topic by implementing it (or at least, by looking at the code of
-an implementation).  Hence HST!  In this new series of blog posts, I’m going to
-walk through the CSP refinement algorithm in more detail than is presented in
-the academic literature, by implementing it (and describing that implementation)
-along the way.</p>
-
-<p>I should emphasize that this is <strong>not</strong> meant to be a replacement for FDR!  FDR
-is a very good piece of software, and if you’re writing any CSP specs in anger,
-you probably want FDR at your disposal.  HST is meant to be more of an
-educational exercise.  If people find it more generally useful than that, that’s
-great!  But it’s not what I’m aiming for.</p>
-
-<p>(And as for the name, “HST” does <em>not</em> stand for “Harry S. Truman”, just like
-“FDR” does <em>not</em> stand for “Franklin Delano Roosevelt”.)</p>
-
-      <div class="link">
-        <a href="/hst/intro/">
-          Continue reading <span class="glyphicon glyphicon-share-alt"></span>
-        </a>
-      </div>
-    </li>
-  
-    <li class="summary">
-      <div class="date">2016-09-07</div>
-      <h2 class="series"><a href="/csp-concurrency/read-atomic-internal/">Concurrency models in CSP</a></h2>
-      <h1><a href="/csp-concurrency/read-atomic-internal/">Read Atomic: Internal consistency</a></h1>
+      <h1><a href="https://dcreager.net/posts/">Posts</a></h1>
       
-<script type="text/x-mathjax-config">
-MathJax.Hub.Config({
-  TeX: {
-    Macros: {
-      interleavesym: "|\\mkern-2mu|\\mkern-2mu|",
-      interleave: "\\mathrel{\\interleavesym}",
-      Interleave: "\\mathop{\\interleavesym}"
-    }
-  }
-});
-</script>
-
-<p>We’ll start by looking at the weakest concurrency model covered in the paper,
-Read Atomic.  In fact, to keep things really simple to start with, we’re only
-going to look at <em>one</em> of Read Atomic’s two axioms: <strong>internal consistency</strong>.
-(We’ll look at external consistency in the next post.)</p>
-
-<!--
- Read Atomic...can be implemented without requiring any coordination among
- replicas...a replica can decide to commit a transaction without consulting
- other replicas.
--->
-
-<p>A transaction is internally consistent if it “reads its own writes”.  This is
-the simplest axiom covered in the paper, since it expresses a property that’s
-strictly <em>local</em> to each transaction; we don’t have to consider the behavior of
-any other transaction when defining what it means for a transaction to be
-internally consistent.</p>
-
-
       <div class="link">
-        <a href="/csp-concurrency/read-atomic-internal/">
+        <a href="https://dcreager.net/posts/">
           Continue reading <span class="glyphicon glyphicon-share-alt"></span>
         </a>
       </div>
@@ -461,8 +107,8 @@ internally consistent.</p>
 </ul>
 
       </div>
-    </div> <!-- /row -->
-  </div> <!-- /container -->
+    </div> 
+  </div> 
 
     <footer class="copyright">
     <div class="container">

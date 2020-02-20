@@ -1,8 +1,6 @@
 ---
-kind: article
-created_at: 2018-05-31
-updated_at: 2018-06-12
-layout: /post.html
+date: 2018-05-31
+lastmod: 2018-06-12
 title: "NP-hard isn't the end of the world"
 description: learning to dodge
 ---

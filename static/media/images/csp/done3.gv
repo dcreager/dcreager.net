@@ -1,0 +1,29 @@
+digraph {
+  rankdir=LR;
+  bgcolor=transparent;
+  node [bgcolor=white, shape=box, style=filled, fillcolor=white];
+
+  done123 [label="Done({1,2,3})"];
+  done12 [label="Done({1,2})"];
+  done13 [label="Done({1,3})"];
+  done23 [label="Done({2,3})"];
+  done1 [label="Done({1})"];
+  done2 [label="Done({2})"];
+  done3 [label="Done({3})"];
+  stop [label="STOP"];
+
+  done123 -> done23 [label="done.1"];
+  done12 -> done2 [label="done.1"];
+  done13 -> done3 [label="done.1"];
+  done1 -> stop [label="done.1"];
+
+  done123 -> done13 [label="done.2"];
+  done12 -> done1 [label="done.2"];
+  done23 -> done3 [label="done.2"];
+  done2 -> stop [label="done.2"];
+
+  done123 -> done12 [label="done.3"];
+  done13 -> done1 [label="done.3"];
+  done23 -> done2 [label="done.3"];
+  done3 -> stop [label="done.3"];
+}
