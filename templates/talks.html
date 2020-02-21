@@ -1,0 +1,204 @@
+{% extends "base.html" %}
+{% block main %}
+<h1>Talks</h1>
+
+<ol class="publications">
+
+  <li class="reference">
+    <div class="talk-title">Precise, cross-project code navigation at GitHub scale</div>
+    <ul class="details">
+      <li>
+        <a href="https://fosdem.org/2020/schedule/event/github_cross_project_code_navigation/">FOSDEM</a>
+      </li>
+      <li class="date">February 2020</li>
+    </ul>
+    <div class="talk-abstract">
+      <p>
+      GitHub has recently added Code Navigation features (jump to definition and
+      find all references) that let you navigate code directly on <a
+        href="https://github.com/">github.com</a>.  For the languages that we
+      support, we extract and store symbol information for every named branch
+      and tag, of every repository, public or private, with no configuration
+      necessary. The compute and storage requirements to do this for all of the
+      code on GitHub are quite large. In this talk, we'll discuss some of the
+      trade-offs we've made to make this tractable at GitHub's scale, to be able
+      to operate and monitor this service effectively, and to let us add support
+      for new languages quickly and easily. We'll also talk about our ongoing
+      work to extend Code Navigation to handle links that cross package and
+      repository boundaries.
+      </p>
+    </div>
+    <ul class="details">
+      <li>
+        <a href="https://fosdem.org/2020/schedule/event/github_cross_project_code_navigation/attachments/slides/3885/export/events/attachments/github_cross_project_code_navigation/slides/3885/dcreager_fosdem_2020.pdf"><span class="glyphicon glyphicon-picture"></span>Slides</a>
+      </li>
+      <li>
+        <a href="https://video.fosdem.org/2020/UD2.119/github_cross_project_code_navigation.webm"><span class="glyphicon glyphicon-facetime-video"></span>Video (WebM/VP9)</a>
+      </li>
+      <li>
+        <a href="https://video.fosdem.org/2020/UD2.119/github_cross_project_code_navigation.mp4"><span class="glyphicon glyphicon-facetime-video"></span>Video (mp4)</a>
+      </li>
+      <li>
+        <a href="https://fosdem.org/2020/schedule/event/github_cross_project_code_navigation/"><span class="glyphicon glyphicon-calendar"></span>Event</a>
+      </li>
+    </ul>
+  </li>
+
+  <li class="reference">
+    <div class="talk-title">The Pastry peer-to-peer overlay network</div>
+    <ul class="details">
+      <li>
+        <a href="https://www.meetup.com/Papers-We-Love-Boston-Cambridge/events/252763348/">Papers We Love Boston-Cambridge</a>
+      </li>
+      <li class="date">July 2018</li>
+    </ul>
+    <div class="talk-abstract">
+      <p>
+      The early 2000's saw several research groups look into distributed hash
+      tables as a decentralized way to structure a distributed system. In this
+      talk, I'll briefly describe some of the history behind DHTs, and look at
+      one of them in particular: Pastry, which takes into account how close or
+      far apart nodes are from each other when constructing the peer-to-peer
+      overlay network. We'll also look at Scribe, which implements
+      anycast/multicast messaging on top of the Pastry overlay network.
+      </p>
+    </div>
+    <ul class="details">
+      <li>
+        <a href="https://docs.google.com/presentation/d/1-65NY-k9NchmrxRAQBbOOEkqXU5zdT9dREKS-PfVEMQ/"><span class="glyphicon glyphicon-picture"></span>Slides</a>
+      </li>
+      <li>
+        <a href="https://www.youtube.com/watch?v=o-mPW4tRrKw"><span class="glyphicon glyphicon-facetime-video"></span>Video</a>
+      </li>
+      <li>
+        <a href="https://www.meetup.com/Papers-We-Love-Boston-Cambridge/events/252763348/"><span class="glyphicon glyphicon-calendar"></span>Meetup</a>
+      </li>
+    </ul>
+  </li>
+
+  <li class="reference">
+    <div class="talk-title">Real-time packet analysis at scale</div>
+    <ul class="details">
+      <li>
+        <a href="http://monitorama.com/2017/pdx.html">Monitorama PDX 2017</a>
+      </li>
+      <li class="date">May 2017</li>
+    </ul>
+    <div class="talk-abstract">
+      <p>
+      Your application depends on the network more than you might realize.  Are
+      you monitoring it?  A performance problem in the network is a performance
+      problem for your app.  A reliability problem in the network is a
+      reliability problem for your app.
+      </p>
+
+      <p>
+      At Google, we have instrumented several parts of our serving stack to
+      collect detailed information about the network.  An important part of that
+      is a real-time pipeline for collecting and analyzing packet captures,
+      which give you detailed diagnostics about individual network connections.
+      In this talk you'll learn how to visualize and analyze packet captures to
+      detect network problems that affect what your users experience.
+      </p>
+    </div>
+    <ul class="details">
+      <li>
+        <a href="https://speakerdeck.com/dcreager/real-time-packet-analysis-at-scale-monitorama-pdx-2017"><span class="glyphicon glyphicon-picture"></span>Slides</a>
+      </li>
+      <li>
+        <a href="https://vimeo.com/221056132"><span class="glyphicon glyphicon-facetime-video"></span>Video</a>
+      </li>
+    </ul>
+  </li>
+
+  <li class="reference">
+    <div class="talk-title">An oversimplified history of CSP</div>
+    <ul class="details">
+      <li>
+        <a href="https://www.meetup.com/Papers-We-Love-Boston-Cambridge/events/234829295/">Papers We Love Boston-Cambridge</a>
+      </li>
+      <li class="date">October 2016</li>
+    </ul>
+    <div class="talk-abstract">
+      <p>
+      Communicating Sequential Processes (CSP) was first described by Tony Hoare
+      in 1978.  Since then, there have been two main "branches" of further
+      development.  In the first branch, CSP inspired how concurrency is handled
+      in an ongoing series of programming languages — most recently (and
+      famously) in Go.  In the second branch, CSP was refined into a rigorous
+      “process calculus”, and has since been used to formally prove various
+      safety and liveness properties of concurrent and distributed systems.
+      </p>
+
+      <p>
+      This talk will be a whirlwind history of CSP, a high-level overview of the
+      process calculus, and some live demos of using a refinement checker to
+      prove things about interesting systems.  (No proving things by hand!)
+      </p>
+    </div>
+    <ul class="details">
+      <li>
+        <a href="https://docs.google.com/presentation/d/1EUOK5qZBdzKTUGbI3iMhHnhwI60pVsg8ISm3jB1D_K8/"><span class="glyphicon glyphicon-picture"></span>Slides</a>
+      </li>
+      <li>
+        <a href="https://www.meetup.com/Papers-We-Love-Boston-Cambridge/events/234829295/"><span class="glyphicon glyphicon-calendar"></span>Meetup</a>
+      </li>
+    </ul>
+  </li>
+
+  <li class="reference">
+    <div class="talk-title">“The early history of Smalltalk”</div>
+    <ul class="details">
+      <li>
+        <a href="https://www.meetup.com/Papers-We-Love-Boston-Cambridge/events/230987877/">Papers We Love Boston-Cambridge</a>
+      </li>
+      <li class="date">May 2016</li>
+    </ul>
+    <div class="talk-abstract">
+      <p>
+      History! Those who don't know it are doomed to etc.
+      </p>
+
+      <p>
+      Smalltalk is one of the earliest object-oriented languages. It's extremely
+      influential — many of the OO concepts that we use in today's languages
+      were first developed in Smalltalk. But what influenced Smalltalk? Alan Kay
+      will walk us through the language's inspirations in this talk, including
+      such crazy new technologies as UIs with overlapping windows and a
+      1970's-era ur-tablet!
+      </p>
+    </div>
+    <ul class="details">
+      <li>
+        <a href="https://docs.google.com/presentation/d/17_PoiQZjbH8WdWu4FtmNiIO-LVilR0y8s2tCJHoAgsc/"><span class="glyphicon glyphicon-picture"></span>Slides</a>
+      </li>
+      <li>
+        <a href="https://www.meetup.com/Papers-We-Love-Boston-Cambridge/events/230987877/"><span class="glyphicon glyphicon-calendar"></span>Meetup</a>
+      </li>
+    </ul>
+  </li>
+
+  <li class="reference">
+    <div class="talk-title">An introduction to Apache Avro</div>
+    <ul class="details">
+      <li>
+        <a href="http://mil-oss.org/wg3-speakers-and-presentations">Mil-OSS Working Group 3</a>
+      </li>
+      <li class="date">August 2011</li>
+    </ul>
+    <div class="talk-abstract">
+      <p>
+      This talk was an overview of the Apache Avro data serialization framework.
+      It includes some detail on why you'd want to use a framework of its kind
+      instead of XML, JSON, or rolling your own custom format.
+      </p>
+    </div>
+    <ul class="details">
+      <li>
+        <a href="https://speakerdeck.com/dcreager/an-introduction-to-apache-avro"><span class="glyphicon glyphicon-picture"></span>Slides</a>
+      </li>
+    </ul>
+  </li>
+
+</ol>
+{% endblock main %}

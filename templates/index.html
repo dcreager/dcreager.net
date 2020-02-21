@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block main %}
+<ul class="summaries">
+
+  {% for page in section.pages %}
+    <li class="summary">
+      {% if page.date is defined %}
+      <div class="date">{{ page.date | date }}</div>
+      {% endif %}
+      {% if page.extra.series is defined %}
+      <h2 class="series"><a href="{{ page.permalink }}">{{ page.extra.series }}</a></h2>
+      {% endif %}
+      <h1><a href="{{ page.permalink }}">{{ page.title }}</a></h1>
+      {{ page.summary | safe }}
+      <div class="link">
+        <a href="{{ page.permalink }}#continue-reading">
+          Continue reading <span class="glyphicon glyphicon-share-alt"></span>
+        </a>
+      </div>
+    </li>
+  {% endfor %}
+
+</ul>
+{% endblock main %}

@@ -1,0 +1,17 @@
+{% macro title() %}
+{%- if section is defined -%}
+{{ section.title }}
+{%- else -%}
+{{ page.title }}
+{%- endif -%}
+{% endmacro title %}
+
+{% macro navbar_link(path) %}
+{%- set page = get_page(path=path) -%}
+{%- if current_url == page.permalink -%}
+<li class=active>
+{%- else -%}
+<li>
+{%- endif -%}
+<a href="{{ page.permalink }}">{{ page.title }}</a></li>
+{%- endmacro %}

@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block main %}
+<h1>All posts</h1>
+
+{% set section = get_section(path="_index.md") %}
+<ul class="archive">
+  {% for page in section.pages %}
+    <li>
+      <span class="date">{{ page.date | date }}</span>
+      <span class="title">
+        <a href="{{ page.permalink }}">
+          {% if page.extra.series is defined -%}
+          {{ page.extra.series }}:
+          {%- endif %}
+          {{ page.title }}
+        </a>
+      </span>
+    </li>
+  {% endfor %}
+</ul>
+{% endblock main %}

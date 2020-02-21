@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Home on dcreager.net</title>
+    <link>https://dcreager.net/</link>
+    <description>Recent content in Home on dcreager.net</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    
+	<atom:link href="https://dcreager.net/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>NP-hard isn&#39;t the end of the world</title>
+      <link>https://dcreager.net/posts/np-hard/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://dcreager.net/posts/np-hard/</guid>
+      <description>{: .big-def} tl;dr{: .tldr} We&amp;rsquo;ve typically considered it a deal-breaker to discover that an algorithm we care about is NP-hard. We&amp;rsquo;ll go to great lengths to simplify the problem domain so that we can switch to a polynomial-time algorithm. But if we simplify too much, then we run the risk that our solution is no longer useful. Luckily, we might not have to! NP-hard is a worst-case bound. If we can convince ourselves that we won&amp;rsquo;t encounter pathological inputs, the NP-hard algorithm might be just fine in practice.</description>
+    </item>
+    
+  </channel>
+</rss>

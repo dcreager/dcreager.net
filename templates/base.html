@@ -1,0 +1,22 @@
+{% import "macros.html" as macros %}
+<!doctype html>
+<html lang="en">
+<head>
+  {% include "title.html" %}
+  {% include "links.html" %}
+</head>
+
+<body>
+  <div class="container">
+    {% include "topnav.html" %}
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        {% block main %}
+        {% endblock main %}
+      </div>
+    </div> <!-- /row -->
+  </div> <!-- /container -->
+
+  {% include "foot.html" %}
+  {% include "js.html" %}
+</html>

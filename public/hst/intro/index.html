@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>
+    dcreager.net – Introduction
+  </title>
+  <meta name="author" content="Douglas Creager">
+
+    <meta charset="utf-8">
+
+  <meta name="google-site-verification"
+        content="7KIoYPNsfdDxIdX1QQ7SM2Nm_nyy13aRlDkzE3wzhhY" />
+
+  <link rel="alternate" type="application/atom+xml"
+        title="dcreager.net" href="/atom.xml"/>
+
+  <!-- Bootstrap -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel=stylesheet type=text/css media=screen
+        href="/media/vendor/css/bootstrap.min.css">
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+  <![endif]-->
+
+  <!-- MathJax -->
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      jax: ["input/TeX","output/HTML-CSS"],
+      displayAlign: "left",
+      displayIndent: "2em"
+    });
+  </script>
+  <script type="text/javascript" async
+          src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+  </script>
+
+  
+  <!-- Twitter nonsense -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="@dcreager">
+  <meta name="twitter:title"
+        content="Introduction">
+  <meta name="twitter:description"
+        content="in which we learn by implementing">
+  <meta name="twitter:image"
+        content="https://www.gravatar.com/avatar/04ee3ca11f1ae11c63faa7995dbf1ed7?s=2048">
+  
+
+  <!-- Customizations -->
+  <link rel=stylesheet type=text/css media=screen
+        href="/media/css/coderay.css">
+  <link rel=stylesheet type=text/css media=screen
+        href="/media/css/dcreager.css">
+  <link rel=stylesheet type=text/css media=screen
+        href="https://fonts.googleapis.com/css?family=Oxygen:400,700">
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+  <div class="col-md-10 col-md-offset-1">
+    <nav class="navbar navbar-default" role="navigation">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand logo" href="/"><b>dcreager.net</b></a>
+      </div>
+
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;about&#x2F;">About</a></li>
+          <li><a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;archive&#x2F;">Archive</a></li>
+          <li><a href="https://tinyletter.com/dcreager/">Newsletter</a></li>
+          <li><a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;talks&#x2F;">Talks</a></li>
+          <li><a href="/publications/">Publications</a></li>
+        </ul>
+      </div><!-- /.navbar-collapse -->
+    </nav>
+  </div>
+</div>
+
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        
+<div class="blog">
+  
+  <div class="date">
+    2016-11-16
+    
+  </div>
+  
+  
+  <h2 class="series">HST</h2>
+  
+  <h1>Introduction</h1>
+  
+  <p>It seems like this blog is basically turning into &quot;all things CSP&quot;!  As part of
+that trend, I've started implementing a new CSP refinement checker called
+<a href="https://github.com/hst/hst/">HST</a>.  Why do this when there's a perfectly good refinement checker in
+<a href="http://www.cs.ox.ac.uk/projects/fdr/">FDR</a>?  Well, I want to learn more about how FDR's refinement algorithm works.
+The algorithm is documented in Bill Roscoe's <a href="https://www.cs.ox.ac.uk/bill.roscoe/publications/68b.pdf">textbook</a> (and a series of
+follow-on papers), and working through those descriptions gives you a good bit
+of insight into how refinenment really works.  But I often find it easier to
+learn a complex topic by implementing it (or at least, by looking at the code of
+an implementation).  Hence HST!  In this new series of blog posts, I'm going to
+walk through the CSP refinement algorithm in more detail than is presented in
+the academic literature, by implementing it (and describing that implementation)
+along the way.</p>
+<p>I should emphasize that this is <strong>not</strong> meant to be a replacement for FDR!  FDR
+is a very good piece of software, and if you're writing any CSP specs in anger,
+you probably want FDR at your disposal.  HST is meant to be more of an
+educational exercise.  If people find it more generally useful than that, that's
+great!  But it's not what I'm aiming for.</p>
+<p>(And as for the name, &quot;HST&quot; does <em>not</em> stand for &quot;Harry S. Truman&quot;, just like
+&quot;FDR&quot; does <em>not</em> stand for &quot;Franklin Delano Roosevelt&quot;.)</p>
+<p id="zola-continue-reading"><a name="continue-reading"></a></p>
+
+  
+  
+  <p class="next"><a href="http:&#x2F;&#x2F;127.0.0.1:1111&#x2F;hst&#x2F;refinement-overview&#x2F;">Refinement overview</a></p>
+  
+  <div class="subscribe">
+    Stay up to date by subscribing to <a
+      href="https://tinyletter.com/dcreager/">my newsletter</a>.
+  </div>
+</div>
+
+      </div>
+    </div> <!-- /row -->
+  </div> <!-- /container -->
+
+    <footer class="copyright">
+    <div class="container">
+      <p>Copyright © 2009-2020, Douglas Creager.
+      All&nbsp;rights&nbsp;reserved.</p>
+    </div>
+  </footer>
+
+    <script src="//code.jquery.com/jquery.min.js"></script>
+  <script src="/media/vendor/js/bootstrap.min.js"></script>
+
+<!-- Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-83885503-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+</html>
