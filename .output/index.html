@@ -91,6 +91,23 @@
 
   
     <li class="summary">
+      <div class="date">2020-03-12</div>
+      <h1><a href="/avro/schema-resolution/">Avro schema resolution</a></h1>
+      <p>I have always liked <a href="https://avro.apache.org/">Avro</a> better than the other data serialization frameworks
+that are out there (<a href="https://developers.google.com/protocol-buffers">Protobuf</a>, <a href="https://thrift.apache.org/">Thrift</a>, <a href="https://json.org/">JSON</a>, <a href="https://msgpack.org/">msgpack</a>, <a href="https://cbor.io/">CBOR</a>,
+the list goes on and on).  There are many reasons why, which probably deserves
+another post.  But a big one is Avro’s <a href="https://avro.apache.org/docs/current/spec.html#Schema+Resolution">schema resolution</a> rules.  Let’s take
+a look at how they work and why they’re useful!</p>
+
+
+      <div class="link">
+        <a href="/avro/schema-resolution/">
+          Continue reading <span class="glyphicon glyphicon-share-alt"></span>
+        </a>
+      </div>
+    </li>
+  
+    <li class="summary">
       <div class="date">2018-05-31</div>
       <h1><a href="/np-hard/">NP-hard isn't the end of the world</a></h1>
       <p class="big-def"><em class="tldr">tl;dr</em> We’ve typically considered it a deal-breaker to discover that
@@ -410,48 +427,6 @@ great!  But it’s not what I’m aiming for.</p>
 
       <div class="link">
         <a href="/hst/intro/">
-          Continue reading <span class="glyphicon glyphicon-share-alt"></span>
-        </a>
-      </div>
-    </li>
-  
-    <li class="summary">
-      <div class="date">2016-09-07</div>
-      <h2 class="series"><a href="/csp-concurrency/read-atomic-internal/">Concurrency models in CSP</a></h2>
-      <h1><a href="/csp-concurrency/read-atomic-internal/">Read Atomic: Internal consistency</a></h1>
-      
-<script type="text/x-mathjax-config">
-MathJax.Hub.Config({
-  TeX: {
-    Macros: {
-      interleavesym: "|\\mkern-2mu|\\mkern-2mu|",
-      interleave: "\\mathrel{\\interleavesym}",
-      Interleave: "\\mathop{\\interleavesym}"
-    }
-  }
-});
-</script>
-
-<p>We’ll start by looking at the weakest concurrency model covered in the paper,
-Read Atomic.  In fact, to keep things really simple to start with, we’re only
-going to look at <em>one</em> of Read Atomic’s two axioms: <strong>internal consistency</strong>.
-(We’ll look at external consistency in the next post.)</p>
-
-<!--
- Read Atomic...can be implemented without requiring any coordination among
- replicas...a replica can decide to commit a transaction without consulting
- other replicas.
--->
-
-<p>A transaction is internally consistent if it “reads its own writes”.  This is
-the simplest axiom covered in the paper, since it expresses a property that’s
-strictly <em>local</em> to each transaction; we don’t have to consider the behavior of
-any other transaction when defining what it means for a transaction to be
-internally consistent.</p>
-
-
-      <div class="link">
-        <a href="/csp-concurrency/read-atomic-internal/">
           Continue reading <span class="glyphicon glyphicon-share-alt"></span>
         </a>
       </div>
