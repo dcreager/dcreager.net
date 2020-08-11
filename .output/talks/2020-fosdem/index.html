@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>
+    dcreager.net – Talk: Precise, cross-project code navigation at GitHub scale
+  </title>
+  <meta name="author" content="Douglas Creager">
+
+    <meta charset="utf-8">
+
+  <meta name="google-site-verification"
+        content="7KIoYPNsfdDxIdX1QQ7SM2Nm_nyy13aRlDkzE3wzhhY" />
+
+  <link rel="alternate" type="application/atom+xml"
+        title="dcreager.net" href="/atom.xml"/>
+
+  <!-- Bootstrap -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel=stylesheet type=text/css media=screen
+        href="/media/vendor/css/bootstrap.min.css">
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+  <![endif]-->
+
+  <!-- MathJax -->
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      jax: ["input/TeX","output/HTML-CSS"],
+      displayAlign: "left",
+      displayIndent: "2em"
+    });
+  </script>
+  <script type="text/javascript" async
+          src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+  </script>
+
+  <!-- Twitter nonsense -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="@dcreager">
+  <meta name="twitter:title"
+        content="Talk: Precise, cross-project code navigation at GitHub scale">
+  <meta name="twitter:description"
+        content="...">
+  <meta name="twitter:image"
+        content="https://www.gravatar.com/avatar/04ee3ca11f1ae11c63faa7995dbf1ed7?s=2048">
+
+  <!-- Customizations -->
+  <link rel=stylesheet type=text/css media=screen
+        href="/media/css/coderay.css">
+  <link rel=stylesheet type=text/css media=screen
+        href="/media/css/dcreager.css">
+  <link rel=stylesheet type=text/css media=screen
+        href="https://fonts.googleapis.com/css?family=Oxygen:400,700">
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+  <div class="col-md-10 col-md-offset-1">
+    <nav class="navbar navbar-default" role="navigation">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand logo" href="/"><b>dcreager.net</b></a>
+      </div>
+
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="/about/">About</a></li></li>
+          <li><a href="/archive/">Archive</a></li></li>
+          <li><a href="https://tinyletter.com/dcreager/">Newsletter</a></li></li>
+          <li><a href="/talks/">Talks</a></li></li>
+          <li><a href="/publications/">Publications</a></li></li>
+        </ul>
+      </div><!-- /.navbar-collapse -->
+    </nav>
+  </div>
+</div>
+
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        <h1>Talk details</h1>
+
+<ol class="publications">
+  <li class="reference">
+    <div class="talk-title">Precise, cross-project code navigation at GitHub scale</div>
+    <ul class="details">
+      <li>
+        <a href="https://fosdem.org/2020/schedule/event/github_cross_project_code_navigation/">FOSDEM</a>
+      </li>
+      <li class="date">February 2020</li>
+    </ul>
+    <div class="talk-abstract">
+      <p>
+      GitHub has recently added Code Navigation features (jump to definition and
+      find all references) that let you navigate code directly on <a
+        href="https://github.com/">github.com</a>.  For the languages that we
+      support, we extract and store symbol information for every named branch
+      and tag, of every repository, public or private, with no configuration
+      necessary. The compute and storage requirements to do this for all of the
+      code on GitHub are quite large. In this talk, we'll discuss some of the
+      trade-offs we've made to make this tractable at GitHub's scale, to be able
+      to operate and monitor this service effectively, and to let us add support
+      for new languages quickly and easily. We'll also talk about our ongoing
+      work to extend Code Navigation to handle links that cross package and
+      repository boundaries.
+      </p>
+    </div>
+    <ul class="details">
+      <li>
+        <a href="https://fosdem.org/2020/schedule/event/github_cross_project_code_navigation/attachments/slides/3885/export/events/attachments/github_cross_project_code_navigation/slides/3885/dcreager_fosdem_2020.pdf"><span class="glyphicon glyphicon-picture"></span>Slides</a>
+      </li>
+      <li>
+        <a href="https://video.fosdem.org/2020/UD2.119/github_cross_project_code_navigation.webm"><span class="glyphicon glyphicon-facetime-video"></span>Video (WebM/VP9)</a>
+      </li>
+      <li>
+        <a href="https://video.fosdem.org/2020/UD2.119/github_cross_project_code_navigation.mp4"><span class="glyphicon glyphicon-facetime-video"></span>Video (mp4)</a>
+      </li>
+      <li>
+        <a href="https://fosdem.org/2020/schedule/event/github_cross_project_code_navigation/"><span class="glyphicon glyphicon-calendar"></span>Event</a>
+      </li>
+    </ul>
+  </li>
+</ol>
+
+      </div>
+    </div> <!-- /row -->
+  </div> <!-- /container -->
+
+    <footer class="copyright">
+    <div class="container">
+      <p>Copyright © 2009-2020, Douglas Creager.
+      All&nbsp;rights&nbsp;reserved.</p>
+    </div>
+  </footer>
+
+    <script src="//code.jquery.com/jquery.min.js"></script>
+  <script src="/media/vendor/js/bootstrap.min.js"></script>
+
+<!-- Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-83885503-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+</html>
