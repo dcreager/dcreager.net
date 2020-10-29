@@ -3,8 +3,8 @@
   <id>https://dcreager.net/</id>
   <title>dcreager.net</title>
   <updated>2018-06-12T00:00:00Z</updated>
-  <link rel="alternate" href="https://dcreager.net/"/>
-  <link rel="self" href="https://dcreager.net/atom.xml"/>
+  <link rel="alternate" href="https://dcreager.net/" type="text/html"/>
+  <link rel="self" href="https://dcreager.net/atom.xml" type="application/atom+xml"/>
   <author>
     <name>Douglas Creager</name>
     <uri>https://dcreager.net/</uri>
@@ -14,7 +14,7 @@
     <title type="html">NP-hard isn't the end of the world</title>
     <published>2018-05-31T00:00:00Z</published>
     <updated>2018-06-12T00:00:00Z</updated>
-    <link rel="alternate" href="https://dcreager.net/np-hard/"/>
+    <link rel="alternate" href="https://dcreager.net/np-hard/" type="text/html"/>
     <content type="html">&lt;p class="big-def"&gt;&lt;em class="tldr"&gt;tl;dr&lt;/em&gt; We’ve typically considered it a deal-breaker to discover that
 an algorithm we care about is &lt;em&gt;NP&lt;/em&gt;-hard.  We’ll go to great lengths to simplify
 the problem domain so that we can switch to a polynomial-time algorithm.  But if
@@ -30,7 +30,7 @@ If we can convince ourselves that we won’t encounter pathological inputs, the
     <title type="html">Clean git histories and code review workflows</title>
     <published>2018-04-19T00:00:00Z</published>
     <updated>2018-05-02T00:00:00Z</updated>
-    <link rel="alternate" href="https://dcreager.net/git/workflows/"/>
+    <link rel="alternate" href="https://dcreager.net/git/workflows/" type="text/html"/>
     <content type="html">&lt;div class="alert alert-warning"&gt;
   &lt;p&gt;
     &lt;strong&gt;NOTE&lt;/strong&gt;: Though I'm currently employed by GitHub, I wrote this
@@ -75,7 +75,7 @@ before GitHub existed), and one that does.&lt;/p&gt;
     <title type="html">Introducing Network Error Logging</title>
     <published>2018-03-27T00:00:00Z</published>
     <updated>2018-03-27T00:00:00Z</updated>
-    <link rel="alternate" href="https://dcreager.net/nel/intro/"/>
+    <link rel="alternate" href="https://dcreager.net/nel/intro/" type="text/html"/>
     <content type="html">&lt;p&gt;Let’s say you’ve got a web site or REST service.  You have clients that send
 requests to your server, which performs some interesting processing and sends
 responses back.  The clients might be people using a browser, or native code in
@@ -94,7 +94,7 @@ the middle is completely out of your control?&lt;/p&gt;
     <title type="html">Shared library versions</title>
     <published>2017-10-29T00:00:00Z</published>
     <updated>2017-10-29T00:00:00Z</updated>
-    <link rel="alternate" href="https://dcreager.net/shared-library-versions/"/>
+    <link rel="alternate" href="https://dcreager.net/shared-library-versions/" type="text/html"/>
     <content type="html">&lt;p&gt;Congratulations, you’ve written a software library!  You hope that lots of
 people will find it useful, and will take it as a dependency when writing their
 own software.  You know that at some point you’ll have to make changes to your
@@ -121,7 +121,7 @@ build tools.&lt;/p&gt;
     <title type="html">Introduction</title>
     <published>2017-08-10T00:00:00Z</published>
     <updated>2017-08-10T00:00:00Z</updated>
-    <link rel="alternate" href="https://dcreager.net/obligations/intro/"/>
+    <link rel="alternate" href="https://dcreager.net/obligations/intro/" type="text/html"/>
     <content type="html">&lt;p&gt;Programming languages have a lot of interesting ways to think about what you’re
 allowed to do, and not allowed to do.  In a statically typed language, your
 compiler will yell at you if you try to do something that’s not allowed, and a
@@ -162,7 +162,7 @@ that can talk about obligations directly.&lt;/p&gt;
     <title type="html">Lazy processes</title>
     <published>2017-01-17T00:00:00Z</published>
     <updated>2017-01-17T00:00:00Z</updated>
-    <link rel="alternate" href="https://dcreager.net/hst/lazy-processes/"/>
+    <link rel="alternate" href="https://dcreager.net/hst/lazy-processes/" type="text/html"/>
     <content type="html">
 &lt;script type="text/x-mathjax-config"&gt;
 MathJax.Hub.Config({
@@ -194,7 +194,7 @@ to represent them in code.&lt;/p&gt;
     <title type="html">Semantic methods</title>
     <published>2016-11-17T14:00:00Z</published>
     <updated>2016-11-17T14:00:00Z</updated>
-    <link rel="alternate" href="https://dcreager.net/hst/semantic-methods/"/>
+    <link rel="alternate" href="https://dcreager.net/hst/semantic-methods/" type="text/html"/>
     <content type="html">&lt;script type="text/x-mathjax-config"&gt;
 MathJax.Hub.Config({
   TeX: {
@@ -243,7 +243,7 @@ analyzing this state machine.&lt;/p&gt;
     <title type="html">Refinement overview</title>
     <published>2016-11-17T13:00:00Z</published>
     <updated>2016-11-17T13:00:00Z</updated>
-    <link rel="alternate" href="https://dcreager.net/hst/refinement-overview/"/>
+    <link rel="alternate" href="https://dcreager.net/hst/refinement-overview/" type="text/html"/>
     <content type="html">&lt;p&gt;Our goal is to learn about CSP refinement by implementing a refinement checker.
 So a good first step is to make sure we’re all on the same page about what
 refinement is, and then to step through the refinement algorithm that we mean to
@@ -278,7 +278,7 @@ is that:&lt;/p&gt;</content>
     <title type="html">Introduction</title>
     <published>2016-11-16T00:00:00Z</published>
     <updated>2016-11-16T00:00:00Z</updated>
-    <link rel="alternate" href="https://dcreager.net/hst/intro/"/>
+    <link rel="alternate" href="https://dcreager.net/hst/intro/" type="text/html"/>
     <content type="html">&lt;p&gt;It seems like this blog is basically turning into “all things CSP”!  As part of
 that trend, I’ve started implementing a new CSP refinement checker called
 &lt;a href="https://github.com/hst/hst/"&gt;HST&lt;/a&gt;.  Why do this when there’s a perfectly good refinement checker in
@@ -307,7 +307,7 @@ great!  But it’s not what I’m aiming for.&lt;/p&gt;
     <title type="html">Read Atomic: Internal consistency</title>
     <published>2016-09-07T00:00:00Z</published>
     <updated>2016-09-07T00:00:00Z</updated>
-    <link rel="alternate" href="https://dcreager.net/csp-concurrency/read-atomic-internal/"/>
+    <link rel="alternate" href="https://dcreager.net/csp-concurrency/read-atomic-internal/" type="text/html"/>
     <content type="html">
 &lt;script type="text/x-mathjax-config"&gt;
 MathJax.Hub.Config({
@@ -345,7 +345,7 @@ internally consistent.&lt;/p&gt;
     <title type="html">Preliminaries</title>
     <published>2016-08-03T00:00:00Z</published>
     <updated>2016-08-03T00:00:00Z</updated>
-    <link rel="alternate" href="https://dcreager.net/csp-concurrency/prelims/"/>
+    <link rel="alternate" href="https://dcreager.net/csp-concurrency/prelims/" type="text/html"/>
     <content type="html">&lt;p&gt;Before diving into the details of our first concurrency model, it will be
 helpful to give an overview of how we’re going to use CSP in these posts.&lt;/p&gt;
 
@@ -366,7 +366,7 @@ properties that we hope our system exhibits.&lt;/p&gt;
     <title type="html">Introduction</title>
     <published>2016-07-28T00:00:00Z</published>
     <updated>2016-07-28T00:00:00Z</updated>
-    <link rel="alternate" href="https://dcreager.net/csp-concurrency/intro/"/>
+    <link rel="alternate" href="https://dcreager.net/csp-concurrency/intro/" type="text/html"/>
     <content type="html">&lt;p&gt;Two years ago, I started writing a series of &lt;a href="/2014/01/07/intro-to-csp/"&gt;blog&lt;/a&gt;
 &lt;a href="/2014/02/csp-basics/"&gt;posts&lt;/a&gt; about CSP — Communicating Sequential Processes.
 That series has…let’s say “stalled”.  Part of the reason is that I didn’t have
@@ -412,7 +412,7 @@ to a difficult topic!&lt;/p&gt;
     <title type="html">Dependency management in C</title>
     <published>2014-11-21T00:00:00Z</published>
     <updated>2014-11-21T00:00:00Z</updated>
-    <link rel="alternate" href="https://dcreager.net/2014/11/dependency-management-in-c/"/>
+    <link rel="alternate" href="https://dcreager.net/2014/11/dependency-management-in-c/" type="text/html"/>
     <content type="html">&lt;p&gt;At &lt;a href="http://www.redjack.com/"&gt;RedJack&lt;/a&gt;, all of our &lt;a href="http://www.redjack.com/solutions/"&gt;core
 products&lt;/a&gt; depend on a network sensor that
 collects various bits of information about the raw traffic that we see on the
@@ -439,7 +439,7 @@ managers like &lt;a href="https://www.npmjs.org/"&gt;npm&lt;/a&gt;, &lt;a href="
     <title type="html">Tagged releases using git flow</title>
     <published>2014-05-14T00:00:00Z</published>
     <updated>2014-05-14T00:00:00Z</updated>
-    <link rel="alternate" href="https://dcreager.net/2014/05/git-flow/"/>
+    <link rel="alternate" href="https://dcreager.net/2014/05/git-flow/" type="text/html"/>
     <content type="html">&lt;p&gt;I’ve used &lt;code&gt;git flow&lt;/code&gt; for most of my software projects — specifically for those
 that have versioned releases.  The &lt;a href="http://nvie.com/posts/a-successful-git-branching-model/"&gt;original
 post&lt;/a&gt; describing &lt;code&gt;git
@@ -473,7 +473,7 @@ described.  That means that I can’t use &lt;code&gt;git flow release finish&lt
     <title type="html">CSP: The basics</title>
     <published>2014-02-28T00:00:00Z</published>
     <updated>2014-02-28T00:00:00Z</updated>
-    <link rel="alternate" href="https://dcreager.net/2014/02/csp-basics/"/>
+    <link rel="alternate" href="https://dcreager.net/2014/02/csp-basics/" type="text/html"/>
     <content type="html">&lt;p class="big-def"&gt;&lt;em class="tldr"&gt;tl;dr&lt;/em&gt; CSP is a &lt;em&gt;formal method&lt;/em&gt; that lets you describe and reason
 about the behavior of &lt;em&gt;concurrent systems&lt;/em&gt;.  CSP is &lt;em&gt;composable&lt;/em&gt;; you write
 simple &lt;em&gt;processes&lt;/em&gt;, and then use special &lt;em&gt;operators&lt;/em&gt; to combine them together
@@ -495,7 +495,7 @@ single paragraph.  Let’s look at each of those key points in more detail.&lt;/
     <title type="html">CSP: An introduction</title>
     <published>2014-01-07T00:00:00Z</published>
     <updated>2014-01-07T00:00:00Z</updated>
-    <link rel="alternate" href="https://dcreager.net/2014/01/07/intro-to-csp/"/>
+    <link rel="alternate" href="https://dcreager.net/2014/01/07/intro-to-csp/" type="text/html"/>
     <content type="html">&lt;p&gt;Communicating Sequential Processes (CSP) has been around for almost four decades
 at this point, but for much of its life, it was only well-known among
 theoretical computer scientists and formal methods advocates.  More recently,
@@ -546,7 +546,7 @@ systems.&lt;/p&gt;
     <title type="html">Installing Ubuntu Lucid on a PowerPC QEMU virtual machine</title>
     <published>2010-05-13T00:00:00Z</published>
     <updated>2010-05-13T00:00:00Z</updated>
-    <link rel="alternate" href="https://dcreager.net/2010/05/13/powerpc-qemu-lucid/"/>
+    <link rel="alternate" href="https://dcreager.net/2010/05/13/powerpc-qemu-lucid/" type="text/html"/>
     <content type="html">&lt;p&gt;Part of the software I help develop at
 &lt;a href="http://www.redjack.com/"&gt;RedJack&lt;/a&gt; needs to be tested on both
 little-endian and big-endian machines.  Little-endian machines are
@@ -585,7 +585,7 @@ into a more permanent form.&lt;/p&gt;
     <title type="html">Parser callbacks in libpush, Part 1 — Streams</title>
     <published>2010-02-25T00:00:00Z</published>
     <updated>2010-02-25T00:00:00Z</updated>
-    <link rel="alternate" href="https://dcreager.net/2010/02/25/libpush-callbacks-part-1/"/>
+    <link rel="alternate" href="https://dcreager.net/2010/02/25/libpush-callbacks-part-1/" type="text/html"/>
     <content type="html">&lt;p&gt;This post is the first in a series that describes the
 &lt;code&gt;push_callback_t&lt;/code&gt; type in the
 &lt;a href="http://github.com/dcreager/libpush/"&gt;libpush&lt;/a&gt; library.  In these
@@ -612,7 +612,7 @@ what makes them &lt;a href="http://www.haskell.org/arrows/"&gt;&lt;em&gt;arrows&
     <title type="html">Using LLVM's link-time optimization on Ubuntu Karmic</title>
     <published>2010-02-17T00:00:00Z</published>
     <updated>2010-02-17T00:00:00Z</updated>
-    <link rel="alternate" href="https://dcreager.net/2010/02/17/llvm-lto-karmic/"/>
+    <link rel="alternate" href="https://dcreager.net/2010/02/17/llvm-lto-karmic/" type="text/html"/>
     <content type="html">&lt;p&gt;While playing around with
 &lt;a href="http://github.com/dcreager/libpush"&gt;libpush&lt;/a&gt; on my MacBook, I was
 pleasantly surprised to see a huge performance increase when I used
@@ -640,7 +640,7 @@ compilation units.&lt;/p&gt;
     <title type="html">Extracting setuptools version numbers from your git repository</title>
     <published>2010-02-10T00:00:00Z</published>
     <updated>2010-02-10T00:00:00Z</updated>
-    <link rel="alternate" href="https://dcreager.net/2010/02/10/setuptools-git-version-numbers/"/>
+    <link rel="alternate" href="https://dcreager.net/2010/02/10/setuptools-git-version-numbers/" type="text/html"/>
     <content type="html">&lt;p&gt;Just like everyone else, we’re using
 &lt;a href="http://pypi.python.org/pypi/setuptools"&gt;setuptools&lt;/a&gt; as the core of
 the build system for our Python-based projects.  For the most part,
