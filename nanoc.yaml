@@ -23,5 +23,5 @@ data_sources:
 deploy:
   default:
     kind: rsync
-    dst: "dcreager@dcreager.net:dcreager.net"
-    options: [ '-aPz', '--delete-after' ]
+    dst: "dcreager@zeta.dcreager.net:/srv/http/dcreager.net"
+    options: [ '-pgrlzDP', '--delete-after', '--chmod=ug=rwX,o=rX', '--groupmap=*:http' ]
