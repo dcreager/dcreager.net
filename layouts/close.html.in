@@ -1,0 +1,3 @@
+  {{> layouts/foot.html }}
+  {{> layouts/js.html }}
+</html>

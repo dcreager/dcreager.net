@@ -1,0 +1,5 @@
+      </div>
+    </div> <!-- /row -->
+  </div> <!-- /container -->
+
+{{> layouts/close.html}}

@@ -1,0 +1,7 @@
+{{> layouts/open.default.html }}
+
+<body>
+  <div class="container">
+    <%= render '/topnav.html' %>
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">

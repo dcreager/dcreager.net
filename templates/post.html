@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  ${ title() }
+
+  ${ links() }
+
+</head>
+
+<body>
+  <div class="container">
+    ${ topnav() }
+
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        <div class="blog">
+          <div class="date">
+            ${ created_at }
+            ${ if(updated_at) }<span class="updated">[last updated ${ updated_at }]</span>${ endif }
+          </div>
+
+          ${ if(series) }<h2 class="series">${ series }</h2>${ endif }
+
+          <h1>${ title }</h1>
+          <!--
+          <%- if @item[:prev]
+                prev_item = @items[@item[:prev]] -%>
+          <p class="prev"><%= link_to(prev_item[:title], prev_item) %></p>
+          <%- end -%>
+          -->
+          ${ body }
+          <!--
+          <%- if @item[:next]
+                next_item = @items[@item[:next]] -%>
+          <p class="next"><%= link_to(next_item[:title], next_item) %></p>
+          <%- end -%>
+          -->
+          <div class="subscribe">
+            Stay up to date by subscribing to <a
+               href="https://tinyletter.com/dcreager/">my newsletter</a>.
+          </div>
+        </div>
+      </div>
+    </div> <!-- /row -->
+  </div> <!-- /container -->
+
+  ${ foot() }
+
+  ${ js() }
+
+</html>
