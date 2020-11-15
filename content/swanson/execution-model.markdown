@@ -44,8 +44,18 @@ program on that host!
 ### Values and environments
 
 A Swanson program operates on an _environment_, which is a collection of
-_values_, each with a separate name.  (A good intuition is that it's the set of
-parameters and variables that are in scope at the current point of execution.)
+_values_, each with a separate _name_.  (A good intuition is that it's the set
+of parameters and variables that are in scope at the current point of
+execution.)
+
+<div class="aside" markdown=1>
+Names in Swanson are **_binary_** — they are a sequence of octets.  When you
+translate a higher-level language into Swanson, you will use names to represent
+its identifiers, which will presumably be strings of characters.  But Swanson is
+careful not to make any assumptions about what character set or encoding is used
+for those identifiers.  It's true that _most_ languages these days use ASCII or
+UTF-8 to encode their identifiers, but that's not a hard requirement.
+</div>
 
 There are only three kinds of values: **_atom_**, **_literals_**, and
 **_invokables_**.

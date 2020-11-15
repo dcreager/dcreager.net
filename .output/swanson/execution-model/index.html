@@ -128,8 +128,18 @@ program on that host!</p>
 <h3 id="values-and-environments">Values and environments</h3>
 
 <p>A Swanson program operates on an <em>environment</em>, which is a collection of
-<em>values</em>, each with a separate name.  (A good intuition is that it’s the set of
-parameters and variables that are in scope at the current point of execution.)</p>
+<em>values</em>, each with a separate <em>name</em>.  (A good intuition is that it’s the set
+of parameters and variables that are in scope at the current point of
+execution.)</p>
+
+<div class="aside">
+  <p>Names in Swanson are <strong><em>binary</em></strong> — they are a sequence of octets.  When you
+translate a higher-level language into Swanson, you will use names to represent
+its identifiers, which will presumably be strings of characters.  But Swanson is
+careful not to make any assumptions about what character set or encoding is used
+for those identifiers.  It’s true that <em>most</em> languages these days use ASCII or
+UTF-8 to encode their identifiers, but that’s not a hard requirement.</p>
+</div>
 
 <p>There are only three kinds of values: <strong><em>atom</em></strong>, <strong><em>literals</em></strong>, and
 <strong><em>invokables</em></strong>.</p>
