@@ -1,0 +1,403 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>
+    dcreager.net – Swanson: S₀, the “assembly language”
+  </title>
+  <meta name="author" content="Douglas Creager">
+
+    <meta charset="utf-8">
+
+  <meta name="google-site-verification"
+        content="7KIoYPNsfdDxIdX1QQ7SM2Nm_nyy13aRlDkzE3wzhhY" />
+
+  <link rel="icon" type="image/x-icon" href="/media/images/imperial-logo.ico"/>
+  <link rel="alternate" type="application/atom+xml"
+        title="dcreager.net" href="/atom.xml"/>
+
+  <!-- Bootstrap -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel=stylesheet type=text/css media=screen
+        href="/media/vendor/css/bootstrap.min.css">
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+  <![endif]-->
+
+  <!-- MathJax -->
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      jax: ["input/TeX","output/HTML-CSS"],
+      displayAlign: "left",
+      displayIndent: "2em"
+    });
+  </script>
+  <script type="text/javascript" async
+          src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+  </script>
+
+  <!-- Twitter nonsense -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="@dcreager">
+  <meta name="twitter:title"
+        content="Swanson: S₀, the “assembly language”">
+  <meta name="twitter:description"
+        content="Wait, you want me to _program_ in this??">
+  <meta name="twitter:image"
+        content="https://www.gravatar.com/avatar/04ee3ca11f1ae11c63faa7995dbf1ed7?s=2048">
+
+  <!-- Customizations -->
+  <link rel=stylesheet type=text/css media=screen
+        href="/media/css/coderay.css">
+  <link rel=stylesheet type=text/css media=screen
+        href="/media/css/dcreager.css">
+  <link rel=stylesheet type=text/css media=screen
+        href="https://fonts.googleapis.com/css?family=Oxygen:400,700">
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+  <div class="col-md-10 col-md-offset-1">
+    <nav class="navbar navbar-default" role="navigation">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand logo" href="/"><b>dcreager.net</b></a>
+      </div>
+
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="/about/">About</a></li></li>
+          <li><a href="/archive/">Archive</a></li></li>
+          <li><a href="https://tinyletter.com/dcreager/">Newsletter</a></li></li>
+          <li><a href="/talks/">Talks</a></li></li>
+          <li><a href="/publications/">Publications</a></li></li>
+        </ul>
+      </div><!-- /.navbar-collapse -->
+    </nav>
+  </div>
+</div>
+
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        <div class="blog">
+          <div class="date">
+            2020-11-15
+          </div>
+          <h2 class="series">Swanson</h2>
+          <h1>S₀, the “assembly language”</h1>
+          <p class="prev"><a href="/swanson/execution-model/">Execution model</a></p>
+          <p>In the <a href="../execution-model/">previous post</a>, we talked about Swanson’s execution
+model, but didn’t really describe what Swanson code <em>looks like</em>.  In this post,
+we’ll look at S₀ (pronounced “ess naught”), which is Swanson’s “assembly
+language”.</p>
+
+<div class="aside">
+  <p>As we’ll see, S₀ hews pretty closely to the Swanson execution model, and isn’t
+really a language that you’ll want to program in directly.  Typically, you’ll
+actually <em>write</em> in some other higher-level language, which will be translated
+into S₀.  We’ll see in later posts how this process works.  For now, don’t be
+put off by the amount of boilerplate that you see here — it’s not something that
+you’ll have to author directly!</p>
+</div>
+
+<h3 id="preliminaries">Preliminaries</h3>
+
+<p>We’ve carefully designed the concrete syntax of S₀ so that it is as simple to
+parse as possible — for instance, without requiring a particular parser
+generator.  (The reference implementation is a simple recursive descent parser
+that only requires a single character of lookahead.)  In fact, it’s more
+important for S₀ to be easy to parse, than for it to be easy for humans to
+write.  After all, you will very rarely have to write S₀ directly!</p>
+
+<div class="aside">
+  <p>How are some ways that S₀’s syntax is simple?  As just one example, lines in an
+S₀ file <strong><em>must</em></strong> end specifically with a newline character (decimal 10 in
+ASCII, <code>\n</code> in C-like languages).  Other line endings are <em>not</em> allowed.</p>
+</div>
+
+<p>This simplicity is important since the first part of writing a new Swanson host
+is being able to load in “bootstrap” code, which is written in S₀.  This part of
+the host will need to be written directly in the host’s language, and so we want
+to make that host-specific custom code as simple to write as possible.</p>
+
+<h3 id="names">Names</h3>
+
+<p>As mentioned in the previous post, Swanson names are <em>binary</em>.  There are two
+ways to encode a Swanson name in S₀.</p>
+
+<p>The first allows us to encode arbitrary binary content, written in hexadecimal
+within square brackets.  Each octet in the name must be written with two
+hexadecimal characters, and there must be one or more whitespace characters in
+between each octet.  For instance, the following is one way to encode the name
+<code>name</code>:</p>
+
+<pre>
+[6e 61 6d 65]
+</pre>
+
+<p>The second notation is a shortcut syntax for names that are ASCII-encoded
+strings, since there are enough higher-level languages that use ASCII to encode
+their identifiers.  A <strong><em>bare name</em></strong> is an ASCII-encoded name that only
+consists of common identifier characters: in particular, alphanumerics,
+underscore, period, at-sign (<code>@</code>), and dollar sign (<code>$</code>).  (Bare names cannot
+contain whitespace, any other printable characters, or <em>any</em> non-printable
+characters.)  A bare name can be written in S₀ directly:</p>
+
+<pre>
+$_    entry      atom       i        ds.hashmap
+$0    entry@1    literal    while    primitives.bool
+</pre>
+
+<h3 id="modules-and-blocks">Modules and blocks</h3>
+
+<p>S₀ code is organized into <em>modules</em>.  Each module consists of a number of
+<em>blocks</em>, each of which has a distinct name.  Blocks are used in <em>closures</em>,
+which are Swanson invokables whose branches are implemented in S₀.</p>
+
+<pre>
+module test {
+  $load: containing () receiving ($loaded) {
+    $module = atom;
+    -&gt; $loaded;
+  }
+}
+</pre>
+
+<p>Each block starts with <code>containing</code> and <code>receiving</code> clauses, which define which
+names are available in the environment at the start of the block.  The names in
+the <code>containing</code> clause are part of the block’s “closure set” — they represent
+values that are moved “into” the closure when it’s created.  The names in the
+<code>receiving</code> clause are the “inputs” of the block — the caller must ensure that
+the environment contains exactly these names when invoking the block’s closure.
+When a block is invoked, its closure and input environments are merged together
+before execution proceeds — which means that the block’s <code>containing</code> and
+<code>receiving</code> clauses can’t have any names in common.</p>
+
+<p>Each block also contains a <em>body</em>, enclosed in curly braces.  The body consists
+of zero or more <em>statements</em> followed by exactly one <em>invocation</em>.</p>
+
+<h3 id="statements">Statements</h3>
+
+<p>There are four kinds of statement in S₀:</p>
+
+<ul>
+  <li>
+    <p><strong>Create atom</strong>: Creates a new Swanson atom distinct from all others, and adds
+it to the environment:</p>
+
+    <pre>
+dest = atom;
+</pre>
+  </li>
+  <li>
+    <p><strong>Create literal</strong>: Creates a new Swanson literal, and adds it to the
+environment:</p>
+
+    <pre>
+dest = literal [6e 61 6d 65];
+</pre>
+  </li>
+  <li>
+    <p><strong>Create closure</strong>: Creates a new S₀ closure, and adds it to the environment:</p>
+
+    <pre>
+dest = closure containing (value1, value2)
+  branch true = true_branch,
+  branch false = false_branch;
+</pre>
+
+    <p>The statement has a <code>containing</code> clause which <strong><em>removes</em></strong> the specified
+values from the environment, moving them into the new closure.  Each branch of
+the closure has a name (<code>true</code>, <code>false</code>), and refers to one of the blocks in
+the enclosing module (<code>true_branch</code>, <code>false_branch</code>).  The <code>containing</code> clause
+of each of those blocks must match the <code>containing</code> clause of the <em>create
+closure</em> statement.</p>
+
+    <p>There is a shortcut syntax for when the new closure has a single branch, with
+an empty name:</p>
+
+    <pre>
+dest = closure containing (value1, value2) -&gt; block;
+</pre>
+
+    <p>is exactly equivalent to:</p>
+
+    <pre>
+dest = closure containing (value1, value2)
+  branch [] = block;
+</pre>
+  </li>
+  <li>
+    <p><strong>Rename</strong>: Changes the name of a value in the environment:</p>
+
+    <pre>
+dest = rename source;
+</pre>
+  </li>
+</ul>
+
+<p>For all of these statements, it’s an error if there’s already a value in the
+environment with the desired “destination” name.  For create closure and rename
+statements, it’s an error if there <em>isn’t</em> already a value in the environment
+with the desired “source” name.</p>
+
+<p>And that’s it!  You’ll notice that you can’t really do anything interesting with
+S₀ statements.  They’re just used to set up the environment as needed for the
+block’s invocation, which is where real computation happens.</p>
+
+<h3 id="invocations">Invocations</h3>
+
+<p>Each ends with <strong><em>exactly one</em></strong> invocation:</p>
+
+<pre>
+-&gt; value branch;
+</pre>
+
+<p>This <em>removes</em> the value named <code>value</code> from the environment, and passes control
+to its branch named <code>branch</code>.  (It’s an error if there’s no value in the
+environment named <code>value</code>, or if that value isn’t an invokable, or if that
+invokable doesn’t have a branch named <code>branch</code>.)</p>
+
+<p>There’s a shortcut syntax for invoking a branch with an empty name:</p>
+
+<pre>
+-&gt; value;
+</pre>
+
+<p>Whatever values are still in the environment (after removing the invokable that
+we’re about to pass control to) are provided to the invokable as its inputs.  If
+the invokable is an S₀ closure, then the <code>receiving</code> clause of the selected
+branch’s block must match the set of names that are in the environment that are
+about to be provided as input.</p>
+
+<h3 id="s-modules-as-swanson-units">S₀ modules as Swanson units</h3>
+
+<p>S₀ modules can be used as Swanson units.  The module has a name, which is also
+used as the name of the unit.  The first block in the module is its <em>loader
+block</em>, which is invoked to load the unit.  The loader block’s <code>containing</code> set
+must be empty.</p>
+
+<p>The loader block’s <code>receiving</code> set defines the dependencies of the unit.  Each
+name is treated as the name of some other Swanson unit.  The host will load
+those dependencies, and put them into the environment as inputs before invoking
+the loader block (just like for the <code>receiving</code> set of any other block).</p>
+
+<p>The input named <code>$loaded</code> is handled specially.  Instead of loading a unit named
+<code>$loaded</code> as a dependency, the host provides a special invokable for this input,
+which the loader block will invoke with the “value” of the module (as an output
+named <code>$module</code>).  Our example module from up above is a Swanson unit that
+produces a new atom when loaded:</p>
+
+<pre>
+module test {
+  $load: containing () receiving ($loaded) {
+    $module = atom;
+    -&gt; $loaded;
+  }
+}
+</pre>
+
+<h3 id="a-larger-example">A larger example</h3>
+
+<p>Putting it all together, this is an example module that:</p>
+
+<ul>
+  <li>
+    <p>is an entry point (that is, the <code>main</code> module of a program)</p>
+  </li>
+  <li>
+    <p>depends on another (primitive) unit named <code>primitive.bool</code>, which contains
+some routines for dealing with booleans,</p>
+  </li>
+  <li>
+    <p>creates a <code>true</code> constant,</p>
+  </li>
+  <li>
+    <p>evaluates the constant,</p>
+  </li>
+  <li>
+    <p>and then quits.</p>
+  </li>
+</ul>
+
+<pre>
+module bool.can_evaluate_true {
+  $load: containing () receiving ($loaded, primitive.bool) {
+    $module = closure containing (primitive.bool) -&gt; main;
+    -&gt; $loaded;
+  }
+
+  main: containing (primitive.bool) receiving ($finish) {
+    $return = closure containing ($finish) -&gt; main@1;
+    -&gt; primitive.bool true;
+  }
+
+  main@1: containing ($finish) receiving ($_, $0) {
+    primitive.bool = rename $_;
+    value = rename $0;
+    $return = closure containing ($finish, value) -&gt; main@2;
+    -&gt; primitive.bool drop;
+  }
+
+  main@2: containing ($finish, value) receiving () {
+    $evaluate = closure containing ($finish)
+      branch true = main@2$$evaluate$true,
+      branch false = main@2$$evaluate$false;
+    -&gt; value evaluate;
+  }
+
+  main@2$$evaluate$true: containing ($finish) receiving () {
+    -&gt; $finish succeed;
+  }
+
+  main@2$$evaluate$false: containing ($finish) receiving () {
+    -&gt; $finish fail;
+  }
+}
+</pre>
+
+<p>Can you see why this isn’t a language that you’d want to program in directly?
+In the next post, we’ll learn about S₁, which provides some helpful syntactic
+sugar, while still being a very low-level language.</p>
+
+          <div class="subscribe">
+            Stay up to date by subscribing to <a
+               href="https://tinyletter.com/dcreager/">my newsletter</a>.
+          </div>
+        </div>
+      </div>
+    </div> <!-- /row -->
+  </div> <!-- /container -->
+
+    <footer class="copyright">
+    <div class="container">
+      <p>Copyright © 2009-2020, Douglas Creager.
+      All&nbsp;rights&nbsp;reserved.</p>
+    </div>
+  </footer>
+
+    <script src="//code.jquery.com/jquery.min.js"></script>
+  <script src="/media/vendor/js/bootstrap.min.js"></script>
+
+<!-- Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-83885503-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+</html>

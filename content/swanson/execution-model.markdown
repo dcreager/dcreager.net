@@ -8,6 +8,7 @@ description: >-
   Linear continuations will keep everyone in line
 tags: [swanson]
 prev: /swanson/intro.markdown
+next: /swanson/s0.markdown
 draft: true
 ---
 

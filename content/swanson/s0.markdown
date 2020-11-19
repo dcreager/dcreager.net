@@ -1,0 +1,273 @@
+---
+kind: article
+created_at: 2020-11-15
+layout: /post.html
+series: "Swanson"
+title: "S₀, the “assembly language”"
+description: >-
+  Wait, you want me to _program_ in this??
+tags: [swanson]
+prev: /swanson/execution-model.markdown
+draft: true
+---
+
+In the [previous post][execution model], we talked about Swanson's execution
+model, but didn't really describe what Swanson code _looks like_.  In this post,
+we'll look at S₀ (pronounced "ess naught"), which is Swanson's "assembly
+language".
+
+[execution model]: ../execution-model/
+
+<div class="aside" markdown=1>
+As we'll see, S₀ hews pretty closely to the Swanson execution model, and isn't
+really a language that you'll want to program in directly.  Typically, you'll
+actually _write_ in some other higher-level language, which will be translated
+into S₀.  We'll see in later posts how this process works.  For now, don't be
+put off by the amount of boilerplate that you see here — it's not something that
+you'll have to author directly!
+</div>
+
+### Preliminaries
+
+We've carefully designed the concrete syntax of S₀ so that it is as simple to
+parse as possible — for instance, without requiring a particular parser
+generator.  (The reference implementation is a simple recursive descent parser
+that only requires a single character of lookahead.)  In fact, it's more
+important for S₀ to be easy to parse, than for it to be easy for humans to
+write.  After all, you will very rarely have to write S₀ directly!
+
+<div class="aside" markdown=1>
+How are some ways that S₀'s syntax is simple?  As just one example, lines in an
+S₀ file **_must_** end specifically with a newline character (decimal 10 in
+ASCII, `\n` in C-like languages).  Other line endings are _not_ allowed.
+</div>
+
+This simplicity is important since the first part of writing a new Swanson host
+is being able to load in "bootstrap" code, which is written in S₀.  This part of
+the host will need to be written directly in the host's language, and so we want
+to make that host-specific custom code as simple to write as possible.
+
+### Names
+
+As mentioned in the previous post, Swanson names are _binary_.  There are two
+ways to encode a Swanson name in S₀.
+
+The first allows us to encode arbitrary binary content, written in hexadecimal
+within square brackets.  Each octet in the name must be written with two
+hexadecimal characters, and there must be one or more whitespace characters in
+between each octet.  For instance, the following is one way to encode the name
+`name`:
+
+<pre>
+[6e 61 6d 65]
+</pre>
+
+The second notation is a shortcut syntax for names that are ASCII-encoded
+strings, since there are enough higher-level languages that use ASCII to encode
+their identifiers.  A **_bare name_** is an ASCII-encoded name that only
+consists of common identifier characters: in particular, alphanumerics,
+underscore, period, at-sign (`@`), and dollar sign (`$`).  (Bare names cannot
+contain whitespace, any other printable characters, or _any_ non-printable
+characters.)  A bare name can be written in S₀ directly:
+
+<pre>
+$_    entry      atom       i        ds.hashmap
+$0    entry@1    literal    while    primitives.bool
+</pre>
+
+### Modules and blocks
+
+S₀ code is organized into _modules_.  Each module consists of a number of
+_blocks_, each of which has a distinct name.  Blocks are used in _closures_,
+which are Swanson invokables whose branches are implemented in S₀.
+
+<pre>
+module test {
+  $load: containing () receiving ($loaded) {
+    $module = atom;
+    -> $loaded;
+  }
+}
+</pre>
+
+Each block starts with `containing` and `receiving` clauses, which define which
+names are available in the environment at the start of the block.  The names in
+the `containing` clause are part of the block's "closure set" — they represent
+values that are moved "into" the closure when it's created.  The names in the
+`receiving` clause are the "inputs" of the block — the caller must ensure that
+the environment contains exactly these names when invoking the block's closure.
+When a block is invoked, its closure and input environments are merged together
+before execution proceeds — which means that the block's `containing` and
+`receiving` clauses can't have any names in common.
+
+Each block also contains a _body_, enclosed in curly braces.  The body consists
+of zero or more _statements_ followed by exactly one _invocation_.
+
+### Statements
+
+There are four kinds of statement in S₀:
+
+- **Create atom**: Creates a new Swanson atom distinct from all others, and adds
+  it to the environment:
+
+  <pre>
+  dest = atom;
+  </pre>
+
+- **Create literal**: Creates a new Swanson literal, and adds it to the
+  environment:
+
+  <pre>
+  dest = literal [6e 61 6d 65];
+  </pre>
+
+- **Create closure**: Creates a new S₀ closure, and adds it to the environment:
+
+  <pre>
+  dest = closure containing (value1, value2)
+    branch true = true_branch,
+    branch false = false_branch;
+  </pre>
+
+  The statement has a `containing` clause which **_removes_** the specified
+  values from the environment, moving them into the new closure.  Each branch of
+  the closure has a name (`true`, `false`), and refers to one of the blocks in
+  the enclosing module (`true_branch`, `false_branch`).  The `containing` clause
+  of each of those blocks must match the `containing` clause of the _create
+  closure_ statement.
+
+  There is a shortcut syntax for when the new closure has a single branch, with
+  an empty name:
+
+  <pre>
+  dest = closure containing (value1, value2) -> block;
+  </pre>
+
+  is exactly equivalent to:
+
+  <pre>
+  dest = closure containing (value1, value2)
+    branch [] = block;
+  </pre>
+
+- **Rename**: Changes the name of a value in the environment:
+
+  <pre>
+  dest = rename source;
+  </pre>
+
+For all of these statements, it's an error if there's already a value in the
+environment with the desired "destination" name.  For create closure and rename
+statements, it's an error if there _isn't_ already a value in the environment
+with the desired "source" name.
+
+And that's it!  You'll notice that you can't really do anything interesting with
+S₀ statements.  They're just used to set up the environment as needed for the
+block's invocation, which is where real computation happens.
+
+### Invocations
+
+Each ends with **_exactly one_** invocation:
+
+<pre>
+-> value branch;
+</pre>
+
+This _removes_ the value named `value` from the environment, and passes control
+to its branch named `branch`.  (It's an error if there's no value in the
+environment named `value`, or if that value isn't an invokable, or if that
+invokable doesn't have a branch named `branch`.)
+
+There's a shortcut syntax for invoking a branch with an empty name:
+
+<pre>
+-> value;
+</pre>
+
+Whatever values are still in the environment (after removing the invokable that
+we're about to pass control to) are provided to the invokable as its inputs.  If
+the invokable is an S₀ closure, then the `receiving` clause of the selected
+branch's block must match the set of names that are in the environment that are
+about to be provided as input.
+
+### S₀ modules as Swanson units
+
+S₀ modules can be used as Swanson units.  The module has a name, which is also
+used as the name of the unit.  The first block in the module is its _loader
+block_, which is invoked to load the unit.  The loader block's `containing` set
+must be empty.
+
+The loader block's `receiving` set defines the dependencies of the unit.  Each
+name is treated as the name of some other Swanson unit.  The host will load
+those dependencies, and put them into the environment as inputs before invoking
+the loader block (just like for the `receiving` set of any other block).
+
+The input named `$loaded` is handled specially.  Instead of loading a unit named
+`$loaded` as a dependency, the host provides a special invokable for this input,
+which the loader block will invoke with the "value" of the module (as an output
+named `$module`).  Our example module from up above is a Swanson unit that
+produces a new atom when loaded:
+
+<pre>
+module test {
+  $load: containing () receiving ($loaded) {
+    $module = atom;
+    -> $loaded;
+  }
+}
+</pre>
+
+### A larger example
+
+Putting it all together, this is an example module that:
+
+- is an entry point (that is, the `main` module of a program)
+
+- depends on another (primitive) unit named `primitive.bool`, which contains
+  some routines for dealing with booleans,
+
+- creates a `true` constant,
+
+- evaluates the constant,
+
+- and then quits.
+
+<pre>
+module bool.can_evaluate_true {
+  $load: containing () receiving ($loaded, primitive.bool) {
+    $module = closure containing (primitive.bool) -> main;
+    -> $loaded;
+  }
+
+  main: containing (primitive.bool) receiving ($finish) {
+    $return = closure containing ($finish) -> main@1;
+    -> primitive.bool true;
+  }
+
+  main@1: containing ($finish) receiving ($_, $0) {
+    primitive.bool = rename $_;
+    value = rename $0;
+    $return = closure containing ($finish, value) -> main@2;
+    -> primitive.bool drop;
+  }
+
+  main@2: containing ($finish, value) receiving () {
+    $evaluate = closure containing ($finish)
+      branch true = main@2$$evaluate$true,
+      branch false = main@2$$evaluate$false;
+    -> value evaluate;
+  }
+
+  main@2$$evaluate$true: containing ($finish) receiving () {
+    -> $finish succeed;
+  }
+
+  main@2$$evaluate$false: containing ($finish) receiving () {
+    -> $finish fail;
+  }
+}
+</pre>
+
+Can you see why this isn't a language that you'd want to program in directly?
+In the next post, we'll learn about S₁, which provides some helpful syntactic
+sugar, while still being a very low-level language.
