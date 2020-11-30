@@ -8,7 +8,6 @@ description: >-
   Wait, you want me to _program_ in this??
 tags: [swanson]
 prev: /swanson/execution-model.markdown
-draft: true
 ---
 
 In the [previous post][execution model], we talked about Swanson's execution

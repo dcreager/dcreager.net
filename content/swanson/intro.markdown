@@ -8,7 +8,6 @@ description: >-
   Another series of posts kicked off with no end in sight
 tags: [swanson]
 next: /swanson/execution-model.markdown
-draft: true
 ---
 
 My [Twitter bio](https://twitter.com/dcreager) currently lists me as (among

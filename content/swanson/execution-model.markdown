@@ -9,7 +9,6 @@ description: >-
 tags: [swanson]
 prev: /swanson/intro.markdown
 next: /swanson/s0.markdown
-draft: true
 ---
 
 This post summarizes the computation model that the Swanson framework builds on.

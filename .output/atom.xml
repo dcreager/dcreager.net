@@ -2,13 +2,79 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:base="https://dcreager.net/">
   <id>https://dcreager.net/</id>
   <title>dcreager.net</title>
-  <updated>2018-06-12T00:00:00Z</updated>
+  <updated>2020-11-15T00:00:00Z</updated>
   <link rel="alternate" href="https://dcreager.net/" type="text/html"/>
   <link rel="self" href="https://dcreager.net/atom.xml" type="application/atom+xml"/>
   <author>
     <name>Douglas Creager</name>
     <uri>https://dcreager.net/</uri>
   </author>
+  <entry>
+    <id>tag:dcreager.net,2020-11-15:/swanson/s0/</id>
+    <title type="html">S₀, the “assembly language”</title>
+    <published>2020-11-15T00:00:00Z</published>
+    <updated>2020-11-15T00:00:00Z</updated>
+    <link rel="alternate" href="https://dcreager.net/swanson/s0/" type="text/html"/>
+    <content type="html">&lt;p&gt;In the &lt;a href="../execution-model/"&gt;previous post&lt;/a&gt;, we talked about Swanson’s execution
+model, but didn’t really describe what Swanson code &lt;em&gt;looks like&lt;/em&gt;.  In this post,
+we’ll look at S₀ (pronounced “ess naught”), which is Swanson’s “assembly
+language”.&lt;/p&gt;
+
+&lt;div class="aside"&gt;
+  &lt;p&gt;As we’ll see, S₀ hews pretty closely to the Swanson execution model, and isn’t
+really a language that you’ll want to program in directly.  Typically, you’ll
+actually &lt;em&gt;write&lt;/em&gt; in some other higher-level language, which will be translated
+into S₀.  We’ll see in later posts how this process works.  For now, don’t be
+put off by the amount of boilerplate that you see here — it’s not something that
+you’ll have to author directly!&lt;/p&gt;
+&lt;/div&gt;
+
+</content>
+  </entry>
+  <entry>
+    <id>tag:dcreager.net,2020-10-29:/swanson/execution-model/</id>
+    <title type="html">Execution model</title>
+    <published>2020-10-29T00:00:00Z</published>
+    <updated>2020-10-29T00:00:00Z</updated>
+    <link rel="alternate" href="https://dcreager.net/swanson/execution-model/" type="text/html"/>
+    <content type="html">&lt;p&gt;This post summarizes the computation model that the Swanson framework builds on.&lt;/p&gt;
+
+</content>
+  </entry>
+  <entry>
+    <id>tag:dcreager.net,2020-10-28:/swanson/intro/</id>
+    <title type="html">Introduction</title>
+    <published>2020-10-28T00:00:00Z</published>
+    <updated>2020-10-28T00:00:00Z</updated>
+    <link rel="alternate" href="https://dcreager.net/swanson/intro/" type="text/html"/>
+    <content type="html">&lt;p&gt;My &lt;a href="https://twitter.com/dcreager"&gt;Twitter bio&lt;/a&gt; currently lists me as (among
+other things) a “PL dilettante”.  Which of course means that I’ve been hacking
+around on my own programming language for a number of years!  (Seriously, this
+has been a thing for a &lt;strong&gt;&lt;em&gt;long&lt;/em&gt;&lt;/strong&gt; time.  The earliest &lt;a href="https://github.com/swanson-lang/swanson-lang-old/commit/e8aac263d76a63c8667fca5eee079ce8af345c2d"&gt;Swanson-related
+commit&lt;/a&gt; I can find is from 2012.)  It’s gone through a number of
+iterations over that time, but I’m pretty happy with where it’s at right now.
+Not complete by any stretch of the imagination.  But I’ve chatted about it in
+passing with several people at this point, and I figured I need to write down
+the details somewhere.  My friend and colleague Rob can hold forth on these
+kinds of topics in &lt;a href="https://twitter.com/rob_rix/status/1320544724864872453"&gt;epic&lt;/a&gt; &lt;a href="https://twitter.com/rob_rix/status/1320488333127110659"&gt;Twitter&lt;/a&gt; &lt;a href="https://twitter.com/rob_rix/status/1320467572161236994"&gt;threads&lt;/a&gt;, but I need
+something more longform.  So here we are!&lt;/p&gt;
+
+&lt;p&gt;In this series of posts I’m going to describe Swanson, the programming language
+framework that I’ve been noodling on.  It has two main components, one of which
+is much more fleshed out than the other.&lt;/p&gt;
+
+&lt;p&gt;The first (not as fleshed out) part is an actual programming language, which
+doesn’t even really have a name yet!  It brings in some interesting notions
+about programmable syntax and parsing in a way that (I think) makes it easy to
+construct things like DSLs.&lt;/p&gt;
+
+&lt;p&gt;The second (more important) part is an execution model that can be used as an IR
+of sorts for &lt;strong&gt;&lt;em&gt;all&lt;/em&gt;&lt;/strong&gt; languages.  That makes it similar in spirit to
+WebAssembly, in that the goal is to be something that you would compile (or
+translate or transpile or whatever) many other languages &lt;strong&gt;&lt;em&gt;into&lt;/em&gt;&lt;/strong&gt;, and not
+something to be written directly.  The Great Unnamed Language, like any other
+language, would be compiled into Swanson the execution framework.&lt;/p&gt;</content>
+  </entry>
   <entry>
     <id>tag:dcreager.net,2018-05-31:/np-hard/</id>
     <title type="html">NP-hard isn't the end of the world</title>
@@ -577,122 +643,6 @@ my cheat sheet for getting around these issues.&lt;/p&gt;
 &lt;p&gt;Note that this isn’t a full step-by-step account of how to install
 Lucid onto a QEMU VM.  For now, I’m just trying to get my notes down
 into a more permanent form.&lt;/p&gt;
-
-</content>
-  </entry>
-  <entry>
-    <id>tag:dcreager.net,2010-02-25:/2010/02/25/libpush-callbacks-part-1/</id>
-    <title type="html">Parser callbacks in libpush, Part 1 — Streams</title>
-    <published>2010-02-25T00:00:00Z</published>
-    <updated>2010-02-25T00:00:00Z</updated>
-    <link rel="alternate" href="https://dcreager.net/2010/02/25/libpush-callbacks-part-1/" type="text/html"/>
-    <content type="html">&lt;p&gt;This post is the first in a series that describes the
-&lt;code&gt;push_callback_t&lt;/code&gt; type in the
-&lt;a href="http://github.com/dcreager/libpush/"&gt;libpush&lt;/a&gt; library.  In these
-posts, we’ll walk through a couple of possible ways to implement
-callbacks under the covers.  At each stage, we’ll encounter problems
-with the current design.  Fixing these problems should lead closer us
-to the actual implementation in libpush, and along the way, we’ll gain
-a good understanding of how our design decisions affect the
-performance and usability of the library.&lt;/p&gt;
-
-&lt;p&gt;The &lt;code&gt;push_callback_t&lt;/code&gt; type is used to define &lt;em&gt;parser callbacks&lt;/em&gt;, which
-are the basic unit of parsing in libpush.  Callbacks are pretty
-simple: they take in an &lt;em&gt;input value&lt;/em&gt;, read some data from the &lt;em&gt;input
-stream&lt;/em&gt;, and produce an &lt;em&gt;output value&lt;/em&gt;.  (The fact that callbacks take
-in an input value, in addition to reading from the input stream, is
-what makes them &lt;a href="http://www.haskell.org/arrows/"&gt;&lt;em&gt;arrows&lt;/em&gt;&lt;/a&gt; instead of
-&lt;a href="http://en.wikipedia.org/wiki/Monad_%28functional_programming%29"&gt;&lt;em&gt;monads&lt;/em&gt;&lt;/a&gt;
-— but that’s a story for a later post).&lt;/p&gt;
-
-</content>
-  </entry>
-  <entry>
-    <id>tag:dcreager.net,2010-02-17:/2010/02/17/llvm-lto-karmic/</id>
-    <title type="html">Using LLVM's link-time optimization on Ubuntu Karmic</title>
-    <published>2010-02-17T00:00:00Z</published>
-    <updated>2010-02-17T00:00:00Z</updated>
-    <link rel="alternate" href="https://dcreager.net/2010/02/17/llvm-lto-karmic/" type="text/html"/>
-    <content type="html">&lt;p&gt;While playing around with
-&lt;a href="http://github.com/dcreager/libpush"&gt;libpush&lt;/a&gt; on my MacBook, I was
-pleasantly surprised to see a huge performance increase when I used
-the link-time optimization (LTO) feature of the LLVM GCC front end.
-(It’s really quite nifty; the new &lt;a href="http://github.com/mxcl/homebrew"&gt;Homebrew package
-manager&lt;/a&gt; uses it by default when
-compiling packages.)  On MacOS, using LTO is as simple as using
-&lt;code&gt;llvm-gcc&lt;/code&gt; as your C compiler (or &lt;code&gt;llvm-g++&lt;/code&gt; if you’re compiling C++),
-and passing in &lt;code&gt;-O4&lt;/code&gt; as your optimization flag.  I use SCons as my
-builder, so this turns into:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;$ scons CC=llvm-gcc CCFLAGS=-O4
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;This will cause GCC to output LLVM bytecode into the &lt;em&gt;.o&lt;/em&gt; output
-files, and to perform whole-program optimizations during each linking
-phase.  I was able to see a big performance win simply from the linker
-being able to inline in copies of small functions that live in “other”
-compilation units.&lt;/p&gt;
-
-</content>
-  </entry>
-  <entry>
-    <id>tag:dcreager.net,2010-02-10:/2010/02/10/setuptools-git-version-numbers/</id>
-    <title type="html">Extracting setuptools version numbers from your git repository</title>
-    <published>2010-02-10T00:00:00Z</published>
-    <updated>2010-02-10T00:00:00Z</updated>
-    <link rel="alternate" href="https://dcreager.net/2010/02/10/setuptools-git-version-numbers/" type="text/html"/>
-    <content type="html">&lt;p&gt;Just like everyone else, we’re using
-&lt;a href="http://pypi.python.org/pypi/setuptools"&gt;setuptools&lt;/a&gt; as the core of
-the build system for our Python-based projects.  For the most part,
-this has been a painless, straightforward process.  However, one
-lingering annoyance is that we’ve been specifying the version number
-directly in our &lt;em&gt;setup.py&lt;/em&gt; files:&lt;/p&gt;
-
-&lt;pre class="CodeRay"&gt;&lt;code&gt;&lt;span class="keyword"&gt;from&lt;/span&gt; &lt;span class="include"&gt;setuptools&lt;/span&gt; &lt;span class="keyword"&gt;import&lt;/span&gt; &lt;span class="include"&gt;setup&lt;/span&gt;
-
-setup(
-    name = &lt;span class="string"&gt;&lt;span class="delimiter"&gt;&amp;quot;&lt;/span&gt;&lt;span class="content"&gt;awesomelib&lt;/span&gt;&lt;span class="delimiter"&gt;&amp;quot;&lt;/span&gt;&lt;/span&gt;,
-    version = &lt;span class="string"&gt;&lt;span class="delimiter"&gt;&amp;quot;&lt;/span&gt;&lt;span class="content"&gt;1.2&lt;/span&gt;&lt;span class="delimiter"&gt;&amp;quot;&lt;/span&gt;&lt;/span&gt;,
-    &lt;span class="comment"&gt;# ...etc&lt;/span&gt;
-)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;On our maintenance branches, we get a nice &lt;em&gt;awesomelib-1.2.tar.gz&lt;/em&gt;
-file when we run &lt;code&gt;python setup.py sdist&lt;/code&gt;.  On our development branch,
-we’ve also got the following &lt;em&gt;setup.cfg&lt;/em&gt; file:&lt;/p&gt;
-
-&lt;pre class="CodeRay"&gt;&lt;code&gt;[egg_info]
-tag_build = dev
-tag_date = true
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;That gives us tarballs like &lt;em&gt;awesomelib-1.2dev-20100210.tar.gz&lt;/em&gt; on our
-development branch.  Because we’re using the &lt;code&gt;dev&lt;/code&gt; suffix, which
-setuptools considers to be a “prerelease”, we have to remember to
-increment the version number in development whenever we cut a new
-release.  The end result is that we have a longish process for
-creating releases.  If we want to create a new 1.3 release, we have to
-do the following:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;Create a new maintenance branch for 1.3:&lt;/p&gt;
-
-    &lt;pre&gt;&lt;code&gt;$ git checkout -b maint-1.3 master
-&lt;/code&gt;&lt;/pre&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Update the &lt;em&gt;setup.cfg&lt;/em&gt; file to remove the &lt;code&gt;tag_build&lt;/code&gt; and
-&lt;code&gt;tag_date&lt;/code&gt; entries.  Commit this with a “Tagging version 1.3”
-commit message.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Back on the development branch, update &lt;em&gt;setup.py&lt;/em&gt; to increment the
-“development version” to 1.4.&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;Granted, this isn’t horribly difficult, but we can do better.&lt;/p&gt;
 
 </content>
   </entry>
