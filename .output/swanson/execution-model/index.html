@@ -1,0 +1,371 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>
+    dcreager.net – Swanson: Execution model
+  </title>
+  <meta name="author" content="Douglas Creager">
+
+    <meta charset="utf-8">
+
+  <meta name="google-site-verification"
+        content="7KIoYPNsfdDxIdX1QQ7SM2Nm_nyy13aRlDkzE3wzhhY" />
+
+  <link rel="icon" type="image/x-icon" href="/media/images/imperial-logo.ico"/>
+  <link rel="alternate" type="application/atom+xml"
+        title="dcreager.net" href="/atom.xml"/>
+
+  <!-- Bootstrap -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel=stylesheet type=text/css media=screen
+        href="/media/vendor/css/bootstrap.min.css">
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+  <![endif]-->
+
+  <!-- MathJax -->
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      jax: ["input/TeX","output/HTML-CSS"],
+      displayAlign: "left",
+      displayIndent: "2em"
+    });
+  </script>
+  <script type="text/javascript" async
+          src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+  </script>
+
+  <!-- Twitter nonsense -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="@dcreager">
+  <meta name="twitter:title"
+        content="Swanson: Execution model">
+  <meta name="twitter:description"
+        content="Linear continuations will keep everyone in line">
+  <meta name="twitter:image"
+        content="https://www.gravatar.com/avatar/04ee3ca11f1ae11c63faa7995dbf1ed7?s=2048">
+
+  <!-- Customizations -->
+  <link rel=stylesheet type=text/css media=screen
+        href="/media/css/coderay.css">
+  <link rel=stylesheet type=text/css media=screen
+        href="/media/css/dcreager.css">
+  <link rel=stylesheet type=text/css media=screen
+        href="https://fonts.googleapis.com/css?family=Oxygen:400,700">
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+  <div class="col-md-10 col-md-offset-1">
+    <nav class="navbar navbar-default" role="navigation">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand logo" href="/"><b>dcreager.net</b></a>
+      </div>
+
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="/about/">About</a></li></li>
+          <li><a href="/archive/">Archive</a></li></li>
+          <li><a href="https://tinyletter.com/dcreager/">Newsletter</a></li></li>
+          <li><a href="/talks/">Talks</a></li></li>
+          <li><a href="/publications/">Publications</a></li></li>
+        </ul>
+      </div><!-- /.navbar-collapse -->
+    </nav>
+  </div>
+</div>
+
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        <div class="blog">
+          <div class="date">
+            2020-10-29
+          </div>
+          <h2 class="series">Swanson</h2>
+          <h1>Execution model</h1>
+          <p class="prev"><a href="/swanson/intro/">Introduction</a></p>
+          <p>This post summarizes the computation model that the Swanson framework builds on.</p>
+
+<h3 id="hosts">Hosts</h3>
+
+<p>A Swanson program has to execute somewhere.  This place is called the
+<strong><em>host</em></strong>.  The Swanson execution model takes very great care to make <em>no
+assumptions whatsoever</em> about the host.  The only real assumption is that the
+host somehow knows how to execute Swanson code!  That might mean that it
+interprets it directly, or that there’s some compiled representation that can be
+executed, and which brings about the same effect as the Swanson program that was
+compiled.  As long as the host can faithfully implement the execution model
+described here, we’re golden!</p>
+
+<p>What kinds of hosts are we talking about?  A “native” host would compile a
+Swanson program down to machine code, just like a C, Rust, Go, or Haskell
+compiler would, and then execute it directly.  A “JVM” host would compile a
+Swanson program down to JVM bytecode, so that it could more easily interact with
+code written in Java.  An “embedded interpreter” would implement the execution
+rules below as simply as possible, with no compilation or optimization.  That
+would make the interpreter very simple, and make it easy to include it in
+another application written in some other language.</p>
+
+<div class="aside">
+  <p>A particular Swanson program is free to assume more about the host than just
+this.  It would typically do so by depending on code that isn’t available on all
+hosts.  (We talk about how you depend on other code below.) And if some of the
+code your program depends on isn’t available on some host, you can’t excute your
+program on that host!</p>
+</div>
+
+<h3 id="values-and-environments">Values and environments</h3>
+
+<p>A Swanson program operates on an <em>environment</em>, which is a collection of
+<em>values</em>, each with a separate <em>name</em>.  (A good intuition is that it’s the set
+of parameters and variables that are in scope at the current point of
+execution.)</p>
+
+<div class="aside">
+  <p>Names in Swanson are <strong><em>binary</em></strong> — they are a sequence of octets.  When you
+translate a higher-level language into Swanson, you will use names to represent
+its identifiers, which will presumably be strings of characters.  But Swanson is
+careful not to make any assumptions about what character set or encoding is used
+for those identifiers.  It’s true that <em>most</em> languages these days use ASCII or
+UTF-8 to encode their identifiers, but that’s not a hard requirement.</p>
+</div>
+
+<p>There are only three kinds of values: <strong><em>atom</em></strong>, <strong><em>literals</em></strong>, and
+<strong><em>invokables</em></strong>.</p>
+
+<h4 id="atoms">Atoms</h4>
+
+<p>Atoms are basic entities that exist and can be compared for equality.  They are
+primarily used at compile-time, and let us determine or assert that two things
+(types, values, anything really) are “the same”.</p>
+
+<h4 id="literals">Literals</h4>
+
+<p>Literals represent immutable binary content.  These are the only constants
+available to a Swanson program.</p>
+
+<div class="aside">
+  <p>Swanson programs use literals to instantiate “real” constants of other types.
+To create a numeric constant, for instance, you’d typically create a literal
+whose (binary) content is the ASCII rendering of the desired numeric value, and
+then use an invokable to parse that binary literal into the internal
+representation of the numeric value.  Because we have the ability to explicitly
+mark that code should execute at compile time, there’s typically no runtime cost
+incurred.</p>
+</div>
+
+<h4 id="invokables">Invokables</h4>
+
+<p>Everything else — runtime values, types, classes, functions — is represented by
+an invokable.  An invokable consists of one or more <strong><em>branches</em></strong>, each with a
+<strong><em>name</em></strong> and a <strong><em>body</em></strong>, which is some executable Swanson code.  An
+invokable will typically also contain some hidden state.  (Note that does not
+necessarily mean <em>mutable</em> state!)</p>
+
+<p>The main thing that you do to an invokable (as you might guess from its name) is
+that you <strong><em>invoke</em></strong> one of its branches.  The current environment is “passed
+into” the invokable as its input, and execution proceeds with the body of the
+selected branch.</p>
+
+<div class="aside">
+  <p>Note that control <strong><em>never returns</em></strong> from an invokable!  Invokables are like
+continuations.  Invoking is one-way.  Everything is a tail call.</p>
+
+  <p>That doesn’t mean that you can’t model something like “returning from a
+function”!  You’ll have an invokable representing the function, and its single
+branch contains the body of the function.  To “call” the function, you invoke
+its invokable.  But instead of implicitly keeping track of a stack of function
+calls, you must explicitly pass in a <strong><em>continuation</em></strong> as one of the inputs.
+This continuation represents the call stack that gets constructed before calling
+the function.  Inside the function’s invokable, it will invoke the continuation
+anywhere that control is <code>return</code>ed to the caller.</p>
+
+  <p>This also means that invokables don’t really have “output values”.  In Swanson,
+an “output” is really just the input that’s passed into the continuation when
+it’s invoked.  Control flow always moves forward!</p>
+</div>
+
+<p>For typical values that you’d encounter in other languages (integers, strings,
+booleans, instances of classes, instances of algebraic data types), the
+invokable encapsulates together the value itself, along with all of the
+operations that you can perform on that value (each represented by a branch).</p>
+
+<p>In languages that have a concept of pointers or references, the “thing pointed
+to” and the “pointer” or “reference” are both represented by (different)
+invokables.  The “thing pointed to” will have a “create reference” operation as
+one of its branches (corresponding with the <code>&amp;</code> operator from C or Rust).  The
+“pointer” will have a “dereference” operation (corresponding with the <code>*</code>
+operator).</p>
+
+<p>Invokables are also used to represent the basic blocks in your program.  The
+internal state represents any values that are closed over — local variables on
+the stack in a typical imperative language, or values captured in a closure in a
+functional language.  This kind of invokable would typically have a single
+branch, representing the normal control flow of your program.  But in a language
+that supports exceptions or JavaScript-style promises, there would be two — one
+branch to handle the “success” case, and one to handle the “error” case.</p>
+
+<h3 id="primitives">Primitives</h3>
+
+<p>Most invokables are implemented as Swanson code.  (Or more accurately, they’re
+implemented in S₀, which is the Swanson “assembly language” that we’ll learn
+about later, or in a language that can be compiled or translated into S₀.)</p>
+
+<p>However, you’ll probably have noticed that, unlike other language runtimes,
+there aren’t any “real” types mentioned above.  No specific integer types, no
+strings, no booleans, nothing like that.  In Swanson, none of that is
+predefined.  Instead, those are provided by <strong><em>primitives</em></strong>.  A primitive is a
+special type of invokable that is provided by the host, instead of being
+implemented in Swanson itself.</p>
+
+<div class="aside">
+  <p>The Swanson execution model does not predefine any of these primitives.  It
+doesn’t say which ones are available, what their names are, or how they work.
+That might seem to be a hard programming framework to program against!  However,
+there <em>is</em> a “standard library” of primitives, which we’ll describe later.  Most
+hosts provide most of the primitives in the standard library.  So for all
+practical purposes, the set of primitives <em>is</em> predefined — just not here at the
+lowest level of the framework.</p>
+</div>
+
+<h3 id="linearity">Linearity</h3>
+
+<p>Environments and values are <strong><em>linear</em></strong>, which means that they must be used
+<strong><em>exactly once</em></strong>.  That means two things:  First, you cannot use a value more
+than once.  Invoking an invokable, or using an atom or literal, consumes the
+value.  Second, you must use every value.  When a Swanson program finishes, the
+environment must be empty.</p>
+
+<div class="aside">
+  <p>Primitives are “magical” in the sense that they let you side-step linearity.
+For example, a host could provide a primitive for duplicating values that are
+safe to duplicate, and wouldn’t provide them for other values.  Since there’s no
+way to duplicate values purely in Swanson, that means we can be sure that all
+Swanson code follows the rules provided by the host environment.</p>
+
+  <p>This will be a pattern that we encounter <em>all the time</em>: linearity exists to
+provide a base level of safety, and lets us reason about when things <em>can</em> and
+<em>must</em> occur, but there will be “escape hatches” provided by the host that let
+us break out of those shackles in carefully controlled, well-scoped ways.</p>
+</div>
+
+<p>If an invokable is consumed when you invoke it, that works really well to model
+something like a destructor: calling a value’s destructor really should “remove”
+it from the caller’s context, so that the caller can’t accidentually try to use
+the now-freed value.  In this case, linearity provides a really nice answer to
+the “use after free” problem.</p>
+
+<p>But how then do we model functions or methods that <em>don’t</em> consume their
+receiver?  In Swanson, the invokable must “return back” the value to the caller,
+making it available for additional, later method calls.  (You will usually have
+to construct a new invokable to represent the returned-back value, since the
+original was just consumed; we’ll see examples in later sections of how to do
+that.)</p>
+
+<div class="aside">
+  <p>This pattern — where invokables explicitly return back values that can be used
+again in other ways — means that the set of operations you can perform on a
+value can change over time!  There’s no obligation that the value that’s
+returned back has the same set of available operations (that is, the same set of
+branches in the invokable) as the one that was passed in.</p>
+
+  <p>This lets us model things like Rust’s lifetimes, which say that you can’t drop a
+value when there are still open references to it somewhere.  In Swanson, the
+Rust version of the “create reference” operation would <em>both</em> return the
+reference as a new invokable, and also <strong><em>change</em></strong> the set of available
+operations on the original value to prevent you from calling its “drop”
+operation.  Dropping the reference would then reenable the “drop” operation on
+the original value.</p>
+</div>
+
+<h3 id="modular-programming">Modular programming</h3>
+
+<p>The last piece of our execution model lets you “program in the large”, breaking
+up a large program into smaller pieces that you can write, test, and compile
+separately.  Most programming languages provide some kind of facility for this:
+packages in Java, crates in Rust, translation units in C, packages in Go.</p>
+
+<p>In Swanson, the primary unit of modularity is the <strong><em>unit</em></strong>.  Each unit has a
+<strong><em>name</em></strong>, and can be <strong><em>loaded</em></strong>, producing a Swanson value.  The host is
+responsible for determining how to locate a unit with a particular name, and for
+loading it.</p>
+
+<div class="aside">
+  <p>Loading a unit typically produces an invokable, where each branch defines one of
+the entities “exported” by the unit.  But this isn’t a hard requirement — it’s
+perfectly fine for a unit to produce an atom or literal, though that wouldn’t
+really be very useful in practice.</p>
+</div>
+
+<p>Units can have <strong><em>dependencies</em></strong>, which are the other named units that this
+unit needs as part of its loading or execution.  The host will take care of
+loading those dependencies first (ensuring that there are no circular
+dependencies), and providing them to the unit.</p>
+
+<p>The <strong><em>entry point</em></strong> of a Swanson program is a unit that defines the main body
+of the program.  (This corresponds with the <code>main</code> function of a C, Rust, Go, or
+Java program.)  An entry point unit, when loaded, must produce an invokable with
+a single branch.  The host will invoke this branch to execute the program.  Like
+any other unit, this entry point can (and almost certainly will) have
+dependencies on other units, which it will use to do useful work.</p>
+
+<div class="aside">
+  <p>A unit can be loaded multiple times — once for each time it’s used as a
+dependency.  Unlike other frameworks, we don’t “cache” the unit’s value and
+return it multiple times, since that would violate linearity!  When a unit is
+loaded, the value that’s produced can only be used once.  If the unit is used as
+a dependency multiple times, each of those dependents must end up with distinct
+values to obey linearity.  That, in turn, means that we have to load the unit
+multiple times, producing multiple values, each of which can be used (exactly
+once) by the dependents.</p>
+
+  <p>In later posts we’ll see some common patterns that let a unit “share state”
+across all of its uses.  As you might guess, that requires taking advantages of
+some primitives provided by the host, since basic linear Swanson values don’t
+give you this ability.</p>
+</div>
+
+          <p class="next"><a href="/swanson/s0/">S₀, the “assembly language”</a></p>
+          <div class="subscribe">
+            Stay up to date by subscribing to <a
+               href="https://tinyletter.com/dcreager/">my newsletter</a>.
+          </div>
+        </div>
+      </div>
+    </div> <!-- /row -->
+  </div> <!-- /container -->
+
+    <footer class="copyright">
+    <div class="container">
+      <p>Copyright © 2009-2020, Douglas Creager.
+      All&nbsp;rights&nbsp;reserved.</p>
+    </div>
+  </footer>
+
+    <script src="//code.jquery.com/jquery.min.js"></script>
+  <script src="/media/vendor/js/bootstrap.min.js"></script>
+
+<!-- Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-83885503-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+</html>

@@ -92,6 +92,84 @@
 
   
     <li class="summary">
+      <div class="date">2020-11-15</div>
+      <h2 class="series"><a href="/swanson/s0/">Swanson</a></h2>
+      <h1><a href="/swanson/s0/">S₀, the “assembly language”</a></h1>
+      <p>In the <a href="../execution-model/">previous post</a>, we talked about Swanson’s execution
+model, but didn’t really describe what Swanson code <em>looks like</em>.  In this post,
+we’ll look at S₀ (pronounced “ess naught”), which is Swanson’s “assembly
+language”.</p>
+
+<div class="aside">
+  <p>As we’ll see, S₀ hews pretty closely to the Swanson execution model, and isn’t
+really a language that you’ll want to program in directly.  Typically, you’ll
+actually <em>write</em> in some other higher-level language, which will be translated
+into S₀.  We’ll see in later posts how this process works.  For now, don’t be
+put off by the amount of boilerplate that you see here — it’s not something that
+you’ll have to author directly!</p>
+</div>
+
+
+      <div class="link">
+        <a href="/swanson/s0/">
+          Continue reading <span class="glyphicon glyphicon-share-alt"></span>
+        </a>
+      </div>
+    </li>
+  
+    <li class="summary">
+      <div class="date">2020-10-29</div>
+      <h2 class="series"><a href="/swanson/execution-model/">Swanson</a></h2>
+      <h1><a href="/swanson/execution-model/">Execution model</a></h1>
+      <p>This post summarizes the computation model that the Swanson framework builds on.</p>
+
+
+      <div class="link">
+        <a href="/swanson/execution-model/">
+          Continue reading <span class="glyphicon glyphicon-share-alt"></span>
+        </a>
+      </div>
+    </li>
+  
+    <li class="summary">
+      <div class="date">2020-10-28</div>
+      <h2 class="series"><a href="/swanson/intro/">Swanson</a></h2>
+      <h1><a href="/swanson/intro/">Introduction</a></h1>
+      <p>My <a href="https://twitter.com/dcreager">Twitter bio</a> currently lists me as (among
+other things) a “PL dilettante”.  Which of course means that I’ve been hacking
+around on my own programming language for a number of years!  (Seriously, this
+has been a thing for a <strong><em>long</em></strong> time.  The earliest <a href="https://github.com/swanson-lang/swanson-lang-old/commit/e8aac263d76a63c8667fca5eee079ce8af345c2d">Swanson-related
+commit</a> I can find is from 2012.)  It’s gone through a number of
+iterations over that time, but I’m pretty happy with where it’s at right now.
+Not complete by any stretch of the imagination.  But I’ve chatted about it in
+passing with several people at this point, and I figured I need to write down
+the details somewhere.  My friend and colleague Rob can hold forth on these
+kinds of topics in <a href="https://twitter.com/rob_rix/status/1320544724864872453">epic</a> <a href="https://twitter.com/rob_rix/status/1320488333127110659">Twitter</a> <a href="https://twitter.com/rob_rix/status/1320467572161236994">threads</a>, but I need
+something more longform.  So here we are!</p>
+
+<p>In this series of posts I’m going to describe Swanson, the programming language
+framework that I’ve been noodling on.  It has two main components, one of which
+is much more fleshed out than the other.</p>
+
+<p>The first (not as fleshed out) part is an actual programming language, which
+doesn’t even really have a name yet!  It brings in some interesting notions
+about programmable syntax and parsing in a way that (I think) makes it easy to
+construct things like DSLs.</p>
+
+<p>The second (more important) part is an execution model that can be used as an IR
+of sorts for <strong><em>all</em></strong> languages.  That makes it similar in spirit to
+WebAssembly, in that the goal is to be something that you would compile (or
+translate or transpile or whatever) many other languages <strong><em>into</em></strong>, and not
+something to be written directly.  The Great Unnamed Language, like any other
+language, would be compiled into Swanson the execution framework.</p>
+      <div class="link">
+        <a href="/swanson/intro/">
+          Continue reading <span class="glyphicon glyphicon-share-alt"></span>
+        </a>
+      </div>
+    </li>
+  
+    <li class="summary">
       <div class="date">2018-05-31</div>
       <h1><a href="/np-hard/">NP-hard isn't the end of the world</a></h1>
       <p class="big-def"><em class="tldr">tl;dr</em> We’ve typically considered it a deal-breaker to discover that
@@ -339,120 +417,6 @@ analyzing this state machine.</p>
 
       <div class="link">
         <a href="/hst/semantic-methods/">
-          Continue reading <span class="glyphicon glyphicon-share-alt"></span>
-        </a>
-      </div>
-    </li>
-  
-    <li class="summary">
-      <div class="date">2016-11-17</div>
-      <h2 class="series"><a href="/hst/refinement-overview/">HST</a></h2>
-      <h1><a href="/hst/refinement-overview/">Refinement overview</a></h1>
-      <p>Our goal is to learn about CSP refinement by implementing a refinement checker.
-So a good first step is to make sure we’re all on the same page about what
-refinement is, and then to step through the refinement algorithm that we mean to
-implement.  (If nothing else, that will help make sure I don’t go off on too
-many tangents while implementing it!)</p>
-
-<p>I’ve mentioned refinement elsewhere on this blog a few times (for instance,
-<a href="/csp-concurrency/read-atomic-internal/#refinement">here</a>).  The basic idea is
-that in CSP, you use the same process language to describe the system you’re
-designing or investigating, as well as the properties that you would like that
-system to have.  (This is unlike most other formal methods, where you have
-separate languages for the system and the properties.)  In CSP, the system’s
-process is typically called \(Impl\) (for <strong>implementation</strong>), and the
-property description process is typically called \(Spec\) (for
-<strong>specification</strong>).</p>
-
-<p>CSP then defines several <strong>semantic models</strong> that provide rigorous mathematical
-definitions of what a process’s behavior is.  You perform a refinement check
-within the context of a particular semantic model.  A successful refinement
-check tells you that the property defined by \(Spec\) “holds” — specifically,
-that all of the behaviors of \(Impl\) are also allowed behaviors of
-\(Spec\).  A failed refinement check gives you a <strong>counterexample</strong> — that is,
-a specific behavior of \(Impl\) that was disallowed by \(Spec\).</p>
-
-<p>The three most common semantic models are <strong>traces</strong>, <strong>failures</strong>, and
-<strong>failures-divergences</strong>.  We’ll go into more detail about the mathematics
-behind these semantic models in later posts; for now, the 10,000-foot overview
-is that:</p>
-      <div class="link">
-        <a href="/hst/refinement-overview/">
-          Continue reading <span class="glyphicon glyphicon-share-alt"></span>
-        </a>
-      </div>
-    </li>
-  
-    <li class="summary">
-      <div class="date">2016-11-16</div>
-      <h2 class="series"><a href="/hst/intro/">HST</a></h2>
-      <h1><a href="/hst/intro/">Introduction</a></h1>
-      <p>It seems like this blog is basically turning into “all things CSP”!  As part of
-that trend, I’ve started implementing a new CSP refinement checker called
-<a href="https://github.com/hst/hst/">HST</a>.  Why do this when there’s a perfectly good refinement checker in
-<a href="http://www.cs.ox.ac.uk/projects/fdr/">FDR</a>?  Well, I want to learn more about how FDR’s refinement algorithm works.
-The algorithm is documented in Bill Roscoe’s <a href="https://www.cs.ox.ac.uk/bill.roscoe/publications/68b.pdf">textbook</a> (and a series of
-follow-on papers), and working through those descriptions gives you a good bit
-of insight into how refinenment really works.  But I often find it easier to
-learn a complex topic by implementing it (or at least, by looking at the code of
-an implementation).  Hence HST!  In this new series of blog posts, I’m going to
-walk through the CSP refinement algorithm in more detail than is presented in
-the academic literature, by implementing it (and describing that implementation)
-along the way.</p>
-
-<p>I should emphasize that this is <strong>not</strong> meant to be a replacement for FDR!  FDR
-is a very good piece of software, and if you’re writing any CSP specs in anger,
-you probably want FDR at your disposal.  HST is meant to be more of an
-educational exercise.  If people find it more generally useful than that, that’s
-great!  But it’s not what I’m aiming for.</p>
-
-<p>(And as for the name, “HST” does <em>not</em> stand for “Harry S. Truman”, just like
-“FDR” does <em>not</em> stand for “Franklin Delano Roosevelt”.)</p>
-
-      <div class="link">
-        <a href="/hst/intro/">
-          Continue reading <span class="glyphicon glyphicon-share-alt"></span>
-        </a>
-      </div>
-    </li>
-  
-    <li class="summary">
-      <div class="date">2016-09-07</div>
-      <h2 class="series"><a href="/csp-concurrency/read-atomic-internal/">Concurrency models in CSP</a></h2>
-      <h1><a href="/csp-concurrency/read-atomic-internal/">Read Atomic: Internal consistency</a></h1>
-      
-<script type="text/x-mathjax-config">
-MathJax.Hub.Config({
-  TeX: {
-    Macros: {
-      interleavesym: "|\\mkern-2mu|\\mkern-2mu|",
-      interleave: "\\mathrel{\\interleavesym}",
-      Interleave: "\\mathop{\\interleavesym}"
-    }
-  }
-});
-</script>
-
-<p>We’ll start by looking at the weakest concurrency model covered in the paper,
-Read Atomic.  In fact, to keep things really simple to start with, we’re only
-going to look at <em>one</em> of Read Atomic’s two axioms: <strong>internal consistency</strong>.
-(We’ll look at external consistency in the next post.)</p>
-
-<!--
- Read Atomic...can be implemented without requiring any coordination among
- replicas...a replica can decide to commit a transaction without consulting
- other replicas.
--->
-
-<p>A transaction is internally consistent if it “reads its own writes”.  This is
-the simplest axiom covered in the paper, since it expresses a property that’s
-strictly <em>local</em> to each transaction; we don’t have to consider the behavior of
-any other transaction when defining what it means for a transaction to be
-internally consistent.</p>
-
-
-      <div class="link">
-        <a href="/csp-concurrency/read-atomic-internal/">
           Continue reading <span class="glyphicon glyphicon-share-alt"></span>
         </a>
       </div>
