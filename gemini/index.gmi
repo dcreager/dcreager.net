@@ -1,0 +1,33 @@
+# dcreager.net
+
+This is the Gemini space of Douglas Creager. Welcome!
+
+## Recent posts
+
+=> 2020/12/welcome.gmi 2020-12-01: Starting a Gemlog
+
+## Who are you again?
+
+I'm a senior engineering manager at GitHub. I manage the Semantic Code team, which applies academic programming language theory to analyze all of the code hosted on GitHub. Our goal is to make it easier for developers and maintainers to understand what their code does, and how other developers use it.
+
+In the past I've also been involved in low-level performance, reliability, and security analysis of network traffic. As part of that work, I'm the co-editor of two draft W3C specifications:
+
+=> https://w3c.github.io/reporting/ Reporting
+=> https://w3c.github.io/network-error-logging Network Error Logging (NEL)
+
+Above all else, I want to teach the world how to use formal methods to solve real problems.
+
+How's that for a grab bag of interests?
+
+## Finding me
+
+In addition to this Gemini content, you can find me at:
+
+=> https://dcreager.net/ The traditional Web
+=> https://twitter.com/dcreager/ Twitter
+=> https://github.com/dcreager/ GitHub
+=> https://keybase.io/dcreager Keybase (GPG key etc.)
+
+## Disclaimer
+
+All of the opinions expressed on this site are my own, and not those of my employer.
