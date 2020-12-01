@@ -1,0 +1,5 @@
+# Starting a Gemlog
+
+I've always had a hard time keeping up with my traditional Web blog — I think because I always feel like I need to “polish up” a post before it's really ready to publish! And that means that I never end up publishing anything. Looking at the archive page, you can see several multi-year gaps in between posts. And several series of posts that start off with an “Introduction” and a single meaty section, and then taper off into nothingness.
+
+One thing I've really enjoyed about Gemini since I discovered it a month ago is its minimalist, retro ethos. If I can't be tempted to endlessly tweak the font choice and layout of my posts, maybe that can help me break that cycle of never publishing?  Let's find out!

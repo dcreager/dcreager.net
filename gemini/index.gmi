@@ -2,6 +2,10 @@
 
 This is the Gemini space of Douglas Creager. Welcome!
 
+## Recent posts
+
+=> 2020/12/welcome.gmi 2020-12-01: Starting a Gemlog
+
 ## Who are you again?
 
 I'm a senior engineering manager at GitHub. I manage the Semantic Code team, which applies academic programming language theory to analyze all of the code hosted on GitHub. Our goal is to make it easier for developers and maintainers to understand what their code does, and how other developers use it.
