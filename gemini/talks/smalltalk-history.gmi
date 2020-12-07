@@ -1,0 +1,10 @@
+# “The early history of Smalltalk”
+
+Papers We Love, Boston-Cambridge chapter, May 2016
+
+History! Those who don’t know it are doomed to etc.
+
+Smalltalk is one of the earliest object-oriented languages. It’s extremely influential — many of the OO concepts that we use in today’s languages were first developed in Smalltalk. But what influenced Smalltalk? Alan Kay will walk us through the language’s inspirations in this talk, including such crazy new technologies as UIs with overlapping windows and a 1970’s-era ur-tablet!
+
+=> https://docs.google.com/presentation/d/17_PoiQZjbH8WdWu4FtmNiIO-LVilR0y8s2tCJHoAgsc/ Slides
+=> https://www.meetup.com/Papers-We-Love-Boston-Cambridge/events/230987877/ Meetup

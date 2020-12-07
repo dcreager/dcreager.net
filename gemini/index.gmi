@@ -7,6 +7,17 @@ This is the Gemini space of Douglas Creager. Welcome!
 => 2020/12/swanson-intro.gmi 2020-12-07: Swanson: Introduction
 => 2020/12/welcome.gmi 2020-12-01: Starting a Gemlog
 
+## Talks
+
+Here are some talks that I’ve given at conferences:
+
+=> talks/github-code-nav.gmi Precise, cross-project code navigation at GitHub scale
+=> talks/pastry.gmi The Pastry peer-to-peer overlay network
+=> talks/packet-analysis.gmi Real-time packet analysis at scale
+=> talks/csp-history.gmi An oversimplified history of CSP
+=> talks/smalltalk-history.gmi “The early history of Smalltalk”
+=> talks/avro-intro.gmi An introduction to Apache Avro
+
 ## Who are you again?
 
 I’m a senior engineering manager at GitHub. I manage the Semantic Code team, which applies academic programming language theory to analyze all of the code hosted on GitHub. Our goal is to make it easier for developers and maintainers to understand what their code does, and how other developers use it.

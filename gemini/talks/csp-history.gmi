@@ -1,0 +1,10 @@
+# An oversimplified history of CSP
+
+Papers We Love, Boston-Cambridge chapter, October 2016
+
+Communicating Sequential Processes (CSP) was first described by Tony Hoare in 1978.  Since then, there have been two main “branches” of further development.  In the first branch, CSP inspired how concurrency is handled in an ongoing series of programming languages — most recently (and famously) in Go.  In the second branch, CSP was refined into a rigorous “process calculus”, and has since been used to formally prove various safety and liveness properties of concurrent and distributed systems.
+
+This talk will be a whirlwind history of CSP, a high-level overview of the process calculus, and some live demos of using a refinement checker to prove things about interesting systems.  (No proving things by hand!)
+
+=> https://docs.google.com/presentation/d/1EUOK5qZBdzKTUGbI3iMhHnhwI60pVsg8ISm3jB1D_K8/ Slides
+=> https://www.meetup.com/Papers-We-Love-Boston-Cambridge/events/234829295/ Meetup

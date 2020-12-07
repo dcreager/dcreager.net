@@ -1,0 +1,7 @@
+# An introduction to Apache Avro
+
+Mil-OSS Working Group 3, August 2011
+
+This talk was an overview of the Apache Avro data serialization framework.  It includes some detail on why you'd want to use a framework of its kind instead of XML, JSON, or rolling your own custom format.
+
+=> https://speakerdeck.com/dcreager/an-introduction-to-apache-avro Slides

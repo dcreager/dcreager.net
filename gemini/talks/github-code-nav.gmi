@@ -1,0 +1,10 @@
+# Precise, cross-project code navigation at GitHub scale
+
+FOSDEM, February 2020
+
+GitHub has recently added Code Navigation features (jump to definition and find all references) that let you navigate code directly on github.com.  For the languages that we support, we extract and store symbol information for every named branch and tag, of every repository, public or private, with no configuration necessary.  The compute and storage requirements to do this for all of the code on GitHub are quite large.  In this talk, we’ll discuss some of the trade-offs we’ve made to make this tractable at GitHub’s scale, to be able to operate and monitor this service effectively, and to let us add support for new languages quickly and easily.  We’ll also talk about our ongoing work to extend Code Navigation to handle links that cross package and repository boundaries.
+
+=> https://fosdem.org/2020/schedule/event/github_cross_project_code_navigation/ FOSDEM event page
+=> https://fosdem.org/2020/schedule/event/github_cross_project_code_navigation/attachments/slides/3885/export/events/attachments/github_cross_project_code_navigation/slides/3885/dcreager_fosdem_2020.pdf Slides
+=> https://video.fosdem.org/2020/UD2.119/github_cross_project_code_navigation.webm Video (WebM/VP9)
+=> https://video.fosdem.org/2020/UD2.119/github_cross_project_code_navigation.mp4 Video (mp4)

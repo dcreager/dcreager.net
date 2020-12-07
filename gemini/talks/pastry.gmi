@@ -1,0 +1,9 @@
+# The Pastry peer-to-peer overlay network
+
+Papers We Love, Boston-Cambridge chapter, July 2018
+
+The early 2000’s saw several research groups look into distributed hash tables as a decentralized way to structure a distributed system. In this talk, I’ll briefly describe some of the history behind DHTs, and look at one of them in particular: Pastry, which takes into account how close or far apart nodes are from each other when constructing the peer-to-peer overlay network. We’ll also look at Scribe, which implements anycast/multicast messaging on top of the Pastry overlay network.
+
+=> https://docs.google.com/presentation/d/1-65NY-k9NchmrxRAQBbOOEkqXU5zdT9dREKS-PfVEMQ/ Slides
+=> https://www.youtube.com/watch?v=o-mPW4tRrKw Video (YouTube)
+=> https://www.meetup.com/Papers-We-Love-Boston-Cambridge/events/252763348/ Meetup
