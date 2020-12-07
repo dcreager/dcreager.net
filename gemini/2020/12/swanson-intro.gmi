@@ -1,0 +1,21 @@
+# Swanson: Introduction
+
+In this series of posts I'm going to describe Swanson, the programming language framework that I've been noodling on.  It has two main components, one of which is much more fleshed out than the other.
+
+The first (not as fleshed out) part is an actual programming language, which doesn't even really have a name yet!  It brings in some interesting notions about programmable syntax and parsing in a way that (I think) makes it easy to construct things like DSLs.
+
+The second (more important) part is an execution model that can be used as an IR of sorts for _all_ languages.  That makes it similar in spirit to WebAssembly, in that the goal is to be something that you would compile (or translate or transpile or whatever) many other languages _into_, and not something to be written directly.  The Great Unnamed Language, like any other language, would be compiled into Swanson the execution framework.
+
+Both the language and the execution model incorporate two big ideas.  The first is that they build on Zig's notion of `comptime` — being able to execute functions at compile-time.  Other languages have this capability, but I find that Zig has done the most to internalize it as a first principle.  Can we really build every other useful language feature on top of `comptime`, as Ron Pressler claims?
+
+=> https://ziglang.org/documentation/master/#comptime comptime in Zig
+=> https://news.ycombinator.com/item?id=24292760 Can we do everything with comptime?
+
+Personally, I think that should be enough!  I think the other thing that's missing is some form of ownership tracking, along the lines of Rust's or C++'s move semantics.  For that, Swanson looks to _linear continuations_.  The “continuation” part means that Swanson's basic blocks don't implicitly pass control to anything else; you must explicitly pass in a continuation, and the last instruction of a basic block must explicitly invoke a continuation.  _All_ control flow is handled this way.  The “linear” part means that you are _obligated_ to consume every value and invoke every continuation at some point.  (There are escape hatches that we'll get into later.)  That lets you handle things like RAII and `defer` statements — and, possibly less obviously, things like safe memory management, including Rust lifetimes and borrow checking.
+
+=> https://en.wikipedia.org/wiki/Resource_acquisition_is_initialization RAII
+=> https://golang.org/doc/effective_go.html#defer `defer` statements
+
+(Part of the purpose of these posts is to show my work on those claims, and see whether or not they're actually true!)
+
+So, let's jump in and see where this goes!
