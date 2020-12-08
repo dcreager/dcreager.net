@@ -42,7 +42,7 @@ to make that host-specific custom code as simple to write as possible.
 
 ### Names
 
-As mentioned in the previous post, Swanson names are _binary_.  There are two
+As mentioned in the previous post, Swanson names are _binary_.  There are three
 ways to encode a Swanson name in S₀.
 
 The first allows us to encode arbitrary binary content, written in hexadecimal
@@ -67,6 +67,30 @@ characters.)  A bare name can be written in S₀ directly:
 $_    entry      atom       i        ds.hashmap
 $0    entry@1    literal    while    primitives.bool
 </pre>
+
+<div class="aside" markdown=1>
+You might wonder why `@` and `$` are considered bare name characters, since
+most programming languages limit identifiers to alphanumberic characters.
+(Lisps that allow `kebab-case` names are an exception!)
+
+And that's actually the reason why!  Since S₀ is a translation target for other
+languages, having a couple of atypical characters available lets us more easily
+construct "derived" Swanson names that cannot conflict with names that appear in
+the source languages.
+</div>
+
+The final notation is a syntax for names that are ASCII-encoded strings, but
+don't consist of _only_ bare name characters.  If a name contains only ASCII
+printable characters, you can enclose them in double-quotes:
+
+<pre>
+"entry"               "kebab-case-with-&gt;arrows"
+"name with spaces"    "name:with:colons"
+</pre>
+
+Note that there are no escape sequences for this notation — which means in
+particular that you can't use this notation if the name contains a double-quote
+character.  If it does, you have to use the hex notation described above.
 
 ### Modules and blocks
 
