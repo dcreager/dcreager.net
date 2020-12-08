@@ -4,7 +4,7 @@ all:
 
 deploy:
 	@echo Deploying Gemini content...
-	@rsync -pgrlzDP --delete-after --chmod=ug=rwX,o=rX --groupmap=*:http gemini/ zeta.dcreager.net:/srv/gemini
+	@rsync -pgrlvz --delete-after --chmod=ug=rwX,o=rX --groupmap=*:http gemini/ zeta.dcreager.net:/srv/gemini
 
 gemini: .keys/created
 	@echo Starting Gemini server at gemini://localhost/
