@@ -118,12 +118,6 @@ that only requires a single character of lookahead.)  In fact, it’s more
 important for S₀ to be easy to parse, than for it to be easy for humans to
 write.  After all, you will very rarely have to write S₀ directly!</p>
 
-<div class="aside">
-  <p>How are some ways that S₀’s syntax is simple?  As just one example, lines in an
-S₀ file <strong><em>must</em></strong> end specifically with a newline character (decimal 10 in
-ASCII, <code>\n</code> in C-like languages).  Other line endings are <em>not</em> allowed.</p>
-</div>
-
 <p>This simplicity is important since the first part of writing a new Swanson host
 is being able to load in “bootstrap” code, which is written in S₀.  This part of
 the host will need to be written directly in the host’s language, and so we want
