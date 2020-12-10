@@ -4,6 +4,7 @@ This is the Gemini space of Douglas Creager. Welcome!
 
 ## Recent posts
 
+=> 2020/12/swanson-s0.gmi 2020-12-10: Swanson: S₀
 => 2020/12/swanson-execution-model.gmi 2020-12-08: Swanson: Execution model
 => 2020/12/swanson-intro.gmi 2020-12-07: Swanson: Introduction
 => 2020/12/welcome.gmi 2020-12-01: Starting a Gemlog

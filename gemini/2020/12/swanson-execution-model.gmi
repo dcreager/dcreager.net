@@ -87,3 +87,5 @@ The _entry point_ of a Swanson program is a unit that defines the main body of t
 > A unit can be loaded multiple times — once for each time it’s used as a dependency.  Unlike other frameworks, we don’t “cache” the unit’s value and return it multiple times, since that would violate linearity!  When a unit is loaded, the value that’s produced can only be used once.  If the unit is used as a dependency multiple times, each of those dependents must end up with distinct values to obey linearity.  That, in turn, means that we have to load the unit multiple times, producing multiple values, each of which can be used (exactly once) by the dependents.
 
 > In later posts we’ll see some common patterns that let a unit “share state” across all of its uses.  As you might guess, that requires taking advantages of some primitives provided by the host, since basic linear Swanson values don’t give you this ability.
+
+=> swanson-s0.gmi → Next: S₀
