@@ -1,5 +1,7 @@
 # Swanson: Execution model
 
+=> swanson-intro.gmi ← Previous: Introduction
+
 This post summarizes the computation model that the Swanson framework builds on.
 
 ## Hosts

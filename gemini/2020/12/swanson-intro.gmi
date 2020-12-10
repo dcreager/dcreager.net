@@ -19,3 +19,5 @@ Personally, I think that should be enough!  I think the other thing that's missi
 (Part of the purpose of these posts is to show my work on those claims, and see whether or not they're actually true!)
 
 So, let's jump in and see where this goes!
+
+=> swanson-execution-model.gmi → Next: Execution model
