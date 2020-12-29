@@ -1,16 +1,16 @@
 # Rust error handling patterns
 
-This post summarizes how best to produce and consume errors in Rust code.  It's short and to the point!  If you want more detail, check out this great article from Nick Groenen:
+This post summarizes how best to produce and consume errors in Rust code.  It’s short and to the point!  If you want more detail, check out this great article from Nick Groenen:
 
 => https://nick.groenen.me/posts/rust-error-handling/ Rust: Structuring and handling errors in 2020 [Nick Groenen]
 
 ## Applications
 
-Much like how you handle Cargo.lock files, the recommendations are different for applications and libraries.  In an application, you're consuming error conditions from a wide variety of libraries, each of which will have (hopefully) created custom library-specific error types.  The easiest way to consume all of them is to use the anyhow crate.
+Much like how you handle Cargo.lock files, the recommendations are different for applications and libraries.  In an application, you’re consuming error conditions from a wide variety of libraries, each of which will have (hopefully) created custom library-specific error types.  The easiest way to consume all of them is to use the anyhow crate.
 
 => https://docs.rs/anyhow/ anyhow
 
-In particular, in your main.rs, _don't_ do the bulk of your work directly in your `main` function.  Instead create a helper function (called `go` here) and do your work there:
+In particular, in your main.rs, _don’t_ do the bulk of your work directly in your `main` function.  Instead create a helper function (called `go` here) and do your work there:
 
 ``` rust
 use std::fs::File;
@@ -45,7 +45,7 @@ fn main() {
 }
 ```
 
-If an error occurs, we use anyhow's `{:#}` display format to print out a nicely formatted error message, including any attached context.  (Make sure to print it to stderr!)  If no error occurs, we fall through to a normal exit.
+If an error occurs, we use anyhow’s `{:#}` display format to print out a nicely formatted error message, including any attached context.  (Make sure to print it to stderr!)  If no error occurs, we fall through to a normal exit.
 
 ## Libraries
 
@@ -61,9 +61,9 @@ pub enum FoozleError {
 }
 ```
 
-On its own, this is enough to let you use your error type inside of a `Result` value.  (`Result` itself doesn't place any restrictions on its `E` parameter!)  But it's not yet useful enough to work with the application recommendations in the previous section.  Ideally, all of your error types should implement `std::error::Error`, which in turn means that they need to implement `std::fmt::Display`.
+On its own, this is enough to let you use your error type inside of a `Result` value.  (`Result` itself doesn’t place any restrictions on its `E` parameter!)  But it’s not yet useful enough to work with the application recommendations in the previous section.  Ideally, all of your error types should implement `std::error::Error`, which in turn means that they need to implement `std::fmt::Display`.
 
-Your `Display` implementation should provide a nice human-readable description of each error condition.  For those descriptions to be "nice", you probably want to include additional data about each error condition:
+Your `Display` implementation should provide a nice human-readable description of each error condition.  For those descriptions to be “nice” you probably want to include additional data about each error condition:
 
 ``` rust
 pub enum FoozleError {
@@ -119,4 +119,4 @@ pub enum FoozleError {
 }
 ```
 
-And that's it!  The derive macro takes care of producing `Display` and `Error` implementations for you!
+And that’s it!  The derive macro takes care of producing `Display` and `Error` implementations for you!
