@@ -2,13 +2,23 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:base="https://dcreager.net/">
   <id>https://dcreager.net/</id>
   <title>dcreager.net</title>
-  <updated>2020-11-15T00:00:00Z</updated>
+  <updated>2020-12-16T00:00:00Z</updated>
   <link rel="alternate" href="https://dcreager.net/" type="text/html"/>
   <link rel="self" href="https://dcreager.net/atom.xml" type="application/atom+xml"/>
   <author>
     <name>Douglas Creager</name>
     <uri>https://dcreager.net/</uri>
   </author>
+  <entry>
+    <id>tag:dcreager.net,2020-12-16:/rust-error-handling/</id>
+    <title type="html">Rust error handling patterns</title>
+    <published>2020-12-16T00:00:00Z</published>
+    <updated>2020-12-16T00:00:00Z</updated>
+    <link rel="alternate" href="https://dcreager.net/rust-error-handling/" type="text/html"/>
+    <content type="html">&lt;p&gt;This post summarizes how best to produce and consume errors in Rust code.  It’s short and to the point!  If you want more detail, check out &lt;a href="https://nick.groenen.me/posts/rust-error-handling/"&gt;this great article&lt;/a&gt; from Nick Groenen:&lt;/p&gt;
+
+</content>
+  </entry>
   <entry>
     <id>tag:dcreager.net,2020-11-15:/swanson/s0/</id>
     <title type="html">S₀, the “assembly language”</title>
@@ -605,45 +615,6 @@ add weight to the argument that formal methods are a useful tool for studying
 and designing the systems that we create and use.  And for the formal methodist,
 I want to show how to use CSP in particular to specify and reason about those
 systems.&lt;/p&gt;
-</content>
-  </entry>
-  <entry>
-    <id>tag:dcreager.net,2010-05-13:/2010/05/13/powerpc-qemu-lucid/</id>
-    <title type="html">Installing Ubuntu Lucid on a PowerPC QEMU virtual machine</title>
-    <published>2010-05-13T00:00:00Z</published>
-    <updated>2010-05-13T00:00:00Z</updated>
-    <link rel="alternate" href="https://dcreager.net/2010/05/13/powerpc-qemu-lucid/" type="text/html"/>
-    <content type="html">&lt;p&gt;Part of the software I help develop at
-&lt;a href="http://www.redjack.com/"&gt;RedJack&lt;/a&gt; needs to be tested on both
-little-endian and big-endian machines.  Little-endian machines are
-easy, since everyone and their mother is running on a little-endian
-Intel or AMD x86 chip.  It used to be that big-endian was pretty easy
-to test, too — just break out your trusty Apple Powerbook G4 and
-you’re good to go.  Since Apple has shifted over to Intel chips,
-though, the situation has changed.&lt;/p&gt;
-
-&lt;p&gt;Luckily, &lt;a href="http://wiki.qemu.org/"&gt;QEMU&lt;/a&gt; has PowerPC as one of the
-targets that it can emulate, so in theory, I can still easily test my
-code on a big-endian machine by creating a QEMU PowerPC virtual
-machine.  There’s already a writeup about trying to install Debian
-onto a QEMU VM
-&lt;a href="http://machine-cycle.blogspot.com/2009/05/running-debian-on-qemu-powerpc.html"&gt;here&lt;/a&gt;.
-&lt;a href="http://www.aurel32.net/"&gt;Aurélien Jarno&lt;/a&gt; has graciously put together
-downloadable disk images with Debian preinstalled.  If that’s good
-enough for your purposes, just go download those!  You won’t need any
-of the rest of the information on this page.&lt;/p&gt;
-
-&lt;p&gt;Unfortunately, I didn’t want to run stock Debian; my little-endian
-build machine is running Ubuntu Lucid, and for consistency, I wanted
-my big-endian VM to be running the same.  As it turns out, this also
-required a fair dose of masochism on my part.  There are several
-issues that you’ll encounter if you try to do this by hand.  Here is
-my cheat sheet for getting around these issues.&lt;/p&gt;
-
-&lt;p&gt;Note that this isn’t a full step-by-step account of how to install
-Lucid onto a QEMU VM.  For now, I’m just trying to get my notes down
-into a more permanent form.&lt;/p&gt;
-
 </content>
   </entry>
 </feed>
