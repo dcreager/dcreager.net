@@ -92,6 +92,24 @@
 
   
     <li class="summary">
+      <div class="date">2020-12-30</div>
+      <h2 class="series"><a href="/swanson/s1/">Swanson</a></h2>
+      <h1><a href="/swanson/s1/">S₁ for bootstrapping</a></h1>
+      <p>In the <a href="../s0/">previous post</a>, we described S₀, and showed how it would be
+<strong><em>absolutely disgusting</em></strong> to have to program in it directly.  Which is why I
+described it as Swanson’s “assembly language”.  In this post, we’ll look into
+exactly <em>how</em> the language is complicated, and use that to describe a <em>slightly</em>
+better language named S₁.</p>
+
+
+      <div class="link">
+        <a href="/swanson/s1/">
+          Continue reading <span class="glyphicon glyphicon-share-alt"></span>
+        </a>
+      </div>
+    </li>
+  
+    <li class="summary">
       <div class="date">2020-12-29</div>
       <h1><a href="/staff-engineering-manager/">Staff engineering manager</a></h1>
       <p>I’ve been promoted!  As of January 1st, I will now be a Staff Engineering Manager at GitHub.</p>
@@ -317,51 +335,6 @@ build tools.</p>
 
       <div class="link">
         <a href="/shared-library-versions/">
-          Continue reading <span class="glyphicon glyphicon-share-alt"></span>
-        </a>
-      </div>
-    </li>
-  
-    <li class="summary">
-      <div class="date">2017-08-10</div>
-      <h2 class="series"><a href="/obligations/intro/">Obligations</a></h2>
-      <h1><a href="/obligations/intro/">Introduction</a></h1>
-      <p>Programming languages have a lot of interesting ways to think about what you’re
-allowed to do, and not allowed to do.  In a statically typed language, your
-compiler will yell at you if you try to do something that’s not allowed, and a
-lot of interesting PL research involves teaching your language and compiler to
-disallow things in increasingly sophisticated ways.</p>
-
-<p>This is not limited to statically typed languages.  In a dynamically typed
-language, your interpreter is just as invested in disallowing certain behaviors.
-It’s just that the enforcement happens while your program is running!</p>
-
-<p>Someone with a theoretical background might quibble with my choice of the word
-“disallow”.  They might prefer that I say that certain operations in your
-programming language are “invalid”.  In the world of mathematics, it’s usually
-not the case that some little gremlin is actively preventing these operations
-from occurring; instead, it’s that the invalid operations don’t even exist as
-possibilities!</p>
-
-<p>But regardless what language you’re programming in, and regardless of whether
-you think in terms of <strong>permissions</strong> or <strong>possibilities</strong>, the act of
-programming is to consider all of these possible operations, and choose which
-ones you want to use to accomplish your goal.  At any given time, there are many
-possible operations, and you have the control to decide which ones to use!</p>
-
-<p>In this series of posts I want to look at the flip side of this, and talk about
-<strong>requirements</strong> or <strong>obligations</strong>.  What mechanisms do programming languages
-have to <em>force</em> you to perform some operation, or to ensure that some operation
-is performed even if you don’t actively choose to do it yourself?</p>
-
-<p>At the end of this series, I hope to convince you that obligations are just as
-important as possibilities, and that there are interesting complex behaviors
-that are easier to think about and work with if we use programming languages
-that can talk about obligations directly.</p>
-
-
-      <div class="link">
-        <a href="/obligations/intro/">
           Continue reading <span class="glyphicon glyphicon-share-alt"></span>
         </a>
       </div>

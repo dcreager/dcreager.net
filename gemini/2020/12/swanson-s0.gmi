@@ -198,3 +198,5 @@ module bool.can_evaluate_true {
 ```
 
 Can you see why this isn’t a language that you’d want to program in directly?  In the next post, we’ll learn about S₁, which provides some helpful syntactic sugar, while still being a very low-level language.
+
+=> swanson-s1.gmi → Next: S₁

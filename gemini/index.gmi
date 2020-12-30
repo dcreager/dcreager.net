@@ -4,6 +4,7 @@ This is the Gemini space of Douglas Creager. Welcome!
 
 ## Recent posts
 
+=> 2020/12/swanson-s1.gmi 2020-12-30: Swanson: S₁
 => 2020/12/staff-engineering-manager.gmi 2020-12-29: Staff engineering manager
 => 2020/12/rust-error-handling.gmi 2020-12-16: Rust error handling patterns
 => 2020/12/swanson-s0.gmi 2020-12-10: Swanson: S₀

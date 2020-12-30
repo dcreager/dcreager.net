@@ -2,13 +2,27 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:base="https://dcreager.net/">
   <id>https://dcreager.net/</id>
   <title>dcreager.net</title>
-  <updated>2020-12-29T00:00:00Z</updated>
+  <updated>2020-12-30T00:00:00Z</updated>
   <link rel="alternate" href="https://dcreager.net/" type="text/html"/>
   <link rel="self" href="https://dcreager.net/atom.xml" type="application/atom+xml"/>
   <author>
     <name>Douglas Creager</name>
     <uri>https://dcreager.net/</uri>
   </author>
+  <entry>
+    <id>tag:dcreager.net,2020-12-30:/swanson/s1/</id>
+    <title type="html">S₁ for bootstrapping</title>
+    <published>2020-12-30T00:00:00Z</published>
+    <updated>2020-12-30T00:00:00Z</updated>
+    <link rel="alternate" href="https://dcreager.net/swanson/s1/" type="text/html"/>
+    <content type="html">&lt;p&gt;In the &lt;a href="../s0/"&gt;previous post&lt;/a&gt;, we described S₀, and showed how it would be
+&lt;strong&gt;&lt;em&gt;absolutely disgusting&lt;/em&gt;&lt;/strong&gt; to have to program in it directly.  Which is why I
+described it as Swanson’s “assembly language”.  In this post, we’ll look into
+exactly &lt;em&gt;how&lt;/em&gt; the language is complicated, and use that to describe a &lt;em&gt;slightly&lt;/em&gt;
+better language named S₁.&lt;/p&gt;
+
+</content>
+  </entry>
   <entry>
     <id>tag:dcreager.net,2020-12-29:/staff-engineering-manager/</id>
     <title type="html">Staff engineering manager</title>
@@ -559,28 +573,6 @@ patch makes &lt;code&gt;git flow&lt;/code&gt; tag the last commit on the release
 merge commit on the &lt;code&gt;master&lt;/code&gt; branch.  The reasons for this might be perfectly
 valid, but it’s not what I want, and it’s not what the original &lt;code&gt;git flow&lt;/code&gt; post
 described.  That means that I can’t use &lt;code&gt;git flow release finish&lt;/code&gt; as-is.&lt;/p&gt;
-
-</content>
-  </entry>
-  <entry>
-    <id>tag:dcreager.net,2014-02-28:/2014/02/csp-basics/</id>
-    <title type="html">CSP: The basics</title>
-    <published>2014-02-28T00:00:00Z</published>
-    <updated>2014-02-28T00:00:00Z</updated>
-    <link rel="alternate" href="https://dcreager.net/2014/02/csp-basics/" type="text/html"/>
-    <content type="html">&lt;p class="big-def"&gt;&lt;em class="tldr"&gt;tl;dr&lt;/em&gt; CSP is a &lt;em&gt;formal method&lt;/em&gt; that lets you describe and reason
-about the behavior of &lt;em&gt;concurrent systems&lt;/em&gt;.  CSP is &lt;em&gt;composable&lt;/em&gt;; you write
-simple &lt;em&gt;processes&lt;/em&gt;, and then use special &lt;em&gt;operators&lt;/em&gt; to combine them together
-into larger, more complex processes.  A process is a summary of some system; it
-uses &lt;em&gt;events&lt;/em&gt; to describe how that system works, and to &lt;em&gt;synchronously
-communicate&lt;/em&gt; with other processes.  You can compare two processes using a
-&lt;em&gt;refinement check&lt;/em&gt;; this lets us check, for instance, whether a real-world
-system satisfies some important safety or liveness property.  CSP has good &lt;em&gt;tool
-support&lt;/em&gt;, which lets us perform these refinement checks quickly and
-automatically.&lt;/p&gt;
-
-&lt;p&gt;Well that was easy, wasn’t it?  You can boil just about anything down to a
-single paragraph.  Let’s look at each of those key points in more detail.&lt;/p&gt;
 
 </content>
   </entry>

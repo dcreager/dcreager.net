@@ -1,0 +1,449 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>
+    dcreager.net – Swanson: S₁ for bootstrapping
+  </title>
+  <meta name="author" content="Douglas Creager">
+
+    <meta charset="utf-8">
+
+  <meta name="google-site-verification"
+        content="7KIoYPNsfdDxIdX1QQ7SM2Nm_nyy13aRlDkzE3wzhhY" />
+
+  <link rel="icon" type="image/x-icon" href="/media/images/imperial-logo.ico"/>
+  <link rel="alternate" type="application/atom+xml"
+        title="dcreager.net" href="/atom.xml"/>
+
+  <!-- Bootstrap -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel=stylesheet type=text/css media=screen
+        href="/media/vendor/css/bootstrap.min.css">
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+  <![endif]-->
+
+  <!-- MathJax -->
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      jax: ["input/TeX","output/HTML-CSS"],
+      displayAlign: "left",
+      displayIndent: "2em"
+    });
+  </script>
+  <script type="text/javascript" async
+          src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+  </script>
+
+  <!-- Twitter nonsense -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="@dcreager">
+  <meta name="twitter:title"
+        content="Swanson: S₁ for bootstrapping">
+  <meta name="twitter:description"
+        content="I guess it's technically an improvement.">
+  <meta name="twitter:image"
+        content="https://www.gravatar.com/avatar/04ee3ca11f1ae11c63faa7995dbf1ed7?s=2048">
+
+  <!-- Customizations -->
+  <link rel=stylesheet type=text/css media=screen
+        href="/media/css/coderay.css">
+  <link rel=stylesheet type=text/css media=screen
+        href="/media/css/dcreager.css">
+  <link rel=stylesheet type=text/css media=screen
+        href="https://fonts.googleapis.com/css?family=Oxygen:400,700">
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+  <div class="col-md-10 col-md-offset-1">
+    <nav class="navbar navbar-default" role="navigation">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand logo" href="/"><b>dcreager.net</b></a>
+      </div>
+
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="/about/">About</a></li></li>
+          <li><a href="/archive/">Archive</a></li></li>
+          <li><a href="https://buttondown.email/dcreager/">Newsletter</a></li></li>
+          <li><a href="/talks/">Talks</a></li></li>
+          <li><a href="/publications/">Publications</a></li></li>
+        </ul>
+      </div><!-- /.navbar-collapse -->
+    </nav>
+  </div>
+</div>
+
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        <div class="blog">
+          <div class="date">
+            2020-12-30
+          </div>
+          <h2 class="series">Swanson</h2>
+          <h1>S₁ for bootstrapping</h1>
+          <p class="prev"><a href="/swanson/s0/">S₀, the “assembly language”</a></p>
+          <p>In the <a href="../s0/">previous post</a>, we described S₀, and showed how it would be
+<strong><em>absolutely disgusting</em></strong> to have to program in it directly.  Which is why I
+described it as Swanson’s “assembly language”.  In this post, we’ll look into
+exactly <em>how</em> the language is complicated, and use that to describe a <em>slightly</em>
+better language named S₁.</p>
+
+<h3 id="this-is-way-too-complex">This is way too complex</h3>
+
+<p>Let’s dig into that some more!  Here’s an incredibly simple bit of code:</p>
+
+<pre>6 + 4 * 3</pre>
+
+<p>It’s not even a statement or function, it’s just an expression!  But even this
+example will be outrageously complex in S₀, for a few reasons that combine
+together:</p>
+
+<ul>
+  <li>
+    <p>First off, as we described in previous posts, <em>every</em> useful bit of
+computation must be modeled by <em>invoking</em> some <em>invokable</em>.  In this example,
+it’s not just the addition and the multiplication.  We also have an invocation
+each time we load in an integer constant!</p>
+  </li>
+  <li>
+    <p>Second, there is no nesting of operations.  That means we have to separate out
+all of the invocations into a single list, figure out the correct order to
+execute them in, and possibly introduce temporary values for the results of
+subexpressions.  (This is exactly what you have to do with all high level
+languages, when you interpret them or compile them down into something lower
+level like LLVM IR or proper assembly.)</p>
+  </li>
+  <li>
+    <p>Lastly, each block in S₀ must contain <em>exactly one</em> invocation.  In most
+languages (including assembly!), there’s implicit control flow from one
+instruction to the next.  That doesn’t exist in S₀!  Instead, S₀ uses
+<em>continuation passing style</em>, where you have to create separate top-level
+“blocks” for each step of your computation, and manually thread them together
+using continuation parameters.</p>
+  </li>
+</ul>
+
+<p>The end result of all of this means that the S₀ version of our example looks
+something like:</p>
+
+<pre>
+module horrible_example {
+  $load:
+    containing ()
+    receiving ($loaded, primitive.int)
+  {
+    $module = closure containing (primitive.int) -&gt; main;
+    -&gt; $loaded;
+  }
+
+  main:
+    containing (primitive.int)
+    receiving ($finish)
+  {
+    value = literal "4";
+    $return = closure containing ($finish) -&gt; main@1;
+    -&gt; primitive.int from_literal;
+  }
+
+  main@1:
+    containing ($finish)
+    receiving ($_, $0)
+  {
+    primitive.int = rename $_;
+    four = rename $0;
+    value = literal "3";
+    $return = closure containing ($finish, four) -&gt; main@2;
+    -&gt; primitive.int from_literal;
+  }
+
+  main@2:
+    containing ($finish, four)
+    receiving ($_, $0)
+  {
+    primitive.int = rename $_;
+    three = rename $0;
+    $return = closure containing ($finish, primitive.int) -&gt; main@3;
+    rhs = rename three;
+    -&gt; four "*";
+  }
+
+  main@3:
+    containing ($finish, primitive.int)
+    receiving ($_)
+  {
+    twelve = rename $_;
+    value = literal "6";
+    $return = closure containing ($finish, twelve) -&gt; main@4;
+    -&gt; primitive.int from_literal;
+  }
+
+  main@4:
+    containing ($finish, twelve)
+    receiving ($_, $0)
+  {
+    primitive.int = rename $_;
+    six = rename $0;
+    $return = closure containing ($finish, six, twelve) -&gt; main@5;
+    -&gt; primitive.int drop;
+  }
+
+  main@5:
+    containing ($finish, six, twelve)
+    receiving ()
+  {
+    $return = closure containing ($finish) -&gt; main@6;
+    rhs = rename twelve;
+    -&gt; six "+";
+  }
+
+  main@6:
+    containing ($finish)
+    receiving ($_)
+  {
+    eighteen = rename $_;
+    $return = closure containing ($finish) -&gt; main@7;
+    -&gt; eighteen drop;
+  }
+
+  main@7:
+    containing ($finish)
+    receiving ($_)
+  {
+    -&gt; $finish succeed;
+  }
+}
+</pre>
+
+<p>Hopefully you can piece together how this faithfully implements our simple
+arithmetic expression:</p>
+
+<ul>
+  <li>
+    <p>There are invocations of <code>primitive.int</code> <code>from_literal</code> to load in each of our
+integer constants.</p>
+  </li>
+  <li>
+    <p>There are invocations of <code>*</code> and <code>+</code> operations to actually perform the math.</p>
+  </li>
+  <li>
+    <p>We introduce some temporaries, and invoke everything in the right order, to
+produce the correct result, 18.</p>
+  </li>
+</ul>
+
+<p>But not without complexity:</p>
+
+<ul>
+  <li>
+    <p>Most of the invocations take in an additional input parameter named <code>$return</code>,
+which is the continuation that control should pass to after the operation is
+done.</p>
+  </li>
+  <li>
+    <p>Each <code>$return</code> value is a closure, defined by an S₀ block, which “closes over”
+any of the values currently in the environment that <em>aren’t</em> inputs to the
+invokable that we’re about to invoke.</p>
+  </li>
+  <li>
+    <p>Each continuation block uses its <code>receiving</code> clause to indicate what outputs
+it expects to receive from the invokable that passes control to it.</p>
+  </li>
+  <li>
+    <p>Several of the invokables produce an additional <code>$_</code> output, which “returns
+back” the invokable that we just called.  This is how we can invoke
+<code>primitive.int</code> <code>from_literal</code> several times, for instance, even though
+Swanson’s linearity means that each of those invocations should technically
+consume the <code>primitive.int</code> value.</p>
+  </li>
+  <li>
+    <p>We make copious use of <code>rename</code> statements to allow us to give meaningful
+names to our temporaries, without having to be constrained by the names of the
+inputs and outputs expected by each of the invokables.</p>
+  </li>
+  <li>
+    <p>We have to explicitly invoke <code>drop</code> methods whenever we’re done with any
+value.</p>
+  </li>
+</ul>
+
+<h3 id="s-is-ever-so-slightly-better">S₁ is ever so slightly better</h3>
+
+<p>What does this example look like in S₁?</p>
+
+<pre>
+module horrible_example {
+  $load:
+    containing ()
+    receiving ($loaded, primitive.int)
+  {
+    $module = closure containing (primitive.int) -&gt; main;
+    $loaded();
+  }
+
+  main:
+    containing (primitive.int)
+    receiving ($finish)
+  {
+    value = literal "4";
+    primitive.int-&gt;from_literal(value) -&gt; ($0 -&gt; four);
+    value = literal "3";
+    primitive.int-&gt;from_literal(value) -&gt; ($0 -&gt; three);
+    four~&gt;"*"(rhs &lt;- three) -&gt; ($_ -&gt; twelve);
+    value = literal "6";
+    primitive.int-&gt;from_literal(value) -&gt; ($0 -&gt; six);
+    primitive.int~&gt;drop();
+    six~&gt;"+"(rhs &lt;- twelve) -&gt; ($_ -&gt; eighteen);
+    eighteen~&gt;drop();
+    $finish~&gt;succeed();
+  }
+}
+</pre>
+
+<p>Note that we’ve only “solved” one of the three complexities that we mentioned
+above.  We’ve added back in “implicit control flow”, so that we don’t have to
+manually extract each step of our computation into top-level blocks.  But we
+still model <em>every</em> operation as an invocation of some invokable, and we still
+have no nesting of operations.  But it’s still a substantial improvement!</p>
+
+<p>The overall structure of the code is largely the same: you’ve got a module,
+containing a number of blocks, each of which consists of some operations.  But
+whereas in S₀, a block consists of zero or more <em>statements</em> followed by exactly
+one <em>invocation</em>, an S₁ block consists of an arbitrary list of <em>statements</em> and
+<em>calls</em>.  The only restriction is that an S₁ block must end with a call.</p>
+
+<h4 id="s-calls">S₁ calls</h4>
+
+<p>This call expression is the meat of S₁.  Looking carefully, there are two
+variants, depending on whether you use <code>-&gt;</code> or <code>~&gt;</code>.  The <code>-&gt;</code> variant desugars
+into the <code>~&gt;</code> variant, so let’s look at the <code>~&gt;</code> version first:</p>
+
+<pre>
+six~&gt;"+"(rhs &lt;- twelve) -&gt; ($_ -&gt; eighteen);
+</pre>
+
+<p>This call gets “translated” into an S₀ invocation.  In this case, we’re invoking
+the <code>+</code> branch of the value named <code>six</code> in the current environment.</p>
+
+<p>The call contains what look like parameter and return value lists.  The <code>(rhs &lt;-
+twelve)</code> part tells us that <code>six</code> <code>+</code> expects an input value named <code>rhs</code> — but
+that the name of that input value in our environment is currently <code>twelve</code>, and
+so we’ll need to <code>rename</code> it before the invocation.</p>
+
+<p>Similarly, the <code>($_ -&gt; eighteen)</code> tells us that <code>six</code> <code>+</code> will produce an output
+named <code>$_</code> — but that we’d rather call that output value <code>eighteen</code> in the rest
+of our code, and so we’ll need another <code>rename</code> <em>after</em> the invocation.</p>
+
+<p>Most importantly, though, because this call is <em>not</em> the last operation in the
+S₁ block, we will automatically extract everything <em>after</em> this call into a new
+continuation block, and add it as an additional input value named <code>$return</code>.
+(There is additional syntax that gives you more control over how the
+continuation is passed in to the invocation, but we’ll ignore that for now.)</p>
+
+<p>Altogether, this S₁ call gets translated into the following S₀, where the
+<code>CLOSURE</code> part is automatically determined by whatever values are in the
+environment at the time of the call, but not mentioned as an input.</p>
+
+<pre>
+    $return = closure containing (CLOSURE) -&gt; main@6;
+    rhs = rename twelve;
+    -&gt; six "+";
+  }
+
+  main@6:
+    containing (CLOSURE)
+    receiving ($_)
+  {
+    eighteen = rename $_;
+</pre>
+
+<h4 id="reuse-calls">“Reuse” calls</h4>
+
+<p>As we mentioned above, <em>many</em> invokables use an output named <code>$_</code> to “return
+themselves back” to caller, as a way of getting around Swanson’s linearity.
+This is a common enough pattern that we’ve added syntactic sugar to S₁ to handle
+it.  A call that uses <code>-&gt;</code> will automatically add an extra <em>output</em> that renames
+<code>$_</code> back to the name that it had before the call.  That is, the following two
+calls are exactly equivalent:</p>
+
+<pre>
+primitive.int-&gt;from_literal(value) -&gt; ($0 -&gt; four);
+</pre>
+<pre>
+primitive.int~&gt;from_literal(value) -&gt; ($_ -&gt; primitive.int, $0 -&gt; four);
+</pre>
+
+<h3 id="whats-the-point">What’s the point?</h3>
+
+<p>While S₁ is certainly “better” than S₀ — in that it’s less actively painful to
+program in it directly as a human — you might still be wondering why you’d
+subject yourself to it.  In the <a href="../intro/">introduction</a> I mentioned that Swanson is a
+language <em>framework</em>, which we intend to compile or translate other higher level
+languages into.  If that’s the case, why do we have this language that’s still
+so low level, instead of jumping straight to the higher level languages that are
+actually pleasant to use?</p>
+
+<p>The main reason is that this gives us a better story for <em>bootstrapping</em>.
+Another goal of the framework is to work with arbitrary <em>host environments</em>,
+while requiring as little as possible of those hosts.  The only hard and fast
+rule is that a host needs to be able to parse and execute S₀ code.  Some
+primitives will need to be provided by the host, but we want to minimize the
+number of primitives that each host needs to implement directly.  As much as
+possible, we want the core “standard library” of Swanson code to be written in
+some way that (a) doesn’t require each host to reimplement it, and (b) doesn’t
+“bless” any one particular higher level language (or its standard library) as
+the one that all other hosts have to depend on.</p>
+
+<p>S₁ is intended to serve this role.  One single host environment (the “bootstrap
+environment”) will need to implement an S₁ parser and translator <em>directly</em>.
+That bootstrap environment can produce S₀ translations of any “standard library”
+code written in S₁.  And every other host environment will then have access to
+that code, while requiring nothing more than an S₀ parser and a small set of
+primitives.</p>
+
+<p>That’s the vision, at least!</p>
+
+          <div class="subscribe">
+            Stay up to date by subscribing to <a
+               href="https://buttondown.email/dcreager/">my newsletter</a>.
+          </div>
+        </div>
+      </div>
+    </div> <!-- /row -->
+  </div> <!-- /container -->
+
+    <footer class="copyright">
+    <div class="container">
+      <p>Copyright © 2009-2020, Douglas Creager.
+      All&nbsp;rights&nbsp;reserved.</p>
+    </div>
+  </footer>
+
+    <script src="//code.jquery.com/jquery.min.js"></script>
+  <script src="/media/vendor/js/bootstrap.min.js"></script>
+
+<!-- Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-83885503-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+</html>
