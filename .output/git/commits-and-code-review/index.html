@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>
+    dcreager.net – Git commits and code review (revisited)
+  </title>
+  <meta name="author" content="Douglas Creager">
+
+    <meta charset="utf-8">
+
+  <meta name="google-site-verification"
+        content="7KIoYPNsfdDxIdX1QQ7SM2Nm_nyy13aRlDkzE3wzhhY" />
+
+  <link rel="icon" type="image/x-icon" href="/media/images/imperial-logo.ico"/>
+  <link rel="alternate" type="application/atom+xml"
+        title="dcreager.net" href="/atom.xml"/>
+
+  <!-- Bootstrap -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel=stylesheet type=text/css media=screen
+        href="/media/vendor/css/bootstrap.min.css">
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+  <![endif]-->
+
+  <!-- MathJax -->
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      jax: ["input/TeX","output/HTML-CSS"],
+      displayAlign: "left",
+      displayIndent: "2em"
+    });
+  </script>
+  <script type="text/javascript" async
+          src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+  </script>
+
+  <!-- Twitter nonsense -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="@dcreager">
+  <meta name="twitter:title"
+        content="Git commits and code review (revisited)">
+  <meta name="twitter:description"
+        content="The conversation continues">
+  <meta name="twitter:image"
+        content="https://www.gravatar.com/avatar/04ee3ca11f1ae11c63faa7995dbf1ed7?s=2048">
+
+  <!-- Customizations -->
+  <link rel=stylesheet type=text/css media=screen
+        href="/media/css/coderay.css">
+  <link rel=stylesheet type=text/css media=screen
+        href="/media/css/dcreager.css">
+  <link rel=stylesheet type=text/css media=screen
+        href="https://fonts.googleapis.com/css?family=Oxygen:400,700">
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+  <div class="col-md-10 col-md-offset-1">
+    <nav class="navbar navbar-default" role="navigation">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand logo" href="/"><b>dcreager.net</b></a>
+      </div>
+
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="/about/">About</a></li></li>
+          <li><a href="/archive/">Archive</a></li></li>
+          <li><a href="https://buttondown.email/dcreager/">Newsletter</a></li></li>
+          <li><a href="/talks/">Talks</a></li></li>
+          <li><a href="/publications/">Publications</a></li></li>
+        </ul>
+      </div><!-- /.navbar-collapse -->
+    </nav>
+  </div>
+</div>
+
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        <div class="blog">
+          <div class="date">
+            2021-01-03
+          </div>
+          <h1>Git commits and code review (revisited)</h1>
+          <p>Drew DeVault had an interesting post yesterday (<a href="gemini://drewdevault.com/2021/01/02/2021-01-02-Every-commit-should-be-perfect.gmi">gemini</a>, <a href="https://portal.mozz.us/gemini/drewdevault.com/2021/01/02/2021-01-02-Every-commit-should-be-perfect.gmi">web</a>) about how large a git commit should be.  It echoes several points that I tried to make a couple of years back in a <a href="https://dcreager.net/git/workflows/">post of my own</a>.</p>
+
+<p>I agree with all of the points Drew makes, and try to follow the best practices that he outlines in my own projects.  There’s an alternative mindset, though, which is very popular these days — and I’ve argued at length with my collegues at GitHub about the merits and drawbacks of each approach.  The different mindsets grow out of a point that Drew mentioned:</p>
+
+<blockquote>
+  <p>As you receive feedback on your patch and make updates, continue to rebase and improve your original commit, or commits.</p>
+</blockquote>
+
+<p>and that I called out as its own top-level rule for what makes a “clean” git history:</p>
+
+<blockquote>
+  <p>Code review does not appear in the final history of your project.</p>
+</blockquote>
+
+<p>I’ve seen this alternative mindset most often with projects that have fully bought in to using GitHub as their project hub, but it is <em>not</em> limited to GitHub!  I’ve also seen it with projects hosted on GitLab, Gitea, Phabricator, and Gerrit.  All of those code forges are centered around the Pull Request (or Merge Request or whatever else you might call it) as the mechanism for code review.  There <em>are</em> differences in workflow between these hosts — Phabricator and Gerrit, for instance, have much better support for “stacked” changes, like you’d see with a <code>[1/X]</code> thread on the Linux kernel mailing list.  But they all focus on having code review itself take place on the forge’s web site, as opposed to (for instance) on a mailing list.</p>
+
+<p>That, in turn, makes the project maintainers and contributors internalize the idea that the forge’s unit of <em>review</em> should be the same as the project’s unit of <em>change</em> and <em>history</em>.  And that is the difference in mindset.  Zach Holman has the <a href="https://zachholman.com/posts/git-commit-history/">best summary</a> I’ve found so far.</p>
+
+<p>If you view the PR as your unit of change, then you apply all of the same best practices, but in a different place:</p>
+
+<ul>
+  <li>The <strong><em>PR</em></strong> should introduce exactly one change, of the correct size.</li>
+  <li>The <strong><em>PR title and body</em></strong> should contain a description of that change, structured and formatted in a very similar way to Tim Pope’s git commit message recommendations.</li>
+  <li>The test suite must pass <strong><em>for the final state of the PR</em></strong> before it can be merged into the main branch.</li>
+</ul>
+
+<p>But as Zach calls out, you end up “not giving two shits” about the individual git commits that make up your PRs.</p>
+
+<p>(To be clear, I am <strong><em>not</em></strong> advocating this mindset, but I was happy to find a good post <em>explaining</em> it.  It’s still like fingernails on a chalkboard to come across a project that’s organized this way.  But the “PR as unit of change” explanation at least means that I can now see that it <em>is</em> a consistent organizing principle, even if it’s not one I agree with.)</p>
+
+<p>In my original post I suggest that if you use GitHub PRs as your unit of review, and want to use git commits as your unit of history, then you must make sure to use the “squash merge” feature when merging your PRs.  This reduces each PR-as-unit-of-review into a single commit-as-unit-of-history at merge time.  (If you’re happy to <em>mindfully</em> decide to use PRs as both your unit of review <em>and</em> your unit of history, then you can use whatever merge strategy you want.)  It’s still unsolved how best to use PRs to review a “stack” of changes, that should end up as separate commits in the history, but which should be reviewed as a unit (or as a closely reviewed sequence).</p>
+
+<hr class="jump" />
+
+<p class="thanks">You can also read this post via <a href="gemini://dcreager.net/2021/01/git-commits-and-code-review.gmi">Gemini</a>.</p>
+
+
+          <div class="subscribe">
+            Stay up to date by subscribing to <a
+               href="https://buttondown.email/dcreager/">my newsletter</a>.
+          </div>
+        </div>
+      </div>
+    </div> <!-- /row -->
+  </div> <!-- /container -->
+
+    <footer class="copyright">
+    <div class="container">
+      <p>Copyright © 2009-2020, Douglas Creager.
+      All&nbsp;rights&nbsp;reserved.</p>
+    </div>
+  </footer>
+
+    <script src="//code.jquery.com/jquery.min.js"></script>
+  <script src="/media/vendor/js/bootstrap.min.js"></script>
+
+<!-- Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-83885503-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+</html>

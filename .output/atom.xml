@@ -2,13 +2,53 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:base="https://dcreager.net/">
   <id>https://dcreager.net/</id>
   <title>dcreager.net</title>
-  <updated>2020-12-30T00:00:00Z</updated>
+  <updated>2021-01-03T00:00:00Z</updated>
   <link rel="alternate" href="https://dcreager.net/" type="text/html"/>
   <link rel="self" href="https://dcreager.net/atom.xml" type="application/atom+xml"/>
   <author>
     <name>Douglas Creager</name>
     <uri>https://dcreager.net/</uri>
   </author>
+  <entry>
+    <id>tag:dcreager.net,2021-01-03:/git/commits-and-code-review/</id>
+    <title type="html">Git commits and code review (revisited)</title>
+    <published>2021-01-03T00:00:00Z</published>
+    <updated>2021-01-03T00:00:00Z</updated>
+    <link rel="alternate" href="https://dcreager.net/git/commits-and-code-review/" type="text/html"/>
+    <content type="html">&lt;p&gt;Drew DeVault had an interesting post yesterday (&lt;a href="gemini://drewdevault.com/2021/01/02/2021-01-02-Every-commit-should-be-perfect.gmi"&gt;gemini&lt;/a&gt;, &lt;a href="https://portal.mozz.us/gemini/drewdevault.com/2021/01/02/2021-01-02-Every-commit-should-be-perfect.gmi"&gt;web&lt;/a&gt;) about how large a git commit should be.  It echoes several points that I tried to make a couple of years back in a &lt;a href="https://dcreager.net/git/workflows/"&gt;post of my own&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;I agree with all of the points Drew makes, and try to follow the best practices that he outlines in my own projects.  There’s an alternative mindset, though, which is very popular these days — and I’ve argued at length with my collegues at GitHub about the merits and drawbacks of each approach.  The different mindsets grow out of a point that Drew mentioned:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;As you receive feedback on your patch and make updates, continue to rebase and improve your original commit, or commits.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;and that I called out as its own top-level rule for what makes a “clean” git history:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Code review does not appear in the final history of your project.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;I’ve seen this alternative mindset most often with projects that have fully bought in to using GitHub as their project hub, but it is &lt;em&gt;not&lt;/em&gt; limited to GitHub!  I’ve also seen it with projects hosted on GitLab, Gitea, Phabricator, and Gerrit.  All of those code forges are centered around the Pull Request (or Merge Request or whatever else you might call it) as the mechanism for code review.  There &lt;em&gt;are&lt;/em&gt; differences in workflow between these hosts — Phabricator and Gerrit, for instance, have much better support for “stacked” changes, like you’d see with a &lt;code&gt;[1/X]&lt;/code&gt; thread on the Linux kernel mailing list.  But they all focus on having code review itself take place on the forge’s web site, as opposed to (for instance) on a mailing list.&lt;/p&gt;
+
+&lt;p&gt;That, in turn, makes the project maintainers and contributors internalize the idea that the forge’s unit of &lt;em&gt;review&lt;/em&gt; should be the same as the project’s unit of &lt;em&gt;change&lt;/em&gt; and &lt;em&gt;history&lt;/em&gt;.  And that is the difference in mindset.  Zach Holman has the &lt;a href="https://zachholman.com/posts/git-commit-history/"&gt;best summary&lt;/a&gt; I’ve found so far.&lt;/p&gt;
+
+&lt;p&gt;If you view the PR as your unit of change, then you apply all of the same best practices, but in a different place:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;The &lt;strong&gt;&lt;em&gt;PR&lt;/em&gt;&lt;/strong&gt; should introduce exactly one change, of the correct size.&lt;/li&gt;
+  &lt;li&gt;The &lt;strong&gt;&lt;em&gt;PR title and body&lt;/em&gt;&lt;/strong&gt; should contain a description of that change, structured and formatted in a very similar way to Tim Pope’s git commit message recommendations.&lt;/li&gt;
+  &lt;li&gt;The test suite must pass &lt;strong&gt;&lt;em&gt;for the final state of the PR&lt;/em&gt;&lt;/strong&gt; before it can be merged into the main branch.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;But as Zach calls out, you end up “not giving two shits” about the individual git commits that make up your PRs.&lt;/p&gt;
+
+&lt;p&gt;(To be clear, I am &lt;strong&gt;&lt;em&gt;not&lt;/em&gt;&lt;/strong&gt; advocating this mindset, but I was happy to find a good post &lt;em&gt;explaining&lt;/em&gt; it.  It’s still like fingernails on a chalkboard to come across a project that’s organized this way.  But the “PR as unit of change” explanation at least means that I can now see that it &lt;em&gt;is&lt;/em&gt; a consistent organizing principle, even if it’s not one I agree with.)&lt;/p&gt;
+
+&lt;p&gt;In my original post I suggest that if you use GitHub PRs as your unit of review, and want to use git commits as your unit of history, then you must make sure to use the “squash merge” feature when merging your PRs.  This reduces each PR-as-unit-of-review into a single commit-as-unit-of-history at merge time.  (If you’re happy to &lt;em&gt;mindfully&lt;/em&gt; decide to use PRs as both your unit of review &lt;em&gt;and&lt;/em&gt; your unit of history, then you can use whatever merge strategy you want.)  It’s still unsolved how best to use PRs to review a “stack” of changes, that should end up as separate commits in the history, but which should be reviewed as a unit (or as a closely reviewed sequence).&lt;/p&gt;
+
+</content>
+  </entry>
   <entry>
     <id>tag:dcreager.net,2020-12-30:/swanson/s1/</id>
     <title type="html">S₁ for bootstrapping</title>
@@ -539,40 +579,6 @@ managers like &lt;a href="https://www.npmjs.org/"&gt;npm&lt;/a&gt;, &lt;a href="
 &lt;a href="http://doc.crates.io/guide.html"&gt;Cargo&lt;/a&gt;, it’s hard to go back to things like
 &lt;a href="http://www.cmake.org/"&gt;CMake&lt;/a&gt; and &lt;em&gt;[shudder]&lt;/em&gt; the
 &lt;a href="http://en.wikipedia.org/wiki/GNU_build_system"&gt;autotools&lt;/a&gt;.&lt;/p&gt;
-
-</content>
-  </entry>
-  <entry>
-    <id>tag:dcreager.net,2014-05-14:/2014/05/git-flow/</id>
-    <title type="html">Tagged releases using git flow</title>
-    <published>2014-05-14T00:00:00Z</published>
-    <updated>2014-05-14T00:00:00Z</updated>
-    <link rel="alternate" href="https://dcreager.net/2014/05/git-flow/" type="text/html"/>
-    <content type="html">&lt;p&gt;I’ve used &lt;code&gt;git flow&lt;/code&gt; for most of my software projects — specifically for those
-that have versioned releases.  The &lt;a href="http://nvie.com/posts/a-successful-git-branching-model/"&gt;original
-post&lt;/a&gt; describing &lt;code&gt;git
-flow&lt;/code&gt; is still the best overview of how it works.  In short, you have a &lt;code&gt;master&lt;/code&gt;
-branch where &lt;strong&gt;every&lt;/strong&gt; commit is a merge commit.  Each of these merge commits
-represents a new release, and is tagged with the version number of that release.
-The merge brings in all of the subsidiary commits and feature branches that make
-up that release.  Ongoing work happens on a separate &lt;code&gt;develop&lt;/code&gt; branch.  This is
-where you merge in completed new features and bug fixes on a day-to-day basis.
-&lt;code&gt;develop&lt;/code&gt; should always be a stable version of the software — you don’t merge a
-feature branch into &lt;code&gt;develop&lt;/code&gt; until it passes all of your tests and is
-“complete” with regards to the feature you’re trying to implement.&lt;/p&gt;
-
-&lt;p&gt;My favorite part of this model is how each release is just some tagged commit on
-the &lt;code&gt;master&lt;/code&gt; branch.  You want to see the code for the latest released version?
-That’s easy — &lt;code&gt;git checkout master&lt;/code&gt;.  You want version 1.2.5 specifically?  Use
-&lt;code&gt;git checkout 1.2.5&lt;/code&gt; instead.&lt;/p&gt;
-
-&lt;p&gt;Unfortunately, the &lt;a href="https://github.com/nvie/gitflow"&gt;&lt;code&gt;git flow&lt;/code&gt; tool&lt;/a&gt; has
-implemented a &lt;a href="https://github.com/nvie/gitflow/issues/206"&gt;slightly different
-behavior&lt;/a&gt; for awhile now.  That
-patch makes &lt;code&gt;git flow&lt;/code&gt; tag the last commit on the release branch, instead of the
-merge commit on the &lt;code&gt;master&lt;/code&gt; branch.  The reasons for this might be perfectly
-valid, but it’s not what I want, and it’s not what the original &lt;code&gt;git flow&lt;/code&gt; post
-described.  That means that I can’t use &lt;code&gt;git flow release finish&lt;/code&gt; as-is.&lt;/p&gt;
 
 </content>
   </entry>

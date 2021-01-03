@@ -1,0 +1,48 @@
+---
+kind: article
+created_at: 2021-01-03
+layout: /post.html
+title: "Git commits and code review (revisited)"
+description: >-
+  The conversation continues
+tags: [git]
+---
+
+Drew DeVault had an interesting post yesterday ([gemini][drew gemini], [web][drew web]) about how large a git commit should be.  It echoes several points that I tried to make a couple of years back in a [post of my own][dcreager].
+
+[drew gemini]: gemini://drewdevault.com/2021/01/02/2021-01-02-Every-commit-should-be-perfect.gmi
+[drew web]: https://portal.mozz.us/gemini/drewdevault.com/2021/01/02/2021-01-02-Every-commit-should-be-perfect.gmi
+[dcreager]: https://dcreager.net/git/workflows/
+
+I agree with all of the points Drew makes, and try to follow the best practices that he outlines in my own projects.  There’s an alternative mindset, though, which is very popular these days — and I’ve argued at length with my collegues at GitHub about the merits and drawbacks of each approach.  The different mindsets grow out of a point that Drew mentioned:
+
+> As you receive feedback on your patch and make updates, continue to rebase and improve your original commit, or commits.
+
+and that I called out as its own top-level rule for what makes a “clean” git history:
+
+> Code review does not appear in the final history of your project.
+
+I’ve seen this alternative mindset most often with projects that have fully bought in to using GitHub as their project hub, but it is _not_ limited to GitHub!  I’ve also seen it with projects hosted on GitLab, Gitea, Phabricator, and Gerrit.  All of those code forges are centered around the Pull Request (or Merge Request or whatever else you might call it) as the mechanism for code review.  There _are_ differences in workflow between these hosts — Phabricator and Gerrit, for instance, have much better support for “stacked” changes, like you’d see with a `[1/X]` thread on the Linux kernel mailing list.  But they all focus on having code review itself take place on the forge’s web site, as opposed to (for instance) on a mailing list.
+
+That, in turn, makes the project maintainers and contributors internalize the idea that the forge’s unit of _review_ should be the same as the project’s unit of _change_ and _history_.  And that is the difference in mindset.  Zach Holman has the [best summary][zach] I’ve found so far.
+
+[zach]: https://zachholman.com/posts/git-commit-history/
+
+If you view the PR as your unit of change, then you apply all of the same best practices, but in a different place:
+
+* The **_PR_** should introduce exactly one change, of the correct size.
+* The **_PR title and body_** should contain a description of that change, structured and formatted in a very similar way to Tim Pope’s git commit message recommendations.
+* The test suite must pass **_for the final state of the PR_** before it can be merged into the main branch.
+
+But as Zach calls out, you end up “not giving two shits” about the individual git commits that make up your PRs.
+
+(To be clear, I am **_not_** advocating this mindset, but I was happy to find a good post _explaining_ it.  It’s still like fingernails on a chalkboard to come across a project that’s organized this way.  But the “PR as unit of change” explanation at least means that I can now see that it _is_ a consistent organizing principle, even if it’s not one I agree with.)
+
+In my original post I suggest that if you use GitHub PRs as your unit of review, and want to use git commits as your unit of history, then you must make sure to use the “squash merge” feature when merging your PRs.  This reduces each PR-as-unit-of-review into a single commit-as-unit-of-history at merge time.  (If you’re happy to _mindfully_ decide to use PRs as both your unit of review _and_ your unit of history, then you can use whatever merge strategy you want.)  It’s still unsolved how best to use PRs to review a “stack” of changes, that should end up as separate commits in the history, but which should be reviewed as a unit (or as a closely reviewed sequence).
+
+<hr class="jump">
+
+You can also read this post via [Gemini][gemini].
+{:.thanks}
+
+[gemini]: gemini://dcreager.net/2021/01/git-commits-and-code-review.gmi
