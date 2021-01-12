@@ -25,8 +25,7 @@ Let's dig into that some more!  Here's an incredibly simple bit of code:
 <pre>6 + 4 * 3</pre>
 
 It's not even a statement or function, it's just an expression!  But even this
-example will be outrageously complex in S₀, for a few reasons that combine
-together:
+example will be quite complex in S₀, for a few reasons that combine together:
 
 - First off, as we described in previous posts, _every_ useful bit of
   computation must be modeled by _invoking_ some _invokable_.  In this example,

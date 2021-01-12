@@ -12,7 +12,7 @@ Let’s dig into that some more!  Here’s an incredibly simple bit of code:
 6 + 4 * 3
 ```
 
-It’s not even a statement or function, it’s just an expression!  But even this example will be outrageously complex in S₀, for a few reasons that combine together:
+It’s not even a statement or function, it’s just an expression!  But even this example will be quite complex in S₀, for a few reasons that combine together:
 
 * First off, as we described in previous posts, _every_ useful bit of computation must be modeled by _invoking_ some _invokable_.  In this example, it’s not just the addition and the multiplication.  We also have an invocation each time we load in an integer constant!
 
