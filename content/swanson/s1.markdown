@@ -1,6 +1,7 @@
 ---
 kind: article
 created_at: 2020-12-30
+updated_at: 2021-01-12
 layout: /post.html
 series: "Swanson"
 title: "S₁ for bootstrapping"
@@ -229,8 +230,9 @@ into the `~>` variant, so let's look at the `~>` version first:
 six~>"+"(rhs <- twelve) -> ($_ -> eighteen);
 </pre>
 
-This call gets "translated" into an S₀ invocation.  In this case, we're invoking
-the `+` branch of the value named `six` in the current environment.
+This call gets "translated" into an S₀ invocation, along with some additional
+support statements.  In this case, we're invoking the `+` branch of the value
+named `six` in the current environment.
 
 The call contains what look like parameter and return value lists.  The `(rhs <-
 twelve)` part tells us that `six` `+` expects an input value named `rhs` — but
@@ -244,8 +246,10 @@ of our code, and so we'll need another `rename` _after_ the invocation.
 Most importantly, though, because this call is _not_ the last operation in the
 S₁ block, we will automatically extract everything _after_ this call into a new
 continuation block, and add it as an additional input value named `$return`.
-(There is additional syntax that gives you more control over how the
-continuation is passed in to the invocation, but we'll ignore that for now.)
+(`$return` is the default name for the continuation parameter; it's not
+mentioned explicitly.  There is additional syntax that gives you more control
+over how the continuation is passed in to the invocation, but we'll ignore that
+for now.)
 
 Altogether, this S₁ call gets translated into the following S₀, where the
 `CLOSURE` part is automatically determined by whatever values are in the

@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:base="https://dcreager.net/">
   <id>https://dcreager.net/</id>
   <title>dcreager.net</title>
-  <updated>2021-01-03T00:00:00Z</updated>
+  <updated>2021-01-12T00:00:00Z</updated>
   <link rel="alternate" href="https://dcreager.net/" type="text/html"/>
   <link rel="self" href="https://dcreager.net/atom.xml" type="application/atom+xml"/>
   <author>
@@ -53,7 +53,7 @@
     <id>tag:dcreager.net,2020-12-30:/swanson/s1/</id>
     <title type="html">S₁ for bootstrapping</title>
     <published>2020-12-30T00:00:00Z</published>
-    <updated>2020-12-30T00:00:00Z</updated>
+    <updated>2021-01-12T00:00:00Z</updated>
     <link rel="alternate" href="https://dcreager.net/swanson/s1/" type="text/html"/>
     <content type="html">&lt;p&gt;In the &lt;a href="../s0/"&gt;previous post&lt;/a&gt;, we described S₀, and showed how it would be
 &lt;strong&gt;&lt;em&gt;absolutely disgusting&lt;/em&gt;&lt;/strong&gt; to have to program in it directly.  Which is why I

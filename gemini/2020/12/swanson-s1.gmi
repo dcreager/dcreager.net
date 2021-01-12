@@ -14,7 +14,7 @@ Let’s dig into that some more!  Here’s an incredibly simple bit of code:
 
 It’s not even a statement or function, it’s just an expression!  But even this example will be quite complex in S₀, for a few reasons that combine together:
 
-* First off, as we described in previous posts, _every_ useful bit of computation must be modeled by _invoking_ some _invokable_.  In this example, it’s not just the addition and the multiplication.  We also have an invocation each time we load in an integer constant!
+* First off, as we described in previous posts, _every_ useful bit of computation must be modeled by invoking some invokable.  In this example, it’s not just the addition and the multiplication.  We also have an invocation each time we load in an integer constant!
 
 * Second, there is no nesting of operations.  That means we have to separate out all of the invocations into a single list, figure out the correct order to execute them in, and possibly introduce temporary values for the results of subexpressions.  (This is exactly what you have to do with all high level languages, when you interpret them or compile them down into something lower level like LLVM IR or proper assembly.)
 
@@ -112,7 +112,7 @@ module horrible_example {
 
 Hopefully you can piece together how this faithfully implements our simple arithmetic expression:
 
-* There are invocations of `primitive.int from_literal` to load in each of our integer constants.
+* There are invocations of ‘primitive.int from_literal’ to load in each of our integer constants.
 
 * There are invocations of * and + operations to actually perform the math.
 
@@ -120,18 +120,17 @@ Hopefully you can piece together how this faithfully implements our simple arith
 
 But not without complexity:
 
-* Most of the invocations take in an additional input parameter named `$return`, which is the continuation that control should pass to after the operation is
-  done.
+* Most of the invocations take in an additional input parameter named ‘$return’, which is the continuation that control should pass to after the operation is done.
 
-* Each `$return` value is a closure, defined by an S₀ block, which “closes over” any of the values currently in the environment that _aren’t_ inputs to the invokable that we’re about to invoke.
+* Each ‘$return’ value is a closure, defined by an S₀ block, which “closes over” any of the values currently in the environment that _aren’t_ inputs to the invokable that we’re about to invoke.
 
-* Each continuation block uses its `receiving` clause to indicate what outputs it expects to receive from the invokable that passes control to it.
+* Each continuation block uses its ‘receiving’ clause to indicate what outputs it expects to receive from the invokable that passes control to it.
 
-* Several of the invokables produce an additional $_ output, which “returns back” the invokable that we just called.  This is how we can invoke `primitive.int from_literal` several times, for instance, even though Swanson’s linearity means that each of those invocations should technically consume the `primitive.int` value.
+* Several of the invokables produce an additional $_ output, which “returns back” the invokable that we just called.  This is how we can invoke ‘primitive.int from_literal’ several times, for instance, even though Swanson’s linearity means that each of those invocations should technically consume the ‘primitive.int’ value.
 
-* We make copious use of `rename` statements to allow us to give meaningful names to our temporaries, without having to be constrained by the names of the inputs and outputs expected by each of the invokables.
+* We make copious use of ‘rename’ statements to allow us to give meaningful names to our temporaries, without having to be constrained by the names of the inputs and outputs expected by each of the invokables.
 
-* We have to explicitly invoke `drop` methods whenever we’re done with any value.
+* We have to explicitly invoke ‘drop’ methods whenever we’re done with any value.
 
 ## S₁ is ever so slightly better
 
@@ -168,25 +167,25 @@ module horrible_example {
 
 Note that we’ve only “solved” one of the three complexities that we mentioned above.  We’ve added back in “implicit control flow”, so that we don’t have to manually extract each step of our computation into top-level blocks.  But we still model _every_ operation as an invocation of some invokable, and we still have no nesting of operations.  But it’s still a substantial improvement!
 
-The overall structure of the code is largely the same: you’ve got a module, containing a number of blocks, each of which consists of some operations.  But whereas in S₀, a block consists of zero or more _statements_ followed by exactly one _invocation_, an S₁ block consists of an arbitrary list of _statements_ and _calls_.  The only restriction is that an S₁ block must end with a call.
+The overall structure of the code is largely the same: you’ve got a module, containing a number of blocks, each of which consists of some operations.  But whereas in S₀, a block consists of zero or more statements followed by exactly one invocation, an S₁ block consists of an arbitrary list of statements and calls.  The only restriction is that an S₁ block must end with a call.
 
 ### S₁ calls
 
-This call expression is the meat of S₁.  Looking carefully, there are two variants, depending on whether you use -> or ~>.  The -> variant desugars into the ~> variant, so let’s look at the ~> version first:
+This call expression is the meat of S₁.  Looking carefully, there are two variants, depending on whether you use ‘->’ or ‘~>’.  The ‘->’ variant desugars into the ‘~>’ variant, so let’s look at the ‘~>’ version first:
 
 ```
 six~>"+"(rhs <- twelve) -> ($_ -> eighteen);
 ```
 
-This call gets “translated” into an S₀ invocation.  In this case, we’re invoking the + branch of the value named `six` in the current environment.
+This call gets “translated” into an S₀ invocation, along with some additional support statements.  In this case, we’re invoking the ‘+’ branch of the value named ‘six’ in the current environment.
 
-The call contains what look like parameter and return value lists.  The `(rhs <- twelve)` part tells us that `six +` expects an input value named `rhs` — but that the name of that input value in our environment is currently `twelve`, and so we’ll need to `rename` it before the invocation.
+The call contains what look like parameter and return value lists.  The ‘(rhs <- twelve)’ part tells us that ‘six +’ expects an input value named ‘rhs’ — but that the name of that input value in our environment is currently ‘twelve’, and so we’ll need to ‘rename’ it before the invocation.
 
-Similarly, the `($_ -> eighteen)` tells us that `six +` will produce an output named $_ — but that we’d rather call that output value `eighteen` in the rest of our code, and so we’ll need another `rename` _after_ the invocation.
+Similarly, the ‘($_ -> eighteen)’ tells us that ‘six +’ will produce an output named ‘$_’ — but that we’d rather call that output value ‘eighteen’ in the rest of our code, and so we’ll need another ‘rename’ _after_ the invocation.
 
-Most importantly, though, because this call is _not_ the last operation in the S₁ block, we will automatically extract everything _after_ this call into a new continuation block, and add it as an additional input value named `$return`.  (There is additional syntax that gives you more control over how the continuation is passed in to the invocation, but we’ll ignore that for now.)
+Most importantly, though, because this call is not the last operation in the S₁ block, we will automatically extract everything after this call into a new continuation block, and add it as an additional input value named ‘$return’.  (‘$return’ is the default name for the continuation parameter; it’s not mentioned explicitly.  There is additional syntax that gives you more control over how the continuation is passed in to the invocation, but we’ll ignore that for now.)
 
-Altogether, this S₁ call gets translated into the following S₀, where the `CLOSURE` part is automatically determined by whatever values are in the environment at the time of the call, but not mentioned as an input.
+Altogether, this S₁ call gets translated into the following S₀, where the ‘CLOSURE’ part is automatically determined by whatever values are in the environment at the time of the call, but not mentioned as an input.
 
 ```
     $return = closure containing (CLOSURE) -> main@6;
@@ -203,7 +202,7 @@ Altogether, this S₁ call gets translated into the following S₀, where the `C
 
 ### “Reuse” calls
 
-As we mentioned above, _many_ invokables use an output named $_ to “return themselves back” to caller, as a way of getting around Swanson’s linearity.  This is a common enough pattern that we’ve added syntactic sugar to S₁ to handle it.  A call that uses -> will automatically add an extra _output_ that renames $_ back to the name that it had before the call.  That is, the following two calls are exactly equivalent:
+As we mentioned above, _many_ invokables use an output named ‘$_’ to “return themselves back” to caller, as a way of getting around Swanson’s linearity.  This is a common enough pattern that we’ve added syntactic sugar to S₁ to handle it.  A call that uses ‘->’ will automatically add an extra output that renames ‘$_’ back to the name that it had before the call.  That is, the following two calls are exactly equivalent:
 
 ```
 primitive.int->from_literal(value) -> ($0 -> four);

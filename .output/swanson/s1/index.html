@@ -91,6 +91,9 @@
         <div class="blog">
           <div class="date">
             2020-12-30
+            <span class="updated">
+              [last updated 2021-01-12]
+            </span>
           </div>
           <h2 class="series">Swanson</h2>
           <h1>S₁ for bootstrapping</h1>
@@ -333,8 +336,9 @@ into the <code>~&gt;</code> variant, so let’s look at the <code>~&gt;</code> v
 six~&gt;"+"(rhs &lt;- twelve) -&gt; ($_ -&gt; eighteen);
 </pre>
 
-<p>This call gets “translated” into an S₀ invocation.  In this case, we’re invoking
-the <code>+</code> branch of the value named <code>six</code> in the current environment.</p>
+<p>This call gets “translated” into an S₀ invocation, along with some additional
+support statements.  In this case, we’re invoking the <code>+</code> branch of the value
+named <code>six</code> in the current environment.</p>
 
 <p>The call contains what look like parameter and return value lists.  The <code>(rhs &lt;-
 twelve)</code> part tells us that <code>six</code> <code>+</code> expects an input value named <code>rhs</code> — but
@@ -348,8 +352,10 @@ of our code, and so we’ll need another <code>rename</code> <em>after</em> the 
 <p>Most importantly, though, because this call is <em>not</em> the last operation in the
 S₁ block, we will automatically extract everything <em>after</em> this call into a new
 continuation block, and add it as an additional input value named <code>$return</code>.
-(There is additional syntax that gives you more control over how the
-continuation is passed in to the invocation, but we’ll ignore that for now.)</p>
+(<code>$return</code> is the default name for the continuation parameter; it’s not
+mentioned explicitly.  There is additional syntax that gives you more control
+over how the continuation is passed in to the invocation, but we’ll ignore that
+for now.)</p>
 
 <p>Altogether, this S₁ call gets translated into the following S₀, where the
 <code>CLOSURE</code> part is automatically determined by whatever values are in the
