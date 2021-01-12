@@ -2,23 +2,23 @@
 
 => swanson-s0.gmi ← Previous: S₀
 
-In the previous post, we described S₀, and showed how it would be **absolutely disgusting** to have to program in it directly.  Which is why I described it as Swanson's "assembly language".  In this post, we'll look into exactly _how_ the language is complicated, and use that to describe a _slightly_ better language named S₁.
+In the previous post, we described S₀, and showed how it would be **absolutely disgusting** to have to program in it directly.  Which is why I described it as Swanson’s “assembly language”.  In this post, we’ll look into exactly _how_ the language is complicated, and use that to describe a _slightly_ better language named S₁.
 
 ## This is way too complex
 
-Let's dig into that some more!  Here's an incredibly simple bit of code:
+Let’s dig into that some more!  Here’s an incredibly simple bit of code:
 
 ```
 6 + 4 * 3
 ```
 
-It's not even a statement or function, it's just an expression!  But even this example will be outrageously complex in S₀, for a few reasons that combine together:
+It’s not even a statement or function, it’s just an expression!  But even this example will be outrageously complex in S₀, for a few reasons that combine together:
 
-* First off, as we described in previous posts, _every_ useful bit of computation must be modeled by _invoking_ some _invokable_.  In this example, it's not just the addition and the multiplication.  We also have an invocation each time we load in an integer constant!
+* First off, as we described in previous posts, _every_ useful bit of computation must be modeled by _invoking_ some _invokable_.  In this example, it’s not just the addition and the multiplication.  We also have an invocation each time we load in an integer constant!
 
 * Second, there is no nesting of operations.  That means we have to separate out all of the invocations into a single list, figure out the correct order to execute them in, and possibly introduce temporary values for the results of subexpressions.  (This is exactly what you have to do with all high level languages, when you interpret them or compile them down into something lower level like LLVM IR or proper assembly.)
 
-* Lastly, each block in S₀ must contain _exactly one_ invocation.  In most languages (including assembly!), there's implicit control flow from one instruction to the next.  That doesn't exist in S₀!  Instead, S₀ uses _continuation passing style_, where you have to create separate top-level "blocks" for each step of your computation, and manually thread them together using continuation parameters.
+* Lastly, each block in S₀ must contain _exactly one_ invocation.  In most languages (including assembly!), there’s implicit control flow from one instruction to the next.  That doesn’t exist in S₀!  Instead, S₀ uses _continuation passing style_, where you have to create separate top-level “blocks” for each step of your computation, and manually thread them together using continuation parameters.
 
 The end result of all of this means that the S₀ version of our example looks something like:
 
@@ -123,15 +123,15 @@ But not without complexity:
 * Most of the invocations take in an additional input parameter named `$return`, which is the continuation that control should pass to after the operation is
   done.
 
-* Each `$return` value is a closure, defined by an S₀ block, which "closes over" any of the values currently in the environment that _aren't_ inputs to the invokable that we're about to invoke.
+* Each `$return` value is a closure, defined by an S₀ block, which “closes over” any of the values currently in the environment that _aren’t_ inputs to the invokable that we’re about to invoke.
 
 * Each continuation block uses its `receiving` clause to indicate what outputs it expects to receive from the invokable that passes control to it.
 
-* Several of the invokables produce an additional $_ output, which "returns back" the invokable that we just called.  This is how we can invoke `primitive.int from_literal` several times, for instance, even though Swanson's linearity means that each of those invocations should technically consume the `primitive.int` value.
+* Several of the invokables produce an additional $_ output, which “returns back” the invokable that we just called.  This is how we can invoke `primitive.int from_literal` several times, for instance, even though Swanson’s linearity means that each of those invocations should technically consume the `primitive.int` value.
 
 * We make copious use of `rename` statements to allow us to give meaningful names to our temporaries, without having to be constrained by the names of the inputs and outputs expected by each of the invokables.
 
-* We have to explicitly invoke `drop` methods whenever we're done with any value.
+* We have to explicitly invoke `drop` methods whenever we’re done with any value.
 
 ## S₁ is ever so slightly better
 
@@ -166,25 +166,25 @@ module horrible_example {
 }
 ```
 
-Note that we've only "solved" one of the three complexities that we mentioned above.  We've added back in "implicit control flow", so that we don't have to manually extract each step of our computation into top-level blocks.  But we still model _every_ operation as an invocation of some invokable, and we still have no nesting of operations.  But it's still a substantial improvement!
+Note that we’ve only “solved” one of the three complexities that we mentioned above.  We’ve added back in “implicit control flow”, so that we don’t have to manually extract each step of our computation into top-level blocks.  But we still model _every_ operation as an invocation of some invokable, and we still have no nesting of operations.  But it’s still a substantial improvement!
 
-The overall structure of the code is largely the same: you've got a module, containing a number of blocks, each of which consists of some operations.  But whereas in S₀, a block consists of zero or more _statements_ followed by exactly one _invocation_, an S₁ block consists of an arbitrary list of _statements_ and _calls_.  The only restriction is that an S₁ block must end with a call.
+The overall structure of the code is largely the same: you’ve got a module, containing a number of blocks, each of which consists of some operations.  But whereas in S₀, a block consists of zero or more _statements_ followed by exactly one _invocation_, an S₁ block consists of an arbitrary list of _statements_ and _calls_.  The only restriction is that an S₁ block must end with a call.
 
 ### S₁ calls
 
-This call expression is the meat of S₁.  Looking carefully, there are two variants, depending on whether you use -> or ~>.  The -> variant desugars into the ~> variant, so let's look at the ~> version first:
+This call expression is the meat of S₁.  Looking carefully, there are two variants, depending on whether you use -> or ~>.  The -> variant desugars into the ~> variant, so let’s look at the ~> version first:
 
 ```
 six~>"+"(rhs <- twelve) -> ($_ -> eighteen);
 ```
 
-This call gets "translated" into an S₀ invocation.  In this case, we're invoking the + branch of the value named `six` in the current environment.
+This call gets “translated” into an S₀ invocation.  In this case, we’re invoking the + branch of the value named `six` in the current environment.
 
-The call contains what look like parameter and return value lists.  The `(rhs <- twelve)` part tells us that `six +` expects an input value named `rhs` — but that the name of that input value in our environment is currently `twelve`, and so we'll need to `rename` it before the invocation.
+The call contains what look like parameter and return value lists.  The `(rhs <- twelve)` part tells us that `six +` expects an input value named `rhs` — but that the name of that input value in our environment is currently `twelve`, and so we’ll need to `rename` it before the invocation.
 
-Similarly, the `($_ -> eighteen)` tells us that `six +` will produce an output named $_ — but that we'd rather call that output value `eighteen` in the rest of our code, and so we'll need another `rename` _after_ the invocation.
+Similarly, the `($_ -> eighteen)` tells us that `six +` will produce an output named $_ — but that we’d rather call that output value `eighteen` in the rest of our code, and so we’ll need another `rename` _after_ the invocation.
 
-Most importantly, though, because this call is _not_ the last operation in the S₁ block, we will automatically extract everything _after_ this call into a new continuation block, and add it as an additional input value named `$return`.  (There is additional syntax that gives you more control over how the continuation is passed in to the invocation, but we'll ignore that for now.)
+Most importantly, though, because this call is _not_ the last operation in the S₁ block, we will automatically extract everything _after_ this call into a new continuation block, and add it as an additional input value named `$return`.  (There is additional syntax that gives you more control over how the continuation is passed in to the invocation, but we’ll ignore that for now.)
 
 Altogether, this S₁ call gets translated into the following S₀, where the `CLOSURE` part is automatically determined by whatever values are in the environment at the time of the call, but not mentioned as an input.
 
@@ -201,9 +201,9 @@ Altogether, this S₁ call gets translated into the following S₀, where the `C
     eighteen = rename $_;
 ```
 
-### "Reuse" calls
+### “Reuse” calls
 
-As we mentioned above, _many_ invokables use an output named $_ to "return themselves back" to caller, as a way of getting around Swanson's linearity.  This is a common enough pattern that we've added syntactic sugar to S₁ to handle it.  A call that uses -> will automatically add an extra _output_ that renames $_ back to the name that it had before the call.  That is, the following two calls are exactly equivalent:
+As we mentioned above, _many_ invokables use an output named $_ to “return themselves back” to caller, as a way of getting around Swanson’s linearity.  This is a common enough pattern that we’ve added syntactic sugar to S₁ to handle it.  A call that uses -> will automatically add an extra _output_ that renames $_ back to the name that it had before the call.  That is, the following two calls are exactly equivalent:
 
 ```
 primitive.int->from_literal(value) -> ($0 -> four);
@@ -211,14 +211,14 @@ primitive.int->from_literal(value) -> ($0 -> four);
 primitive.int~>from_literal(value) -> ($_ -> primitive.int, $0 -> four);
 ```
 
-## What's the point?
+## What’s the point?
 
-While S₁ is certainly "better" than S₀ — in that it's less actively painful to program in it directly as a human — you might still be wondering why you'd subject yourself to it.  In the introduction I mentioned that Swanson is a language _framework_, which we intend to compile or translate other higher level languages into.  If that's the case, why do we have this language that's still so low level, instead of jumping straight to the higher level languages that are actually pleasant to use?
+While S₁ is certainly “better” than S₀ — in that it’s less actively painful to program in it directly as a human — you might still be wondering why you’d subject yourself to it.  In the introduction I mentioned that Swanson is a language _framework_, which we intend to compile or translate other higher level languages into.  If that’s the case, why do we have this language that’s still so low level, instead of jumping straight to the higher level languages that are actually pleasant to use?
 
 => swanson-intro.gmi Introduction
 
-The main reason is that this gives us a better story for _bootstrapping_.  Another goal of the framework is to work with arbitrary _host environments_, while requiring as little as possible of those hosts.  The only hard and fast rule is that a host needs to be able to parse and execute S₀ code.  Some primitives will need to be provided by the host, but we want to minimize the number of primitives that each host needs to implement directly.  As much as possible, we want the core "standard library" of Swanson code to be written in some way that (a) doesn't require each host to reimplement it, and (b) doesn't "bless" any one particular higher level language (or its standard library) as the one that all other hosts have to depend on.
+The main reason is that this gives us a better story for _bootstrapping_.  Another goal of the framework is to work with arbitrary _host environments_, while requiring as little as possible of those hosts.  The only hard and fast rule is that a host needs to be able to parse and execute S₀ code.  Some primitives will need to be provided by the host, but we want to minimize the number of primitives that each host needs to implement directly.  As much as possible, we want the core “standard library” of Swanson code to be written in some way that (a) doesn’t require each host to reimplement it, and (b) doesn’t “bless” any one particular higher level language (or its standard library) as the one that all other hosts have to depend on.
 
-S₁ is intended to serve this role.  One single host environment (the "bootstrap environment") will need to implement an S₁ parser and translator _directly_.  That bootstrap environment can produce S₀ translations of any "standard library" code written in S₁.  And every other host environment will then have access to that code, while requiring nothing more than an S₀ parser and a small set of primitives.
+S₁ is intended to serve this role.  One single host environment (the “bootstrap environment”) will need to implement an S₁ parser and translator _directly_.  That bootstrap environment can produce S₀ translations of any “standard library” code written in S₁.  And every other host environment will then have access to that code, while requiring nothing more than an S₀ parser and a small set of primitives.
 
-That's the vision, at least!
+That’s the vision, at least!
