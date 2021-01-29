@@ -126,3 +126,8 @@ pub enum FoozleError {
 <% end %>
 
 And that’s it!  The derive macro takes care of producing `Display` and `Error` implementations for you!
+
+You can also read this post via [Gemini][gemini].
+{:.thanks}
+
+[gemini]: gemini://dcreager.net/2020/12/rust-error-handling.gmi

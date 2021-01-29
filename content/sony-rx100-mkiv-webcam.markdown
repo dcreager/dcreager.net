@@ -159,3 +159,7 @@ minor success in that I felt good about getting it to work, and enjoyed that I
 was able to mount it to my monitor stand with stuff I already had in the
 basement.  But for the actual video feed, my Logitech webcam is perfectly fine.
 
+You can also read this post via [Gemini][gemini].
+{:.thanks}
+
+[gemini]: gemini://dcreager.net/2021/01/sony-rx100-mkiv-webcam.gmi

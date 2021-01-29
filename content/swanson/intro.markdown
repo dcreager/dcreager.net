@@ -74,3 +74,8 @@ whether or not they're actually true!)
 [`defer` statements]: https://golang.org/doc/effective_go.html#defer
 
 So, let's jump in and see where this goes!
+
+You can also read this post via [Gemini][gemini].
+{:.thanks}
+
+[gemini]: gemini://dcreager.net/2020/12/swanson-intro.gmi

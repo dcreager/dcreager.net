@@ -315,3 +315,8 @@ that code, while requiring nothing more than an S₀ parser and a small set of
 primitives.
 
 That's the vision, at least!
+
+You can also read this post via [Gemini][gemini].
+{:.thanks}
+
+[gemini]: gemini://dcreager.net/2020/12/swanson-s1.gmi

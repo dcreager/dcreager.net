@@ -16,3 +16,8 @@ We added the Staff Engineering Manager title to the career ladder specifically t
 But so far — having not yet spent even a single day with my new title — it seems like a great fit!
 
 <hr class="jump">
+
+You can also read this post via [Gemini][gemini].
+{:.thanks}
+
+[gemini]: gemini://dcreager.net/2020/12/staff-engineering-manager.gmi

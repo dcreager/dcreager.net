@@ -251,3 +251,8 @@ across all of its uses.  As you might guess, that requires taking advantages of
 some primitives provided by the host, since basic linear Swanson values don't
 give you this ability.
 </div>
+
+You can also read this post via [Gemini][gemini].
+{:.thanks}
+
+[gemini]: gemini://dcreager.net/2020/12/swanson-execution-model.gmi
