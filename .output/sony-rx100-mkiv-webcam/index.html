@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>
+    dcreager.net – Using a Sony RX100 Mk IV as a webcam on Linux
+  </title>
+  <meta name="author" content="Douglas Creager">
+
+    <meta charset="utf-8">
+
+  <meta name="google-site-verification"
+        content="7KIoYPNsfdDxIdX1QQ7SM2Nm_nyy13aRlDkzE3wzhhY" />
+
+  <link rel="icon" type="image/x-icon" href="/media/images/imperial-logo.ico"/>
+  <link rel="alternate" type="application/atom+xml"
+        title="dcreager.net" href="/atom.xml"/>
+
+  <!-- Bootstrap -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel=stylesheet type=text/css media=screen
+        href="/media/vendor/css/bootstrap.min.css">
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+  <![endif]-->
+
+  <!-- MathJax -->
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      jax: ["input/TeX","output/HTML-CSS"],
+      displayAlign: "left",
+      displayIndent: "2em"
+    });
+  </script>
+  <script type="text/javascript" async
+          src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+  </script>
+
+  <!-- Twitter nonsense -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="@dcreager">
+  <meta name="twitter:title"
+        content="Using a Sony RX100 Mk IV as a webcam on Linux">
+  <meta name="twitter:description"
+        content="an adventure in woodworking and Linux admin">
+  <meta name="twitter:image"
+        content="https://www.gravatar.com/avatar/04ee3ca11f1ae11c63faa7995dbf1ed7?s=2048">
+
+  <!-- Customizations -->
+  <link rel=stylesheet type=text/css media=screen
+        href="/media/css/coderay.css">
+  <link rel=stylesheet type=text/css media=screen
+        href="/media/css/dcreager.css">
+  <link rel=stylesheet type=text/css media=screen
+        href="https://fonts.googleapis.com/css?family=Oxygen:400,700">
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+  <div class="col-md-10 col-md-offset-1">
+    <nav class="navbar navbar-default" role="navigation">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand logo" href="/"><b>dcreager.net</b></a>
+      </div>
+
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="/about/">About</a></li></li>
+          <li><a href="/archive/">Archive</a></li></li>
+          <li><a href="https://buttondown.email/dcreager/">Newsletter</a></li></li>
+          <li><a href="/talks/">Talks</a></li></li>
+          <li><a href="/publications/">Publications</a></li></li>
+        </ul>
+      </div><!-- /.navbar-collapse -->
+    </nav>
+  </div>
+</div>
+
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        <div class="blog">
+          <div class="date">
+            2021-01-28
+          </div>
+          <h1>Using a Sony RX100 Mk IV as a webcam on Linux</h1>
+          <p>Earlier this month I decided to use some of my company’s generous home office
+reimbursement to test out the “use a real digital camera as a webcam” craze
+that’s been going around.  I spend most of my day on Zoom meetings with
+colleagues and other people around the industry, so I figured it wouldn’t be the
+<em>worst</em> use of money — especially if it noticeably increased the quality of the
+video feed that I’m sending out into the world.</p>
+
+<p>To raise the level of difficulty, my primary machine is a beefy Linux
+workstation.  And as we all know, Linux is well-known for being straightforward
+and easy to configure… 🙄</p>
+
+<p>In the end, I decided to return the camera and stick with my battle-tested,
+traditional Logitech C920 webcam.  But in case others are interested in getting
+this setup working under Linux, here are my notes!</p>
+
+<h2 id="overview">Overview</h2>
+
+<p>There are any number of overview posts out on the Web.  Very briefly, the
+“traditional” approach to using a digital camera as a webcam requires:</p>
+
+<ul>
+  <li>a digital camera</li>
+  <li>an HDMI capture card</li>
+</ul>
+
+<p>But, you can’t just use <em>any</em> camera.  In particular, you need one that can
+output “clean HDMI”.  This means that the camera has an HDMI output; can send a
+live view of what its CCD is seeing to that HDMI output; and that it can send
+<em>only</em> the live CCD feed, without any additional menus or UI elements like you’d
+see in the viewfinder.  Atomos has a <a href="https://www.atomos.com/cameras/">good website</a> listing a wide variety of
+cameras that qualify.</p>
+
+<p>With these two devices, your computer can “receive” the video feed from the
+camera.  Plug your camera’s clean HDMI output into this capture card, and voilà!
+You have a very overpowered webcam.</p>
+
+<div class="aside">
+  <p>Several camera manufacturers have started providing updated drivers that let you
+plug the camera directly into your machine via its USB cable, and have it appear
+as a webcam.  I haven’t seen any of these drivers available for Linux yet,
+though, so I haven’t attempted it.  You can probably <a href="https://medium.com/nerdery/dslr-webcam-setup-for-linux-9b6d1b79ae22">rig something up using
+gphoto2 and ffmpeg</a>, but I was looking for something more turnkey.
+(Yes, “turnkey” and “on Linux”.  Stop snickering.)</p>
+</div>
+
+<h2 id="hardware-list">Hardware list</h2>
+
+<p>Now, most of the posts you’ll find out there right now focus on getting all of
+this working with a Mac or Windows machine.  Knowing how Linux can be…finicky,
+I tried to find out which capture cards other folks have had success getting to
+work under Linux.  For instance, Elgato seems to be the consensus pick for the
+<a href="https://www.elgato.com/en/capture-card-selector">best capture card</a>, but its Linux support is iffy at best.  (I’m old.
+I don’t have the patience anymore to delve through <a href="https://obsproject.com/forum/resources/streaming-on-linux-using-elgato-game-capture-hd-and-obs-studio.294/">various forum posts</a> looking for magic incantations and alpha-quality drivers in sketchy
+GitHub repos.)</p>
+
+<p>Magewell, on the other hand, <a href="https://www.magewell.com/kb/000020047/detail">explicitly supports Linux</a>, and
+provides their own drivers!  Miracle of miracles.  And best of all, on my
+preferred distro (Arch), the <a href="https://aur.archlinux.org/packages/magewell-pro-capture-dkms">drivers are available</a> in the AUR
+supplementary package repository!  Install this driver, and your HDMI capture
+card should appear as a video4linux2 device like any other webcam.</p>
+
+<p>So, given the above, I went with:</p>
+
+<ul>
+  <li><a href="https://www.atomos.com/cameras/sony-dsc-rx100m4">Sony RX100 Mk IV</a></li>
+  <li><a href="https://www.magewell.com/products/pro-capture-hdmi">Magewell Pro Capture HDMI</a></li>
+</ul>
+
+<div class="aside">
+  <p>Note that I went with the Mk IV, even though this model is already up to the Mk
+VII!  The later revisions were much more expensive, and the Mk IV seems to
+provide the best balance of features vs price from what I could find on Amazon.</p>
+</div>
+
+<h2 id="software-installation">Software installation</h2>
+
+<p>Having carefully chosen the hardware, the software installation turned out to be
+simple!  I use Arch Linux; <a href="https://aur.archlinux.org/packages/magewell-pro-capture-dkms">Magewell’s drivers</a> are available in
+the AUR; and I use <a href="https://github.com/vn971/rua">Rua</a> as my AUR helper.  That means that the <em>entirety</em> of
+the installation and setup process was:</p>
+
+<pre>
+$ sudo pacman -S linux-headers
+$ rua install magewell-pro-capture-dkms
+</pre>
+
+<p>(The first step wouldn’t normally be necessary, but the AUR package doesn’t
+currently list ‘linux-headers’ as a dependency like it should.)</p>
+
+<h2 id="mounting-the-camera">Mounting the camera</h2>
+
+<p>With the software setup being anticlimactic, the next step was to figure out how
+to mount the camera in a useful location.  I guess that’s one more item for the
+hardware list:</p>
+
+<ul>
+  <li><a href="https://smile.amazon.com/gp/product/B07Y9XQBKM/ref=ppx_yo_dt_b_search_asin_title?ie=UTF8&amp;psc=1">Camera “post” mount</a></li>
+</ul>
+
+<p>Luckily, I had a nice piece of scrap wood exactly the right size down in the
+basement.  First, I attached the base of the camera mount to the scrap wood, and
+drilled some holes:</p>
+
+<p><img src="prepping-the-scrap-wood.jpg" alt="prepping the scrap wood" class="figure" /></p>
+
+<p>so that I could then attach the scrap wood to my monitor’s mounting bracket:</p>
+
+<p><img src="attaching-scrap-wood.jpg" alt="attaching the scrap wood to the monitor bracket" class="figure" /></p>
+
+<p><img src="scrap-wood-from-front.jpg" alt="front view" class="figure" /></p>
+
+<p>Then attach the camera mount to its base:</p>
+
+<p><img src="attached-camera-mount.jpg" alt="attached camera mount" class="figure" /></p>
+
+<p>Lastly, mount the camera and plug it in!</p>
+
+<p><img src="mounted-camera.jpg" alt="camera mounted above my monitor where a webcam would be" class="figure" /></p>
+
+<p>And to prove it works, a mug shot captured in OBS using the new “webcam”:</p>
+
+<p><img src="camera-mug-shot.jpg" alt="screenshot from OBS" class="figure" /></p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>All in all, not that bad!  Not nearly as difficult of a project as I was
+expecting.  I was able to get all of this set up over a weekend and took all of
+my Zoom calls for a day using the new camera setup.</p>
+
+<p>In the end, though, I decided it wasn’t enough of a win to justify the cost.
+The picture quality <em>was</em> a better, but not so much better that it was
+game-changing.  I do think that I could’ve invested more time in tweaking the
+camera settings to get the perfect picture — but on the other hand, I’m not
+really looking for a new time-intensive hobby!  I have plenty of those already.
+And I wouldn’t have used this camera for any intense YouTube or Twitch streaming
+— my requirements are squarely focused on video calls in Zoom.  (During these
+days of increased demand because of the pandemic, Zoom will typically downsample
+your video feed!)</p>
+
+<p>So I’ve returned the camera and gotten a refund.  I kept the HDMI capture card,
+because I think it might still be useful for screen-sharing from my iPad while
+still “controlling” a Zoom call from my Linux desktop.  The experiment was a
+minor success in that I felt good about getting it to work, and enjoyed that I
+was able to mount it to my monitor stand with stuff I already had in the
+basement.  But for the actual video feed, my Logitech webcam is perfectly fine.</p>
+
+
+          <div class="subscribe">
+            Stay up to date by subscribing to <a
+               href="https://buttondown.email/dcreager/">my newsletter</a>.
+          </div>
+        </div>
+      </div>
+    </div> <!-- /row -->
+  </div> <!-- /container -->
+
+    <footer class="copyright">
+    <div class="container">
+      <p>Copyright © 2009-2020, Douglas Creager.
+      All&nbsp;rights&nbsp;reserved.</p>
+    </div>
+  </footer>
+
+    <script src="//code.jquery.com/jquery.min.js"></script>
+  <script src="/media/vendor/js/bootstrap.min.js"></script>
+
+<!-- Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-83885503-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+</html>

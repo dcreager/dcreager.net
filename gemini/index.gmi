@@ -4,6 +4,7 @@ This is the Gemini space of Douglas Creager. Welcome!
 
 ## Recent posts
 
+=> 2021/01/sony-rx100-mkiv-webcam.gmi 2021-01-28: Using a Sony RX100 Mk IV as a webcam on Linux
 => 2021/01/git-commits-and-code-review.gmi 2021-01-03: Git commits and code review (revisited)
 => 2020/12/swanson-s1.gmi 2020-12-30: Swanson: S₁
 => 2020/12/staff-engineering-manager.gmi 2020-12-29: Staff engineering manager

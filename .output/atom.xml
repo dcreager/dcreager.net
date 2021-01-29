@@ -2,13 +2,36 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:base="https://dcreager.net/">
   <id>https://dcreager.net/</id>
   <title>dcreager.net</title>
-  <updated>2021-01-12T00:00:00Z</updated>
+  <updated>2021-01-28T00:00:00Z</updated>
   <link rel="alternate" href="https://dcreager.net/" type="text/html"/>
   <link rel="self" href="https://dcreager.net/atom.xml" type="application/atom+xml"/>
   <author>
     <name>Douglas Creager</name>
     <uri>https://dcreager.net/</uri>
   </author>
+  <entry>
+    <id>tag:dcreager.net,2021-01-28:/sony-rx100-mkiv-webcam/</id>
+    <title type="html">Using a Sony RX100 Mk IV as a webcam on Linux</title>
+    <published>2021-01-28T00:00:00Z</published>
+    <updated>2021-01-28T00:00:00Z</updated>
+    <link rel="alternate" href="https://dcreager.net/sony-rx100-mkiv-webcam/" type="text/html"/>
+    <content type="html">&lt;p&gt;Earlier this month I decided to use some of my company’s generous home office
+reimbursement to test out the “use a real digital camera as a webcam” craze
+that’s been going around.  I spend most of my day on Zoom meetings with
+colleagues and other people around the industry, so I figured it wouldn’t be the
+&lt;em&gt;worst&lt;/em&gt; use of money — especially if it noticeably increased the quality of the
+video feed that I’m sending out into the world.&lt;/p&gt;
+
+&lt;p&gt;To raise the level of difficulty, my primary machine is a beefy Linux
+workstation.  And as we all know, Linux is well-known for being straightforward
+and easy to configure… 🙄&lt;/p&gt;
+
+&lt;p&gt;In the end, I decided to return the camera and stick with my battle-tested,
+traditional Logitech C920 webcam.  But in case others are interested in getting
+this setup working under Linux, here are my notes!&lt;/p&gt;
+
+</content>
+  </entry>
   <entry>
     <id>tag:dcreager.net,2021-01-03:/git/commits-and-code-review/</id>
     <title type="html">Git commits and code review (revisited)</title>
@@ -553,33 +576,6 @@ models described in the paper!  If you’re familiar with one, my hope is that
 you’ll be able to follow along and pick up the other.  And if you’re not
 familiar with either…well, I guess we’ll see how good I am at writing an intro
 to a difficult topic!&lt;/p&gt;
-</content>
-  </entry>
-  <entry>
-    <id>tag:dcreager.net,2014-11-21:/2014/11/dependency-management-in-c/</id>
-    <title type="html">Dependency management in C</title>
-    <published>2014-11-21T00:00:00Z</published>
-    <updated>2014-11-21T00:00:00Z</updated>
-    <link rel="alternate" href="https://dcreager.net/2014/11/dependency-management-in-c/" type="text/html"/>
-    <content type="html">&lt;p&gt;At &lt;a href="http://www.redjack.com/"&gt;RedJack&lt;/a&gt;, all of our &lt;a href="http://www.redjack.com/solutions/"&gt;core
-products&lt;/a&gt; depend on a network sensor that
-collects various bits of information about the raw traffic that we see on the
-network.  We’re doing some non-trivial analysis on fairly large network links
-using commodity hardware, so we’ve implemented this sensor in C.  At its core is
-an extremely fast custom &lt;a href="http://en.wikipedia.org/wiki/Flow-based_programming"&gt;flow-based
-programming&lt;/a&gt; framework.
-It’s a damn cool piece of code, but this post isn’t about the code itself; it’s
-about how we deliver that code to our customers.&lt;/p&gt;
-
-&lt;p&gt;Just because we’ve written this component in C, that doesn’t mean we want to
-turn our back on the kinds of tooling you get to use when working in other, more
-modern languages.  In particular, once you’ve gotten used to modern package
-managers like &lt;a href="https://www.npmjs.org/"&gt;npm&lt;/a&gt;, &lt;a href="http://leiningen.org/"&gt;leiningen&lt;/a&gt;,
-&lt;a href="http://golang.org/doc/articles/go_command.html"&gt;go&lt;/a&gt;, and
-&lt;a href="http://doc.crates.io/guide.html"&gt;Cargo&lt;/a&gt;, it’s hard to go back to things like
-&lt;a href="http://www.cmake.org/"&gt;CMake&lt;/a&gt; and &lt;em&gt;[shudder]&lt;/em&gt; the
-&lt;a href="http://en.wikipedia.org/wiki/GNU_build_system"&gt;autotools&lt;/a&gt;.&lt;/p&gt;
-
 </content>
   </entry>
 </feed>
