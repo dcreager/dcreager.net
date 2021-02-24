@@ -6,5 +6,5 @@ GitHub has recently added Code Navigation features (jump to definition and find 
 
 => https://fosdem.org/2020/schedule/event/github_cross_project_code_navigation/ FOSDEM event page
 => https://fosdem.org/2020/schedule/event/github_cross_project_code_navigation/attachments/slides/3885/export/events/attachments/github_cross_project_code_navigation/slides/3885/dcreager_fosdem_2020.pdf Slides
-=> https://video.fosdem.org/2020/UD2.119/github_cross_project_code_navigation.webm Video (WebM/VP9)
-=> https://video.fosdem.org/2020/UD2.119/github_cross_project_code_navigation.mp4 Video (mp4)
+=> https://media.dcreager.net/github_cross_project_code_navigation.webm Video (WebM/VP9)
+=> https://media.dcreager.net/github_cross_project_code_navigation.mp4 Video (mp4)
