@@ -2,13 +2,43 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:base="https://dcreager.net/">
   <id>https://dcreager.net/</id>
   <title>dcreager.net</title>
-  <updated>2021-01-28T00:00:00Z</updated>
+  <updated>2021-03-08T00:00:00Z</updated>
   <link rel="alternate" href="https://dcreager.net/" type="text/html"/>
   <link rel="self" href="https://dcreager.net/atom.xml" type="application/atom+xml"/>
   <author>
     <name>Douglas Creager</name>
     <uri>https://dcreager.net/</uri>
   </author>
+  <entry>
+    <id>tag:dcreager.net,2021-03-08:/a-better-varint/</id>
+    <title type="html">A better varint</title>
+    <published>2021-03-08T00:00:00Z</published>
+    <updated>2021-03-08T00:00:00Z</updated>
+    <link rel="alternate" href="https://dcreager.net/a-better-varint/" type="text/html"/>
+    <content type="html">&lt;p&gt;Many binary file formats need to store integer values.  And often, those integer
+values are typically “small”.  That is, while the field might technically be a
+32-bit integer, that field will rarely hold values from that entire 32-bit
+range.  Instead, values will usually be small in magnitude, and a large number
+of their higher-order bits will be 0.  In those cases, it can be useful to try
+to save space by encoding the integer value in a smaller number of bytes.  Doing
+so can substantially reduce the size of your file, especially when there are
+lots of these small-magnitude integers to store.&lt;/p&gt;
+
+&lt;p&gt;(Note that even though the goal, and end result, is that the file is smaller,
+this is not a &lt;em&gt;compression&lt;/em&gt; scheme, since it only works when your values are
+distributed in one particular way.  Proper compression schemes are more
+sophisticated, so that they can find redundancies in many other patterns of
+data.)&lt;/p&gt;
+
+&lt;p&gt;With this goal, our job is to figure out a coding scheme that lets us:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;serialize an integer into a variable-length sequence of bytes&lt;/li&gt;
+  &lt;li&gt;deserialize a sequence of bytes back into an integer value&lt;/li&gt;
+&lt;/ul&gt;
+
+</content>
+  </entry>
   <entry>
     <id>tag:dcreager.net,2021-01-28:/sony-rx100-mkiv-webcam/</id>
     <title type="html">Using a Sony RX100 Mk IV as a webcam on Linux</title>
@@ -530,52 +560,6 @@ describe any global properties of the entire system.  And lastly, because CSP
 verification is based on “refinement”, we also use processes to define the
 properties that we hope our system exhibits.&lt;/p&gt;
 
-</content>
-  </entry>
-  <entry>
-    <id>tag:dcreager.net,2016-07-28:/csp-concurrency/intro/</id>
-    <title type="html">Introduction</title>
-    <published>2016-07-28T00:00:00Z</published>
-    <updated>2016-07-28T00:00:00Z</updated>
-    <link rel="alternate" href="https://dcreager.net/csp-concurrency/intro/" type="text/html"/>
-    <content type="html">&lt;p&gt;Two years ago, I started writing a series of &lt;a href="/2014/01/07/intro-to-csp/"&gt;blog&lt;/a&gt;
-&lt;a href="/2014/02/csp-basics/"&gt;posts&lt;/a&gt; about CSP — Communicating Sequential Processes.
-That series has…let’s say “stalled”.  Part of the reason is that I didn’t have
-a good non-trivial example to work with.  The &lt;a href="https://en.wikipedia.org/wiki/Communicating_sequential_processes#Examples"&gt;stereotypical running
-example&lt;/a&gt;
-is the vending machine: start with a simple one, which accepts a single coin and
-spits out a tea; add more detail as you introduce more of the language.  I
-always had a hunch that I needed an example with more meat on it, but could
-never find one.&lt;/p&gt;
-
-&lt;p&gt;Fast-forward to today.  I was reading through some of &lt;a href="https://christophermeiklejohn.com/"&gt;Christopher
-Meiklejohn’s&lt;/a&gt; work on
-&lt;a href="http://lasp-lang.org/"&gt;Lasp&lt;/a&gt;, I came across a citation to a really nice paper
-by &lt;a href="http://drops.dagstuhl.de/opus/volltexte/2015/5375/"&gt;Cerone, Bernardi, and
-Gotsman&lt;/a&gt;, which adds some
-formal rigor to the consistency models that we use to describe modern
-distributed systems.  Their formalism is a great combination of simple and
-expressive.  The core of the paper is about processes accessing a transactional
-data store; the authors provide formal definitions of several concurrency
-models, and of some reference implementations that supposedly provide those
-concurrency models.  They then use a technique called “observational refinement”
-to show that the reference implementations really do provide the concurrency
-guarantees in question.&lt;/p&gt;
-
-&lt;p&gt;This approach lines up very well with how you perform refinement checks in CSP
-to show that systems satisfy some specification.  And so I finally found my
-meaty running example!  I’m resurrecting this blog series, and plan to work
-through each of the consistency models and proofs described in the paper,
-translating them into CSP processes and refinement checks.  This isn’t an
-attempt to replace or outdo anything in the paper!  Far from it — it’s my
-attempt to use something more familiar to work through the details of something
-less familiar.&lt;/p&gt;
-
-&lt;p&gt;I’m not going to assume a working knowledge of CSP — or of the consistency
-models described in the paper!  If you’re familiar with one, my hope is that
-you’ll be able to follow along and pick up the other.  And if you’re not
-familiar with either…well, I guess we’ll see how good I am at writing an intro
-to a difficult topic!&lt;/p&gt;
 </content>
   </entry>
 </feed>

@@ -1,0 +1,232 @@
+---
+kind: article
+created_at: 2021-03-08
+layout: /post.html
+title: A better varint
+description: counting zeros for fun and profit
+---
+
+Many binary file formats need to store integer values.  And often, those integer
+values are typically “small”.  That is, while the field might technically be a
+32-bit integer, that field will rarely hold values from that entire 32-bit
+range.  Instead, values will usually be small in magnitude, and a large number
+of their higher-order bits will be 0.  In those cases, it can be useful to try
+to save space by encoding the integer value in a smaller number of bytes.  Doing
+so can substantially reduce the size of your file, especially when there are
+lots of these small-magnitude integers to store.
+
+(Note that even though the goal, and end result, is that the file is smaller,
+this is not a _compression_ scheme, since it only works when your values are
+distributed in one particular way.  Proper compression schemes are more
+sophisticated, so that they can find redundancies in many other patterns of
+data.)
+
+With this goal, our job is to figure out a coding scheme that lets us:
+
+* serialize an integer into a variable-length sequence of bytes
+* deserialize a sequence of bytes back into an integer value
+
+## Metric varint
+
+This is not a new problem, and many solutions have existed for quite some time.
+The most popular these days is usually called “varint”, after its name in
+Google's [Protocol Buffers spec][protobuf varint].  This same encoding is
+sometimes also called [LEB128][], and its big-endian equivalent is sometimes
+called [VLQ][].  For the rest of this post, I'm going to call this encoding
+scheme “metric varint”.
+
+[protobuf varint]: https://developers.google.com/protocol-buffers/docs/encoding#varints
+[LEB128]: https://en.wikipedia.org/wiki/LEB128
+[VLQ]: https://en.wikipedia.org/wiki/Variable-length_quantity
+
+In short, metric varint uses the most-significant bit in each byte as a
+“continuation marker”.  The lower 7 bits in each byte encode some of the bits of
+the integer value being encoded.  A value of `1` for the continuation bit means
+“more bytes to follow”; a value of `0` means “this is the last byte for this
+value”.
+
+To encode, you first encode the integer into binary, making sure to use a
+multiple of 7 bits.  You then attach a `0` bit to the beginning of the first
+(most-significant) 7-bit chunk, and a `1` bit to the beginning of every other
+chunk.  You then reverse the chunks (because the chunks are written in
+little-endian order), and write the sequence of chunks out to your file.  Some
+examples:
+
+<pre>
+    0 ⇒   0000000 (encode in binary)
+      ⇒ 0_0000000 (prepend continuation markers)
+      ⇒ 0_0000000 (reverse chunks)
+      ⇒ 0x00
+</pre>
+
+<pre>
+  127 ⇒   1111111
+      ⇒ 0_1111111
+      ⇒ 0_1111111
+      ⇒ 0x7f
+</pre>
+
+<pre>
+  128 ⇒   0000001   0000000
+      ⇒ 0_0000001 1_0000000
+      ⇒ 1_0000000 0_0000001
+      ⇒ 0x80 0x01
+</pre>
+
+<pre>
+50000 ⇒   0000011   0000110   1010000
+      ⇒ 0_0000011 1_0000110 1_1010000
+      ⇒ 1_1010000 1_0000110 0_0000011
+      ⇒ 0xd0 0x86 0x03
+</pre>
+
+This encoding has a neat property that numbers less than 128 are encoded as
+themselves.
+
+To decode, you keep reading in bytes until you see one with a `0` for its MSB.
+For each of those bytes, you mask off the MSB, and ‘OR’ it into its place in the
+final result:
+
+<pre>
+                   ········ ········ ········  (start with empty result)
+0xd0 ⇒ 1_1010000   ········ ········ ·1010000  (mask and OR; MSB 1 == continue)
+0x86 ⇒ 1_0000110   ········ ··000011 01010000  (mask and OR; MSB 1 == continue)
+0x03 ⇒ 0_0000011   ···00000 11000011 01010000  (mask and OR; MSB 0 == done)
+                   00000000 11000011 01010000  => 50000
+</pre>
+
+<pre>
+                   ········
+0x00 ⇒ 0_0000000   ·0000000
+                   00000000  => 0
+</pre>
+
+<pre>
+                   ········
+0xff ⇒ 0_1111111   ·1111111
+                   01111111  => 127
+</pre>
+
+<pre>
+                   ········ ········
+0x80 ⇒ 1_0000000   ········ ·0000000
+0x01 ⇒ 0_0000001   ··000000 10000000
+                   00000000 10000000  => 128
+</pre>
+
+## Aside: Zig-zag encoding
+
+Note that the varint encoding described above is defined on _unsigned_ integers.
+If you want to encode a _signed_ integer, which might be negative, then you
+first need to figure out how to translate each signed integer into an unsigned
+integer.  This is a separate step, independent of how you decide to then encode
+the translated unsigned integers.
+
+Modern computers typically use [_two’s complement_][two's complement] to encode
+signed integers.  Two’s complement is fantastic if you’re primarily concerned
+with performing arithmetic, since most arithmetic operations are _exactly the
+same_ for unsigned values and for two’s complement signed values.  (This is a
+fascinating result!  If you’re not familiar with it, I encourage you to check
+out the explanation in the Wikipedia article.)
+
+[two's complement]: https://en.wikipedia.org/wiki/Two%27s_complement
+
+However, for our purposes, two’s complement is one of the worst possible
+translations!  We’re choosing a varint encoding scheme because our values are
+typically small.  In two’s complement, the smallest negative values (-1, -2,
+etc.) get translated into the largest possible unsigned values (`UINT_MAX`,
+`UINT_MAX - 1`, etc.), meaning that they take up the most amount of space when
+encoded.
+
+To get around this, Protocol Buffers (and most other file formats that use
+varint) use the [“zig-zag” method][zig-zag] to translate signed integers into
+unsigned.  The zig-zag translation has the beneficial property that small values
+— regardless of whether they're negative or positive — end up taking the least
+amount of space when varint-encoded.
+
+[zig-zag]: https://developers.google.com/protocol-buffers/docs/encoding#signed_integers
+
+## Imperial varint
+
+Having just described a perfectly fine (and widespread!) varint encoding, I'd
+like to propose a slight variation that I like better.  (I'm calling this
+variant “imperial” varint to distinguish it from the “metric” varint described
+above.)
+
+The two encodings are very similar.  They both use continuation bits to describe
+how many bytes there are in the encoded value, and in particular, use one
+continuation bit per encoded byte.
+
+There are three important differences that are worth noting.  The first is that
+the bytes will be written in big-endian order instead of little-endian order.
+The second (and biggest) difference is that instead of placing one continuation
+bit into each encoded byte, imperial varint places _all_ of the continuation
+bits at the beginning of the encoded value, at the MSB end of the first encoded
+byte.  And, for reasons we'll see in a bit, we flip the meaning of the
+continuation bits: we'll use `0` to mean “another byte follows”, and `1` to mean
+“this is the last byte”.
+
+Repeating our examples from above:
+
+<pre>
+    0 ⇒   0000000 (encode in binary)
+      ⇒ 1 0000000 (prepend continuation markers)
+      ⇒ 10000000  (group into bytes)
+      ⇒ 0x80
+</pre>
+
+<pre>
+  127 ⇒   1111111
+      ⇒ 1 1111111
+      ⇒ 11111111
+      ⇒ 0xff
+</pre>
+
+<pre>
+  128 ⇒    0000001 0000000
+      ⇒ 01 0000001 0000000
+      ⇒ 01000000 10000000
+      ⇒ 0x40 0x80
+</pre>
+
+<pre>
+50000 ⇒     0000011 0000110 1010000
+      ⇒ 001 0000011 0000110 1010000
+      ⇒ 00100000 11000011 01010000
+      ⇒ 0x20 0xc3 0x50
+</pre>
+
+By placing all of the continuation bits at the beginning of the encoded value,
+we avoid loops in both the encoding and decoding processes.  When we encode, we
+just have to figure out how many bytes we need.  Each byte length has a
+corresponding continuation bit pattern (1 byte ⇒ `0x80`, 2 bytes ⇒ `0x40`, 3
+bytes ⇒ `0x20`, etc).  After ‘OR’ing that bit pattern into place, we can write
+out the correct number of bytes as a single operation.
+
+On the decoding side, we take advantage of the fact that each continuation bit
+pattern consists of zero or more `0` bits, followed by exactly one `1` bit.
+That means that we can read in the first byte, and then use the “count leading
+zeros” operation to easily determine how many _additional_ bytes we have to
+read.  “Count leading zeros” is available in most programming languages as an
+[instrinsic][leading_zeros], and also has a [dedicated instruction][clz CPUs] on
+most modern CPUs.
+
+[leading_zeros]: https://doc.rust-lang.org/std/primitive.u8.html#method.leading_zeros
+[clz CPUs]: https://en.wikipedia.org/wiki/Find_first_set#Hardware_support
+
+All together, this makes encoding and decoding of imperial varints much simpler
+and faster!  To see this concretely, you can check out the implementations in my
+Swanson programming language project ([`write_varint`][write_varint],
+[`parse_varint`][parse_varint]).
+
+[write_varint]: https://git.sr.ht/~dcreager/swanson-lang/tree/8ab6a4cd0171e40ef1659d68c4dd7d02bb7e363f/item/rust/swanson-binary/src/lib.rs#L239
+[parse_varint]: https://git.sr.ht/~dcreager/swanson-lang/tree/8ab6a4cd0171e40ef1659d68c4dd7d02bb7e363f/item/rust/swanson-binary/src/lib.rs#L455
+
+So there you go!  If you find yourself designing a binary file format in the
+future (admittedly a pretty niche concern), consider using imperial varints
+instead of metric varints.
+
+You can also read this post via [Gemini][gemini].
+{:.thanks}
+
+[gemini]: gemini://dcreager.net/a-better-varint.gmi

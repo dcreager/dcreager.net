@@ -92,6 +92,39 @@
 
   
     <li class="summary">
+      <div class="date">2021-03-08</div>
+      <h1><a href="/a-better-varint/">A better varint</a></h1>
+      <p>Many binary file formats need to store integer values.  And often, those integer
+values are typically “small”.  That is, while the field might technically be a
+32-bit integer, that field will rarely hold values from that entire 32-bit
+range.  Instead, values will usually be small in magnitude, and a large number
+of their higher-order bits will be 0.  In those cases, it can be useful to try
+to save space by encoding the integer value in a smaller number of bytes.  Doing
+so can substantially reduce the size of your file, especially when there are
+lots of these small-magnitude integers to store.</p>
+
+<p>(Note that even though the goal, and end result, is that the file is smaller,
+this is not a <em>compression</em> scheme, since it only works when your values are
+distributed in one particular way.  Proper compression schemes are more
+sophisticated, so that they can find redundancies in many other patterns of
+data.)</p>
+
+<p>With this goal, our job is to figure out a coding scheme that lets us:</p>
+
+<ul>
+  <li>serialize an integer into a variable-length sequence of bytes</li>
+  <li>deserialize a sequence of bytes back into an integer value</li>
+</ul>
+
+
+      <div class="link">
+        <a href="/a-better-varint/">
+          Continue reading <span class="glyphicon glyphicon-share-alt"></span>
+        </a>
+      </div>
+    </li>
+  
+    <li class="summary">
       <div class="date">2021-01-28</div>
       <h1><a href="/sony-rx100-mkiv-webcam/">Using a Sony RX100 Mk IV as a webcam on Linux</a></h1>
       <p>Earlier this month I decided to use some of my company’s generous home office
@@ -304,54 +337,6 @@ If we can convince ourselves that we won’t encounter pathological inputs, the
 
       <div class="link">
         <a href="/np-hard/">
-          Continue reading <span class="glyphicon glyphicon-share-alt"></span>
-        </a>
-      </div>
-    </li>
-  
-    <li class="summary">
-      <div class="date">2018-04-19</div>
-      <h1><a href="/git/workflows/">Clean git histories and code review workflows</a></h1>
-      <div class="alert alert-warning">
-  <p>
-    <strong>NOTE</strong>: Though I'm currently employed by GitHub, I wrote this
-    article before I started working there!  This post (like all of the posts on
-    this site) contains my own personal views, and not those of my employer.
-  </p>
-</div>
-
-<script async="" src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-
-<p>A couple of recent tweets really resonated me.</p>
-
-<p><a href="https://adityamukerjee.net/">Aditya</a> started an interesting conversation:</p>
-
-<blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">If you&#39;d asked me a few weeks ago whether I preferred squash-merges or merge commits, I&#39;d have been somewhat ambivalent.<br /><br />After today, I&#39;m pretty sold on squash-merge as the better strategy. It&#39;s not without drawbacks, but on net, it&#39;s still so much better to work with.</p>&mdash; Aditya Mukerjee (@chimeracoder) <a href="https://twitter.com/chimeracoder/status/986376765567356928?ref_src=twsrc%5Etfw">April 17, 2018</a></blockquote>
-
-<p>I’ve always really liked having a “clean” history in the git logs of my
-projects.  They look nicer!  There’s a real joy to running <a href="https://git-scm.com/docs/git-log"><code>git log</code></a> (or
-even better, <a href="https://git-scm.com/docs/git-log"><code>git log --graph --all</code></a>!) on a project that’s
-maintained a beautiful log.  There are a number of tangible benefits, too, which
-<a href="https://chris.beams.io/posts/git-commit/">others</a> <a href="https://www.git-tower.com/learn/git/ebook/en/command-line/appendix/best-practices">have</a> <a href="https://www.slideshare.net/TarinGamberini/commit-messages-goodpractices">described</a> well enough that I
-don’t need to repeat them here.</p>
-
-<p>More than that, though, for a long time I assumed that if you were using GitHub
-pull requests, there was One True Way to produce a clean history, echoed by
-<a href="https://sevein.com/">Jesús</a>:</p>
-
-<blockquote class="twitter-tweet" data-conversation="none" data-lang="en"><p lang="en" dir="ltr">Best merges to me are the fast-forward merges that bring a number of meaninful, atomic, functional and self-contained commits! Not always possible...</p>&mdash; Jesús García Crespo (@sevein) <a href="https://twitter.com/sevein/status/986412919964368896?ref_src=twsrc%5Etfw">April 18, 2018</a></blockquote>
-
-<p>But recently, just like Aditya, I’ve had a change of heart!  I realized that I
-was thinking about pull requests, and what they represent in terms of the final
-commit log I’m aiming for, in the wrong way.  In this post I’ll describe the
-come-to-Aditya moment that made me appreciate squash-commits.  And along the way
-I’ll have described two workflows that make it easy to keep a clean history: one
-that doesn’t use GitHub at all (and mimics how we did git-driven development
-before GitHub existed), and one that does.</p>
-
-
-      <div class="link">
-        <a href="/git/workflows/">
           Continue reading <span class="glyphicon glyphicon-share-alt"></span>
         </a>
       </div>
