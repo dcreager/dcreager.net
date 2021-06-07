@@ -4,6 +4,7 @@ This is the Gemini space of Douglas Creager. Welcome!
 
 ## Recent posts
 
+=> tree-sitter/getting-started.gmi 2021-06-07: Getting started with tree-sitter
 => a-better-varint.gmi 2021-03-08: A better varint
 => 2021/01/sony-rx100-mkiv-webcam.gmi 2021-01-28: Using a Sony RX100 Mk IV as a webcam on Linux
 => 2021/01/git-commits-and-code-review.gmi 2021-01-03: Git commits and code review (revisited)

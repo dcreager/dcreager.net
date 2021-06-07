@@ -1,0 +1,53 @@
+
+## A plethora of repositories
+
+The tree-sitter ecosystem is divided up across a large number of components, which live in different repositories, which can be quite overwhelming at first.  It’s complicated by the fact that we want to support different programming languages in two separate, orthogonal ways:
+
+* First, we want to be able to _parse_ source code implemented in different programming languages.
+
+* Second, and possibly less obviously, we want to _use_ tree-sitter in several different programming languages.  You specifically are going to write your analysis tool in one language, but we (the tree-sitter developers) don't know which one that is!  We've tried to implement tree-sitter so that we don't place any restrictions on which language you use.
+
+So, given the above, you will encounter all of the following on your journey:
+
+### Language parsers
+
+You must have a tree-sitter grammar for each language that you want to parse.  Each language grammar is typically implemented in a separate repository, named ‘tree-sitter-$LANGUAGE’.
+
+=> https://github.com/tree-sitter/tree-sitter-javascript JavaScript grammar
+=> https://github.com/tree-sitter/tree-sitter-typescript TypeScript grammar
+=> https://github.com/tree-sitter/tree-sitter-python Python grammar
+
+### The tree-sitter runtime library
+
+The generated parsers only contain some state tables describing the language being parsed. The “meat” of the parsing logic is implemented in this runtime library, which each parser depends on.  This runtime library is also where tree-sitter’s query language is implemented.
+
+=> https://tree-sitter.github.io/tree-sitter/using-parsers#pattern-matching-with-queries tree-sitter query language
+
+The runtime library is implemented in the ‘tree-sitter/tree-sitter’ repository on GitHub.
+
+=> https://github.com/tree-sitter/tree-sitter tree-sitter/tree-sitter
+
+### Language bindings
+
+The runtime library and each generated parser are implemented in C.  Assuming that you aren’t writing your analysis tool in C, you will need _bindings_ for the language that you are using.  This will use your language’s FFI mechanism to link in the tree-sitter C code and make it available using more idiomatic constructs.
+
+The Rust and WASM bindings are considered “tier 1”, and are implemented directly in the ‘tree-sitter/tree-sitter’ repository.
+
+=> https://docs.rs/tree-sitter/*/tree_sitter/ Rust binding documentation
+=> https://github.com/tree-sitter/tree-sitter/tree/master/lib/binding_rust Rust binding implementation (tree-sitter/tree-sitter)
+=> https://github.com/tree-sitter/tree-sitter/tree/master/lib/binding_web WASM binding implementation (tree-sitter/tree-sitter)
+
+Other bindings (such as for Python or Haskell) are implemented in separate repositories, typically named ‘$LANGUAGE-tree-sitter’.
+
+=> https://hackage.haskell.org/package/tree-sitter Haskell binding documentation
+=> https://github.com/tree-sitter/haskell-tree-sitter/ Haskell binding implementation (tree-sitter/haskell-tree-sitter)
+=> https://github.com/tree-sitter/py-tree-sitter/ Python binding implementation (tree-sitter/py-tree-sitter)
+
+### Language parser bindings
+
+Complicating things even more, you need both the runtime library and the generated parser for each language that you want to parse — and in particular, you need _bindings_ for both!  The language bindings described above only include the runtime library, since they can’t know in advance which languages you will want to parse.  The bindings should include instructions for how to build and include your desired parsers.
+
+For some language bindings, we can lean on the language's package manager for this.  For instance, for the Rust bindings, we publish packages to crates.io both for the language binding itself (‘tree-sitter’) and for most of the supported grammars (e.g. ‘tree-sitter-python’).  So if you are writing a tool, which is implemented in Rust, and which analyzes Python code, you would add both ‘tree-sitter’ and ‘tree-sitter-python’ to your ‘Cargo.toml’ file.  Whereever possible, we follow this approach for other language bindings, too.
+
+=> https://crates.io/crates/tree-sitter tree-sitter crate
+=> https://crates.io/crates/tree-sitter-python tree-sitter-python crate
