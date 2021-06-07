@@ -8,3 +8,5 @@ gem 'kramdown'
 gem 'rocco'
 gem 'pandoc-ruby'
 gem 'nokogiri'
+
+gem "webrick", "~> 1.7"
