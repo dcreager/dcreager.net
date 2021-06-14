@@ -2,13 +2,25 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:base="https://dcreager.net/">
   <id>https://dcreager.net/</id>
   <title>dcreager.net</title>
-  <updated>2021-06-07T00:00:00Z</updated>
+  <updated>2021-06-14T00:00:00Z</updated>
   <link rel="alternate" href="https://dcreager.net/" type="text/html"/>
   <link rel="self" href="https://dcreager.net/atom.xml" type="application/atom+xml"/>
   <author>
     <name>Douglas Creager</name>
     <uri>https://dcreager.net/</uri>
   </author>
+  <entry>
+    <id>tag:dcreager.net,2021-06-14:/tree-sitter/map/</id>
+    <title type="html">A map of the tree-sitter ecosystem</title>
+    <published>2021-06-14T00:00:00Z</published>
+    <updated>2021-06-14T00:00:00Z</updated>
+    <link rel="alternate" href="https://dcreager.net/tree-sitter/map/" type="text/html"/>
+    <content type="html">&lt;p&gt;The tree-sitter ecosystem is divided up across a large number of components,
+each in different repositories, which can be quite overwhelming at first.  This
+post tries to provide a map of sorts.&lt;/p&gt;
+
+</content>
+  </entry>
   <entry>
     <id>tag:dcreager.net,2021-06-07:/tree-sitter/getting-started/</id>
     <title type="html">Getting started with tree-sitter</title>
@@ -519,44 +531,6 @@ great!  But it’s not what I’m aiming for.&lt;/p&gt;
 
 &lt;p&gt;(And as for the name, “HST” does &lt;em&gt;not&lt;/em&gt; stand for “Harry S. Truman”, just like
 “FDR” does &lt;em&gt;not&lt;/em&gt; stand for “Franklin Delano Roosevelt”.)&lt;/p&gt;
-</content>
-  </entry>
-  <entry>
-    <id>tag:dcreager.net,2016-09-07:/csp-concurrency/read-atomic-internal/</id>
-    <title type="html">Read Atomic: Internal consistency</title>
-    <published>2016-09-07T00:00:00Z</published>
-    <updated>2016-09-07T00:00:00Z</updated>
-    <link rel="alternate" href="https://dcreager.net/csp-concurrency/read-atomic-internal/" type="text/html"/>
-    <content type="html">
-&lt;script type="text/x-mathjax-config"&gt;
-MathJax.Hub.Config({
-  TeX: {
-    Macros: {
-      interleavesym: "|\\mkern-2mu|\\mkern-2mu|",
-      interleave: "\\mathrel{\\interleavesym}",
-      Interleave: "\\mathop{\\interleavesym}"
-    }
-  }
-});
-&lt;/script&gt;
-
-&lt;p&gt;We’ll start by looking at the weakest concurrency model covered in the paper,
-Read Atomic.  In fact, to keep things really simple to start with, we’re only
-going to look at &lt;em&gt;one&lt;/em&gt; of Read Atomic’s two axioms: &lt;strong&gt;internal consistency&lt;/strong&gt;.
-(We’ll look at external consistency in the next post.)&lt;/p&gt;
-
-&lt;!--
- Read Atomic...can be implemented without requiring any coordination among
- replicas...a replica can decide to commit a transaction without consulting
- other replicas.
---&gt;
-
-&lt;p&gt;A transaction is internally consistent if it “reads its own writes”.  This is
-the simplest axiom covered in the paper, since it expresses a property that’s
-strictly &lt;em&gt;local&lt;/em&gt; to each transaction; we don’t have to consider the behavior of
-any other transaction when defining what it means for a transaction to be
-internally consistent.&lt;/p&gt;
-
 </content>
   </entry>
 </feed>

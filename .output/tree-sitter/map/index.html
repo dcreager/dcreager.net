@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>
+    dcreager.net – A map of the tree-sitter ecosystem
+  </title>
+  <meta name="author" content="Douglas Creager">
+
+    <meta charset="utf-8">
+
+  <meta name="google-site-verification"
+        content="7KIoYPNsfdDxIdX1QQ7SM2Nm_nyy13aRlDkzE3wzhhY" />
+
+  <link rel="icon" type="image/x-icon" href="/media/images/imperial-logo.ico"/>
+  <link rel="alternate" type="application/atom+xml"
+        title="dcreager.net" href="/atom.xml"/>
+
+  <!-- Bootstrap -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel=stylesheet type=text/css media=screen
+        href="/media/vendor/css/bootstrap.min.css">
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+  <![endif]-->
+
+  <!-- MathJax -->
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      jax: ["input/TeX","output/HTML-CSS"],
+      displayAlign: "left",
+      displayIndent: "2em"
+    });
+  </script>
+  <script type="text/javascript" async
+          src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+  </script>
+
+  <!-- Twitter nonsense -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="@dcreager">
+  <meta name="twitter:title"
+        content="A map of the tree-sitter ecosystem">
+  <meta name="twitter:description"
+        content="terra incognita">
+  <meta name="twitter:image"
+        content="https://www.gravatar.com/avatar/04ee3ca11f1ae11c63faa7995dbf1ed7?s=2048">
+
+  <!-- Customizations -->
+  <link rel=stylesheet type=text/css media=screen
+        href="/media/css/coderay.css">
+  <link rel=stylesheet type=text/css media=screen
+        href="/media/css/dcreager.css">
+  <link rel=stylesheet type=text/css media=screen
+        href="https://fonts.googleapis.com/css?family=Oxygen:400,700">
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+  <div class="col-md-10 col-md-offset-1">
+    <nav class="navbar navbar-default" role="navigation">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand logo" href="/"><b>dcreager.net</b></a>
+      </div>
+
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="/about/">About</a></li></li>
+          <li><a href="/archive/">Archive</a></li></li>
+          <li><a href="https://buttondown.email/dcreager/">Newsletter</a></li></li>
+          <li><a href="/talks/">Talks</a></li></li>
+          <li><a href="/publications/">Publications</a></li></li>
+        </ul>
+      </div><!-- /.navbar-collapse -->
+    </nav>
+  </div>
+</div>
+
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        <div class="blog">
+          <div class="date">
+            2021-06-14
+          </div>
+          <h1>A map of the tree-sitter ecosystem</h1>
+          <p>The tree-sitter ecosystem is divided up across a large number of components,
+each in different repositories, which can be quite overwhelming at first.  This
+post tries to provide a map of sorts.</p>
+
+<h2 id="overview">Overview</h2>
+
+<p>Say you’re interested in the tree-sitter project, so you decide to check out the
+<a href="https://github.com/orgs/tree-sitter/"><code>tree-sitter</code> organization</a> on GitHub, browsing through its repositories to
+determine how the ecosystem is structured.  The list of repositories spills over
+onto a second page, and you see entries that seem redundant.  Why is there both
+<a href="https://github.com/tree-sitter/tree-sitter-python/"><code>tree-sitter-python</code></a> and <a href="https://github.com/tree-sitter/py-tree-sitter/"><code>py-tree-sitter</code></a>?  Are they competing with each
+other?  Is one deprecated?</p>
+
+<p>You might instead decide to check out the <a href="https://tree-sitter.github.io/">project homepage</a>.  The
+landing page lists (as of June 2021) over 40 different programming language
+parsers that various folks have implemented, as well as a handful of language
+bindings.</p>
+
+<p>This, at least, points to an answer.  The tree-sitter ecosystem is complicated
+because when we write a code analysis tool, we want to support different
+programming languages in two separate, orthogonal ways:</p>
+
+<ul>
+  <li>
+    <p>First, we want to be able to <em>parse</em> source code implemented in different
+programming languages.</p>
+  </li>
+  <li>
+    <p>Second, and possibly less obviously, we want to <em>use</em> tree-sitter in several
+different programming languages.  You specifically are going to write your
+analysis tool in one language, but we (the tree-sitter developers) don’t know
+which one that is!  We’ve tried to implement tree-sitter so that we don’t
+place any restrictions on which language you use.</p>
+  </li>
+</ul>
+
+<p>That at least explains why “Python support” in tree-sitter might mean two
+different things.  But why have we separated everything out into distinct
+repositories?  The main reason is to make it as clear as possible that all of
+these pieces are truly independent of each other.  There shouldn’t be any way
+for the Python language bindings to influence the design or release process of
+the Haskell bindings, for instance, nor of <em>any</em> of the language grammars.</p>
+
+<p>True, it adds complexity to the ecosystem, but we’ve tried to get around this
+with careful naming conventions, and tree-sitter-specific tooling to make it
+easy to find and work with whatever pieces you need.</p>
+
+<p>So, given the above, you will encounter all of the following on your journey:</p>
+
+<h3 id="language-parsers">Language parsers</h3>
+
+<p>You must have a tree-sitter grammar for each language that you want to parse.
+Each language grammar is typically implemented in a its own repository, named
+<code>tree-sitter-$LANGUAGE</code>.</p>
+
+<ul>
+  <li><a href="https://github.com/tree-sitter/tree-sitter-javascript">JavaScript grammar</a></li>
+  <li><a href="https://github.com/tree-sitter/tree-sitter-typescript">TypeScript grammar</a></li>
+  <li><a href="https://github.com/tree-sitter/tree-sitter-python">Python grammar</a></li>
+</ul>
+
+<p>There are some exceptions.  For instance, the <code>tree-sitter-javascript</code>
+repository lets you parse JavaScript <em>and</em> JSX — although in this case, this is
+handled with a single grammar that treats “plain JavaScript” as a file that
+happens to not have any JSX expressions in it.  Similarly, the
+<code>tree-sitter-typescript</code> repository lets you parse TypeScript and TSX, though in
+this case, they’re handled with distinct grammars.  All of these grammars share
+enough structure, and are a coherent enough family of languages, that it would
+be overkill to separate them out further.</p>
+
+<h3 id="the-tree-sitter-runtime-library">The tree-sitter runtime library</h3>
+
+<p>The generated parsers only contain some state tables describing the language
+being parsed. The “meat” of the parsing logic is implemented in the
+<code>tree-sitter</code> runtime library, which each parser depends on.  This runtime
+library is also where tree-sitter’s <a href="https://tree-sitter.github.io/tree-sitter/using-parsers#pattern-matching-with-queries">query language</a> is implemented.</p>
+
+<p>The runtime library is implemented in the
+<a href="https://github.com/tree-sitter/tree-sitter"><code>tree-sitter/tree-sitter</code></a> repository on GitHub, under the
+<code>lib/include</code> and <code>lib/src</code> directories.</p>
+
+<h3 id="language-bindings">Language bindings</h3>
+
+<p>The runtime library and each generated parser are implemented in C.  Assuming
+that you aren’t writing your analysis tool in C, you will need <em>bindings</em> for
+the language that you are using.  This will use your language’s FFI mechanism to
+link in the tree-sitter C code and make it available using more idiomatic
+constructs.</p>
+
+<p>The <a href="https://github.com/tree-sitter/tree-sitter/tree/master/lib/binding_rust">Rust</a> and <a href="https://github.com/tree-sitter/tree-sitter/tree/master/lib/binding_web">WASM</a> bindings are considered “tier
+1”, and are implemented directly in the <code>tree-sitter/tree-sitter</code> repository.</p>
+
+<p>Other bindings are implemented in separate repositories, typically named
+<code>$LANGUAGE-tree-sitter</code>:</p>
+
+<ul>
+  <li><a href="https://github.com/tree-sitter/haskell-tree-sitter/">Haskell binding</a>
+(<a href="https://hackage.haskell.org/package/tree-sitter Haskell binding documentation">documentation</a>)</li>
+  <li><a href="https://github.com/tree-sitter/py-tree-sitter/">Python binding</a></li>
+</ul>
+
+<h3 id="language-parser-bindings">Language parser bindings</h3>
+
+<p>Complicating things even more, you need both the runtime library and the
+generated parser for each language that you want to parse — and in particular,
+you need <em>bindings</em> for both!  The language bindings described above only
+include the runtime library, since they can’t know in advance which languages
+you will want to parse.  The bindings should include instructions for how to
+build and include your desired parsers.</p>
+
+<p>For some language bindings, we can lean on the language’s package manager for
+this.  For instance, for the Rust bindings, we publish packages to crates.io
+both for the language binding itself (the <a href="https://crates.io/crates/tree-sitter"><code>tree-sitter</code></a>
+crate) and for most of the supported grammars (e.g. the
+<a href="https://crates.io/crates/tree-sitter-python"><code>tree-sitter-python</code></a> crate).  So if you are writing
+a tool, which is implemented in Rust, and which analyzes Python code, you would
+add both <code>tree-sitter</code> and <code>tree-sitter-python</code> to your <code>Cargo.toml</code> file.
+Wherever possible, we follow this approach for other language bindings, too.</p>
+
+<p class="thanks">You can also read this post via <a href="gemini://dcreager.net/tree-sitter/map.gmi">Gemini</a>.</p>
+
+
+          <div class="subscribe">
+            Stay up to date by subscribing to <a
+               href="https://buttondown.email/dcreager/">my newsletter</a>.
+          </div>
+        </div>
+      </div>
+    </div> <!-- /row -->
+  </div> <!-- /container -->
+
+    <footer class="copyright">
+    <div class="container">
+      <p>Copyright © 2009-2020, Douglas Creager.
+      All&nbsp;rights&nbsp;reserved.</p>
+    </div>
+  </footer>
+
+    <script src="//code.jquery.com/jquery.min.js"></script>
+  <script src="/media/vendor/js/bootstrap.min.js"></script>
+
+<!-- Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-83885503-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+</html>

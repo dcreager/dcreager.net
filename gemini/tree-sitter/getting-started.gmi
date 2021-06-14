@@ -1,5 +1,7 @@
 # Getting started with tree-sitter
 
+> Last updated: 2021-06-07
+
 This is the first in a series of posts on using the tree-sitter parsing framework.  The primary audience, at least for these first posts, is people who want to use _existing grammars_ to write program analysis tools that work across a variety of programming languages.  I’m not (yet) writing about how to create a _new_ grammar for a new programming language.
 
 => https://tree-sitter.github.io/ tree-sitter

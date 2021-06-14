@@ -92,6 +92,21 @@
 
   
     <li class="summary">
+      <div class="date">2021-06-14</div>
+      <h1><a href="/tree-sitter/map/">A map of the tree-sitter ecosystem</a></h1>
+      <p>The tree-sitter ecosystem is divided up across a large number of components,
+each in different repositories, which can be quite overwhelming at first.  This
+post tries to provide a map of sorts.</p>
+
+
+      <div class="link">
+        <a href="/tree-sitter/map/">
+          Continue reading <span class="glyphicon glyphicon-share-alt"></span>
+        </a>
+      </div>
+    </li>
+  
+    <li class="summary">
       <div class="date">2021-06-07</div>
       <h1><a href="/tree-sitter/getting-started/">Getting started with tree-sitter</a></h1>
       <p>This is the first in a series of posts on using the <a href="https://tree-sitter.github.io/">tree-sitter parsing
@@ -301,44 +316,6 @@ you’ll have to author directly!</p>
 
       <div class="link">
         <a href="/swanson/execution-model/">
-          Continue reading <span class="glyphicon glyphicon-share-alt"></span>
-        </a>
-      </div>
-    </li>
-  
-    <li class="summary">
-      <div class="date">2020-10-28</div>
-      <h2 class="series"><a href="/swanson/intro/">Swanson</a></h2>
-      <h1><a href="/swanson/intro/">Introduction</a></h1>
-      <p>My <a href="https://twitter.com/dcreager">Twitter bio</a> currently lists me as (among
-other things) a “PL dilettante”.  Which of course means that I’ve been hacking
-around on my own programming language for a number of years!  (Seriously, this
-has been a thing for a <strong><em>long</em></strong> time.  The earliest <a href="https://github.com/swanson-lang/swanson-lang-old/commit/e8aac263d76a63c8667fca5eee079ce8af345c2d">Swanson-related
-commit</a> I can find is from 2012.)  It’s gone through a number of
-iterations over that time, but I’m pretty happy with where it’s at right now.
-Not complete by any stretch of the imagination.  But I’ve chatted about it in
-passing with several people at this point, and I figured I need to write down
-the details somewhere.  My friend and colleague Rob can hold forth on these
-kinds of topics in <a href="https://twitter.com/rob_rix/status/1320544724864872453">epic</a> <a href="https://twitter.com/rob_rix/status/1320488333127110659">Twitter</a> <a href="https://twitter.com/rob_rix/status/1320467572161236994">threads</a>, but I need
-something more longform.  So here we are!</p>
-
-<p>In this series of posts I’m going to describe Swanson, the programming language
-framework that I’ve been noodling on.  It has two main components, one of which
-is much more fleshed out than the other.</p>
-
-<p>The first (not as fleshed out) part is an actual programming language, which
-doesn’t even really have a name yet!  It brings in some interesting notions
-about programmable syntax and parsing in a way that (I think) makes it easy to
-construct things like DSLs.</p>
-
-<p>The second (more important) part is an execution model that can be used as an IR
-of sorts for <strong><em>all</em></strong> languages.  That makes it similar in spirit to
-WebAssembly, in that the goal is to be something that you would compile (or
-translate or transpile or whatever) many other languages <strong><em>into</em></strong>, and not
-something to be written directly.  The Great Unnamed Language, like any other
-language, would be compiled into Swanson the execution framework.</p>
-      <div class="link">
-        <a href="/swanson/intro/">
           Continue reading <span class="glyphicon glyphicon-share-alt"></span>
         </a>
       </div>
