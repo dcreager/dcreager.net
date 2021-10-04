@@ -21,6 +21,7 @@ This is the Gemini space of Douglas Creager. Welcome!
 
 Here are some talks that I’ve given at conferences:
 
+=> talks/stack-graphs.gmi Incremental, zero-config Code Navigation using stack graphs
 => talks/github-code-nav.gmi Precise, cross-project code navigation at GitHub scale
 => talks/pastry.gmi The Pastry peer-to-peer overlay network
 => talks/packet-analysis.gmi Real-time packet analysis at scale
