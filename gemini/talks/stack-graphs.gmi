@@ -8,5 +8,6 @@ It’s difficult to add Code Nav to a large hosted service like GitHub, where we
 
 In this talk I’ll describe stack graphs, which use a graphical notation to define the name binding rules for a programming language. They work equally well for dynamic languages like Python and JavaScript, and for static languages like Go and Java. Our solution is fast — processing most commits within seconds of us receiving your push. It does not require setting up a CI job, or tapping into a project-specific build process. And it is open-source, building on the tree-sitter project’s existing ecosystem of language tools.
 
+=> https://youtu.be/l2R1PTGcwrE Video (YouTube)
 => https://thestrangeloop.com/2021/incremental-zero-config-code-nav-using-stack-graphs.html Strange Loop event page
 => https://media.dcreager.net/dcreager-strange-loop-2021-slides.pdf Slides
