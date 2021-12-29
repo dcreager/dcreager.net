@@ -47,6 +47,7 @@ How’s that for a grab bag of interests?
 In addition to this Gemini content, you can find me at:
 
 => https://dcreager.net/ The traditional Web
+=> https://mastodon.dcreager.net/@dcreager/ Mastodon
 => https://twitter.com/dcreager/ Twitter
 => https://github.com/dcreager/ GitHub
 => https://keybase.io/dcreager Keybase (GPG key etc.)
