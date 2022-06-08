@@ -356,6 +356,31 @@ li.reference div.citation_number {
     margin-right: -35px;
 }
 
+li.reference .talk {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+li.reference .talk .location .event {
+    font-style: italic;
+}
+
+li.reference .talk .location .date:before {
+    content: "·";
+    margin-left: 3px;
+    margin-right: 6px;
+}
+
+li.reference .talk .links a {
+    margin-left: 6px;
+}
+
+li.reference .talk .links a span.glyphicon {
+    margin-right: 0.5em;
+}
+
 li.reference ul.details {
     list-style-type: none;
     padding-left: 0px;
