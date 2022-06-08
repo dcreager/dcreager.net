@@ -91,9 +91,9 @@
       <div class="col-md-8 col-md-offset-2">
         <h1>Talks</h1>
 
-<ol class="publications">
+<ol class=talks>
 
-  <li class="reference">
+  <li>
     <div class="talk-title">
       <a href="stack-graphs/">Incremental, zero-config Code Navigation using stack graphs</a>
     </div>
@@ -120,16 +120,57 @@
         <a href="https://media.dcreager.net/dcreager-2022-ucsc-lsd-slides.pdf"><span class="glyphicon glyphicon-picture"></span>Slides</a>
       </div>
     </div>
+    <div class="talk-abstract">
+      <p>
+      Exploring a large or unfamiliar codebase can be tricky. Code Navigation
+      features like “jump to definition” and “find all references” let you
+      discover how different pieces of code relate to each other. To power these
+      features, we need to extract lists of symbols from the code, and describe
+      the language-specific rules for how those symbols relate to each other.
+      </p>
+
+      <p>
+      It’s difficult to add Code Nav to a large hosted service like GitHub,
+      where we must support hundreds of programming languages, hundreds of
+      millions of repositories, and petabytes of history. At this scale, we have
+      a different set of design constraints than a local IDE. We need our data
+      extraction to be incremental, so that we can reuse previous results for
+      files that haven’t changed in a newly pushed commit, saving both compute
+      and storage costs. And to support cross-repo lookups, it should require
+      zero configuration — repo owners should not have to set up anything
+      manually to activate the feature.
+      </p>
+
+      <p>
+      In this talk I’ll describe stack graphs, which use a graphical notation to
+      define the name binding rules for a programming language. They work
+      equally well for dynamic languages like Python and JavaScript, and for
+      static languages like Go and Java. Our solution is fast — processing most
+      commits within seconds of us receiving your push. It does not require
+      setting up a CI job, or tapping into a project-specific build process. And
+      it is open-source, building on the tree-sitter project’s existing
+      ecosystem of language tools.
+      </p>
+    </div>
   </li>
 
-  <li class="reference">
-    <div class="talk-title">Precise, cross-project code navigation at GitHub scale</div>
-    <ul class="details">
-      <li>
-        <a href="https://fosdem.org/2020/schedule/event/github_cross_project_code_navigation/">FOSDEM</a>
-      </li>
-      <li class="date">February 2020</li>
-    </ul>
+  <li>
+    <div class="talk-title">
+      <a href="2020-fosdem/">Precise, cross-project code navigation at GitHub scale</a>
+    </div>
+    <div class=talk>
+      <div class=location>
+        <span class=event>
+          <a href="https://fosdem.org/2020/schedule/event/github_cross_project_code_navigation/">FOSDEM</a>
+        </span>
+        <span class=date>February 2020</span>
+      </div>
+      <div class=links>
+        <a href="https://media.dcreager.net/github_cross_project_code_navigation.webm"><span class="glyphicon glyphicon-facetime-video"></span>Video (WebM/VP9)</a>
+        <a href="https://media.dcreager.net/github_cross_project_code_navigation.mp4"><span class="glyphicon glyphicon-facetime-video"></span>Video (mp4)</a>
+        <a href="https://fosdem.org/2020/schedule/event/github_cross_project_code_navigation/attachments/slides/3885/export/events/attachments/github_cross_project_code_navigation/slides/3885/dcreager_fosdem_2020.pdf"><span class="glyphicon glyphicon-picture"></span>Slides</a>
+      </div>
+    </div>
     <div class="talk-abstract">
       <p>
       GitHub has recently added Code Navigation features (jump to definition and
@@ -146,21 +187,24 @@
       repository boundaries.
       </p>
     </div>
-    <ul class="details">
-      <li>
-        <a href="2020-fosdem/"><span class="glyphicon glyphicon-stats"></span>Details</a>
-      </li>
-    </ul>
   </li>
 
-  <li class="reference">
-    <div class="talk-title">The Pastry peer-to-peer overlay network</div>
-    <ul class="details">
-      <li>
-        <a href="https://www.meetup.com/Papers-We-Love-Boston-Cambridge/events/252763348/">Papers We Love Boston-Cambridge</a>
-      </li>
-      <li class="date">July 2018</li>
-    </ul>
+  <li>
+    <div class="talk-title">
+      <a href="2018-pwl-pastry/">The Pastry peer-to-peer overlay network</a>
+    </div>
+    <div class=talk>
+      <div class=location>
+        <span class=event>
+          <a href="https://www.meetup.com/Papers-We-Love-Boston-Cambridge/events/252763348/">Papers We Love Boston-Cambridge</a>
+        </span>
+        <span class=date>July 2018</span>
+      </div>
+      <div class=links>
+        <a href="https://www.youtube.com/watch?v=o-mPW4tRrKw"><span class="glyphicon glyphicon-facetime-video"></span>Video</a>
+        <a href="https://docs.google.com/presentation/d/1-65NY-k9NchmrxRAQBbOOEkqXU5zdT9dREKS-PfVEMQ/"><span class="glyphicon glyphicon-picture"></span>Slides</a>
+      </div>
+    </div>
     <div class="talk-abstract">
       <p>
       The early 2000's saw several research groups look into distributed hash
@@ -172,21 +216,24 @@
       anycast/multicast messaging on top of the Pastry overlay network.
       </p>
     </div>
-    <ul class="details">
-      <li>
-        <a href="2018-pwl-pastry/"><span class="glyphicon glyphicon-stats"></span>Details</a>
-      </li>
-    </ul>
   </li>
 
-  <li class="reference">
-    <div class="talk-title">Real-time packet analysis at scale</div>
-    <ul class="details">
-      <li>
-        <a href="http://monitorama.com/2017/pdx.html">Monitorama PDX 2017</a>
-      </li>
-      <li class="date">May 2017</li>
-    </ul>
+  <li>
+    <div class="talk-title">
+      <a href="2017-monitorama/">Real-time packet analysis at scale</a>
+    </div>
+    <div class=talk>
+      <div class=location>
+        <span class=event>
+          <a href="http://monitorama.com/2017/pdx.html">Monitorama PDX 2017</a>
+        </span>
+        <span class=date>May 2017</span>
+      </div>
+      <div class=links>
+        <a href="https://vimeo.com/221056132"><span class="glyphicon glyphicon-facetime-video"></span>Video</a>
+        <a href="https://speakerdeck.com/dcreager/real-time-packet-analysis-at-scale-monitorama-pdx-2017"><span class="glyphicon glyphicon-picture"></span>Slides</a>
+      </div>
+    </div>
     <div class="talk-abstract">
       <p>
       Your application depends on the network more than you might realize.  Are
@@ -204,21 +251,23 @@
       detect network problems that affect what your users experience.
       </p>
     </div>
-    <ul class="details">
-      <li>
-        <a href="2017-monitorama/"><span class="glyphicon glyphicon-stats"></span>Details</a>
-      </li>
-    </ul>
   </li>
 
-  <li class="reference">
-    <div class="talk-title">An oversimplified history of CSP</div>
-    <ul class="details">
-      <li>
-        <a href="https://www.meetup.com/Papers-We-Love-Boston-Cambridge/events/234829295/">Papers We Love Boston-Cambridge</a>
-      </li>
-      <li class="date">October 2016</li>
-    </ul>
+  <li>
+    <div class="talk-title">
+      <a href="2016-pwl-csp/">An oversimplified history of CSP</a>
+    </div>
+    <div class=talk>
+      <div class=location>
+        <span class=event>
+          <a href="https://www.meetup.com/Papers-We-Love-Boston-Cambridge/events/234829295/">Papers We Love Boston-Cambridge</a>
+        </span>
+        <span class=date>October 2016</span>
+      </div>
+      <div class=links>
+        <a href="https://docs.google.com/presentation/d/1EUOK5qZBdzKTUGbI3iMhHnhwI60pVsg8ISm3jB1D_K8/"><span class="glyphicon glyphicon-picture"></span>Slides</a>
+      </div>
+    </div>
     <div class="talk-abstract">
       <p>
       Communicating Sequential Processes (CSP) was first described by Tony Hoare
@@ -236,21 +285,23 @@
       prove things about interesting systems.  (No proving things by hand!)
       </p>
     </div>
-    <ul class="details">
-      <li>
-        <a href="2016-pwl-csp/"><span class="glyphicon glyphicon-stats"></span>Details</a>
-      </li>
-    </ul>
   </li>
 
-  <li class="reference">
-    <div class="talk-title">“The early history of Smalltalk”</div>
-    <ul class="details">
-      <li>
-        <a href="https://www.meetup.com/Papers-We-Love-Boston-Cambridge/events/230987877/">Papers We Love Boston-Cambridge</a>
-      </li>
-      <li class="date">May 2016</li>
-    </ul>
+  <li>
+    <div class="talk-title">
+      <a href="2016-pwl-smalltalk/">“The early history of Smalltalk”</a>
+    </div>
+    <div class=talk>
+      <div class=location>
+        <span class=event>
+          <a href="https://www.meetup.com/Papers-We-Love-Boston-Cambridge/events/230987877/">Papers We Love Boston-Cambridge</a>
+        </span>
+        <span class=date>May 2016</span>
+      </div>
+      <div class=links>
+        <a href="https://docs.google.com/presentation/d/17_PoiQZjbH8WdWu4FtmNiIO-LVilR0y8s2tCJHoAgsc/"><span class="glyphicon glyphicon-picture"></span>Slides</a>
+      </div>
+    </div>
     <div class="talk-abstract">
       <p>
       History! Those who don't know it are doomed to etc.
@@ -265,20 +316,23 @@
       1970's-era ur-tablet!
       </p>
     </div>
-    <ul class="details">
-      <li>
-        <a href="2016-pwl-smalltalk/"><span class="glyphicon glyphicon-stats"></span>Details</a>
-    </ul>
   </li>
 
-  <li class="reference">
-    <div class="talk-title">An introduction to Apache Avro</div>
-    <ul class="details">
-      <li>
-        <a href="http://mil-oss.org/wg3-speakers-and-presentations">Mil-OSS Working Group 3</a>
-      </li>
-      <li class="date">August 2011</li>
-    </ul>
+  <li>
+    <div class="talk-title">
+      <a href="2011-avro/">An introduction to Apache Avro</a>
+    </div>
+    <div class=talk>
+      <div class=location>
+        <span class=event>
+          <a href="http://mil-oss.org/wg3-speakers-and-presentations">Mil-OSS Working Group 3</a>
+        </span>
+        <span class=date>August 2011</span>
+      </div>
+      <div class=links>
+        <a href="https://speakerdeck.com/dcreager/an-introduction-to-apache-avro"><span class="glyphicon glyphicon-picture"></span>Slides</a>
+      </div>
+    </div>
     <div class="talk-abstract">
       <p>
       This talk was an overview of the Apache Avro data serialization framework.
@@ -286,11 +340,6 @@
       instead of XML, JSON, or rolling your own custom format.
       </p>
     </div>
-    <ul class="details">
-      <li>
-        <a href="2011-avro/"><span class="glyphicon glyphicon-stats"></span>Details</a>
-      </li>
-    </ul>
   </li>
 
 </ol>

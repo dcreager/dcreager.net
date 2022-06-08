@@ -343,7 +343,7 @@ ol.publications {
 li.reference {
     margin-left: 36px;
     margin-top: 12px;
-    margin-bottom: 24px;
+    margin-bottom: 12px;
     clear: both;
 }
 
@@ -356,79 +356,8 @@ li.reference div.citation_number {
     margin-right: -35px;
 }
 
-li.reference .talk {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 0px;
-    margin-bottom: 0px;
-}
-
-li.reference .talk .location .event {
-    font-style: italic;
-}
-
-li.reference .talk .location .date:before {
-    content: "·";
-    margin-left: 3px;
-    margin-right: 6px;
-}
-
-li.reference .talk .links a {
-    margin-left: 6px;
-}
-
-li.reference .talk .links a span.glyphicon {
-    margin-right: 0.5em;
-}
-
-li.reference ul.details {
-    list-style-type: none;
-    padding-left: 0px;
-    margin-left: -5px;
-    margin-top: 0px;
-    margin-bottom: 0px;
-}
-
-li.reference ul.details li {
-    display: inline;
-    margin: auto 5px;
-}
-
-li.reference ul.details li.event {
-    font-style: italic;
-}
-
-li.reference ul.details li.date:before {
-    content: "·";
-    margin-left: -6px;
-    padding-right: 6px;
-}
-
-li.reference ul.details li.link {
-    margin-left: 6px;
-}
-
-li.reference ul.details span.glyphicon {
-    margin-right: 0.5em;
-}
-
 li.reference div.citation {
     display: inline;
-}
-
-li.reference div.talk-title {
-    font-weight: bold;
-    margin-left: -16px;
-}
-
-li.reference div.talk-date:before {
-    content: "·";
-    padding: 0 4px;
-    margin-right: 4px;
-}
-
-li.reference div.talk-abstract {
-    margin-top: 8px;
 }
 
 li.reference div.note {
@@ -468,6 +397,56 @@ li.reference div.downloads {
         right: -36px;
         margin-left: -35px;
     }
+}
+
+
+/*----------------------------------------------------------------
+ * Talks
+ */
+
+ol.talks {
+    list-style-type: none;
+    padding-left: 0px;
+}
+
+ol.talks li {
+    margin-left: 36px;
+    margin-top: 12px;
+    margin-bottom: 36px;
+}
+
+.talk {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+.talk .location .event {
+    font-style: italic;
+}
+
+.talk .location .date:before {
+    content: "·";
+    margin-left: 3px;
+    margin-right: 6px;
+}
+
+.talk .links a {
+    margin-left: 6px;
+}
+
+.talk .links a span.glyphicon {
+    margin-right: 0.5em;
+}
+
+.talk-title {
+    font-weight: bold;
+    margin-left: -16px;
+}
+
+.talk-abstract {
+    margin-top: 8px;
 }
 
 
