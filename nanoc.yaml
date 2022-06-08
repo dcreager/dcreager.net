@@ -17,7 +17,7 @@ string_pattern_type: glob
 data_sources:
   - type: filesystem
     extra_files:
-      - "**/.htaccess"
+      - ".nginx.conf"
       - ".well-known/**/*"
 
 deploy:

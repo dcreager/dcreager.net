@@ -47,7 +47,7 @@ compile '/**/*.markdown' do
   write item.identifier.without_ext + '/index.html'
 end
 
-compile '/**/.htaccess' do
+compile '/.nginx.conf' do
   write item.identifier
 end
 
