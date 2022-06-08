@@ -8,48 +8,34 @@ title: Talks
 <ol class="publications">
 
   <li class="reference">
-    <div class="talk-title">Incremental, zero-config Code Navigation using stack graphs</div>
-    <ul class="details">
-      <li>
-        <a href="https://thestrangeloop.com/2021/incremental-zero-config-code-nav-using-stack-graphs.html">Strange Loop</a>
-      </li>
-      <li class="date">October 2021</li>
-    </ul>
-    <div class="talk-abstract">
-      <p>
-      Exploring a large or unfamiliar codebase can be tricky. Code Navigation
-      features like “jump to definition” and “find all references” let you
-      discover how different pieces of code relate to each other. To power these
-      features, we need to extract lists of symbols from the code, and describe
-      the language-specific rules for how those symbols relate to each other.
-      </p>
-
-      <p>
-      It’s difficult to add Code Nav to a large hosted service like GitHub,
-      where we must support hundreds of programming languages, hundreds of
-      millions of repositories, and petabytes of history. At this scale, we have
-      a different set of design constraints than a local IDE. We need our data
-      extraction to be incremental, so that we can reuse previous results for
-      files that haven’t changed in a newly pushed commit, saving both compute
-      and storage costs. And to support cross-repo lookups, it should require
-      zero configuration — repo owners should not have to set up anything
-      manually to activate the feature.
-      </p>
-
-      <p>
-      In this talk I’ll describe stack graphs, which use a graphical notation to
-      define the name binding rules for a programming language. They work
-      equally well for dynamic languages like Python and JavaScript, and for
-      static languages like Go and Java. Our solution is fast — processing most
-      commits within seconds of us receiving your push. It does not require
-      setting up a CI job, or tapping into a project-specific build process. And
-      it is open-source, building on the tree-sitter project’s existing
-      ecosystem of language tools.
-      </p>
+    <div class="talk-title">
+      <a href="stack-graphs/">Incremental, zero-config Code Navigation using stack graphs</a>
     </div>
     <ul class="details">
-      <li>
-        <a href="2021-strange-loop/"><span class="glyphicon glyphicon-stats"></span>Details</a>
+      <li class="event">
+        Strange Loop
+      </li>
+      <li class="date">October 2021</li>
+      <li class="link">
+        <a href="https://youtu.be/l2R1PTGcwrE"><span class="glyphicon glyphicon-facetime-video"></span>Video</a>
+      </li>
+      <li class="link">
+        <a href="https://media.dcreager.net/dcreager-strange-loop-2021-slides.pdf"><span class="glyphicon glyphicon-picture"></span>Slides</a>
+      </li>
+      <li class="link">
+        <a href="https://thestrangeloop.com/2021/incremental-zero-config-code-nav-using-stack-graphs.html"><span class="glyphicon glyphicon-calendar"></span>Event</a>
+      </li>
+    </ul>
+    <ul class="details">
+      <li class="event">
+        UCSC LSD Seminar
+      </li>
+      <li class="date">May 2022</li>
+      <li class="link">
+        <a href="https://media.dcreager.net/dcreager-2022-ucsc-lsd-slides.pdf"><span class="glyphicon glyphicon-picture"></span>Slides</a>
+      </li>
+      <li class="link">
+        <a href="https://lsd.ucsc.edu/lsd-seminar/2022sp/#may-27"><span class="glyphicon glyphicon-calendar"></span>Event</a>
       </li>
     </ul>
   </li>

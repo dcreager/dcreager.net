@@ -25,3 +25,5 @@ Redirect 301 /2016/11/hst-intro/ /hst/intro/
 Redirect 301 /2016/11/refinement-overview/ /hst/refinement-overview/
 Redirect 301 /2016/11/semantic-methods/ /hst/semantic-methods/
 Redirect 301 /2017/01/lazy-processes/ /hst/lazy-processes/
+
+Redirect 301 /talks/2021-strange-loop/ /talks/stack-graphs/

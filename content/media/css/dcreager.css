@@ -343,7 +343,7 @@ ol.publications {
 li.reference {
     margin-left: 36px;
     margin-top: 12px;
-    margin-bottom: 12px;
+    margin-bottom: 24px;
     clear: both;
 }
 
@@ -360,6 +360,8 @@ li.reference ul.details {
     list-style-type: none;
     padding-left: 0px;
     margin-left: -5px;
+    margin-top: 0px;
+    margin-bottom: 0px;
 }
 
 li.reference ul.details li {
@@ -367,10 +369,18 @@ li.reference ul.details li {
     margin: auto 5px;
 }
 
+li.reference ul.details li.event {
+    font-style: italic;
+}
+
 li.reference ul.details li.date:before {
     content: "·";
     margin-left: -6px;
     padding-right: 6px;
+}
+
+li.reference ul.details li.link {
+    margin-left: 6px;
 }
 
 li.reference ul.details span.glyphicon {
