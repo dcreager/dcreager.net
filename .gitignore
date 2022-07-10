@@ -3,3 +3,5 @@ crash.log
 .bundle
 /.keys/**
 !/.keys/.keep
+.posts.txt
+.posts-20.txt
