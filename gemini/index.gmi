@@ -2,6 +2,11 @@
 
 This is the Gemini space of Douglas Creager. Welcome!
 
+I've started keeping “evergreen notes”, inspired by Andy Matuschak.
+
+=> gemini://notes.dcreager.net/ Evergreen notes
+=> https://notes.andymatuschak.org/About_these_notes Andy Matuschak's description of evergreen notes
+
 ## Recent posts
 
 => tree-sitter/map.gmi 2021-06-14: A map of the tree-sitter ecosystem
