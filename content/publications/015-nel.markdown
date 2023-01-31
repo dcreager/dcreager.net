@@ -11,9 +11,6 @@ description: >-
 <ol class="publications">
 <li class="reference">
   <div class="citation_number">[15]</div>
-  <div class="details">
-    <a href="015-nel/"><span class="glyphicon glyphicon-list-alt"></span></a>
-  </div>
   <div class="citation">
     S Burnett, L Chen, DA Creager, M Efimov, I Grigorik, B Jones, HV Madhyastha,
     P Papageorge, B Rogan, C Stahl, and J Tuttle.

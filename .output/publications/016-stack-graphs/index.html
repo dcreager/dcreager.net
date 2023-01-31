@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>
+    dcreager.net – Stack graphs: Name resolution at scale
+  </title>
+  <meta name="author" content="Douglas Creager">
+
+    <meta charset="utf-8">
+
+  <meta name="google-site-verification"
+        content="7KIoYPNsfdDxIdX1QQ7SM2Nm_nyy13aRlDkzE3wzhhY" />
+
+  <link rel="me" href="https://mastodon.dcreager.net/@dcreager" />
+  <link rel="icon" type="image/x-icon" href="/media/images/imperial-logo.ico"/>
+  <link rel="alternate" type="application/atom+xml"
+        title="dcreager.net" href="/atom.xml"/>
+
+  <!-- Bootstrap -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel=stylesheet type=text/css media=screen
+        href="/media/vendor/css/bootstrap.min.css">
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+  <![endif]-->
+
+  <!-- MathJax -->
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      jax: ["input/TeX","output/HTML-CSS"],
+      displayAlign: "left",
+      displayIndent: "2em"
+    });
+  </script>
+  <script type="text/javascript" async
+          src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+  </script>
+
+  <!-- Twitter nonsense -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="@dcreager">
+  <meta name="twitter:title"
+        content="Stack graphs: Name resolution at scale">
+  <meta name="twitter:description"
+        content="EVCS 2023, Delft, Netherlands">
+  <meta name="twitter:image"
+        content="https://www.gravatar.com/avatar/04ee3ca11f1ae11c63faa7995dbf1ed7?s=2048">
+
+  <!-- Customizations -->
+  <link rel=stylesheet type=text/css media=screen
+        href="/media/css/coderay.css">
+  <link rel=stylesheet type=text/css media=screen
+        href="/media/css/dcreager.css">
+  <link rel=stylesheet type=text/css media=screen
+        href="https://fonts.googleapis.com/css?family=Oxygen:400,700">
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+  <div class="col-md-10 col-md-offset-1">
+    <nav class="navbar navbar-default" role="navigation">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand logo" href="/"><b>dcreager.net</b></a>
+      </div>
+
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="/about/">About</a></li></li>
+          <li><a href="/archive/">Archive</a></li></li>
+          <li><a href="https://buttondown.email/dcreager/">Newsletter</a></li></li>
+          <li><a href="/talks/">Talks</a></li></li>
+          <li><a href="/publications/">Publications</a></li></li>
+        </ul>
+      </div><!-- /.navbar-collapse -->
+    </nav>
+  </div>
+</div>
+
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        <h1 id="publication-details">Publication details</h1>
+
+<ol class="publications">
+<li class="reference">
+  <div class="citation_number">[16]</div>
+  <div class="citation">
+    DA Creager and H van Antwerpen.
+
+    “Stack graphs: Name resolution at scale.”
+
+    In <em>Eelco Visser Commemorative Symposium (EVCS 2023)</em>.
+
+    April 2023.
+
+    Delft, Netherlands.
+  </div>
+
+  <div class="downloads">
+    <a href="stack-graphs.pdf">
+    <button type="button" class="btn btn-primary">
+      <span class="glyphicon glyphicon-download"></span> PDF
+    </button>
+    </a>
+  </div>
+</li>
+</ol>
+
+<h2 id="abstract">Abstract</h2>
+
+<p>We present <em>stack graphs</em>, an extension of Visser et al.’s scope graphs
+framework. Stack graphs power Precise Code Navigation at GitHub, allowing users
+to navigate name binding references both within and across repositories. Like
+scope graphs, stack graphs encode the name binding information about a program
+in a graph structure, in which paths represent valid name bindings. Resolving a
+reference to its definition is then implemented with a simple path-finding
+search.</p>
+
+<p>GitHub hosts millions of repositories, containing petabytes of total code,
+implemented in hundreds of different programming languages, and receiving
+thousands of pushes per minute. To support this scale, we ensure that the graph
+construction and path-finding judgments are <em>file-incremental</em>: for each
+source file, we create an isolated subgraph without any knowledge of, or
+visibility into, any other file in the program. This lets us eliminate the
+storage and compute costs of reanalyzing file versions that we have already
+seen. Since most commits change a small fraction of the files in a repository,
+this greatly amortizes the operational costs of indexing large, frequently
+changed repositories over time. To handle type-directed name lookups (which
+require “pausing” the current lookup to resolve another name), our name
+resolution algorithm maintains a stack of the currently paused (but still
+pending) lookups. Stack graphs can be constructed via a purely syntactic
+analysis of the program’s source code, using a new declarative <em>graph
+construction language</em>. This means that we can extract name binding
+information for every repository without any per-package configuration, and
+without having to invoke an arbitrary, untrusted, package-specific build
+process.</p>
+
+      </div>
+    </div> <!-- /row -->
+  </div> <!-- /container -->
+
+    <footer class="copyright">
+    <div class="container">
+      <p>Copyright © 2009-2022, Douglas Creager.
+      All&nbsp;rights&nbsp;reserved.</p>
+    </div>
+  </footer>
+
+    <script src="//code.jquery.com/jquery.min.js"></script>
+  <script src="/media/vendor/js/bootstrap.min.js"></script>
+
+<!-- Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-83885503-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+</html>
