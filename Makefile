@@ -1,4 +1,4 @@
-.PHONY: all clean deploy gemhtml gemini
+.PHONY: all clean deploy gemhtml gemini serve
 
 GEMHTML = .html
 GENERATE = generate/generate
@@ -6,6 +6,8 @@ GENERATE_SRC = \
     generate/gemtext.go \
     generate/gmnitohtml.go \
     generate/main.go
+
+LIGHTTPD ?= lighttpd
 
 all: gemhtml
 
@@ -28,3 +30,7 @@ gemhtml: $(GENERATE)
 $(GENERATE): $(GENERATE_SRC)
 	@echo Compiling generator...
 	@go build -o $@ ./generate
+
+serve: gemhtml
+	@echo Starting server on http://localhost:3000/
+	@$(LIGHTTPD) -f lighttpd.conf -i 600
