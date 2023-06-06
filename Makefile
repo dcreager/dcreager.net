@@ -1,6 +1,15 @@
-.PHONY: all deploy gemini
+.PHONY: all clean deploy gemhtml gemini
 
-all:
+GEMHTML = .html
+GENERATE = generate/generate
+GENERATE_SRC = \
+    generate/main.go
+
+all: gemhtml
+
+clean:
+	@rm -f $(GENERATE)
+	@rm -rf $(GEMHTML)
 
 deploy:
 	@echo Deploying Gemini content...
@@ -9,3 +18,11 @@ deploy:
 gemini:
 	@echo Starting Gemini server at gemini://localhost/
 	@gmnisrv -C config/gmnisrv.ini
+
+gemhtml: $(GENERATE)
+	@echo Generating HTML...
+	@$(GENERATE)
+
+$(GENERATE): $(GENERATE_SRC)
+	@echo Compiling generator...
+	@go build -o $@ ./generate
