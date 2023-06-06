@@ -3,6 +3,8 @@
 GEMHTML = .html
 GENERATE = generate/generate
 GENERATE_SRC = \
+    generate/gemtext.go \
+    generate/gmnitohtml.go \
     generate/main.go
 
 all: gemhtml

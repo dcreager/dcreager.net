@@ -1,2 +1,3 @@
+go.sum        -diff -whitespace
 *.graffle     -diff -whitespace
 .output/**    -diff -whitespace

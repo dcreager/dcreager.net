@@ -42,7 +42,7 @@ func run() error {
 		output := path.Join(outputDir, base)
 
 		if ext == ".gmi" {
-			return nil
+			return translateGemtext(base, p, output, d)
 		}
 
 		return copyFile(base, p, output, d)
