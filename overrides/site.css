@@ -1,10 +1,88 @@
-/**** Styling ****/
+/**** Layout ****/
 
-html {
-    font-family: 'Iosevka SS18 Web';
-    font-weight: 300;
-    color: #080808;
+@media screen and (min-width: 103ch) {
+
+body {
+    display: grid;
+    grid-template-columns:
+      calc(20ch + (100vw - 20ch - 78ch) / 2)
+      calc(78ch + (100vw - 20ch - 78ch) / 2);
+    grid-template-rows: auto 1fr;
+    align-items: start;
+    justify-items: end;
+    column-gap: 0;
+    margin: 0;
 }
+
+header {
+    width: 20ch;
+    grid-column: 1;
+    grid-row: 1;
+}
+
+header .logo {
+    text-align: center;
+    margin-bottom: 0;
+}
+
+header img {
+    width: 7ch;
+}
+
+header h1 {
+    text-align: center;
+    margin-top: 0;
+}
+
+header .footerlink {
+    display: none;
+}
+
+footer {
+    width: 20ch;
+    grid-column: 1;
+    grid-row: 2;
+}
+
+footer h1 {
+    display: none;
+}
+
+footer ul {
+    margin: 0;
+    padding: 0;
+}
+
+footer ul li {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    text-align: center;
+}
+
+footer .copyright {
+    margin-top: 2em;
+    text-align: center;
+}
+
+.main {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    overflow: auto;
+    padding-top: 0;
+    padding-bottom: 0;
+    padding-left: 8ch;
+    padding-right: calc((100vw - 20ch - 78ch) / 2);
+    max-height: 100vh;
+}
+
+article {
+    width: 70ch;
+}
+
+}
+
+@media not screen, screen and (max-width: calc(103ch - 1px)) {
 
 body {
     max-width: 70ch;
@@ -12,8 +90,85 @@ body {
     padding: 1rem 2rem;
 }
 
+header {
+    display: grid;
+    grid-template-columns: auto auto 1fr;
+    grid-template-rows: auto;
+    column-gap: 1ch;
+    align-items: center;
+}
+
+header .logo {
+    grid-column: 1;
+    grid-row: 1;
+    margin: 0;
+}
+
+header img {
+    width: 4ch;
+}
+
+header h1 {
+    grid-column: 2;
+    grid-row: 1;
+    margin: -0.5ex 0 0 0;
+}
+
+header .footerlink {
+    grid-column: 3;
+    grid-row: 1;
+    text-align: right;
+    font-weight: 700;
+    margin: 0;
+}
+
+header .footerlink a {
+    text-decoration: none;
+}
+
+footer h1 {
+    margin-top: 1.6em;
+}
+
+footer .copyright br {
+    display: none;
+}
+
+footer ul li {
+    list-style: none;
+}
+
+}
+
+@media print {
+
+header, footer * {
+    display: none;
+}
+
+footer .copyright {
+    display: block;
+}
+
+
+}
+
+/**** Styling ****/
+
+:root {
+    font-family: 'Iosevka SS18 Web';
+    font-weight: 300;
+    color: #080808;
+}
+
+footer .copyright {
+    font-size: 70%;
+    color: #777;
+}
+
 h1, h2, h3 {
     font-family: sans-serif;
+    margin: 0.8em 0;
 }
 
 h1 {
@@ -39,20 +194,20 @@ ul {
     padding-left: 4ch;
 }
 
-li {
+.gemtext li {
     padding: 0;
 }
 
-li:not(:last-child) {
+.gemtext li:not(:last-child) {
     margin-bottom: 0.5rem;
 }
 
-a {
+.gemtext a {
     position: relative;
     font-weight: 400;
 }
 
-a:before {
+.gemtext a:before {
     content: '⇒';
     color: #999;
     text-decoration: none;

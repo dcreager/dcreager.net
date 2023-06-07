@@ -8,6 +8,29 @@
   <link rel="stylesheet" type="text/css" href="/site.css">
 </head>
 <body>
+<header>
+  <p class=logo><img src="/media/images/imperial-logo.png"></p>
+  <h1>dcreager.net</h1>
+  <p class=footerlink><a href="#footer">↓</a></p>
+</header>
+<div class=main>
 {{ .RenderedGemtext -}}
+</div>
+<footer id=footer>
+  <h1>Sitemap</h1>
+  <ul>
+    <li><a href="/about/">About</a></li>
+    <li><a href="/updates/">Updates</a></li>
+    <li><a href="/talks/">Talks</a></li>
+    <li><a href="/publications/">Publications</a></li>
+  </ul>
+  <p class=copyright>
+  Copyright © 2009-2023,
+  <br>
+  Douglas Creager.
+  <br>
+  All rights reserved.
+  </p>
+</footer>
 </body>
 </html>
