@@ -39,6 +39,7 @@ import (
 
 type HTMLWriter struct {
 	out      io.Writer
+	started  bool
 	pre      bool
 	list     bool
 	br       bool
@@ -62,6 +63,10 @@ func (h *HTMLWriter) closeSection(level int) {
 }
 
 func (h *HTMLWriter) Handle(line gemini.Line) {
+	if !h.started {
+		fmt.Fprint(h.out, "<article class=gemtext>\n")
+		h.started = true
+	}
 	if _, ok := line.(gemini.LineListItem); ok {
 		if !h.list {
 			h.list = true
@@ -151,4 +156,5 @@ func (h *HTMLWriter) Finish() {
 	h.closeSection(3)
 	h.closeSection(2)
 	h.closeSection(1)
+	fmt.Fprint(h.out, "</article> <!-- gemtext -->\n")
 }
