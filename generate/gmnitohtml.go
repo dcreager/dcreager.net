@@ -38,6 +38,7 @@ import (
 )
 
 type HTMLWriter struct {
+	isRoot    bool
 	out       io.Writer
 	Title     string
 	haveTitle bool
@@ -82,14 +83,17 @@ func (h *HTMLWriter) Handle(line gemini.Line) {
 	switch line := line.(type) {
 	case gemini.LineLink:
 		href := line.URL
+		parsed, err := url.Parse(href)
+		if err != nil {
+			panic(err)
+		}
 		if strings.HasSuffix(href, ".gmi") {
-			parsed, err := url.Parse(href)
-			if err != nil {
-				panic(err)
-			}
 			if !parsed.IsAbs() {
 				href = translateGmiPath(parsed.String())
 			}
+		}
+		if !h.isRoot && !parsed.IsAbs() {
+			href = "../" + href
 		}
 		href = html.EscapeString(href)
 		name := html.EscapeString(line.Name)

@@ -89,7 +89,10 @@ func translateGemtext(base, from, to string, d fs.DirEntry) error {
 	defer out.Close()
 
 	var content strings.Builder
-	hw := HTMLWriter{out: &content}
+	hw := HTMLWriter{
+		out:    &content,
+		isRoot: path.Base(base) == "index.gmi",
+	}
 	gemini.ParseLines(in, hw.Handle)
 	hw.Finish()
 
