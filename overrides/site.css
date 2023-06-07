@@ -36,8 +36,7 @@ blockquote {
 }
 
 ul {
-    margin-left: 0;
-    padding: 0;
+    padding-left: 4ch;
 }
 
 li {
