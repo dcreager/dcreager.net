@@ -15,9 +15,15 @@ clean:
 	@rm -f $(GENERATE)
 	@rm -rf $(GEMHTML)
 
-deploy:
+deploy: deploy-gemini deploy-html
+
+deploy-gemini:
 	@echo Deploying Gemini content...
 	@rsync -pgrlvz --delete-after --chmod=ug=rwX,o=rX --groupmap=*:http gemini/ zeta.dcreager.net:/srv/gemini/dcreager.net
+
+deploy-html: gemhtml
+	@echo Deploying HTML content...
+	@rsync -pgrlvz --delete-after --chmod=ug=rwX,o=rX --groupmap=*:http .html/ zeta.dcreager.net:/srv/http/notes.dcreager.net
 
 gemini:
 	@echo Starting Gemini server at gemini://localhost/
