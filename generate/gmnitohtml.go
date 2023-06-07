@@ -38,12 +38,14 @@ import (
 )
 
 type HTMLWriter struct {
-	out      io.Writer
-	started  bool
-	pre      bool
-	list     bool
-	br       bool
-	sections [3]bool
+	out       io.Writer
+	Title     string
+	haveTitle bool
+	started   bool
+	pre       bool
+	list      bool
+	br        bool
+	sections  [3]bool
 }
 
 func (h *HTMLWriter) openSection(level int) {
@@ -111,6 +113,10 @@ func (h *HTMLWriter) Handle(line gemini.Line) {
 	case gemini.LinePreformattedText:
 		fmt.Fprintf(h.out, "%s\n", html.EscapeString(string(line)))
 	case gemini.LineHeading1:
+		if !h.haveTitle {
+			h.Title = string(line)
+			h.haveTitle = true
+		}
 		h.closeSection(3)
 		h.closeSection(2)
 		h.closeSection(1)

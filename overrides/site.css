@@ -16,6 +16,18 @@ h1, h2, h3 {
     font-family: sans-serif;
 }
 
+h1 {
+    font-size: 140%;
+}
+
+h2 {
+    font-size: 120%;
+}
+
+h3 {
+    font-size: 110%;
+}
+
 blockquote {
     background-color: #eee;
     border-left: 3px solid #444;
