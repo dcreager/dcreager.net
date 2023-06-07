@@ -1,3 +1,6 @@
+// This file was originally extracted from https://git.sr.ht/~adnano/gmnitohtml/
+// under the following copyright:
+//
 // Copyright (c) 2021 Adnan Maolood
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -17,6 +20,10 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
+//
+// Later edits to the file are
+//
+// Copyright (c) 2023 Douglas Creager
 
 package main
 
@@ -31,10 +38,27 @@ import (
 )
 
 type HTMLWriter struct {
-	out  io.Writer
-	pre  bool
-	list bool
-	br   bool
+	out      io.Writer
+	pre      bool
+	list     bool
+	br       bool
+	sections [3]bool
+}
+
+func (h *HTMLWriter) openSection(level int) {
+	for i := 1; i <= level; i++ {
+		if !h.sections[i-1] {
+			fmt.Fprintf(h.out, "<section class=level%d>\n", i)
+			h.sections[i-1] = true
+		}
+	}
+}
+
+func (h *HTMLWriter) closeSection(level int) {
+	if h.sections[level-1] {
+		fmt.Fprintf(h.out, "</section> <!-- level %d -->\n", level)
+		h.sections[level-1] = false
+	}
 }
 
 func (h *HTMLWriter) Handle(line gemini.Line) {
@@ -82,10 +106,19 @@ func (h *HTMLWriter) Handle(line gemini.Line) {
 	case gemini.LinePreformattedText:
 		fmt.Fprintf(h.out, "%s\n", html.EscapeString(string(line)))
 	case gemini.LineHeading1:
+		h.closeSection(3)
+		h.closeSection(2)
+		h.closeSection(1)
+		h.openSection(1)
 		fmt.Fprintf(h.out, "<h1>%s</h1>\n", html.EscapeString(string(line)))
 	case gemini.LineHeading2:
+		h.closeSection(3)
+		h.closeSection(2)
+		h.openSection(2)
 		fmt.Fprintf(h.out, "<h2>%s</h2>\n", html.EscapeString(string(line)))
 	case gemini.LineHeading3:
+		h.closeSection(3)
+		h.openSection(3)
 		fmt.Fprintf(h.out, "<h3>%s</h3>\n", html.EscapeString(string(line)))
 	case gemini.LineListItem:
 		fmt.Fprintf(h.out, "<li>%s</li>\n", html.EscapeString(string(line)))
@@ -115,4 +148,7 @@ func (h *HTMLWriter) Finish() {
 	if h.list {
 		fmt.Fprint(h.out, "</ul>\n")
 	}
+	h.closeSection(3)
+	h.closeSection(2)
+	h.closeSection(1)
 }
