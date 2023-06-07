@@ -1,0 +1,110 @@
+/**** Styling ****/
+
+html {
+    font-family: 'Iosevka SS18 Web';
+    font-weight: 300;
+    color: #080808;
+}
+
+body {
+    max-width: 70ch;
+    margin: 0 auto;
+    padding: 1rem 2rem;
+}
+
+h1, h2, h3 {
+    font-family: sans-serif;
+}
+
+blockquote {
+    background-color: #eee;
+    border-left: 3px solid #444;
+    margin: 1rem -1rem 1rem calc(-1rem - 3px);
+    padding: 1rem;
+}
+
+ul {
+    margin-left: 0;
+    padding: 0;
+}
+
+li {
+    padding: 0;
+}
+
+li:not(:last-child) {
+    margin-bottom: 0.5rem;
+}
+
+a {
+    position: relative;
+    font-weight: 400;
+}
+
+a:before {
+    content: '⇒';
+    color: #999;
+    text-decoration: none;
+    font-weight: 700;
+    position: absolute;
+    left: -1.25rem;
+}
+
+pre {
+    background-color: #eee;
+    margin: 0 -1rem;
+    padding: 1rem;
+    overflow-x: auto;
+    font-family: 'Iosevka SS18 Web';
+    font-weight: 300;
+}
+
+@media(prefers-color-scheme:dark) {
+    :root {
+        background-color: #111;
+        color: #eee;
+    }
+
+    blockquote {
+        background-color: #000;
+    }
+
+    pre {
+        background-color: #222;
+    }
+}
+
+/**** Fonts ****/
+
+/* These are copied from fonts/iosevka-ss18.css, but with the font-display: swap
+ * lines removed, and with the src URLs reordered to prefer woff2. */
+
+@font-face {
+    font-family: 'Iosevka SS18 Web';
+    font-weight: 300;
+    font-stretch: normal;
+    font-style: normal;
+    src:
+      url('fonts/woff2/iosevka-ss18-light.woff2') format('woff2'),
+      url('fonts/ttf/iosevka-ss18-light.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Iosevka SS18 Web';
+    font-weight: 400;
+    font-stretch: normal;
+    font-style: normal;
+    src:
+      url('fonts/woff2/iosevka-ss18-regular.woff2') format('woff2'),
+      url('fonts/ttf/iosevka-ss18-regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Iosevka SS18 Web';
+    font-weight: 700;
+    font-stretch: normal;
+    font-style: normal;
+    src:
+      url('fonts/woff2/iosevka-ss18-bold.woff2') format('woff2'),
+      url('fonts/ttf/iosevka-ss18-bold.ttf') format('truetype');
+}

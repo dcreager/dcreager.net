@@ -17,18 +17,35 @@ func main() {
 	}
 }
 
+const outputDir = ".html"
+
+var count int
+
 func run() error {
+	start := time.Now()
+
 	home, err := os.UserHomeDir()
 	if err != nil {
 		return err
 	}
+	err = processSourceDir(path.Join(home, "notes"))
+	if err != nil {
+		return err
+	}
 
-	count := 0
-	start := time.Now()
-	sourceDir := path.Join(home, "notes")
-	outputDir := ".html"
+	err = processSourceDir("overrides")
+	if err != nil {
+		return err
+	}
+
+	duration := time.Since(start)
+	fmt.Printf("Processed %d files in %.2f seconds.\n", count, duration.Seconds())
+	return nil
+}
+
+func processSourceDir(sourceDir string) error {
 	sourceLen := len(sourceDir) + 1
-	err = filepath.WalkDir(sourceDir, func(p string, d fs.DirEntry, err error) error {
+	err := filepath.WalkDir(sourceDir, func(p string, d fs.DirEntry, err error) error {
 		if err != nil {
 			return err
 		}
@@ -51,8 +68,6 @@ func run() error {
 		return err
 	}
 
-	duration := time.Since(start)
-	fmt.Printf("Processed %d files in %.2f seconds.\n", count, duration.Seconds())
 	return nil
 }
 
