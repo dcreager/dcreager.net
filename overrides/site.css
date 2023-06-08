@@ -262,7 +262,7 @@ pre {
     margin: 0 -1rem;
     padding: 1rem;
     overflow-x: auto;
-    font-family: 'Iosevka SS18 Web';
+    font-family: 'Iosevka Term SS18 Web';
     font-weight: 300;
 }
 
@@ -329,4 +329,44 @@ pre {
     src:
       url('fonts/woff2/iosevka-ss18-bold.woff2') format('woff2'),
       url('fonts/ttf/iosevka-ss18-bold.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Iosevka Term SS18 Web';
+    font-weight: 300;
+    font-stretch: normal;
+    font-style: normal;
+    src:
+      url('fonts/woff2/iosevka-term-ss18-light.woff2') format('woff2'),
+      url('fonts/ttf/iosevka-term-ss18-light.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Iosevka Term SS18 Web';
+    font-weight: 300;
+    font-stretch: normal;
+    font-style: oblique;
+    src:
+      url('fonts/woff2/iosevka-term-ss18-lightoblique.woff2') format('woff2'),
+      url('fonts/ttf/iosevka-term-ss18-lightoblique.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Iosevka Term SS18 Web';
+    font-weight: 400;
+    font-stretch: normal;
+    font-style: normal;
+    src:
+      url('fonts/woff2/iosevka-term-ss18-regular.woff2') format('woff2'),
+      url('fonts/ttf/iosevka-term-ss18-regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Iosevka Term SS18 Web';
+    font-weight: 700;
+    font-stretch: normal;
+    font-style: normal;
+    src:
+      url('fonts/woff2/iosevka-term-ss18-bold.woff2') format('woff2'),
+      url('fonts/ttf/iosevka-term-ss18-bold.ttf') format('truetype');
 }

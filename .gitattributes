@@ -1,3 +1,5 @@
 go.sum        -diff -whitespace
 *.graffle     -diff -whitespace
 .output/**    -diff -whitespace
+/overrides/fonts/** -diff -whitespace
+/overrides/media/** -diff -whitespace
