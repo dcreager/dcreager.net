@@ -193,6 +193,18 @@ a:hover, a:focus {
     text-decoration: underline;
 }
 
+p {
+    margin: 1rem 0;
+}
+
+.nogap {
+    margin-top: -1rem;
+}
+
+.doublegap {
+    margin-top: 3rem;
+}
+
 blockquote {
     background-color: #eee;
     border-left: 3px solid #444;
@@ -206,6 +218,15 @@ ul {
 
 .gemtext li {
     padding: 0;
+    margin: 0.5rem 0;
+}
+
+.gemtext li.nogap {
+    margin-top: -0.5rem;
+}
+
+.gemtext li.doublegap {
+    margin-top: 1.5rem;
 }
 
 .gemtext li:not(:last-child) {

@@ -45,7 +45,7 @@ type HTMLWriter struct {
 	started   bool
 	pre       bool
 	list      bool
-	br        bool
+	blanks    int
 	sections  [3]bool
 }
 
@@ -62,6 +62,16 @@ func (h *HTMLWriter) closeSection(level int) {
 	if h.sections[level-1] {
 		fmt.Fprintf(h.out, "</section> <!-- level %d -->\n", level)
 		h.sections[level-1] = false
+	}
+}
+
+func (h *HTMLWriter) spacingClass() string {
+	if h.blanks == 0 {
+		return " class=nogap"
+	} else if h.blanks > 1 {
+		return " class=doublegap"
+	} else {
+		return ""
 	}
 }
 
@@ -100,16 +110,16 @@ func (h *HTMLWriter) Handle(line gemini.Line) {
 		if name == "" {
 			name = line.URL
 		}
-		fmt.Fprintf(h.out, "<p><a href='%s'>%s</a></p>\n", href, name)
+		fmt.Fprintf(h.out, "<p%s><a href='%s'>%s</a></p>\n", h.spacingClass(), href, name)
 	case gemini.LinePreformattingToggle:
 		h.pre = !h.pre
 		if h.pre {
 			alt := strings.TrimSpace(string(line))
 			if alt != "" {
 				alt = html.EscapeString(alt)
-				fmt.Fprintf(h.out, "<pre aria-label='%s'>\n", alt)
+				fmt.Fprintf(h.out, "<pre%s aria-label='%s'>\n", h.spacingClass(), alt)
 			} else {
-				fmt.Fprint(h.out, "<pre>\n")
+				fmt.Fprintf(h.out, "<pre%s>\n", h.spacingClass())
 			}
 		} else {
 			fmt.Fprint(h.out, "</pre>\n")
@@ -136,23 +146,20 @@ func (h *HTMLWriter) Handle(line gemini.Line) {
 		h.openSection(3)
 		fmt.Fprintf(h.out, "<h3>%s</h3>\n", html.EscapeString(string(line)))
 	case gemini.LineListItem:
-		fmt.Fprintf(h.out, "<li>%s</li>\n", html.EscapeString(string(line)))
+		fmt.Fprintf(h.out, "<li%s>%s</li>\n", h.spacingClass(), html.EscapeString(string(line)))
 	case gemini.LineQuote:
-		fmt.Fprintf(h.out, "<blockquote>%s</blockquote>\n", html.EscapeString(string(line)))
+		fmt.Fprintf(h.out, "<blockquote%s>%s</blockquote>\n", h.spacingClass(), html.EscapeString(string(line)))
 	case gemini.LineText:
 		if line == "" {
 			blank = true
-			if h.br {
-				fmt.Fprint(h.out, "<br/>\n")
-			} else {
-				h.br = true
-			}
 		} else {
-			fmt.Fprintf(h.out, "<p>%s</p>\n", html.EscapeString(string(line)))
+			fmt.Fprintf(h.out, "<p%s>%s</p>\n", h.spacingClass(), html.EscapeString(string(line)))
 		}
 	}
-	if h.br && !blank {
-		h.br = false
+	if blank {
+		h.blanks++
+	} else {
+		h.blanks = 0
 	}
 }
 
