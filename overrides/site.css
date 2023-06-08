@@ -266,6 +266,10 @@ pre {
     font-weight: 300;
 }
 
+article img {
+    max-width: 100%;
+}
+
 .gemtext .date {
     color: #999;
     font-style: oblique;

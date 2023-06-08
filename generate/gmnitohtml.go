@@ -52,6 +52,10 @@ type HTMLWriter struct {
 	sections  [3]bool
 }
 
+func isImage(p string) bool {
+	return strings.HasSuffix(p, ".png") || strings.HasSuffix(p, ".gif") || strings.HasSuffix(p, ".jpg")
+}
+
 func (h *HTMLWriter) openSection(level int) {
 	for i := 1; i <= level; i++ {
 		if !h.sections[i-1] {
@@ -124,7 +128,12 @@ func (h *HTMLWriter) Handle(line gemini.Line) {
 		if name == "" {
 			name = line.URL
 		}
-		fmt.Fprintf(h.out, "<p%s><a href='%s'>%s</a></p>\n", h.spacingClass(), href, name)
+
+		if isImage(href) {
+			fmt.Fprintf(h.out, "<p%s><img src=\"%s\" alt=\"%s\"></p>\n", h.spacingClass(), href, name)
+		} else {
+			fmt.Fprintf(h.out, "<p%s><a href=\"%s\">%s</a></p>\n", h.spacingClass(), href, name)
+		}
 	case gemini.LinePreformattingToggle:
 		h.pre = !h.pre
 		if h.pre {
