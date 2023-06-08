@@ -32,10 +32,13 @@ import (
 	"html"
 	"io"
 	"net/url"
+	"regexp"
 	"strings"
 
 	"git.sr.ht/~adnano/go-gemini"
 )
+
+var dateRegexp = regexp.MustCompile("^[0-9]{4}-[0-9]{2}-[0-9]{2}")
 
 type HTMLWriter struct {
 	isRoot    bool
@@ -65,14 +68,25 @@ func (h *HTMLWriter) closeSection(level int) {
 	}
 }
 
-func (h *HTMLWriter) spacingClass() string {
+func (h *HTMLWriter) spacingClass(classes ...string) string {
 	if h.blanks == 0 {
-		return " class=nogap"
+		classes = append(classes, "nogap")
 	} else if h.blanks > 1 {
-		return " class=doublegap"
-	} else {
+		classes = append(classes, "doublegap")
+	}
+	if len(classes) == 0 {
 		return ""
 	}
+	var css strings.Builder
+	css.WriteString(" class=\"")
+	for i, class := range classes {
+		if i > 0 {
+			css.WriteString(" ")
+		}
+		css.WriteString(class)
+	}
+	css.WriteString("\"")
+	return css.String()
 }
 
 func (h *HTMLWriter) Handle(line gemini.Line) {
@@ -148,7 +162,11 @@ func (h *HTMLWriter) Handle(line gemini.Line) {
 	case gemini.LineListItem:
 		fmt.Fprintf(h.out, "<li%s>%s</li>\n", h.spacingClass(), html.EscapeString(string(line)))
 	case gemini.LineQuote:
-		fmt.Fprintf(h.out, "<blockquote%s>%s</blockquote>\n", h.spacingClass(), html.EscapeString(string(line)))
+		if dateRegexp.MatchString(string(line)) {
+			fmt.Fprintf(h.out, "<p%s>%s</p>\n", h.spacingClass("date"), html.EscapeString(string(line)))
+		} else {
+			fmt.Fprintf(h.out, "<blockquote%s>%s</blockquote>\n", h.spacingClass(), html.EscapeString(string(line)))
+		}
 	case gemini.LineText:
 		if line == "" {
 			blank = true

@@ -266,6 +266,11 @@ pre {
     font-weight: 300;
 }
 
+.gemtext .date {
+    color: #999;
+    font-style: oblique;
+}
+
 @media(prefers-color-scheme:dark) {
     :root {
         background-color: #111;
@@ -294,6 +299,16 @@ pre {
     src:
       url('fonts/woff2/iosevka-ss18-light.woff2') format('woff2'),
       url('fonts/ttf/iosevka-ss18-light.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Iosevka SS18 Web';
+    font-weight: 300;
+    font-stretch: normal;
+    font-style: oblique;
+    src:
+      url('fonts/woff2/iosevka-ss18-lightoblique.woff2') format('woff2'),
+      url('fonts/ttf/iosevka-ss18-lightoblique.ttf') format('truetype');
 }
 
 @font-face {
