@@ -183,6 +183,16 @@ h3 {
     font-size: 110%;
 }
 
+a {
+    color: #428bca;
+    text-decoration: none;
+}
+
+a:hover, a:focus {
+    color: #2a6496;
+    text-decoration: underline;
+}
+
 blockquote {
     background-color: #eee;
     border-left: 3px solid #444;
