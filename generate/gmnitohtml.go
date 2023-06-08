@@ -132,7 +132,11 @@ func (h *HTMLWriter) Handle(line gemini.Line) {
 		if isImage(href) {
 			fmt.Fprintf(h.out, "<p%s><img src=\"%s\" alt=\"%s\"></p>\n", h.spacingClass(), href, name)
 		} else {
-			fmt.Fprintf(h.out, "<p%s><a href=\"%s\">%s</a></p>\n", h.spacingClass(), href, name)
+			linkClass := "local"
+			if parsed.IsAbs() {
+				linkClass = "remote"
+			}
+			fmt.Fprintf(h.out, "<p%s><a class=%s href=\"%s\">%s</a></p>\n", h.spacingClass(), linkClass, href, name)
 		}
 	case gemini.LinePreformattingToggle:
 		h.pre = !h.pre
