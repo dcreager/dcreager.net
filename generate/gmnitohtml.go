@@ -41,15 +41,16 @@ import (
 var dateRegexp = regexp.MustCompile("^[0-9]{4}-[0-9]{2}-[0-9]{2}")
 
 type HTMLWriter struct {
-	isRoot    bool
-	out       io.Writer
-	Title     string
-	haveTitle bool
-	started   bool
-	pre       bool
-	list      bool
-	blanks    int
-	sections  [3]bool
+	isRoot     bool
+	out        io.Writer
+	Title      string
+	haveTitle  bool
+	started    bool
+	blockquote bool
+	pre        bool
+	list       bool
+	blanks     int
+	sections   [3]bool
 }
 
 func isImage(p string) bool {
@@ -108,6 +109,7 @@ func (h *HTMLWriter) Handle(line gemini.Line) {
 		fmt.Fprint(h.out, "</ul>\n")
 	}
 	var blank bool
+	var blockquote bool
 	switch line := line.(type) {
 	case gemini.LineLink:
 		href := line.URL
@@ -175,10 +177,17 @@ func (h *HTMLWriter) Handle(line gemini.Line) {
 	case gemini.LineListItem:
 		fmt.Fprintf(h.out, "<li%s>%s</li>\n", h.spacingClass(), html.EscapeString(string(line)))
 	case gemini.LineQuote:
-		if dateRegexp.MatchString(string(line)) {
+		blockquote = true
+		if line == "" {
+			blank = true
+		} else if dateRegexp.MatchString(string(line)) {
 			fmt.Fprintf(h.out, "<p%s>%s</p>\n", h.spacingClass("date"), html.EscapeString(string(line)))
 		} else {
-			fmt.Fprintf(h.out, "<blockquote%s>%s</blockquote>\n", h.spacingClass(), html.EscapeString(string(line)))
+			class := h.spacingClass()
+			if h.blockquote {
+				class = " class=nogap"
+			}
+			fmt.Fprintf(h.out, "<blockquote%s>%s</blockquote>\n", class, html.EscapeString(string(line)))
 		}
 	case gemini.LineText:
 		if line == "" {
@@ -187,6 +196,7 @@ func (h *HTMLWriter) Handle(line gemini.Line) {
 			fmt.Fprintf(h.out, "<p%s>%s</p>\n", h.spacingClass(), html.EscapeString(string(line)))
 		}
 	}
+	h.blockquote = blockquote
 	if blank {
 		h.blanks++
 	} else {
