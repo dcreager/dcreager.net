@@ -32,6 +32,7 @@ import (
 	"html"
 	"io"
 	"net/url"
+	"path"
 	"regexp"
 	"strings"
 
@@ -122,7 +123,7 @@ func (h *HTMLWriter) Handle(line gemini.Line) {
 				href = translateGmiPath(parsed.String())
 			}
 		}
-		if !h.isRoot && !parsed.IsAbs() {
+		if !h.isRoot && !parsed.IsAbs() && !path.IsAbs(href) {
 			href = "../" + href
 		}
 		href = html.EscapeString(href)
