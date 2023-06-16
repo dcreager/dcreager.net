@@ -147,7 +147,8 @@ func (h *HTMLWriter) Handle(line gemini.Line) {
 			alt := strings.TrimSpace(string(line))
 			if alt != "" {
 				alt = html.EscapeString(alt)
-				fmt.Fprintf(h.out, "<pre%s aria-label='%s'>\n", h.spacingClass(), alt)
+				langClass := "lang-" + alt
+				fmt.Fprintf(h.out, "<pre%s aria-label='%s'>\n", h.spacingClass(langClass), alt)
 			} else {
 				fmt.Fprintf(h.out, "<pre%s>\n", h.spacingClass())
 			}

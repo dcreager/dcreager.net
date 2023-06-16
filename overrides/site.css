@@ -273,6 +273,10 @@ pre {
     font-weight: 300;
 }
 
+pre.lang-csp {
+    font-family: 'Iosevka SS18 Web';
+}
+
 article img {
     max-width: 100%;
 }
