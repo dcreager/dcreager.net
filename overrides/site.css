@@ -1,0 +1,387 @@
+/**** Layout ****/
+
+@media screen and (min-width: 103ch) {
+
+body {
+    display: grid;
+    grid-template-columns:
+      calc(20ch + (100vw - 20ch - 78ch) / 2)
+      calc(78ch + (100vw - 20ch - 78ch) / 2);
+    grid-template-rows: auto 1fr;
+    align-items: start;
+    justify-items: end;
+    column-gap: 0;
+    margin: 0;
+}
+
+header {
+    width: 20ch;
+    grid-column: 1;
+    grid-row: 1;
+}
+
+header .logo {
+    text-align: center;
+    margin-bottom: 0;
+}
+
+header img {
+    width: 7ch;
+}
+
+header h1 {
+    text-align: center;
+    margin-top: 0;
+}
+
+header .footerlink {
+    display: none;
+}
+
+footer {
+    width: 20ch;
+    grid-column: 1;
+    grid-row: 2;
+}
+
+footer h1 {
+    display: none;
+}
+
+footer ul {
+    margin: 0;
+    padding: 0;
+}
+
+footer ul li {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    text-align: center;
+}
+
+footer .copyright {
+    margin-top: 2em;
+    text-align: center;
+}
+
+.main {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    overflow: auto;
+    padding-top: 0;
+    padding-bottom: 0;
+    padding-left: 8ch;
+    padding-right: calc((100vw - 20ch - 78ch) / 2);
+    max-height: 100vh;
+}
+
+article {
+    width: 70ch;
+}
+
+}
+
+@media not screen, screen and (max-width: calc(103ch - 1px)) {
+
+body {
+    max-width: 70ch;
+    margin: 0 auto;
+    padding: 1rem 2rem;
+}
+
+header {
+    display: grid;
+    grid-template-columns: auto auto 1fr;
+    grid-template-rows: auto;
+    column-gap: 1ch;
+    align-items: center;
+}
+
+header .logo {
+    grid-column: 1;
+    grid-row: 1;
+    margin: 0;
+}
+
+header img {
+    width: 4ch;
+}
+
+header h1 {
+    grid-column: 2;
+    grid-row: 1;
+    margin: -0.5ex 0 0 0;
+}
+
+header .footerlink {
+    grid-column: 3;
+    grid-row: 1;
+    text-align: right;
+    font-weight: 700;
+    margin: 0;
+}
+
+footer h1 {
+    margin-top: 1.6em;
+}
+
+footer .copyright br {
+    display: none;
+}
+
+footer ul li {
+    list-style: none;
+}
+
+}
+
+@media print {
+
+header, footer * {
+    display: none;
+}
+
+footer .copyright {
+    display: block;
+}
+
+
+}
+
+/**** Styling ****/
+
+:root {
+    font-family: 'Iosevka SS18 Web';
+    font-weight: 300;
+    color: #080808;
+}
+
+a {
+    color: #428bca;
+    text-decoration: none;
+}
+
+a:hover, a:focus {
+    color: #2a6496;
+    text-decoration: underline;
+}
+
+header .logo a,
+header .logo a:hover,
+header .logo a:focus,
+header h1 a,
+header h1 a:hover,
+header h1 a:focus {
+    color: inherit;
+    text-decoration: none;
+}
+
+header .footerlink a {
+    text-decoration: none;
+}
+
+footer .copyright {
+    font-size: 70%;
+    color: #777;
+}
+
+h1, h2, h3 {
+    font-family: sans-serif;
+    margin: 0.8em 0;
+}
+
+h1 {
+    font-size: 140%;
+}
+
+h2 {
+    font-size: 120%;
+}
+
+h3 {
+    font-size: 110%;
+}
+
+p {
+    margin: 1rem 0;
+}
+
+.nogap {
+    margin-top: -1rem;
+}
+
+.doublegap {
+    margin-top: 3rem;
+}
+
+blockquote {
+    background-color: #eee;
+    border-left: 3px solid #444;
+    margin: 1rem -1rem 1rem calc(-1rem - 3px);
+    padding: 1rem;
+}
+
+ul {
+    padding-left: 4ch;
+}
+
+.gemtext li {
+    padding: 0;
+    margin: 0.5rem 0;
+}
+
+.gemtext li.nogap {
+    margin-top: -0.5rem;
+}
+
+.gemtext li.doublegap {
+    margin-top: 1.5rem;
+}
+
+.gemtext li:not(:last-child) {
+    margin-bottom: 0.5rem;
+}
+
+.gemtext a {
+    position: relative;
+    font-weight: 400;
+}
+
+.gemtext a:before {
+    color: #999;
+    text-decoration: none;
+    font-weight: 700;
+    position: absolute;
+    left: -1.25rem;
+}
+
+.gemtext a.local:before {
+    content: '⇒';
+}
+
+.gemtext a.remote:before {
+    content: '↝';
+}
+
+pre {
+    background-color: #eee;
+    margin: 0 -1rem;
+    padding: 1rem;
+    overflow-x: auto;
+    font-family: 'Iosevka Term SS18 Web';
+    font-weight: 300;
+}
+
+pre.lang-csp {
+    font-family: 'Iosevka SS18 Web';
+}
+
+article img {
+    max-width: 100%;
+}
+
+.gemtext .date {
+    color: #999;
+    font-style: oblique;
+}
+
+@media(prefers-color-scheme:dark) {
+    :root {
+        background-color: #111;
+        color: #eee;
+    }
+
+    blockquote {
+        background-color: #000;
+    }
+
+    pre {
+        background-color: #222;
+    }
+}
+
+/**** Fonts ****/
+
+/* These are copied from fonts/iosevka-ss18.css, but with the font-display: swap
+ * lines removed, and with the src URLs reordered to prefer woff2. */
+
+@font-face {
+    font-family: 'Iosevka SS18 Web';
+    font-weight: 300;
+    font-stretch: normal;
+    font-style: normal;
+    src:
+      url('fonts/woff2/iosevka-ss18-light.woff2') format('woff2'),
+      url('fonts/ttf/iosevka-ss18-light.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Iosevka SS18 Web';
+    font-weight: 300;
+    font-stretch: normal;
+    font-style: oblique;
+    src:
+      url('fonts/woff2/iosevka-ss18-lightoblique.woff2') format('woff2'),
+      url('fonts/ttf/iosevka-ss18-lightoblique.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Iosevka SS18 Web';
+    font-weight: 400;
+    font-stretch: normal;
+    font-style: normal;
+    src:
+      url('fonts/woff2/iosevka-ss18-regular.woff2') format('woff2'),
+      url('fonts/ttf/iosevka-ss18-regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Iosevka SS18 Web';
+    font-weight: 700;
+    font-stretch: normal;
+    font-style: normal;
+    src:
+      url('fonts/woff2/iosevka-ss18-bold.woff2') format('woff2'),
+      url('fonts/ttf/iosevka-ss18-bold.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Iosevka Term SS18 Web';
+    font-weight: 300;
+    font-stretch: normal;
+    font-style: normal;
+    src:
+      url('fonts/woff2/iosevka-term-ss18-light.woff2') format('woff2'),
+      url('fonts/ttf/iosevka-term-ss18-light.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Iosevka Term SS18 Web';
+    font-weight: 300;
+    font-stretch: normal;
+    font-style: oblique;
+    src:
+      url('fonts/woff2/iosevka-term-ss18-lightoblique.woff2') format('woff2'),
+      url('fonts/ttf/iosevka-term-ss18-lightoblique.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Iosevka Term SS18 Web';
+    font-weight: 400;
+    font-stretch: normal;
+    font-style: normal;
+    src:
+      url('fonts/woff2/iosevka-term-ss18-regular.woff2') format('woff2'),
+      url('fonts/ttf/iosevka-term-ss18-regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Iosevka Term SS18 Web';
+    font-weight: 700;
+    font-stretch: normal;
+    font-style: normal;
+    src:
+      url('fonts/woff2/iosevka-term-ss18-bold.woff2') format('woff2'),
+      url('fonts/ttf/iosevka-term-ss18-bold.ttf') format('truetype');
+}

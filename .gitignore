@@ -3,3 +3,4 @@ crash.log
 .bundle
 /.keys/**
 !/.keys/.keep
+/.html/

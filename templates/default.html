@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>{{ .Title }}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="me" href="https://mastodon.dcreager.net/@dcreager">
+  <link rel="stylesheet" type="text/css" href="/site.css">
+  <link rel="icon" type="image/x-icon" href="/media/images/imperial-logo.ico">
+</head>
+<body>
+<header>
+  <p class=logo><a href="/"><img src="/media/images/imperial-logo.png"></a></p>
+  <h1><a href="/">dcreager.net</a></h1>
+  <p class=footerlink><a href="#footer">↓</a></p>
+</header>
+<div class=main>
+{{ .RenderedGemtext -}}
+</div>
+<footer id=footer>
+  <h1>Sitemap</h1>
+  <ul>
+    <li><a href="/about/">About</a></li>
+    <li><a href="/updates/">Updates</a></li>
+    <li><a href="/talks/">Talks</a></li>
+    <li><a href="/publications/">Publications</a></li>
+  </ul>
+  <p class=copyright>
+  Copyright © 2009-2023,
+  <br>
+  Douglas Creager.
+  <br>
+  All rights reserved.
+  </p>
+</footer>
+</body>
+</html>
