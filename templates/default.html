@@ -14,7 +14,7 @@
   <h1><a href="/">dcreager.net</a></h1>
   <p class=footerlink><a href="#footer">↓</a></p>
 </header>
-<div class=main>
+<div class=main tabindex=-1>
 {{ .RenderedGemtext -}}
 </div>
 <footer id=footer>
@@ -33,5 +33,6 @@
   All rights reserved.
   </p>
 </footer>
+<script>document.querySelector(".main").focus();</script>
 </body>
 </html>

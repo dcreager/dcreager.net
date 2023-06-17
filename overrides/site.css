@@ -207,6 +207,10 @@ p {
     margin: 1rem 0;
 }
 
+.main:focus {
+    outline-style: none;
+}
+
 .nogap {
     margin-top: -1rem;
 }
