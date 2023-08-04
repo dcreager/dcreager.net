@@ -90,6 +90,7 @@ func translateGemtext(base, from, to string, d fs.DirEntry) error {
 
 	var content strings.Builder
 	hw := HTMLWriter{
+		Path:   base,
 		out:    &content,
 		isRoot: path.Base(base) == "index.gmi",
 	}
