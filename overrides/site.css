@@ -186,6 +186,12 @@ footer .copyright {
     color: #777;
 }
 
+.gemlink {
+    margin-top: 3em;
+    font-size: 85%;
+    color: #777;
+}
+
 h1, h2, h3 {
     font-family: sans-serif;
     margin: 0.8em 0;

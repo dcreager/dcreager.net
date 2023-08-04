@@ -45,6 +45,7 @@ type HTMLWriter struct {
 	isRoot     bool
 	out        io.Writer
 	Title      string
+	Path       string
 	haveTitle  bool
 	started    bool
 	blockquote bool
@@ -217,4 +218,6 @@ func (h *HTMLWriter) Finish() {
 	h.closeSection(2)
 	h.closeSection(1)
 	fmt.Fprint(h.out, "</article> <!-- gemtext -->\n")
+	gemURL := strings.TrimSuffix("gemini://dcreager.net/"+h.Path, "index.gmi")
+	fmt.Fprintf(h.out, "<p class=gemlink>This page is also available via <a href=\"https://gemini.circumlunar.space/\">Gemini</a> at <a rel=alternate type=text/gemini href=\"%s\">%s</a></p>", gemURL, gemURL)
 }
