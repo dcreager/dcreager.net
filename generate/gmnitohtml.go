@@ -39,6 +39,7 @@ import (
 	"git.sr.ht/~adnano/go-gemini"
 )
 
+var anchorRegexp = regexp.MustCompile("\\w+")
 var dateRegexp = regexp.MustCompile("^[0-9]{4}-[0-9]{2}-[0-9]{2}")
 
 type HTMLWriter struct {
@@ -53,6 +54,7 @@ type HTMLWriter struct {
 	list       bool
 	blanks     int
 	sections   [3]bool
+	anchors    map[string]struct{}
 }
 
 func isImage(p string) bool {
@@ -72,6 +74,33 @@ func (h *HTMLWriter) closeSection(level int) {
 	if h.sections[level-1] {
 		fmt.Fprintf(h.out, "</section> <!-- level %d -->\n", level)
 		h.sections[level-1] = false
+	}
+}
+
+func (h *HTMLWriter) generateAnchor(text string) string {
+	var anchor string
+	words := anchorRegexp.FindAllString(text, 4)
+	if len(words) == 0 {
+		anchor = "heading"
+	} else {
+		anchor = strings.Join(words, "-")
+	}
+
+	if h.anchors == nil {
+		h.anchors = map[string]struct{}{}
+	}
+	if _, ok := h.anchors[anchor]; !ok {
+		h.anchors[anchor] = struct{}{}
+		return anchor
+	}
+
+	suffix := 1
+	for {
+		suffixedAnchor := fmt.Sprintf("%s-%d", anchor, suffix)
+		if _, ok := h.anchors[suffixedAnchor]; !ok {
+			h.anchors[suffixedAnchor] = struct{}{}
+			return suffixedAnchor
+		}
 	}
 }
 
@@ -167,16 +196,22 @@ func (h *HTMLWriter) Handle(line gemini.Line) {
 		h.closeSection(2)
 		h.closeSection(1)
 		h.openSection(1)
-		fmt.Fprintf(h.out, "<h1>%s</h1>\n", html.EscapeString(string(line)))
+		heading := string(line)
+		anchor := h.generateAnchor(heading)
+		fmt.Fprintf(h.out, "<h1 id=%s><a class=header-link href=\"#%s\">¶</a><span>%s</span></h1>\n", anchor, anchor, html.EscapeString(heading))
 	case gemini.LineHeading2:
 		h.closeSection(3)
 		h.closeSection(2)
 		h.openSection(2)
-		fmt.Fprintf(h.out, "<h2>%s</h2>\n", html.EscapeString(string(line)))
+		heading := string(line)
+		anchor := h.generateAnchor(heading)
+		fmt.Fprintf(h.out, "<h2 id=%s><a class=header-link href=\"#%s\">¶</a><span>%s</span></h2>\n", anchor, anchor, html.EscapeString(heading))
 	case gemini.LineHeading3:
 		h.closeSection(3)
 		h.openSection(3)
-		fmt.Fprintf(h.out, "<h3>%s</h3>\n", html.EscapeString(string(line)))
+		heading := string(line)
+		anchor := h.generateAnchor(heading)
+		fmt.Fprintf(h.out, "<h3 id=%s><a class=header-link href=\"#%s\">¶</a><span>%s</span></h3>\n", anchor, anchor, html.EscapeString(heading))
 	case gemini.LineListItem:
 		fmt.Fprintf(h.out, "<li%s>%s</li>\n", h.spacingClass(), html.EscapeString(string(line)))
 	case gemini.LineQuote:
