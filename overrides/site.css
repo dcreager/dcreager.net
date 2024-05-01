@@ -274,6 +274,16 @@ ul {
     content: '↝';
 }
 
+tt {
+    font-family: 'Iosevka Term SS18 Web';
+    font-weight: 400;
+    background-color: #eee;
+}
+
+emph {
+    font-style: italic;
+}
+
 pre {
     background-color: #eee;
     margin: 0 -1rem;

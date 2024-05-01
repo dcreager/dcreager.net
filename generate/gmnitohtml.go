@@ -125,6 +125,26 @@ func (h *HTMLWriter) spacingClass(classes ...string) string {
 	return css.String()
 }
 
+func markupRegexp(left, right string) *regexp.Regexp {
+	return regexp.MustCompile(left + `([A-Za-z0-9 \\~.:_&#;()-]+?)` + right)
+}
+
+var smartquoteTT = markupRegexp("‘", "’")
+var backtickTT = markupRegexp("`", "`")
+var underlineItalic = markupRegexp("_", "_")
+var doublestarBold = markupRegexp(`\*\*`, `\*\*`)
+var starBold = markupRegexp(`\*`, `\*`)
+
+func renderLine(line string) string {
+	line = html.EscapeString(line)
+	line = smartquoteTT.ReplaceAllString(line, `<tt>$1</tt>`)
+	line = backtickTT.ReplaceAllString(line, `<tt>$1</tt>`)
+	line = underlineItalic.ReplaceAllString(line, `<emph>$1</emph>`)
+	line = doublestarBold.ReplaceAllString(line, `<strong>$1</strong>`)
+	line = starBold.ReplaceAllString(line, `<strong>$1</strong>`)
+	return line
+}
+
 func (h *HTMLWriter) Handle(line gemini.Line) {
 	if !h.started {
 		fmt.Fprint(h.out, "<article class=gemtext>\n")
@@ -213,7 +233,7 @@ func (h *HTMLWriter) Handle(line gemini.Line) {
 		anchor := h.generateAnchor(heading)
 		fmt.Fprintf(h.out, "<h3 id=%s><a class=header-link href=\"#%s\">¶</a><span>%s</span></h3>\n", anchor, anchor, html.EscapeString(heading))
 	case gemini.LineListItem:
-		fmt.Fprintf(h.out, "<li%s>%s</li>\n", h.spacingClass(), html.EscapeString(string(line)))
+		fmt.Fprintf(h.out, "<li%s>%s</li>\n", h.spacingClass(), renderLine(string(line)))
 	case gemini.LineQuote:
 		blockquote = true
 		if line == "" {
@@ -231,7 +251,7 @@ func (h *HTMLWriter) Handle(line gemini.Line) {
 		if line == "" {
 			blank = true
 		} else {
-			fmt.Fprintf(h.out, "<p%s>%s</p>\n", h.spacingClass(), html.EscapeString(string(line)))
+			fmt.Fprintf(h.out, "<p%s>%s</p>\n", h.spacingClass(), renderLine(string(line)))
 		}
 	}
 	h.blockquote = blockquote
