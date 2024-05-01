@@ -1,4 +1,6 @@
 /tmp/
+.redo/
+.lighttpd.conf
 crash.log
 .bundle
 /.keys/**
