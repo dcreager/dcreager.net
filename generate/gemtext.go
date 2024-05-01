@@ -14,7 +14,7 @@ import (
 	"git.sr.ht/~adnano/go-gemini"
 )
 
-func ProcessSourceDir(sourceDir, outputDir string) (int, error) {
+func ProcessSourceDir(domain, sourceDir, outputDir string) (int, error) {
 	count := 0
 	sourceLen := len(sourceDir) + 1
 	err := filepath.WalkDir(sourceDir, func(p string, d fs.DirEntry, err error) error {
@@ -31,7 +31,7 @@ func ProcessSourceDir(sourceDir, outputDir string) (int, error) {
 		output := path.Join(outputDir, base)
 
 		if ext == ".gmi" {
-			return translateGemtext(base, p, output, d)
+			return translateGemtext(domain, base, p, output, d)
 		}
 
 		return copyFile(base, p, output, d)
@@ -126,7 +126,7 @@ type geminiTemplateData struct {
 	RenderedGemtext template.HTML
 }
 
-func translateGemtext(base, from, to string, d fs.DirEntry) error {
+func translateGemtext(domain, base, from, to string, d fs.DirEntry) error {
 	to = translateGmiPath(to) + "index.html"
 	err := os.MkdirAll(path.Dir(to), 0750)
 	if err != nil {
@@ -152,6 +152,7 @@ func translateGemtext(base, from, to string, d fs.DirEntry) error {
 
 	var content strings.Builder
 	hw := HTMLWriter{
+		domain: domain,
 		Path:   base,
 		out:    &content,
 		isRoot: path.Base(base) == "index.gmi",

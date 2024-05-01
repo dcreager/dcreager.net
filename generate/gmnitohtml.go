@@ -43,6 +43,7 @@ var anchorRegexp = regexp.MustCompile("\\w+")
 var dateRegexp = regexp.MustCompile("^[0-9]{4}-[0-9]{2}-[0-9]{2}")
 
 type HTMLWriter struct {
+	domain     string
 	isRoot     bool
 	out        io.Writer
 	Title      string
@@ -273,6 +274,6 @@ func (h *HTMLWriter) Finish() {
 	h.closeSection(2)
 	h.closeSection(1)
 	fmt.Fprint(h.out, "</article> <!-- gemtext -->\n")
-	gemURL := strings.TrimSuffix("gemini://dcreager.net/"+h.Path, "index.gmi")
+	gemURL := strings.TrimSuffix(fmt.Sprintf("gemini://%s/%s", h.domain, h.Path), "index.gmi")
 	fmt.Fprintf(h.out, "<p class=gemlink>This page is also available via <a href=\"https://gemini.circumlunar.space/\">Gemini</a> at <a rel=alternate type=text/gemini href=\"%s\">%s</a></p>", gemURL, gemURL)
 }

@@ -16,6 +16,7 @@ func main() {
 	}
 }
 
+const domain = "dcreager.net"
 const outputDir = ".html"
 
 func run() error {
@@ -26,13 +27,13 @@ func run() error {
 	if err != nil {
 		return err
 	}
-	count, err := generate.ProcessSourceDir(path.Join(home, "notes"), outputDir)
+	count, err := generate.ProcessSourceDir(domain, path.Join(home, "notes"), outputDir)
 	if err != nil {
 		return err
 	}
 	overallCount += count
 
-	count, err = generate.ProcessSourceDir("overrides", outputDir)
+	count, err = generate.ProcessSourceDir(domain, "overrides", outputDir)
 	if err != nil {
 		return err
 	}
