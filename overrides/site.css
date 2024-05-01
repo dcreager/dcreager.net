@@ -261,6 +261,7 @@ ul {
 .gemtext a:before {
     color: #999;
     text-decoration: none;
+    font-family: 'Iosevka SS18 Web';
     font-weight: 700;
     position: absolute;
     left: -1.25rem;
