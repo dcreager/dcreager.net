@@ -25,7 +25,7 @@
 //
 // Copyright (c) 2023 Douglas Creager
 
-package main
+package generate
 
 import (
 	"fmt"
