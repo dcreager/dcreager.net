@@ -152,8 +152,9 @@ footer .copyright {
 /**** Styling ****/
 
 :root {
-    font-family: 'Iosevka SS18 Web';
-    font-weight: 300;
+    font-family: sans-serif;
+    font-weight: normal;
+    line-height: 1.35;
     color: #080808;
 }
 
@@ -193,7 +194,6 @@ footer .copyright {
 }
 
 h1, h2, h3 {
-    font-family: sans-serif;
     margin: 0.8em 0;
 }
 
