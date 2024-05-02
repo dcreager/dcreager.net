@@ -309,16 +309,20 @@ article img {
 
 @media(prefers-color-scheme:dark) {
     :root {
-        background-color: #111;
-        color: #eee;
+        background-color: #333;
+        color: #bbb;
     }
 
     blockquote {
-        background-color: #000;
+        background-color: #2a2a2a;
+    }
+
+    tt {
+        background-color: #444;
     }
 
     pre {
-        background-color: #222;
+        background-color: #444;
     }
 }
 
