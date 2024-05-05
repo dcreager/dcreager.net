@@ -113,6 +113,18 @@ func findTemplate(base string) (*template.Template, error) {
 	return nil, fmt.Errorf("Cannot find suitable template for %s", base)
 }
 
+func loadMetadataFile(base string, meta string) (string, error) {
+	metadataPath := path.Join("metadata", base, meta)
+	metadata, err := os.ReadFile(metadataPath)
+	if err != nil {
+		if errors.Is(err, fs.ErrNotExist) {
+			return "", nil
+		}
+		return "", err
+	}
+	return string(metadata), nil
+}
+
 func translateGmiPath(p string) string {
 	if path.Base(p) == "index.gmi" {
 		return p[:len(p)-len("index.gmi")] + "/"
@@ -124,6 +136,7 @@ func translateGmiPath(p string) string {
 type geminiTemplateData struct {
 	Title           string
 	RenderedGemtext template.HTML
+	CustomHead      template.HTML
 }
 
 func translateGemtext(domain, base, from, to string, d fs.DirEntry) error {
@@ -160,9 +173,15 @@ func translateGemtext(domain, base, from, to string, d fs.DirEntry) error {
 	gemini.ParseLines(in, hw.Handle)
 	hw.Finish()
 
+	customHead, err := loadMetadataFile(base, "custom-head")
+	if err != nil {
+		return err
+	}
+
 	data := geminiTemplateData{
 		Title:           hw.Title,
 		RenderedGemtext: template.HTML(content.String()),
+		CustomHead:      template.HTML(customHead),
 	}
 	t, err := findTemplate(base)
 	if err != nil {
