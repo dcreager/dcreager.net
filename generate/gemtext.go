@@ -114,15 +114,22 @@ func findTemplate(base string) (*template.Template, error) {
 }
 
 func loadMetadataFile(base string, meta string) (string, error) {
-	metadataPath := path.Join("metadata", base, meta)
-	metadata, err := os.ReadFile(metadataPath)
-	if err != nil {
-		if errors.Is(err, fs.ErrNotExist) {
-			return "", nil
+	for {
+		metadataPath := path.Join("metadata", base, meta)
+		metadata, err := os.ReadFile(metadataPath)
+		if err != nil {
+			if errors.Is(err, fs.ErrNotExist) {
+				next := path.Dir(base)
+				if next == base {
+					return "", nil
+				}
+				base = next
+				continue
+			}
+			return "", err
 		}
-		return "", err
+		return string(metadata), nil
 	}
-	return string(metadata), nil
 }
 
 func translateGmiPath(p string) string {
