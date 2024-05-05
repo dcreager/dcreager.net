@@ -94,7 +94,7 @@ func loadTemplate(base string) (*template.Template, error) {
 }
 
 func findTemplate(base string) (*template.Template, error) {
-	t, err := loadTemplate("default.html")
+	t, err := loadTemplate(base)
 	if err != nil {
 		return nil, err
 	}
@@ -102,7 +102,7 @@ func findTemplate(base string) (*template.Template, error) {
 		return t, nil
 	}
 
-	t, err = loadTemplate(base)
+	t, err = loadTemplate("default.html")
 	if err != nil {
 		return nil, err
 	}
