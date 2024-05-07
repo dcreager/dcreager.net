@@ -362,8 +362,7 @@ section > h3:hover > a.header-link {
     font-stretch: normal;
     font-style: normal;
     src:
-      url('fonts/woff2/iosevka-ss18-light.woff2') format('woff2'),
-      url('fonts/ttf/iosevka-ss18-light.ttf') format('truetype');
+      url('fonts/woff2/iosevka-ss18-light.woff2') format('woff2');
 }
 
 @font-face {
@@ -372,8 +371,7 @@ section > h3:hover > a.header-link {
     font-stretch: normal;
     font-style: oblique;
     src:
-      url('fonts/woff2/iosevka-ss18-lightoblique.woff2') format('woff2'),
-      url('fonts/ttf/iosevka-ss18-lightoblique.ttf') format('truetype');
+      url('fonts/woff2/iosevka-ss18-lightoblique.woff2') format('woff2');
 }
 
 @font-face {
@@ -382,8 +380,7 @@ section > h3:hover > a.header-link {
     font-stretch: normal;
     font-style: normal;
     src:
-      url('fonts/woff2/iosevka-ss18-regular.woff2') format('woff2'),
-      url('fonts/ttf/iosevka-ss18-regular.ttf') format('truetype');
+      url('fonts/woff2/iosevka-ss18-regular.woff2') format('woff2');
 }
 
 @font-face {
@@ -392,8 +389,7 @@ section > h3:hover > a.header-link {
     font-stretch: normal;
     font-style: normal;
     src:
-      url('fonts/woff2/iosevka-ss18-bold.woff2') format('woff2'),
-      url('fonts/ttf/iosevka-ss18-bold.ttf') format('truetype');
+      url('fonts/woff2/iosevka-ss18-bold.woff2') format('woff2');
 }
 
 @font-face {
@@ -402,8 +398,7 @@ section > h3:hover > a.header-link {
     font-stretch: normal;
     font-style: normal;
     src:
-      url('fonts/woff2/iosevka-term-ss18-light.woff2') format('woff2'),
-      url('fonts/ttf/iosevka-term-ss18-light.ttf') format('truetype');
+      url('fonts/woff2/iosevka-term-ss18-light.woff2') format('woff2');
 }
 
 @font-face {
@@ -412,8 +407,7 @@ section > h3:hover > a.header-link {
     font-stretch: normal;
     font-style: oblique;
     src:
-      url('fonts/woff2/iosevka-term-ss18-lightoblique.woff2') format('woff2'),
-      url('fonts/ttf/iosevka-term-ss18-lightoblique.ttf') format('truetype');
+      url('fonts/woff2/iosevka-term-ss18-lightoblique.woff2') format('woff2');
 }
 
 @font-face {
@@ -422,8 +416,7 @@ section > h3:hover > a.header-link {
     font-stretch: normal;
     font-style: normal;
     src:
-      url('fonts/woff2/iosevka-term-ss18-regular.woff2') format('woff2'),
-      url('fonts/ttf/iosevka-term-ss18-regular.ttf') format('truetype');
+      url('fonts/woff2/iosevka-term-ss18-regular.woff2') format('woff2');
 }
 
 @font-face {
@@ -432,6 +425,5 @@ section > h3:hover > a.header-link {
     font-stretch: normal;
     font-style: normal;
     src:
-      url('fonts/woff2/iosevka-term-ss18-bold.woff2') format('woff2'),
-      url('fonts/ttf/iosevka-term-ss18-bold.ttf') format('truetype');
+      url('fonts/woff2/iosevka-term-ss18-bold.woff2') format('woff2');
 }
