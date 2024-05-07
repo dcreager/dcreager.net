@@ -261,8 +261,8 @@ ul {
 .gemtext a:before {
     color: #999;
     text-decoration: none;
-    font-family: 'Iosevka SS18 Web';
-    font-weight: 700;
+    font-family: 'Gemlink Iosevka';
+    font-weight: 400;
     position: absolute;
     left: -1.25rem;
 }
@@ -276,7 +276,7 @@ ul {
 }
 
 tt {
-    font-family: 'Iosevka Term SS18 Web';
+    font-family: 'Subset Iosevka Term SS18 Web', monospace;
     font-weight: 400;
     background-color: #eee;
 }
@@ -290,12 +290,8 @@ pre {
     margin: 0 -1rem;
     padding: 1rem;
     overflow-x: auto;
-    font-family: 'Iosevka Term SS18 Web';
-    font-weight: 300;
-}
-
-pre.lang-csp {
-    font-family: 'Iosevka SS18 Web';
+    font-family: 'Subset Iosevka Term SS18 Web', monospace;
+    font-weight: 400;
 }
 
 article img {
@@ -353,77 +349,20 @@ section > h3:hover > a.header-link {
 
 /**** Fonts ****/
 
-/* These are copied from fonts/iosevka-ss18.css, but with the font-display: swap
- * lines removed, and with the src URLs reordered to prefer woff2. */
-
 @font-face {
-    font-family: 'Iosevka SS18 Web';
-    font-weight: 300;
-    font-stretch: normal;
-    font-style: normal;
-    src:
-      url('fonts/woff2/iosevka-ss18-light.woff2') format('woff2');
-}
-
-@font-face {
-    font-family: 'Iosevka SS18 Web';
-    font-weight: 300;
-    font-stretch: normal;
-    font-style: oblique;
-    src:
-      url('fonts/woff2/iosevka-ss18-lightoblique.woff2') format('woff2');
-}
-
-@font-face {
-    font-family: 'Iosevka SS18 Web';
+    font-family: 'Gemlink Iosevka';
     font-weight: 400;
     font-stretch: normal;
     font-style: normal;
     src:
-      url('fonts/woff2/iosevka-ss18-regular.woff2') format('woff2');
+      url('/fonts/woff2/iosevka-ss18-bold.gemlink.woff2') format('woff2');
 }
 
 @font-face {
-    font-family: 'Iosevka SS18 Web';
-    font-weight: 700;
-    font-stretch: normal;
-    font-style: normal;
-    src:
-      url('fonts/woff2/iosevka-ss18-bold.woff2') format('woff2');
-}
-
-@font-face {
-    font-family: 'Iosevka Term SS18 Web';
-    font-weight: 300;
-    font-stretch: normal;
-    font-style: normal;
-    src:
-      url('fonts/woff2/iosevka-term-ss18-light.woff2') format('woff2');
-}
-
-@font-face {
-    font-family: 'Iosevka Term SS18 Web';
-    font-weight: 300;
-    font-stretch: normal;
-    font-style: oblique;
-    src:
-      url('fonts/woff2/iosevka-term-ss18-lightoblique.woff2') format('woff2');
-}
-
-@font-face {
-    font-family: 'Iosevka Term SS18 Web';
+    font-family: 'Subset Iosevka Term SS18 Web';
     font-weight: 400;
     font-stretch: normal;
     font-style: normal;
     src:
-      url('fonts/woff2/iosevka-term-ss18-regular.woff2') format('woff2');
-}
-
-@font-face {
-    font-family: 'Iosevka Term SS18 Web';
-    font-weight: 700;
-    font-stretch: normal;
-    font-style: normal;
-    src:
-      url('fonts/woff2/iosevka-term-ss18-bold.woff2') format('woff2');
+      url('/fonts/woff2/iosevka-term-ss18-regular.subset.woff2') format('woff2');
 }
