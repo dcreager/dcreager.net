@@ -3,3 +3,4 @@
 /.keys/**
 !/.keys/.keep
 /.html/
+/.sources
