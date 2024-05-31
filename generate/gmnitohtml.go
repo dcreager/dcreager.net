@@ -187,7 +187,7 @@ func (h *HTMLWriter) Handle(line gemini.Line) {
 			fmt.Fprintf(h.out, "<p%s><img src=\"%s\" alt=\"%s\"></p>\n", h.spacingClass(), href, name)
 		} else {
 			linkClass := "local"
-			if parsed.IsAbs() {
+			if parsed.IsAbs() || parsed.Host != "" {
 				linkClass = "remote"
 			}
 			fmt.Fprintf(h.out, "<p%s><a class=%s href=\"%s\">%s</a></p>\n", h.spacingClass(), linkClass, href, name)
