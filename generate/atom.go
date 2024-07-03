@@ -15,7 +15,7 @@ import (
 
 func GenerateAtomFeed(domain, sourceDir, outputDir, author string) error {
 	siteURL := fmt.Sprintf("https://%s/", domain)
-	feedURL := fmt.Sprintf("https://%s/atom.xml", domain)
+	feedURL := fmt.Sprintf("https://%s/feed.atom", domain)
 	siteLink := atom.Link{
 		Rel:  "alternate",
 		Type: "text/html",
@@ -57,7 +57,7 @@ func GenerateAtomFeed(domain, sourceDir, outputDir, author string) error {
 		return err
 	}
 
-	output := path.Join(outputDir, "atom.xml")
+	output := path.Join(outputDir, "feed.atom")
 	err = os.WriteFile(output, encoded, 0644)
 	if err != nil {
 		return err
