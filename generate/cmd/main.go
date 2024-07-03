@@ -17,6 +17,7 @@ func main() {
 }
 
 const domain = "dcreager.net"
+const author = "Douglas Creager"
 const outputDir = ".html"
 
 func run() error {
@@ -27,7 +28,8 @@ func run() error {
 	if err != nil {
 		return err
 	}
-	count, err := generate.ProcessSourceDir(domain, path.Join(home, "notes"), outputDir)
+	notesDir := path.Join(home, "notes")
+	count, err := generate.ProcessSourceDir(domain, notesDir, outputDir)
 	if err != nil {
 		return err
 	}
@@ -38,6 +40,11 @@ func run() error {
 		return err
 	}
 	overallCount += count
+
+	err = generate.GenerateAtomFeed(domain, notesDir, outputDir, author)
+	if err != nil {
+		return err
+	}
 
 	duration := time.Since(start)
 	fmt.Printf("Processed %d files in %.2f seconds.\n", overallCount, duration.Seconds())

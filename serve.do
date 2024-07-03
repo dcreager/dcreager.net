@@ -9,6 +9,7 @@ index-file.names = ( "index.html" )
 
 mimetype.assign = (
   ".html" => "text/html; charset=utf-8",
+  ".xml" => "text/xml; charset=utf-8",
   ".css" => "text/css; charset=utf-8",
   ".svg" => "image/svg",
   ".jpg" => "image/jpeg",

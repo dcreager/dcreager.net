@@ -175,7 +175,6 @@ func translateGemtext(domain, base, from, to string, d fs.DirEntry) error {
 		domain: domain,
 		Path:   base,
 		out:    &content,
-		isRoot: path.Base(base) == "index.gmi",
 	}
 	gemini.ParseLines(in, hw.Handle)
 	hw.Finish()

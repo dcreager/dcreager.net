@@ -41,25 +41,33 @@ import (
 
 var anchorRegexp = regexp.MustCompile("\\w+")
 var dateRegexp = regexp.MustCompile("^[0-9]{4}-[0-9]{2}-[0-9]{2}")
+var updatedRegexp = regexp.MustCompile("last updated ([0-9]{4}-[0-9]{2}-[0-9]{2})")
 
 type HTMLWriter struct {
-	domain     string
-	isRoot     bool
-	out        io.Writer
-	Title      string
-	Path       string
-	haveTitle  bool
-	started    bool
-	blockquote bool
-	pre        bool
-	list       bool
-	blanks     int
-	sections   [3]bool
-	anchors    map[string]struct{}
+	domain      string
+	out         io.Writer
+	Title       string
+	Path        string
+	haveTitle   bool
+	started     bool
+	blockquote  bool
+	pre         bool
+	list        bool
+	blanks      int
+	sections    [3]bool
+	anchors     map[string]struct{}
+	useAbsLinks bool
+
+	Published string
+	Updated   string
 }
 
 func isImage(p string) bool {
 	return strings.HasSuffix(p, ".png") || strings.HasSuffix(p, ".gif") || strings.HasSuffix(p, ".jpg")
+}
+
+func (h *HTMLWriter) isRoot() bool {
+	return path.Base(h.Path) == "index.gmi"
 }
 
 func (h *HTMLWriter) openSection(level int) {
@@ -146,6 +154,22 @@ func renderLine(line string) string {
 	return line
 }
 
+func gemlink(isRoot bool, href string) (*url.URL, string) {
+	parsed, err := url.Parse(href)
+	if err != nil {
+		panic(err)
+	}
+	if strings.HasSuffix(href, ".gmi") {
+		if !parsed.IsAbs() {
+			href = translateGmiPath(parsed.String())
+		}
+	}
+	if !isRoot && !parsed.IsAbs() && !path.IsAbs(href) {
+		href = "../" + href
+	}
+	return parsed, href
+}
+
 func (h *HTMLWriter) Handle(line gemini.Line) {
 	if !h.started {
 		fmt.Fprint(h.out, "<article class=gemtext>\n")
@@ -164,30 +188,23 @@ func (h *HTMLWriter) Handle(line gemini.Line) {
 	var blockquote bool
 	switch line := line.(type) {
 	case gemini.LineLink:
-		href := line.URL
-		parsed, err := url.Parse(href)
-		if err != nil {
-			panic(err)
-		}
-		if strings.HasSuffix(href, ".gmi") {
-			if !parsed.IsAbs() {
-				href = translateGmiPath(parsed.String())
-			}
-		}
-		if !h.isRoot && !parsed.IsAbs() && !path.IsAbs(href) {
-			href = "../" + href
-		}
+		parsed, href := gemlink(h.isRoot(), line.URL)
 		href = html.EscapeString(href)
 		name := html.EscapeString(line.Name)
 		if name == "" {
 			name = line.URL
 		}
 
+		linkIsRemote := parsed.IsAbs() || parsed.Host != ""
+		if !linkIsRemote && h.useAbsLinks {
+			href = fmt.Sprintf("https://%s%s", h.domain, href)
+		}
+
 		if isImage(href) {
 			fmt.Fprintf(h.out, "<p%s><img src=\"%s\" alt=\"%s\"></p>\n", h.spacingClass(), href, name)
 		} else {
 			linkClass := "local"
-			if parsed.IsAbs() || parsed.Host != "" {
+			if linkIsRemote {
 				linkClass = "remote"
 			}
 			fmt.Fprintf(h.out, "<p%s><a class=%s href=\"%s\">%s</a></p>\n", h.spacingClass(), linkClass, href, name)
@@ -240,6 +257,10 @@ func (h *HTMLWriter) Handle(line gemini.Line) {
 		if line == "" {
 			blank = true
 		} else if dateRegexp.MatchString(string(line)) {
+			h.Published = string(line[0:10])
+			if updated := updatedRegexp.FindStringSubmatch(string(line)); updated != nil {
+				h.Updated = updated[1]
+			}
 			fmt.Fprintf(h.out, "<p%s>%s</p>\n", h.spacingClass("date"), html.EscapeString(string(line)))
 		} else {
 			class := h.spacingClass()
