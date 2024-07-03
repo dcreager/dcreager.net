@@ -148,7 +148,7 @@ func renderLine(line string) string {
 	line = html.EscapeString(line)
 	line = smartquoteTT.ReplaceAllString(line, `<tt>$1</tt>`)
 	line = backtickTT.ReplaceAllString(line, `<tt>$1</tt>`)
-	line = underlineItalic.ReplaceAllString(line, `<emph>$1</emph>`)
+	line = underlineItalic.ReplaceAllString(line, `<em>$1</em>`)
 	line = doublestarBold.ReplaceAllString(line, `<strong>$1</strong>`)
 	line = starBold.ReplaceAllString(line, `<strong>$1</strong>`)
 	return line
