@@ -124,7 +124,13 @@ func (e *atomEntries) parseArchive(domain, sourceDir string, in io.Reader) error
 				e.latestUpdate = updated
 			}
 
-			contentText := &atom.Text{
+			entryLink := atom.Link{
+				Rel:  "alternate",
+				Type: "text/html",
+				Href: fmt.Sprintf("https://%s%s", domain, linkURL),
+			}
+
+			summary := &atom.Text{
 				Type: "html",
 				Body: content.String(),
 			}
@@ -134,7 +140,8 @@ func (e *atomEntries) parseArchive(domain, sourceDir string, in io.Reader) error
 				Title:     linkTitle,
 				Published: atom.Time(published),
 				Updated:   atom.Time(updated),
-				Content:   contentText,
+				Summary:   summary,
+				Link:      []atom.Link{entryLink},
 			}
 			e.entries = append(e.entries, entry)
 		}
