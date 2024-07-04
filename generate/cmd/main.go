@@ -14,6 +14,11 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+
+	err = runOld()
+	if err != nil {
+		panic(err)
+	}
 }
 
 const domain = "dcreager.net"
@@ -21,6 +26,35 @@ const author = "Douglas Creager"
 const outputDir = ".html"
 
 func run() error {
+	start := time.Now()
+	site := generate.NewSite(domain, ".")
+
+	home, err := os.UserHomeDir()
+	if err != nil {
+		return err
+	}
+	notesDir := path.Join(home, "notes")
+	err = site.AddSourceDir(notesDir)
+	if err != nil {
+		return err
+	}
+
+	err = site.AddSourceDir("overrides")
+	if err != nil {
+		return err
+	}
+
+	err = site.Generate()
+	if err != nil {
+		return err
+	}
+
+	duration := time.Since(start)
+	fmt.Printf("Processed %d files in %.2f seconds.\n", len(site.OutputFiles), duration.Seconds())
+	return nil
+}
+
+func runOld() error {
 	start := time.Now()
 	overallCount := 0
 

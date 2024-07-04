@@ -13,9 +13,15 @@ import (
 	"golang.org/x/tools/blog/atom"
 )
 
-func GenerateAtomFeed(domain, sourceDir, outputDir, author string) error {
-	siteURL := fmt.Sprintf("https://%s/", domain)
-	feedURL := fmt.Sprintf("https://%s/feed.atom", domain)
+type AtomFeed struct{}
+
+func (f AtomFeed) OutputPath() string {
+	return "feed.atom"
+}
+
+func (f AtomFeed) Generate(site *Site) error {
+	siteURL := fmt.Sprintf("https://%s/", site.Domain)
+	feedURL := fmt.Sprintf("https://%s/feed.atom", site.Domain)
 	siteLink := atom.Link{
 		Rel:  "alternate",
 		Type: "text/html",
@@ -27,26 +33,20 @@ func GenerateAtomFeed(domain, sourceDir, outputDir, author string) error {
 		Href: feedURL,
 	}
 
-	archivePath := path.Join(sourceDir, "index.gmi")
-	archive, err := os.Open(archivePath)
-	if err != nil {
-		return err
-	}
-	defer archive.Close()
-
+	archive := site.OutputFiles["index.html"]
 	var entries atomEntries
-	err = entries.parseArchive(domain, sourceDir, archive)
+	err := entries.parseArchive(site, archive.Source)
 	if err != nil {
 		return err
 	}
 
 	feed := &atom.Feed{
 		ID:      siteURL,
-		Title:   domain,
+		Title:   site.Domain,
 		Link:    []atom.Link{siteLink, feedLink},
 		Updated: atom.Time(entries.latestUpdate),
 		Author: &atom.Person{
-			Name: author,
+			Name: site.Author,
 			URI:  siteURL,
 		},
 		Entry: entries.entries,
@@ -57,8 +57,13 @@ func GenerateAtomFeed(domain, sourceDir, outputDir, author string) error {
 		return err
 	}
 
-	output := path.Join(outputDir, "feed.atom")
-	err = os.WriteFile(output, encoded, 0644)
+	out, err := site.OpenOutputFile("feed.atom", 0644)
+	if err != nil {
+		return err
+	}
+	defer out.Close()
+
+	err = out.Write(encoded)
 	if err != nil {
 		return err
 	}
@@ -71,12 +76,12 @@ type atomEntries struct {
 	latestUpdate time.Time
 }
 
-func (e *atomEntries) parseArchive(domain, sourceDir string, in io.Reader) error {
-	return gemini.ParseLines(in, func(line gemini.Line) {
+func (e *atomEntries) parseArchive(site *Site, lines gemini.Text) error {
+	for _, line := range lines {
 		switch line := line.(type) {
 		case gemini.LineLink:
 			if !dateRegexp.MatchString(line.Name) {
-				return
+				continue
 			}
 
 			publishedDate := line.Name[0:10]
@@ -88,19 +93,9 @@ func (e *atomEntries) parseArchive(domain, sourceDir string, in io.Reader) error
 			targetPath := path.Join(sourceDir, line.URL)
 			target, err := os.Open(targetPath)
 			if err != nil {
-				panic(err)
+				return err
 			}
 			defer target.Close()
-
-			var content strings.Builder
-			hw := HTMLWriter{
-				domain:      domain,
-				Path:        "index.gmi",
-				out:         &content,
-				useAbsLinks: true,
-			}
-			gemini.ParseLines(target, hw.Handle)
-			hw.Finish()
 
 			if hw.Published != "" {
 				publishedDate = hw.Published
@@ -113,11 +108,11 @@ func (e *atomEntries) parseArchive(domain, sourceDir string, in io.Reader) error
 
 			published, err := time.Parse("2006-01-02", publishedDate)
 			if err != nil {
-				panic(err)
+				return err
 			}
 			updated, err := time.Parse("2006-01-02", updatedDate)
 			if err != nil {
-				panic(err)
+				return err
 			}
 
 			if updated.After(e.latestUpdate) {
@@ -145,5 +140,5 @@ func (e *atomEntries) parseArchive(domain, sourceDir string, in io.Reader) error
 			}
 			e.entries = append(e.entries, entry)
 		}
-	})
+	}
 }

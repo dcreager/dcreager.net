@@ -3,5 +3,6 @@
 /.keys/**
 !/.keys/.keep
 /.html/
+/.html-new/
 /.sources
 /.content.all

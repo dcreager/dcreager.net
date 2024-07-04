@@ -33,15 +33,10 @@ import (
 	"io"
 	"net/url"
 	"path"
-	"regexp"
 	"strings"
 
 	"git.sr.ht/~adnano/go-gemini"
 )
-
-var anchorRegexp = regexp.MustCompile("\\w+")
-var dateRegexp = regexp.MustCompile("^[0-9]{4}-[0-9]{2}-[0-9]{2}")
-var updatedRegexp = regexp.MustCompile("last updated ([0-9]{4}-[0-9]{2}-[0-9]{2})")
 
 type HTMLWriter struct {
 	domain      string
@@ -60,10 +55,6 @@ type HTMLWriter struct {
 
 	Published string
 	Updated   string
-}
-
-func isImage(p string) bool {
-	return strings.HasSuffix(p, ".png") || strings.HasSuffix(p, ".gif") || strings.HasSuffix(p, ".jpg")
 }
 
 func (h *HTMLWriter) isRoot() bool {
@@ -132,26 +123,6 @@ func (h *HTMLWriter) spacingClass(classes ...string) string {
 	}
 	css.WriteString("\"")
 	return css.String()
-}
-
-func markupRegexp(left, right string) *regexp.Regexp {
-	return regexp.MustCompile(left + `([A-Za-z0-9 \\~./:_&#;()-]+?)` + right)
-}
-
-var smartquoteTT = markupRegexp("‘", "’")
-var backtickTT = markupRegexp("`", "`")
-var underlineItalic = markupRegexp("_", "_")
-var doublestarBold = markupRegexp(`\*\*`, `\*\*`)
-var starBold = markupRegexp(`\*`, `\*`)
-
-func renderLine(line string) string {
-	line = html.EscapeString(line)
-	line = smartquoteTT.ReplaceAllString(line, `<tt>$1</tt>`)
-	line = backtickTT.ReplaceAllString(line, `<tt>$1</tt>`)
-	line = underlineItalic.ReplaceAllString(line, `<em>$1</em>`)
-	line = doublestarBold.ReplaceAllString(line, `<strong>$1</strong>`)
-	line = starBold.ReplaceAllString(line, `<strong>$1</strong>`)
-	return line
 }
 
 func gemlink(isRoot bool, href string) (*url.URL, string) {
