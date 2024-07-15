@@ -174,6 +174,7 @@ func (h *HTMLWriter) Handle(line gemini.Line) {
 	if !h.started {
 		fmt.Fprint(h.out, "<article class=gemtext>\n")
 		h.started = true
+		h.blanks = -1
 	}
 	if _, ok := line.(gemini.LineListItem); ok {
 		if !h.list {
