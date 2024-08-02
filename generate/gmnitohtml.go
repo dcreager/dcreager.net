@@ -255,7 +255,7 @@ func (h *HTMLWriter) Handle(line gemini.Line) {
 		fmt.Fprintf(h.out, "<li%s>%s</li>\n", h.spacingClass(), renderLine(string(line)))
 	case gemini.LineQuote:
 		blockquote = true
-		if line == "" {
+		if string(line) == "" {
 			blank = true
 		} else if dateRegexp.MatchString(string(line)) {
 			h.Published = string(line[0:10])
@@ -264,10 +264,11 @@ func (h *HTMLWriter) Handle(line gemini.Line) {
 			}
 			fmt.Fprintf(h.out, "<p%s>%s</p>\n", h.spacingClass("date"), html.EscapeString(string(line)))
 		} else {
-			class := h.spacingClass()
+			var extraClasses []string
 			if h.blockquote {
-				class = " class=nogap"
+				extraClasses = []string{"nomargin"}
 			}
+			class := h.spacingClass(extraClasses...)
 			fmt.Fprintf(h.out, "<blockquote%s>%s</blockquote>\n", class, html.EscapeString(string(line)))
 		}
 	case gemini.LineText:

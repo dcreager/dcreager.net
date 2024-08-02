@@ -217,11 +217,11 @@ p {
     outline-style: none;
 }
 
-.nogap {
+p.nogap {
     margin-top: -1rem;
 }
 
-.doublegap {
+p.doublegap {
     margin-top: 3rem;
 }
 
@@ -234,6 +234,9 @@ blockquote {
 
 blockquote.nogap {
     padding-top: 0;
+}
+
+blockquote.nomargin {
     margin-top: -2rem;
 }
 
