@@ -269,7 +269,7 @@ func (h *HTMLWriter) Handle(line gemini.Line) {
 				extraClasses = []string{"nomargin"}
 			}
 			class := h.spacingClass(extraClasses...)
-			fmt.Fprintf(h.out, "<blockquote%s>%s</blockquote>\n", class, html.EscapeString(string(line)))
+			fmt.Fprintf(h.out, "<blockquote%s>%s</blockquote>\n", class, renderLine(string(line)))
 		}
 	case gemini.LineText:
 		if line == "" {
