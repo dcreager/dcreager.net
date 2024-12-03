@@ -135,22 +135,22 @@ func (h *HTMLWriter) spacingClass(classes ...string) string {
 }
 
 func markupRegexp(left, right string) *regexp.Regexp {
-	return regexp.MustCompile(left + `([A-Za-z0-9 \\~./:_&#;()-]+?)` + right)
+	return regexp.MustCompile(left + `(?P<body>[A-Za-z0-9 \\~./:_&#;()-]+?)` + right)
 }
 
 var smartquoteTT = markupRegexp("‘", "’")
 var backtickTT = markupRegexp("`", "`")
-var underlineItalic = markupRegexp("_", "_")
+var underlineItalic = markupRegexp(`(?P<before>\A|\W)_`, `_(?P<after>\z|\W)`)
 var doublestarBold = markupRegexp(`\*\*`, `\*\*`)
 var starBold = markupRegexp(`\*`, `\*`)
 
 func renderLine(line string) string {
 	line = html.EscapeString(line)
-	line = smartquoteTT.ReplaceAllString(line, `<tt>$1</tt>`)
-	line = backtickTT.ReplaceAllString(line, `<tt>$1</tt>`)
-	line = underlineItalic.ReplaceAllString(line, `<em>$1</em>`)
-	line = doublestarBold.ReplaceAllString(line, `<strong>$1</strong>`)
-	line = starBold.ReplaceAllString(line, `<strong>$1</strong>`)
+	line = smartquoteTT.ReplaceAllString(line, `<tt>${body}</tt>`)
+	line = backtickTT.ReplaceAllString(line, `<tt>${body}</tt>`)
+	line = underlineItalic.ReplaceAllString(line, `${before}<em>${body}</em>${after}`)
+	line = doublestarBold.ReplaceAllString(line, `<strong>${body}</strong>`)
+	line = starBold.ReplaceAllString(line, `<strong>${body}</strong>`)
 	return line
 }
 
