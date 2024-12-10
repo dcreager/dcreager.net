@@ -191,7 +191,7 @@ func (h *HTMLWriter) Handle(line gemini.Line) {
 	case gemini.LineLink:
 		parsed, href := gemlink(h.isRoot(), line.URL)
 		href = html.EscapeString(href)
-		name := html.EscapeString(line.Name)
+		name := renderLine(line.Name)
 		if name == "" {
 			name = line.URL
 		}
@@ -237,20 +237,20 @@ func (h *HTMLWriter) Handle(line gemini.Line) {
 		h.openSection(1)
 		heading := string(line)
 		anchor := h.generateAnchor(heading)
-		fmt.Fprintf(h.out, "<h1 id=%s><a class=header-link href=\"#%s\">¶</a><span>%s</span></h1>\n", anchor, anchor, html.EscapeString(heading))
+		fmt.Fprintf(h.out, "<h1 id=%s><a class=header-link href=\"#%s\">¶</a><span>%s</span></h1>\n", anchor, anchor, renderLine(heading))
 	case gemini.LineHeading2:
 		h.closeSection(3)
 		h.closeSection(2)
 		h.openSection(2)
 		heading := string(line)
 		anchor := h.generateAnchor(heading)
-		fmt.Fprintf(h.out, "<h2 id=%s><a class=header-link href=\"#%s\">¶</a><span>%s</span></h2>\n", anchor, anchor, html.EscapeString(heading))
+		fmt.Fprintf(h.out, "<h2 id=%s><a class=header-link href=\"#%s\">¶</a><span>%s</span></h2>\n", anchor, anchor, renderLine(heading))
 	case gemini.LineHeading3:
 		h.closeSection(3)
 		h.openSection(3)
 		heading := string(line)
 		anchor := h.generateAnchor(heading)
-		fmt.Fprintf(h.out, "<h3 id=%s><a class=header-link href=\"#%s\">¶</a><span>%s</span></h3>\n", anchor, anchor, html.EscapeString(heading))
+		fmt.Fprintf(h.out, "<h3 id=%s><a class=header-link href=\"#%s\">¶</a><span>%s</span></h3>\n", anchor, anchor, renderLine(heading))
 	case gemini.LineListItem:
 		fmt.Fprintf(h.out, "<li%s>%s</li>\n", h.spacingClass(), renderLine(string(line)))
 	case gemini.LineQuote:
