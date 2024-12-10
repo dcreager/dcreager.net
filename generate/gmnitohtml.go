@@ -140,7 +140,7 @@ func markupRegexp(left, right string) *regexp.Regexp {
 
 var smartquoteTT = markupRegexp("‘", "’")
 var backtickTT = markupRegexp("`", "`")
-var underlineItalic = markupRegexp(`(?P<before>\A|\W)_`, `_(?P<after>\z|\W)`)
+var underlineItalic = markupRegexp(`(?P<before>\A|\s|[.,:])_`, `_(?P<after>\z|\s|[.,:])`)
 var doublestarBold = markupRegexp(`\*\*`, `\*\*`)
 var starBold = markupRegexp(`\*`, `\*`)
 
