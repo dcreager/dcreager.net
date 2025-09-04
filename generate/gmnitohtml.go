@@ -135,7 +135,7 @@ func (h *HTMLWriter) spacingClass(classes ...string) string {
 }
 
 func markupRegexp(left, right string) *regexp.Regexp {
-	return regexp.MustCompile(left + `(?P<body>[A-Za-zΑ-Φα-ϕ∀-⋿⁰-ₜ0-9 \\~.!/:_&#;()-]+?)` + right)
+	return regexp.MustCompile(left + `(?P<body>.+?)` + right)
 }
 
 var smartquoteTT = markupRegexp("‘", "’")
